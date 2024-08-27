@@ -1,0 +1,11 @@
+These bitmap files are for the X11 game called xboing. They all in XPM #3
+graphics format which is an ascii file that can be included in source code.
+
+They have all been split into different directories. Makes it easier.
+
+created using pixmap and Deluxe Paint III on an Amiga. XPM 3.4
+
+Some files are in the standard X11 bitmap format. ie: stars
+
+Please read the COPYRIGHT message in the backgrounds directory as some images
+are copyright and must not be used in a Microsoft Windows environment.

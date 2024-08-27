@@ -1,0 +1,6 @@
+These sounds are used in the X11 game called XBoing. They are all in the
+.au audio format and are all binary files. They do have a small header that
+may cause some audio systems to click as they are played.
+
+NOTE: The "aww, shit" audio file is called balllost.au and can be replaced 
+	  with some other sound if that one is too much. :-)

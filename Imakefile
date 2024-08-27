@@ -1,0 +1,222 @@
+#ifndef XCOMM
+#define XCOMM #
+#endif
+
+XCOMM =====================================================================
+XCOMM Imakefile - XBoing Version 2.4 - 29th Sep 1995 - jck@catt.rmit.edu.au
+XCOMM =====================================================================
+
+XCOMM =====================================================================
+XCOMM 
+XCOMM $Id: Imakefile,v 1.1.1.1 1994/12/16 01:36:48 jck Exp $
+XCOMM $Source: /usr5/legends/jck/xb/master/xboing/Imakefile,v $
+XCOMM $Revision: 1.1.1.1 $
+XCOMM $Date: 1994/12/16 01:36:48 $
+XCOMM 
+XCOMM $Log: Imakefile,v $
+# Revision 1.1.1.1  1994/12/16  01:36:48  jck
+# The XBoing distribution requires configuration management. This is why the
+# cvs utility is being used. This is the initial import of all source etc..
+#
+XCOMM 
+XCOMM =====================================================================
+
+XCOMM This is the directory where the highscore, level & sound data will be 
+XCOMM placed. Default will be the current directory.
+
+    XBOING_DIR = .
+
+XCOMM These are some defines that must be set. Some may be overwritten in the
+XCOMM machine arch section.
+
+    XPMLIB 				= -L/usr/X11/lib -lXpm
+    XPMINCLUDE 			= -I/usr/X11/include/X11
+    XBOINGINCLUDE 		= -I./include
+    LEVEL_INSTALL_DIR 	= $(XBOING_DIR)/levels
+    SOUNDS_DIR 			= $(XBOING_DIR)/sounds
+    BACKUP_DIR 			= $(XBOING_DIR)/../backups
+    HIGH_SCORE_FILE 	= $(XBOING_DIR)/.xboing.scr
+    AUDIO_AVAILABLE 	= False
+    AUDIO_SRC 			= audio/NOaudio.c
+    AUDIO_INCLUDE 		=
+    AUDIO_LIB 			=
+	CDEBUGFLAGS         = -g
+
+XCOMM Uncomment this if you want to use ANY of the AUDIO sound systems
+#define COMPILE_IN_AUDIO    
+
+XCOMM Uncomment this if you want to use RPLAY sound system
+XCOMM #define USE_RPLAY
+
+XCOMM Uncomment this if you want to use NetAudio sound system
+XCOMM #define USE_NETAUDIO
+
+XCOMM Below are the special defines for different machine archs.
+
+#if defined(HPArchitecture) && defined(COMPILE_IN_AUDIO) 
+    AUDIO_AVAILABLE = True
+    AUDIO_SRC 		= audio/HPaudio.c
+    AUDIO_INCLUDE 	=
+    AUDIO_LIB 		= -laudio
+#endif /* HPArchitecture */
+
+#if defined(LinuxArchitecture) && defined(COMPILE_IN_AUDIO)
+    AUDIO_AVAILABLE = True
+    AUDIO_SRC 		= audio/LINUXaudio.c
+    AUDIO_INCLUDE 	=
+    AUDIO_LIB 		= 
+#endif /* linux */
+
+#if defined(svr4) && defined(COMPILE_IN_AUDIO)
+    AUDIO_AVAILABLE     = True
+    AUDIO_SRC           = audio/SVR4audio.c
+    AUDIO_INCLUDE       =
+    AUDIO_LIB           =
+#endif /* svr4 */  
+
+#if defined(SGIArchitecture) && defined(COMPILE_IN_AUDIO)
+    AUDIO_AVAILABLE = True
+    AUDIO_SRC 		= audio/SGIaudio.c
+    AUDIO_INCLUDE 	=
+    AUDIO_LIB 		= -laudio
+#endif /* SGIArchitecture */
+
+#if defined(SparcArchitecture) && defined(COMPILE_IN_AUDIO)
+    AUDIO_AVAILABLE	= True
+    AUDIO_SRC 		= audio/SUNaudio.c
+
+#if (OSMajorVersion==4)
+    AUDIO_INCLUDE 	= -I/usr/demo/SOUND/multimedia
+    AUDIO_LIB 		= -L/usr/demo/SOUND -laudio
+#endif
+
+#if (OSMajorVersion==5)
+    AUDIO_INCLUDE 	= -I/usr/demo/SOUND/include/multimedia
+    AUDIO_LIB 		= -L/usr/demo/SOUND/lib -laudio
+#endif
+
+#endif /* SparcArchitecture */
+
+
+XCOMM Define USE_RPLAY near start for rplay to be used for the sound system
+
+#if defined(USE_RPLAY) && defined(COMPILE_IN_AUDIO)
+    AUDIO_SRC 		= audio/RPLAYaudio.c
+    AUDIO_INCLUDE 	= -I/usr/local/include
+    AUDIO_LIB 		= -L/usr/local/lib/rplay -lrplay
+    SOUNDS_DIR 		= /usr/local/lib/sounds
+#endif
+
+XCOMM Define USE_NETAUDIO near start for netaudio to be used for sound.
+XCOMM You must set the AUDIO_INCLUDE and AUDIO_LIB to point to netaudio src.
+
+#if defined(USE_NETAUDIO) && defined(COMPILE_IN_AUDIO)
+    AUDIO_AVAILABLE = True
+    AUDIO_SRC 		= audio/NCDaudio.c
+    AUDIO_INCLUDE 	= -I/netaudio/usr.include
+    AUDIO_LIB 		= -L/netaudio/lib/audio -laudio
+#endif
+
+    EXTRA_INCLS = $(XBOINGINCLUDE) $(XPMINCLUDE) $(AUDIO_INCLUDE)
+
+XCOMM Please take the comment out from the USE_FLOCK bit if you want to use the
+XCOMM flock() system call for locking instead of the lockf() system call.
+XCOMM Also if you don't want any file locking then uncomment and add the \ to 
+XCOMM the -DNO_LOCKING define.
+XCOMM Put the NEED_USLEEP define in if it is need by your system because it
+XCOMM hasn't a usleep() function.
+
+    DEFINES = $(EXTRA_INCLS) \
+        -DHIGH_SCORE_FILE=\"$(HIGH_SCORE_FILE)\" \
+        -DAUDIO_FILE=\"$(AUDIO_SRC)\" \
+        -DLEVEL_INSTALL_DIR=\"$(LEVEL_INSTALL_DIR)\" \
+        -DAUDIO_AVAILABLE=\"$(AUDIO_AVAILABLE)\" \
+        -DSOUNDS_DIR=\"$(SOUNDS_DIR)\" \
+        -DREADMEP_FILE=\"$(XBOING_DIR)/docs/problems.doc\"
+XCOMM   -DUSE_FLOCK=\"True\" \
+XCOMM   -DNEED_USLEEP=\"True\" \
+XCOMM   -DNO_LOCKING=\"True\" 
+
+    LOCAL_LIBRARIES = $(AUDIO_LIB) $(XPMLIB) $(XLIB) -lm
+
+XCOMM ========================================================================
+XCOMM Please don't change anything below this point - no need really - I hope.
+XCOMM ========================================================================
+
+    DEPLIBS = $(DEPXLIB)
+
+    SRCS1 =	version.c main.c score.c error.c \
+        ball.c blocks.c init.c stage.c level.c \
+        paddle.c mess.c intro.c bonus.c sfx.c \
+        highscore.c misc.c inst.c gun.c keys.c \
+        audio.c special.c presents.c demo.c file.c \
+		preview.c dialogue.c eyedude.c editor.c \
+		keysedit.c
+
+    OBJS1 =	version.o main.o score.o error.o \
+        ball.o blocks.o init.o stage.o level.o \
+        paddle.o mess.o intro.o bonus.o sfx.o \
+        highscore.o misc.o inst.o gun.o keys.o \
+        audio.o special.o presents.o demo.o file.o \
+		preview.o dialogue.o eyedude.o editor.o \
+		keysedit.o
+
+    PROGRAMS = xboing
+
+all::	audio.c $(PROGRAMS)
+	@$(RM) version.c
+XCOMM strip $(PROGRAMS)
+
+version.c:
+	@sh ./version.sh $(PROGRAMS)
+
+audio.c::  $(AUDIO_SRC)
+	$(RM) $@
+	$(LN) $? $@
+
+depend:: version.c audio.c
+
+ComplexProgramTarget_1($(PROGRAMS), $(LOCAL_LIBRARIES), )
+
+install:: $(PROGRAMS)
+	@echo "XBoing directory is " $(XBOING_DIR)
+	@:
+	@echo "Creating directory " $(XBOING_DIR)
+	@if [ ! -d $(XBOING_DIR) ]; then mkdir $(XBOING_DIR); fi
+	$(INSTALL) -c $(INSTDATFLAGS) docs/problems.doc $(XBOING_DIR)
+	@:
+	@echo "Creating directory " $(LEVEL_INSTALL_DIR)
+	@if [ ! -d $(LEVEL_INSTALL_DIR) ]; then mkdir $(LEVEL_INSTALL_DIR); fi
+	@:
+	@echo "Copying level data into directory " $(LEVEL_INSTALL_DIR)
+	@cd ./levels; set -x; for file in *.data; do			\
+		$(INSTALL) -c $(INSTDATFLAGS) $$file $(LEVEL_INSTALL_DIR);\
+	done
+	@:
+	@if [ "$(AUDIO_AVAILABLE)" = "True" ]; 				\
+	 then								\
+		echo "Creating directory " $(SOUNDS_DIR); 		\
+		if [ ! -d $(SOUNDS_DIR) ]; then mkdir $(SOUNDS_DIR); fi;\
+		echo "Copying sound files into directory " $(SOUNDS_DIR);\
+		cd ./sounds; set -x; for file in *.au; do		\
+		    $(INSTALL) -c $(INSTDATFLAGS) $$file $(SOUNDS_DIR);	\
+		done;							\
+	 fi
+	@:
+	@echo "Creating a highscore file " $(HIGH_SCORE_FILE)
+	@touch $(HIGH_SCORE_FILE);
+	@chmod a+rw $(HIGH_SCORE_FILE);
+
+XCOMM I use this for my daily backup of my code.
+
+backup:
+	@make clean									
+	@:									
+	@if [ -z "$(BACKUP_DIR)" ]; then \
+		echo "*** BACKUP_DIR undefined."; exit 1; fi	
+	@:								
+	@if [ ! -d $(BACKUP_DIR) ]; then set -x; $(MKDIRHIER) $(BACKUP_DIR); fi		
+	@:							
+	tar cvf - * | gzip -v > $(BACKUP_DIR)/`date '+xboing%d-%h-%y'`.tgz
+
+XCOMM End of the XBoing Imakefile 

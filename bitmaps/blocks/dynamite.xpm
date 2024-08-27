@@ -1,0 +1,28 @@
+/* XPM */
+static char * dynamite_xpm[] = {
+/* width height ncolors chars_per_pixel */
+"29 15 7 1",
+/* colors */
+" 	s None	c None",
+".	c black",
+"X	c tomato",
+"o	c yellow",
+"O	c slategrey",
+"+	c lemonchiffon",
+"@	c white",
+/* pixels */
+"    ..                       ",
+"   .. ...    ....  XoX       ",
+"  .     .....   ....Xo       ",
+" ..                XoX       ",
+" .                           ",
+" ..........................  ",
+" .O.XXXX.+@.XXXXXXX.+@.XXXX. ",
+" .O.XXXX.@+.XXXXXXX.@+.XXXX. ",
+"..........@+.........@+..... ",
+".O.O.XXXX.+@.XXXXXXX.+@.XXXX.",
+".O.O.XXXX.@+.XXXXXXX.@+.XXXX.",
+".........+@.........@+...... ",
+" .O.XXXX.@+.XXXXXXX.+@.XXXX. ",
+" .O.XXXX.+@.XXXXXXX.@+.XXXX. ",
+"  .........................  "};

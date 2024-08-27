@@ -1,0 +1,29 @@
+/* XPM */
+static char *devileyes_xpm[] = {
+/* width height ncolors chars_per_pixel */
+"57 16 7 1",
+/* colors */
+" 	s None	c None",
+".	c black",
+"X	c #800080008000",
+"o	c #000080000000",
+"O	c white",
+"+	c #c000c000c000",
+"@	c green",
+/* pixels */
+"  .        ........                   ........        .  ",
+"   ..................               ..................   ",
+" .      ..............             ..............      . ",
+"  .........XXX.oooo....           ....oooo.XXX.........  ",
+".     ....XXX.oOOOoo....         ....ooOOOo.XXX....     .",
+" .......XXX+.ooOOO.o.o...       ...o.o.OOOoo.+XXX....... ",
+"    ...XX+O.oo@.o.o.o.o...     ...o.o.o.o.@oo.O+XX...    ",
+"......XX+O+.oo@o.o.o.o.o...   ...o.o.o.o.o@oo.+O+XX......",
+"  ....XXO+O.oo@.o.o.o.o.X... ...X.o.o.o.o.@oo.O+OXX....  ",
+" .....XX+O+.oo@o.o.o.o.oX... ...Xo.o.o.o.o@oo.+O+XX..... ",
+" ......XX+O.ooo@o.o.o.@o.... ....o@.o.o.o@ooo.O+XX...... ",
+"      ..XX++.ooo@o.o.@o...     ...o@.o.o@ooo.++XX..      ",
+"       ..XXXX.ooo@@@@o..         ..o@@@@ooo.XXXX..       ",
+"        ..XXXX.oooooo..           ..oooooo.XXXX..        ",
+"         .............             .............         ",
+"           ..........               ..........           "};

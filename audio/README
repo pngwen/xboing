@@ -1,0 +1,28 @@
+
+These source files are used in the X11 game called xboing. 
+
+"I" have only tested the SUNaudio.c so I cannot verify the other code, however,
+several other people on the net have tested it on their machines. Thanks for
+all those people who have sent me code to play sound on their machine type.
+
+The sound code will only play .au Sun audio format files or treat them as a
+binary raw audio file - may click a bit on playing with some setups.
+
+Please email the authors of the sound files as they wrote them. I am no
+expert on PC SoundBlaster support for example.
+
+PS: If you have sound and have successfully used it in xboing then email me
+	and let me know if it was a hassle and if any files need to be changed
+	to reduce warnings errors etc.
+
+I would like to improve the SGI audio so that the code is not so nasty on the
+audio device closing it/opening it to clear a sound!
+
+FUTURE ENHANCEMENTS TO SOUND PLAYERS
+====================================
+
+- Please do not remove any stubs that you think are not useful. They are there
+  so my header files don't complain.
+- Try to keep to 4 tabs and the current style as I am trying to maintain the
+  code to look all the same. Use expand -4 to change tabs to 4 spaces.
+- Thanks to all those working on the sound support.

@@ -1,0 +1,120 @@
+XBoing Trouble-Shooting
+=======================
+
+Updated: 19th November 1996
+
+I was hoping you wouldn't be reading this but anyway ...
+
+game is too fast
+
+    This was a bug in the old code and I was hoping to have fixed this. Buy
+    a slower computer :-)
+
+make depend
+
+    Some header files in xboing were not found. Check the includes and see
+    if the Imakefile/Makefile.std includes in the correct directory. 
+
+fonts
+
+    If the program says it is using the fixed font then it couln`t find the
+    font in the font database. Check you fonts and make sure they are installed
+    correctly as the fonts I am using are standard R4&R5 fonts, I hope.
+
+xpm.h
+
+    You must have the Xpm library as explained in the requirements section.
+    XBoing uses the Xpm library extensively. If you have it then please check
+    that the XPMINCLUDE dir is set correctly in the Imakefile/Makefile.std
+
+Header Files  
+
+    Maybe you have the X11 header files in another place. Please check the 
+    Imakefile or Makefile.std and change the -I directories to your site. 
+    If you are using imake then tell your sysop that imake didn't look
+    in the correct place for the X11 header files. 
+
+Highscore file is corrupt
+
+    I may have changed the highscore file format. Sorry but it is 
+    much better now and will save times etc. Just delete the old one and 
+    start again. 
+
+Highscore file locking problem
+
+    I am currently locking the file with either lockf or flock. lockf() will
+    work over a NFS file system when the lockd deamon is running. 
+
+Strange libraries needed
+
+    Check the Imakefile or Makefile.std and make sure the sysop has installed
+    the Imake.rules correctly. If all else fails just remove them one by one
+    until it compiles.
+
+Crashes with bad drawable
+
+    Make sure that the program is not compiled with -ansi as ansi trigraphs
+    may have been found during compilation and that stuffs up the pixmap data.
+
+    Also check that the version of xpm is the latest ie: 3.4 as people have
+    mentioned that any version below can cause problems. :-(
+
+    Also try with K&R C compiler that is non-ansi and see if that makes any
+    difference.
+
+Colourmap is all black
+
+    Don't use the -pointergrab option as some window managers barf when the
+    pointer is grabbed :-(
+
+Sound not working & Levels not working
+
+    Check your sound directory and make sure that you don't have any ENV vars
+    set that will be used first in determining where the sound files are.
+
+	Did you compile xboing with sounds? Did you set it up properly?
+
+Clicks in sound
+
+    This may be because the sound files have a small header and your audio
+    device may not support .au Sun Audio files so you will hear a small click
+    which is actually the sound header. If it becomes a problem edit the files
+    and remove the first couple of bytes of the file until it doesn't click!
+
+Ansi trigraphs
+
+    Try not to use -ansi as it can cause ANSI trigraphs in the data files and
+    that converts a few characters to one causing an XPM error. Bummer.
+
+    Ansi trigraphs are as follows ??n where n is either =-()!<>/' if they
+    appear in a string then they will be converted to something else.
+
+Bitmaps cut off a bit
+
+    This is a solutions sent to me via email. I am told it works if you are
+    experiencing small cut aways in the blocks on many sides. Not the small
+    cutaway due to bouncing error but one during drawing of blocks.
+
+    edit stage.c and change these lines so the border width is 0 not 5.
+
+ old:
+    playWindow = XCreateSimpleWindow(display, mainWindow,
+        offsetX, 60, PLAY_WIDTH, PLAY_HEIGHT, 5, red, black);
+ new:
+    playWindow = XCreateSimpleWindow(display, mainWindow,
+        offsetX, 60, PLAY_WIDTH, PLAY_HEIGHT, 0, red, black);
+
+Volume control strange
+
+    If the volume control seems strange then let me know please. Tell me what
+    sound system you were trying to use.
+
+If you cannot get it working still and you have tried hard email at the
+address supplied and send along 'xboing -setup' output, obviously if you have
+got it compiled!!
+
+Also re-read the INSTALL document as it may help.
+
+PS: You can try xboing -debug to find out which function the program is barfing
+    in. If you can send me the function name with the email it will help.
+

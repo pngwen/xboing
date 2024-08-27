@@ -1,0 +1,66 @@
+                    ______       ____         __   _     __ 
+                   /_  __/__    / __ \___    / /  (_)__ / /_
+                    / / / _ \  / /_/ / _ \  / /__/ (_-</ __/
+                   /_/  \___/ /_____/\___/ /____/_/___/\__/ 
+                                                            
+                          Updated: 26th Oct 1994
+
+Things that WILL be done for the next version
+"""""""""""""""""""""""""""""""""""""""""""""
+
+- With multiball the skull kills ball leaving debris!
+- Make the eyes that blink a block of some kind.
+- blocks that come and go that are solid.
+- one way blocks.
+- speedup zones for ball
+- make nowalls toggle on/off
+- invisible blocks that flash every now and then and also when hit. - maybe
+- Automatically adjust paddle pos when reverse is turn on and off. Sort of done.
+- Sometimes all blocks are gone but it waits.
+- Start Maintenance manual. Ah, Software Engineering for a game??
+- Is bomb good or bad for players?
+- Merge a lot of the pixmaps into one or two larger ones and extract the data
+  from within it. This is better for performance with the X Server.
+- Have a block that when hit jumps you some x levels ahead.
+- use first button to fire 1 bullet and second to fire 2 bullets.
+
+
+Things that MAY be done in the future
+"""""""""""""""""""""""""""""""""""""
+
+- a paddle that splits into two.
+- warp holes in walls.
+- blocks that attract the ball ie: gravity.
+- use floats for the dx and dy of the ball.
+- A motd file that can be added.
+- In no walls mode also wrap paddle around screen.
+- Change the shape of the paddle to be convex.
+- Some people may have a problem with the strftime() function call! Arggh
+- Place all sounds in memory in array when used.
+  suggested by Xyvind Yrke <oyvind@stavanger.sgp.slb.com>
+- Also change the code so the paddle can be on top of screen too.!!
+- Gravity bricks that pull the ball toward them.
+- Areas of gravity fields that effect the ball.
+- Have a best attempt today score.
+
+
+Things that would be NICE but hard to do!
+"""""""""""""""""""""""""""""""""""""""""
+
+- Make multi-player with a paddle at each end of playfield. Long way off!
+- Greyscale version or b&w - ages or soonish. Depends. I would have to redesign 
+  a lot of the game and take out a lot of features.
+- Have blocks that drop onto paddle and give you different things. - very hard!
+
+Known Bugs
+""""""""""
+
+- Small cut away on some bricks when bouncing off them.
+- Ball can still get stuck in an infinite loop on two solid walls and may 
+  sometimes zoom straight up one wall on the left or right.
+- Uses too much memory in the X Server for some people. he he
+- Paddle gets stuck on one side of the wall sometimes.
+- As I use a frame counter and it is a long int it will eventually run out
+  one day and wrap around. If this happens then the game will become unstable
+  as the animation routines will be waiting for a long time for the next frame
+  unless they wrap as well!! I think.
