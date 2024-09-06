@@ -93,7 +93,6 @@
  *  Internal type declarations:
  */
 
-#if NeedFunctionPrototypes
 static KeySym 	GetKeySym(XEvent event);
 static void 	handleGameMode(Display *display);
 static void 	handleEventLoop(Display *display);
@@ -104,18 +103,6 @@ static void 	handleMiscKeys(Display *display, KeySym keysym);
 static void 	handleSpeedKeys(Display *display, KeySym keysym);
 static void 	handleExitKeys(Display *display);
 static void 	handleQuitKeys(Display *display);
-#else
-static void 	handleQuitKeys();
-static void 	handleExitKeys();
-static void 	handleSpeedKeys();
-static void 	handleMiscKeys();
-static void 	handleGameStates();
-static KeySym 	GetKeySym();
-static void 	handleGameMode();
-static void 	handleEventLoop();
-static void 	ToggleGamePaused();
-static void 	SetGamePaused();
-#endif
 
 /*
  *  Internal variable declarations:
@@ -135,22 +122,13 @@ time_t 			pausedTime;
 int 			UserTilts;
 
 
-#if NeedFunctionPrototypes
 int GetWarpSpeed(void)
-#else
-int GetWarpSpeed()
-#endif
 {
 	/* Return warp speed in user terms */
 	return (speedLevel);
 }
 
-#if NeedFunctionPrototypes
 void SetUserSpeed(int delay)
-#else
-void SetUserSpeed(delay)
-	int delay;
-#endif
 {
 	long temp;
 
@@ -161,45 +139,26 @@ void SetUserSpeed(delay)
 	speedLevel = 10 - delay;
 }
 
-#if NeedFunctionPrototypes
 int GetPaddleControlMode(void)
-#else
-int GetPaddleControlMode()
-#endif
 {
 	/* Get the paddle control mode */
 	return paddleControl;
 }
 
-#if NeedFunctionPrototypes
 void SetPaddleControlMode(int type)
-#else
-void SetPaddleControlMode(type)
-	int type;
-#endif
 {
 	/* Set the paddle control mode to the new mode */
 	paddleControl = type;
 }
 
-#if NeedFunctionPrototypes
 void SetGameSpeed(int delay)
-#else
-void SetGameSpeed(delay)
-	int delay;
-#endif
 {
 	/* This is the speed used in the sleeping routine */
 	if (delay >= 0)
 		speed = (long) (delay * userDelay);
 }
 
-#if NeedFunctionPrototypes
 static KeySym GetKeySym(XEvent event)
-#else
-static KeySym GetKeySym(event)
-	XEvent event;
-#endif
 {
 	int count;
 	char key;
@@ -212,22 +171,13 @@ static KeySym GetKeySym(event)
 	return keysym;
 }
 
-#if NeedFunctionPrototypes
 int paddleIsMoving(void)
-#else
-int paddleIsMoving()
-#endif
 {
 	/* Returns direction of paddle 1 right -1 left 0 stopped */
 	return paddleMotion;
 }
 
-#if NeedFunctionPrototypes
 void handlePaddleMoving(Display *display)
-#else
-void handlePaddleMoving(display)
-	Display *display;
-#endif
 {
 	static oldx = 0;
 	int x, y;
@@ -282,12 +232,7 @@ void handlePaddleMoving(display)
 }
 
 
-#if NeedFunctionPrototypes
 static void ToggleGamePaused(Display *display)
-#else
-static void ToggleGamePaused(display)
-	Display *display;
-#endif
 {
 	if (mode == MODE_PAUSE)
 	{
@@ -309,12 +254,7 @@ static void ToggleGamePaused(display)
 		SetGamePaused(display);
 }
 
-#if NeedFunctionPrototypes
 static void SetGamePaused(Display *display)
-#else
-static void SetGamePaused(display)
-	Display *display;
-#endif
 {
 	if (mode == MODE_GAME)
 	{
@@ -335,22 +275,12 @@ static void SetGamePaused(display)
 	}
 }
 
-#if NeedFunctionPrototypes
 void handleIconify(Display *display)
-#else
-void handleIconify(display)
-	Display *display;
-#endif
 {
 	ToggleGamePaused(display);
 }
 
-#if NeedFunctionPrototypes
 void SelectiveRedraw(Display *display)
-#else
-void SelectiveRedraw(display)
-	Display *display;
-#endif
 {
 	switch (mode)
 	{
@@ -407,13 +337,7 @@ void SelectiveRedraw(display)
 	XFlush(display);
 }
 
-#if NeedFunctionPrototypes
 void handleExposure(Display *display, XEvent event)
-#else
-void handleExposure(display, event)
-	Display *display;
-	XEvent event;
-#endif
 {
 	/* Only redraw window once so wait until all expose events have sent
 	 * and then redraw all that we need to redraw based on current game
@@ -423,14 +347,7 @@ void handleExposure(display, event)
 		SelectiveRedraw(display);
 }
 
-#if NeedFunctionPrototypes
 void handleMouseButtons(Display *display, XEvent event, int Down)
-#else
-void handleMouseButtons(display, event, Down)
-	Display *display;
-	XEvent event;
-	int Down;
-#endif
 {
 	if (mode == MODE_EDIT)
 	{
@@ -459,12 +376,7 @@ void handleMouseButtons(display, event, Down)
 	}
 }
 
-#if NeedFunctionPrototypes
 static void handleControlKeys(Display *display)
-#else
-static void handleControlKeys(display)
-	Display *display;
-#endif
 {
 	/* Toggle game mode */
 	if (GetPaddleControlMode() == CONTROL_KEYS)
@@ -485,12 +397,7 @@ static void handleControlKeys(display)
 		playSoundFile("toggle", 50);
 }
 
-#if NeedFunctionPrototypes
 static void handleSoundKey(Display *display)
-#else
-static void handleSoundKey(display)
-	Display *display;
-#endif
 {
 	if (noSound == False)
 	{
@@ -521,23 +428,13 @@ static void handleSoundKey(display)
 	}
 }
 
-#if NeedFunctionPrototypes
 void SetTiltsZero(void)
-#else
-void SetTiltsZero()
-#endif
 {
 	/* Initialise the user tilt variable to zero tilts */
 	UserTilts = 0;
 }
 
-#if NeedFunctionPrototypes
 static void handleGameKeys(Display *display, KeySym keysym)
-#else
-static void handleGameKeys(display, keysym)
-	Display *display;
-	KeySym keysym;
-#endif
 {
 	int temp;
 	char astr[80];
@@ -637,13 +534,7 @@ static void handleGameKeys(display, keysym)
 	}
 }
 
-#if NeedFunctionPrototypes
 static void handleIntroKeys(Display *display, KeySym keysym)
-#else
-static void handleIntroKeys(display, keysym)
-	Display *display;
-	KeySym keysym;
-#endif
 {
 	/* Switch on the keysym */
 	switch (keysym)
@@ -797,12 +688,7 @@ static void handleIntroKeys(display, keysym)
 	}
 }
 
-#if NeedFunctionPrototypes
 static void handleQuitKeys(Display *display)
-#else
-static void handleQuitKeys(display)
-	Display *display;
-#endif
 {
 	/* Save out the scores if you were playing */
 	if (oldMode == MODE_GAME || oldMode == MODE_BONUS)
@@ -817,12 +703,7 @@ static void handleQuitKeys(display)
 	mode = MODE_INTRO;
 }
 
-#if NeedFunctionPrototypes
 static void handleExitKeys(Display *display)
-#else
-static void handleExitKeys(display)
-	Display *display;
-#endif
 {
 	/* Save out the scores if you were playing */
 	if (oldMode == MODE_GAME || oldMode == MODE_BONUS)
@@ -837,13 +718,7 @@ static void handleExitKeys(display)
 	ShutDown(display, 0, "Thank you for playing XBoing.");
 }
 
-#if NeedFunctionPrototypes
 static void handlePresentsKeys(Display *display, KeySym keysym)
-#else
-static void handlePresentsKeys(display, keysym)
-	Display *display;
-	KeySym keysym;
-#endif
 {
 	/* Switch on the keysym */
 	switch (keysym)
@@ -862,13 +737,7 @@ static void handlePresentsKeys(display, keysym)
 	}
 }
 
-#if NeedFunctionPrototypes
 static void handleSpeedKeys(Display *display, KeySym keysym)
-#else
-static void handleSpeedKeys(display, keysym)
-	Display *display;
-	KeySym keysym;
-#endif
 {
 	/* Switch on the keysym */
 	switch (keysym)
@@ -932,13 +801,7 @@ static void handleSpeedKeys(display, keysym)
 	}
 }
 
-#if NeedFunctionPrototypes
 static void handleMiscKeys(Display *display, KeySym keysym)
-#else
-static void handleMiscKeys(display, keysym)
-	Display *display;
-	KeySym keysym;
-#endif
 {
 	int vol = 0;
 	char str[30];
@@ -993,15 +856,7 @@ static void handleMiscKeys(display, keysym)
 	}
 }
 
-#if NeedFunctionPrototypes
 void handleKeyPress(Display *display, KeySym keysym, XEvent event, int Pressed)
-#else
-void handleKeyPress(display, keysym, event, Pressed)
-	Display *display;
-	KeySym keysym;
-	XEvent event;
-	int Pressed;
-#endif
 {
 
 	if (Pressed == False)
@@ -1043,12 +898,7 @@ void handleKeyPress(display, keysym, event, Pressed)
 }
 
 
-#if NeedFunctionPrototypes
 static void handleGameMode(Display *display)
-#else
-static void handleGameMode(display)
-	Display *display;
-#endif
 {
 	static int bonusRow = 0;
 	static int bonusCol = 0;
@@ -1257,12 +1107,7 @@ static void handleGameMode(display)
 		CheckGameRules(display, playWindow);
 }
 
-#if NeedFunctionPrototypes
 static void handleGameStates(Display *display)
-#else
-static void handleGameStates(display)
-	Display *display;
-#endif
 {
 	/* Update the message window if any new messages come along */
 	DisplayCurrentMessage(display, messWindow);
@@ -1358,12 +1203,7 @@ static void handleGameStates(display)
 	XFlush(display);
 }
 
-#if NeedFunctionPrototypes
 static void handleEventLoop(Display *display)
-#else
-static void handleEventLoop(display)
-	Display *display;
-#endif
 {
 	XEvent event;
 	int pending;
@@ -1489,13 +1329,7 @@ static void handleEventLoop(display)
 	/* NOT REACHED */
 }
 
-#if NeedFunctionPrototypes
 int main(int argc, char **argv)
-#else
-int main(argc, argv)
-	int argc;
-	char **argv;
-#endif
 {
 	static Display *display;
 
