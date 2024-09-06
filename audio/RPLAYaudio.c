@@ -83,12 +83,7 @@ static RPLAY   	*rp;
 static int 		rplay_fd;
 static char 	errorString[255];
 
-#if NeedFunctionPrototypes
 int SetUpAudioSystem(Display *display)
-#else
-int SetUpAudioSystem(display)
-	Display *display;
-#endif
 {
 	char hostname[256];
    	char display_machine[256];
@@ -122,54 +117,31 @@ int SetUpAudioSystem(display)
         return True;
 }
 
-#if NeedFunctionPrototypes
 void FreeAudioSystem(void)
-#else
-void FreeAudioSystem()
-#endif
 {
 	/* Close the rplay sound server */
     rplay_close(rplay_fd);
     rplay_destroy(rp);
 }
 
-#if NeedFunctionPrototypes
 static void flushAudioDevice(void)
-#else
-static void flushAudioDevice()
-#endif
 {
 	/* This is done when the sound is sent by setting the priority to highest
 	 * for every sound - I hope this works. JCK
 	 */
 }
 
-#if NeedFunctionPrototypes
 void setNewVolume(unsigned int Volume)
-#else
-void setNewVolume(Volume)
-	unsigned int Volume;
-#endif
 {
 	/* How do you do thism with rplay? */
 }
 
-#if NeedFunctionPrototypes
 void audioDeviceEvents(void)
-#else
-void audioDeviceEvents()
-#endif
 {
     /* None to do */
 }
 
-#if NeedFunctionPrototypes
 void playSoundFile(char *filename, int volume)
-#else
-void playSoundFile(filename, volume)
-	char *filename;
-	int volume;
-#endif
 {
     char soundfile[1024];
     char *str;
@@ -204,20 +176,11 @@ void playSoundFile(filename, volume)
     }
 }
 
-#if NeedFunctionPrototypes
 void SetMaximumVolume(int Volume)
-#else
-void SetMaximumVolume(Volume)
-    int Volume;
-#endif
 {
 }
 
-#if NeedFunctionPrototypes
 int GetMaximumVolume(void)
-#else
-int GetMaximumVolume()
-#endif
 {
     return 0;
 }

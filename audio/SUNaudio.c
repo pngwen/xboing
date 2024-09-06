@@ -76,15 +76,9 @@
  *  Internal type declarations:
  */
 
-#if NeedFunctionPrototypes
 static void flushAudioDevice(void);
 static int reconfig(void);
 static void sigalarm_handler(void);
-#else
-static void sigalarm_handler();
-static void flushAudioDevice();
-static int reconfig();
-#endif
 
 /*
  *  Internal variable declarations:
@@ -104,12 +98,7 @@ double          vol;
 int             cnt;
 char			errorString[255];
 
-#if NeedFunctionPrototypes
 int SetUpAudioSystem(Display *display)
-#else
-int SetUpAudioSystem(display)
-	Display *display;
-#endif
 {
 	/* Validate and open the audio device */
 	if (stat(Audio_dev, &st) < 0)
@@ -188,11 +177,7 @@ int SetUpAudioSystem(display)
 	return True;
 }
 
-#if NeedFunctionPrototypes
 void FreeAudioSystem(void)
-#else
-void FreeAudioSystem()
-#endif
 {
 	/*
 	 * Though drain is implicit on close(), it's performed here
@@ -208,43 +193,25 @@ void FreeAudioSystem()
 	(void) close(Audio_fd);
 }
 
-#if NeedFunctionPrototypes
 static void flushAudioDevice(void)
-#else
-static void flushAudioDevice()
-#endif
 {
 	/* Flush any audio activity */
 	(void) audio_flush_play(Audio_fd);
 }
 
-#if NeedFunctionPrototypes
 void SetMaximumVolume(int Volume)
-#else
-void SetMaximumVolume(Volume)
-	int Volume;
-#endif
 {
 	/* Set the maximum volume for the audio system */
 	maxVolume = Volume;
 }
 
-#if NeedFunctionPrototypes
 int GetMaximumVolume(void)
-#else
-int GetMaximumVolume()
-#endif
 {
 	/* Return the maximum volume as a % of 100 */
     return maxVolume;
 }
 
-#if NeedFunctionPrototypes
 static void setNewVolume(unsigned int Volume)
-#else
-static void setNewVolume(Volume)
-	unsigned int Volume;
-#endif
 {
 	int sampleVol;
 
@@ -273,13 +240,7 @@ static void setNewVolume(Volume)
 	}
 }
 
-#if NeedFunctionPrototypes
 void playSoundFile(char *filename, int volume)
-#else
-void playSoundFile(filename, volume)
-	char *filename;
-	int volume;
-#endif
 {
 	int ifd;
 	char soundfile[1024];
@@ -365,20 +326,12 @@ closeinput:
 	(void) close(ifd);
 }
 
-#if NeedFunctionPrototypes
 void audioDeviceEvents(void)
-#else
-void audioDeviceEvents()
-#endif
 {
 	/* None to do */
 }
 
-#if NeedFunctionPrototypes
 static int reconfig(void)
-#else
-static int reconfig()
-#endif
 {
 	/*
 	 * Try to reconfigure the audio device to match the file encoding.
@@ -429,11 +382,7 @@ static int reconfig()
 	return(FALSE);
 }
 
-#if NeedFunctionPrototypes
 static void sigalarm_handler(void)
-#else
-static void sigalarm_handler()
-#endif
 {
 	/* Used to fix problem when opening the audio device */
 	return;

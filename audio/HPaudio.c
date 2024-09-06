@@ -81,12 +81,7 @@ static unsigned char   	buf[BUFFER_SIZE];
 static char 			errorString[255];
 static int 				parentid = 0;
 
-#if NeedFunctionPrototypes
 int SetUpAudioSystem(Display *display)
-#else
-int SetUpAudioSystem(display)
-	Display *display;
-#endif
 {
 	/* Try to open the audio device */
  	if (Audio_fd = open(Audio_dev, O_WRONLY))
@@ -103,11 +98,7 @@ int SetUpAudioSystem(display)
   	}
 }
 
-#if NeedFunctionPrototypes
 void FreeAudioSystem(void)
-#else
-void FreeAudioSystem()
-#endif
 {
 	flushAudioDevice();
 
@@ -116,11 +107,7 @@ void FreeAudioSystem()
 		ErrorMessage("Cannot open audio device.");
 }
 
-#if NeedFunctionPrototypes
 static void flushAudioDevice(void)
-#else
-static void flushAudioDevice()
-#endif
 {
  	/* Flush any audio activity - hope this works */
 #ifdef PleaseFixTheseDefines
@@ -133,32 +120,17 @@ static void flushAudioDevice()
 #endif
 }
 
-#if NeedFunctionPrototypes
 void setNewVolume(unsigned int Volume)
-#else
-void setNewVolume(Volume)
-	unsigned int Volume;
-#endif
 {
 	/* Do nothing here as we don't have audio support */
 }
 
-#if NeedFunctionPrototypes
 void audioDeviceEvents(void)
-#else
-void audioDeviceEvents()
-#endif
 {
     /* None to do */
 }
 
-#if NeedFunctionPrototypes
 void playSoundFile(char *filename, int volume)
-#else
-void playSoundFile(filename, volume)
-	char *filename;
-	int volume;
-#endif
 {
 	int err, cnt, ifd;
 	char soundfile[1024];
@@ -218,20 +190,11 @@ void playSoundFile(filename, volume)
 	}
 }
 
-#if NeedFunctionPrototypes
 void SetMaximumVolume(int Volume)
-#else
-void SetMaximumVolume(Volume)
-    int Volume;
-#endif
 {
 }
 
-#if NeedFunctionPrototypes
 int GetMaximumVolume(void)
-#else
-int GetMaximumVolume()
-#endif
 {
     return 0;
 }
