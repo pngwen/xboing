@@ -72,19 +72,11 @@ enum PreviewStates
  *  Function prototypes:
  */
 
-#if NeedFunctionPrototypes
 void SetUpPreviewLevel(Display *display, Window window, Colormap colormap);
 void PreviewLevel(Display *display, Window window);
 void RedrawPreviewLevel(Display *display, Window window);
 void FreePreviewLevel(Display *display);
 void ResetPreviewLevel(void);
-#else
-void SetUpPreviewLevel();
-void PreviewLevel();
-void RedrawPreviewLevel();
-void FreePreviewLevel();
-void ResetPreviewLevel();
-#endif
 
 extern 	enum PreviewStates PreviewState;
 

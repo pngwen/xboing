@@ -69,7 +69,6 @@
  *  Function prototypes:
  */
 
-#if NeedFunctionPrototypes
 void DrawSpecials(Display *display);
 void ToggleFastGun(Display *display, int state);
 void ToggleWallsOn(Display *display, int state);
@@ -80,18 +79,6 @@ void Togglex2Bonus(Display *display, int state);
 void Togglex4Bonus(Display *display, int state);
 void ToggleKiller(Display *display, int state);
 void RandomDrawSpecials(Display *display);
-#else
-void RandomDrawSpecials();
-void ToggleKiller();
-void TurnSpecialsOff();
-void DrawSpecials();
-void ToggleFastGun();
-void ToggleWallsOn();
-void ToggleStickyBat();
-void ToggleSaving();
-void Togglex2Bonus();
-void Togglex4Bonus();
-#endif
 
 extern int saving;
 extern int stickyBat;

@@ -72,19 +72,11 @@
  *  Function prototypes:
  */
 
-#if NeedFunctionPrototypes
 Display *InitialiseGame(char **argv, int argc);
 void ShutDown(Display *display, int exitCode, char *message);
 void GrabPointer(Display *display, Window window);
 void UnGrabPointer(Display *display);
 void ChangePointer(Display *display, Window window, int cursorState);
-#else
-void ChangePointer();
-void GrabPointer();
-void UnGrabPointer();
-Display *InitialiseGame();
-void ShutDown();
-#endif
 
 extern GC gccopy, gc, gcxor, gcand, gcor, gcsfx;
 extern XFontStruct *titleFont, *copyFont, *textFont, *dataFont;

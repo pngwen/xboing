@@ -80,18 +80,10 @@ typedef struct
  *  Function prototypes:
  */
 
-#if NeedFunctionPrototypes
 int ReadNextLevel(Display *display, Window window, char *levelName, int draw);
 void SetupStage(Display *display, Window window);
 int SaveLevelDataFile(Display *display, char *levelName);
 int SaveCurrentGame(Display *display, Window window);
 int LoadSavedGame(Display *display, Window window);
-#else
-int SaveLevelDataFile();
-int SaveCurrentGame();
-int LoadSavedGame();
-void SetupStage();
-int ReadNextLevel();
-#endif
 
 #endif

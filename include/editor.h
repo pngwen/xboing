@@ -75,7 +75,6 @@ enum EditStates
  *  Function prototypes:
  */
 
-#if NeedFunctionPrototypes
 void SetUpEditor(Display *display, Window window, Colormap colormap);
 void Editor(Display *display, Window window);
 void RedrawEditor(Display *display, Window window);
@@ -84,16 +83,6 @@ void ResetEditor(void);
 void handleEditorKeys(Display *display, KeySym keysym);
 void HandleEditorMouseButtons(Display *display, XEvent event, int Down);
 void HandleButtonMotion(Display *display, XEvent event);
-#else
-void HandleButtonMotion();
-void HandleEditorMouseButtons();
-void handleEditorKeys();
-void SetUpEditor();
-void Editor();
-void RedrawEditor();
-void FreeEditor();
-void ResetEditor();
-#endif
 
 extern 	enum EditStates EditState;
 

@@ -129,7 +129,6 @@ typedef struct ball
  *  Function prototypes:
  */
 
-#if NeedFunctionPrototypes
 void InitialiseBall(Display *display, Window window, Colormap colormap);
 void FreeBall(Display *display);
 void RedrawBall(Display *display, Window window);
@@ -152,30 +151,6 @@ int GetAnActiveBall(void);
 int ActivateWaitingBall(Display *display, Window window);
 int GetNumberOfActiveBalls(void);
 void DoBoardTilt(Display *display, int i);
-#else
-void DoBoardTilt();
-int GetNumberOfActiveBalls();
-int ActivateWaitingBall();
-int GetAnActiveBall();
-void ClearBallNow();
-void SplitBallInTwo();
-void ClearBall();
-void InitialiseBall();
-void FreeBall();
-void RedrawBall();
-void DrawTheBall();
-void DrawTheBallBirth();
-void KillBallNow();
-void GetBallPosition();
-void ResetBallStart();
-int GetBallMode();
-void ChangeBallMode();
-int AddANewBall();
-void ClearAllBalls();
-void HandleBallMode();
-int StartAnotherBall();
-int IsBallWaiting();
-#endif
 
 extern BALL balls[MAX_BALLS];
 extern int speedLevel;
