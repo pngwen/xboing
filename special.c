@@ -81,12 +81,7 @@ int Killer;
 int x2Bonus;
 int x4Bonus;
 
-#if NeedFunctionPrototypes
 void TurnSpecialsOff(Display *display)
-#else
-void TurnSpecialsOff(display)
-	Display *display;
-#endif
 {
 	/* Turn all specials off */
 
@@ -99,85 +94,43 @@ void TurnSpecialsOff(display)
 	ToggleKiller(display, False);
 }
 
-#if NeedFunctionPrototypes
 void Togglex2Bonus(Display *display, int state)
-#else
-void Togglex2Bonus(display, state)
-	Display *display;
-	int state;
-#endif
 {
 	/* Set the x2Bonus flag to true or false */
 	x2Bonus = state;
 }
 
-#if NeedFunctionPrototypes
 void ToggleKiller(Display *display, int state)
-#else
-void ToggleKiller(display, state)
-	Display *display;
-	int state;
-#endif
 {
 	/* Set the Killer flag to true or false */
 	Killer = state;
 }
 
-#if NeedFunctionPrototypes
 void Togglex4Bonus(Display *display, int state)
-#else
-void Togglex4Bonus(display, state)
-	Display *display;
-	int state;
-#endif
 {
 	/* Set the x4Bonus flag to true or false */
 	x4Bonus = state;
 }
 
-#if NeedFunctionPrototypes
 void ToggleStickyBat(Display *display, int state)
-#else
-void ToggleStickyBat(display, state)
-	Display *display;
-	int state;
-#endif
 {
 	/* Set the stickyBat flag to true or false */
 	stickyBat = state;
 }
 
-#if NeedFunctionPrototypes
 void ToggleSaving(Display *display, int state)
-#else
-void ToggleSaving(display, state)
-	Display *display;
-	int state;
-#endif
 {
 	/* Set the Saving flag to true or false */
 	saving = state;
 }
 
-#if NeedFunctionPrototypes
 void ToggleFastGun(Display *display, int state)
-#else
-void ToggleFastGun(display, state)
-	Display *display;
-	int state;
-#endif
 {
 	/* Set the fastgun flag to true or false */
 	fastGun = state;
 }
 
-#if NeedFunctionPrototypes
 void ToggleWallsOn(Display *display, int state)
-#else
-void ToggleWallsOn(display, state)
-	Display *display;
-	int state;
-#endif
 {
 	/* Set the noWalls flag to true or false */
 	noWalls = state;
@@ -194,12 +147,7 @@ void ToggleWallsOn(display, state)
 	}
 }
 
-#if NeedFunctionPrototypes
 void DrawSpecials(Display *display)
-#else
-void DrawSpecials(display)
-	Display *display;
-#endif
 {
 	int y = 3;
 	int x = 5;
@@ -288,12 +236,7 @@ void DrawSpecials(display)
 }
 
 
-#if NeedFunctionPrototypes
 void RandomDrawSpecials(Display *display)
-#else
-void RandomDrawSpecials(display)
-	Display *display;
-#endif
 {
 	int n;
 	static u_long temp_score = 0;
