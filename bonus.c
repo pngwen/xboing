@@ -103,13 +103,8 @@
  *  Internal type declarations:
  */
 
-#if NeedFunctionPrototypes
 static void DoBullets(Display *display, Window window);
 static void DoTimeBonus(Display *display, Window window);
-#else
-static void DoTimeBonus();
-static void DoBullets();
-#endif
 
 /*
  *  Internal variable declarations:
@@ -126,14 +121,7 @@ static u_long 	bonusScore;
 static int 		firstTime = True;
 
 
-#if NeedFunctionPrototypes
 void SetUpBonus(Display *display, Window window, Colormap colormap)
-#else
-void SetUpBonus(display, window, colormap)
-	Display *display;
-	Window window;
-	Colormap colormap;
-#endif
 {
 	XpmAttributes   attributes;
 	int             XpmErrorStatus;
@@ -150,53 +138,31 @@ void SetUpBonus(display, window, colormap)
 	XpmFreeAttributes(&attributes);
 }
 
-#if NeedFunctionPrototypes
 void DecNumberBonus(void)
-#else
-void DecNumberBonus()
-#endif
 {
 	/* bump down the number of bonuses. sic */
 	numBonus--;
 }
 
-#if NeedFunctionPrototypes
 void IncNumberBonus(void)
-#else
-void IncNumberBonus()
-#endif
 {
 	/* bump up the number of bonuses. sic */
 	numBonus++;
 }
 
-#if NeedFunctionPrototypes
 int GetNumberBonus(void)
-#else
-int GetNumberBonus()
-#endif
 {
 	/* Umm - return the number of bonuses */
 	return numBonus;
 }
 
-#if NeedFunctionPrototypes
 void ResetNumberBonus(void)
-#else
-void ResetNumberBonus()
-#endif
 {
 	/* No more bonuses thanks */
 	numBonus = 0;
 }
 
-#if NeedFunctionPrototypes
 void DrawBallBorder(Display *display, Window window)
-#else
-void DrawBallBorder(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	int x, y;
 	static int slide = 0;
@@ -231,15 +197,7 @@ void DrawBallBorder(display, window)
 
 }
 
-#if NeedFunctionPrototypes
 void DrawSmallIntroTitle(Display *display, Window window, int x, int y)
-#else
-void DrawSmallIntroTitle(display, window, x, y)
-	Display *display;
-	Window window;
-	int x;
-	int y;
-#endif
 {
 	DEBUG("Drawing small intro title.")
 
@@ -249,13 +207,7 @@ void DrawSmallIntroTitle(display, window, x, y)
 		SMALL_TITLE_WIDTH, SMALL_TITLE_HEIGHT, False);
 }
 
-#if NeedFunctionPrototypes
 void SetupBonusScreen(Display *display, Window window)
-#else
-void SetupBonusScreen(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	/* Clear the background again */
 	ClearMainWindow(display, window);
@@ -275,13 +227,7 @@ void SetupBonusScreen(display, window)
 	XFlush(display);
 }
 
-#if NeedFunctionPrototypes
 void DrawTitleText(Display *display, Window window)
-#else
-void DrawTitleText(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	SetCurrentMessage(display, messWindow, "- Bonus Tally -", True);
 	
@@ -316,13 +262,7 @@ void DrawTitleText(display, window)
 	DEBUG("set bonus mode to BONUS_SCORE.")
 }
 
-#if NeedFunctionPrototypes
 static void DoScore(Display *display, Window window)
-#else
-static void DoScore(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	DEBUG("in function DoScore() in bonus.c")
 
@@ -340,13 +280,7 @@ static void DoScore(display, window)
 	DEBUG("set bonus mode to BONUS_BONUS.")
 }
 
-#if NeedFunctionPrototypes
 static void DoBonuses(Display *display, Window window)
-#else
-static void DoBonuses(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	int x, plen, secs;
 	static int maxLen;
@@ -458,13 +392,7 @@ static void DoBonuses(display, window)
 	}
 }
 
-#if NeedFunctionPrototypes
 static void DoLevel(Display *display, Window window)
-#else
-static void DoLevel(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	int secs, theLevel;
 
@@ -506,13 +434,7 @@ static void DoLevel(display, window)
 	DEBUG("set bonus mode to BONUS_BULLET.")
 }
 
-#if NeedFunctionPrototypes
 static void DoBullets(Display *display, Window window)
-#else
-static void DoBullets(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	int x, plen;
 	static int maxLen;
@@ -573,13 +495,7 @@ static void DoBullets(display, window)
 	}
 }
 
-#if NeedFunctionPrototypes
 static void DoTimeBonus(Display *display, Window window)
-#else
-static void DoTimeBonus(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	int secs = 0;
 
@@ -616,13 +532,7 @@ static void DoTimeBonus(display, window)
 	SetBonusWait(BONUS_HSCORE, frame + LINE_DELAY);
 }
 
-#if NeedFunctionPrototypes
 static void DoHighScore(Display *display, Window window)
-#else
-static void DoHighScore(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	int myrank = 0;
 	char str[5];
@@ -670,13 +580,7 @@ static void DoHighScore(display, window)
 	SetBonusWait(BONUS_END_TEXT, frame + LINE_DELAY);
 }
 
-#if NeedFunctionPrototypes
 static void DoEndText(Display *display, Window window)
-#else
-static void DoEndText(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	DEBUG("DoEndText in bonus screen.")
 
@@ -693,13 +597,7 @@ static void DoEndText(display, window)
 	SetBonusWait(BONUS_FINISH, frame + LINE_DELAY * 2);
 }
 
-#if NeedFunctionPrototypes
 static void DoFinish(Display *display, Window window)
-#else
-static void DoFinish(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	DEBUG("DoFinish in bonus screen.")
 
@@ -720,37 +618,21 @@ static void DoFinish(display, window)
 		SelectiveRedraw(display);
 }
 
-#if NeedFunctionPrototypes
 void SetBonusWait(enum BonusStates newMode, int waitFrame)
-#else
-void SetBonusWait(newMode, waitFrame)
-	enum BonusStates newMode;
-	int waitFrame;
-#endif
 {
 	waitingFrame = waitFrame;
 	waitMode = newMode;
 	BonusState = BONUS_WAIT;
 }
 
-#if NeedFunctionPrototypes
 void DoBonusWait(void)
-#else
-void DoBonusWait()
-#endif
 {
 	/* Wait for the frame we want to come along - then change modes */
 	if (frame == waitingFrame)
 		BonusState = waitMode;
 }
 
-#if NeedFunctionPrototypes
 void DoBonus(Display *display, Window window)
-#else
-void DoBonus(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	/* The states within the bonus mode */
 	switch (BonusState)
@@ -809,36 +691,21 @@ void DoBonus(display, window)
 	}
 }
 
-#if NeedFunctionPrototypes
 void RedrawBonus(Display *display, Window window)
-#else
-void RedrawBonus(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	/* This will redraw the entire screen */
 
 	/* Took this out as some people were cheating!!! */
 }
 
-#if NeedFunctionPrototypes
 void FreeBonus(Display *display)
-#else
-void FreeBonus(display)
-	Display *display;
-#endif
 {
 	/* Free all the hungry memory leaks */
 	if (titlePixmap)	XFreePixmap(display, titlePixmap);
 	if (titlePixmapM)	XFreePixmap(display, titlePixmapM);
 }
 
-#if NeedFunctionPrototypes
 void ComputeAndAddBonusScore(void)
-#else
-void ComputeAndAddBonusScore()
-#endif
 {
 	/* This function will pre compute the bonus score and add it to the
 	 * score. The bonus screen will only change the score by updating the
@@ -887,11 +754,7 @@ void ComputeAndAddBonusScore()
 	DEBUG("finished computing and adding bonus score.")
 }
 
-#if NeedFunctionPrototypes
 void ResetBonus(void)
-#else
-void ResetBonus()
-#endif
 {
 	DEBUG("Reseting bonus screen.")
 
