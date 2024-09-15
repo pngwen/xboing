@@ -126,7 +126,7 @@ int 			paddleDx = 0;
 int 			speedLevel = 5;
 int 			frame, gameActive;
 int 			mode, oldMode;
-static int 		iconified = False;
+static bool 		iconified = False;
 long 			speed;
 static int 		userDelay = 1;
 static int 		paddleControl;
@@ -187,11 +187,15 @@ void SetGameSpeed(int delay)
 #else
 void SetGameSpeed(delay)
 	int delay;
+//Sets Delay to long before multiplication(CHANGE FROM ORIGINAL)
+long longDelay = (long) delay;
 #endif
 {
 	/* This is the speed used in the sleeping routine */
+  //Sets userDelay to long before multiplication to avoid overflow as states in issue#12(CHANGE FROM ORIGINAL)
+  long longuserDelay = (long) userDelay;
 	if (delay >= 0)
-		speed = (long) (delay * userDelay);
+		speed = (longDelay * longuserDelay);
 }
 
 #if NeedFunctionPrototypes
@@ -229,7 +233,7 @@ void handlePaddleMoving(display)
 	Display *display;
 #endif
 {
-	static oldx = 0;
+	int static oldx = 0;
 	int x, y;
 
 	if (paddleControl == CONTROL_KEYS)
