@@ -126,6 +126,7 @@ int 			paddleDx = 0;
 int 			speedLevel = 5;
 int 			frame, gameActive;
 int 			mode, oldMode;
+//Changed static int to static bool(CHANGE FROM ORIGINAL)
 static bool 		iconified = False;
 long 			speed;
 static int 		userDelay = 1;
