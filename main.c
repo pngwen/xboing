@@ -188,11 +188,10 @@ void SetGameSpeed(int delay)
 #else
 void SetGameSpeed(delay)
 	int delay;
-//Sets Delay to long before multiplication(CHANGE FROM ORIGINAL)
-long longDelay = (long) delay;
 #endif
 {
 	/* This is the speed used in the sleeping routine */
+  long longDelay = (long) delay;
   //Sets userDelay to long before multiplication to avoid overflow as states in issue#12(CHANGE FROM ORIGINAL)
   long longuserDelay = (long) userDelay;
 	if (delay >= 0)
