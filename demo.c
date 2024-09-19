@@ -130,9 +130,9 @@ static void DoBlocks(Display *display, Window window)
 
     /* Construct the demo level filename */
     if ((str = getenv("XBOING_LEVELS_DIR")) != NULL)
-      snprintf(levelPath, sizeof(levelPath), "%s/demo.data", str); //Changed sprintf to snprintf to prevent buffer overflow
+      sprintf(levelPath, "%s/demo.data", str); 
     else
-      snprintf(levelPath, sizeof(levelPath), "%s/demo.data", LEVEL_INSTALL_DIR);
+      sprintf(levelPath, "%s/demo.data", LEVEL_INSTALL_DIR);
 
 	/* Read in a demo level */
     if (ReadNextLevel(display, window, levelPath, True) == False)
