@@ -65,8 +65,35 @@
  */
 
 #if NeedFunctionPrototypes
+
+
+/**
+ * Draws text (modernize)
+ *
+ * @param Display *display display output
+ * @param Window window window used to display
+ * @param int x horizontal position
+ * @param int y vertical position
+ * @pre 
+ * @return void 
+ * @post 
+ * 
+// */
 void 	DrawText(Display *display, Window window, int x, int y, 
 			XFontStruct *font, int colour, char *text, int numChar);
+
+/**
+ * another draw text function. probably dont need both with modern systems(Delete?)
+ *
+ * @param Display *display display output
+ * @param Window window window that is used to display
+ * @param int x x coordinate
+ * @param int y y coordinate
+ * @pre 
+ * @return void 
+ * @post 
+ * 
+ */
 void 	DrawTextFast(Display *display, Window window, int x, int y, 
 			XFontStruct *font, int colour, char *text, int numChar);
 void 	DrawLine(Display *display, Window window, int x, int y, int x2, int y2,
