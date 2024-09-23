@@ -95,6 +95,16 @@ u_long score = 0L;
 
 
 #if NeedFunctionPrototypes
+/**
+ * Intializes the score on the screen
+ * 
+ * @param Display display The display size that the score need to be
+ * @param Window window The size the window needs to be
+ * @param Colormap colormap The color that the score needs to be
+ * @pre The display, window, and color need to be selected
+ * @post The score counter is displayed to the screen with the selected size and color
+ *
+ */
 void InitialiseScoreDigits(Display *display, Window window, Colormap colormap)
 #else
 void InitialiseScoreDigits(display, window, colormap)
@@ -155,6 +165,18 @@ void InitialiseScoreDigits(display, window, colormap)
 }
 
 #if NeedFunctionPrototypes
+/**
+ *Draws the digits that are used to count the score
+ *
+ * @param Display display The display size
+ * @param Window window The window size
+ * @param int digit The current score
+ * @param int x The x position of the digit
+ * @param int y The y position of the digit
+ * @pre The score must be displayed
+ * @post The digits are drawn to the score counter
+ *
+ */
 static void DrawDigit(Display *display, Window window, int digit, int x, int y)
 #else
 static void DrawDigit(display, window, digit, x, y)
@@ -171,6 +193,18 @@ static void DrawDigit(display, window, digit, x, y)
 }
 
 #if NeedFunctionPrototypes
+/**
+ * Checks if the current score is divisible by 10 and sets the last digit to zero.
+ Checks the score it needs to draw then calls the Drawdigit function.
+ *
+ * @param Display display The display size that the numbers need to be.
+ * @param Window window The selected window size
+ * @param u_long score The current score
+ * @param int x The x position of the number
+ * @param int y The y position of the number
+ * @pre Must have selected window and display size
+ * @post The number has been drawn
+ */
 void DrawOutNumber(Display *display, Window window, u_long score, int x, int y)
 #else
 void DrawOutNumber(display, window, score, x, y)
@@ -194,6 +228,14 @@ void DrawOutNumber(display, window, score, x, y)
 }
 
 #if NeedFunctionPrototypes
+/**
+ * Sets the new score
+ *
+ * @param u_long new The new score
+ * @pre The score must exist
+ * @post The new score has been set
+ *
+ */
 void SetTheScore(u_long new)
 #else
 void SetTheScore(new)
@@ -205,6 +247,14 @@ void SetTheScore(new)
 }
 
 #if NeedFunctionPrototypes
+/**
+ *Adds an increment to the score
+ *
+ * @param u_long inc The increment that will be added to the score
+ * @pre The score must be declared
+ * @post The score has had an increment added to it
+ *
+ */
 void AddToScore(u_long inc)
 #else
 void AddToScore(inc)
@@ -216,6 +266,14 @@ void AddToScore(inc)
 }
 
 #if NeedFunctionPrototypes
+/**
+ * Calculates the score and takes any possible bonuses into account
+ *
+ * @param u_long inc The increment that will be added to the score
+ * @pre The score must be declared as well as the increment
+ * @post The new score is now computed
+ *
+ */
 u_long ComputeScore(u_long inc)
 #else
 u_long ComputeScore(inc)
@@ -233,6 +291,16 @@ u_long ComputeScore(inc)
 }
 
 #if NeedFunctionPrototypes
+/**
+ * Clear the old score display and creates a new one with new score digits
+ *
+ * @param Display display The display size
+ * @param Window window The window size
+ * @param u_long score The current score
+ * @pre The old score must have an increment added to it
+ * @post The old score is erased while the new score is displayed
+ *
+ */
 void DisplayScore(Display *display, Window window, u_long score)
 #else
 void DisplayScore(display, window, score)
@@ -254,6 +322,14 @@ void DisplayScore(display, window, score)
 }
 
 #if NeedFunctionPrototypes
+/**
+ *Frees the memory for the score
+ *
+ *@param Display display The display size
+ *@pre
+ *@post Memory taken up by the score is freed
+ *
+ */
 void FreeScoreDigits(Display *display)
 #else
 void FreeScoreDigits(display)
