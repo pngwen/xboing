@@ -1,3 +1,15 @@
+/**
+ * @file dialogue.h
+ * @author Justin C. Kibell (jck@techrescue.org)
+ * @brief Manages the dialogue for XBoing including taking user input
+ * @version 1.1.1.1
+ * @date 16 Dec 1994
+ * 
+ * @copyright Copyright (c) 1993, 1994, 1995, Justin C. Kibell, All Rights Reserved
+ *  
+ * Manages the dialogue process and draws and redraws dialogue to the screen to match certain parameters
+ */
+
 #ifndef _DIALOGUE_H_
 #define _DIALOGUE_H_
 
@@ -85,11 +97,58 @@ enum DialogueStates
  */
 
 #if NeedFunctionPrototypes
+/**
+ * Processes dialogue and carries out different functions in different situations
+ *
+ * @param Display display X11 display
+ *
+ * @todo Remove reliance on X11 system
+ *
+ */
 void ProcessDialogue(Display *display);
+/**
+ * Checks what symbol is being pressed and carries out an action based on that
+ *
+ * @param Display display X11 display
+ * @param XEvent event The symbil that has been pressed
+ *
+ * @todo Remove reliance on X11 system
+ *
+ */
 void handleDialogueKeys(Display *display, XEvent event);
+/**
+ * Takes a user's input message for dialogue
+ *
+ * @param Display display X11 display
+ * @param char message The user's input message
+ * @param int type The type of dialogue
+ * @param int entryValidation User's entry confirmation
+ * 
+ * @todo remove reliance on X11 systems
+ *
+ */ 
 char *UserInputDialogueMessage(Display *display, char *message, int type,
 	int entryValidation);
+/**
+ * Frees memory used by dialogue pixmap files
+ *
+ * @param Display display X11 display
+ *
+ * @todo Remove reliance on X11 system
+ *
+ */
 void FreeDialoguePixmaps(Display *display);
+/**
+ * Sets the Pixmap files for the dialogue for xboing
+ * 
+ * @param Display display X11 system display
+ * @param Window window X11 ID for window
+ * @pre Need to have X11 system
+ * @post The pixmap files for the dialogue have been initialized
+ * 
+ * @todo Need to rewrite code so that it no longer relies on X11 system
+ *
+ */
 void InitialiseDialoguePixmaps(Display *display, Window window, 
 		Colormap colormap);
 #else
