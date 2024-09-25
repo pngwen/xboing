@@ -103,12 +103,7 @@ enum InstructStates InstructState;
 static int waitingFrame;
 enum InstructStates waitMode;
 
-void SetUpInstructions(Display *display, Window window, Colormap colormap)
-{
-	/* Umm. Reset the instructions to default state */
-	ResetInstructions();
-}
-
+// [DEOXYGEN] Instead of storing the instructions within the source file, code could be modified to read the instructions in from a separate file.
 char *instructionText[] =
 {
 	"XBoing is a blockout game where you use a paddle to bounce",
@@ -133,7 +128,6 @@ char *instructionText[] =
 	NULL,
 	"Please read the manual for more information on how to play."
 };
-
 
 static void DoText(Display *display, Window window)
 {
@@ -269,10 +263,7 @@ void RedrawInstructions(Display *display, Window window)
 	DoText(display, window);
 }
 
-void FreeInstructions(Display *display)
-{
-}
-
+// [DEOXYGEN] Resets InstructState (prepares for displaying instructions)
 void ResetInstructions(void)
 {
 	InstructState = INSTRUCT_TITLE;

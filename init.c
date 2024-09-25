@@ -311,7 +311,6 @@ void ShutDown(Display *display, int exit_code, char *message)
 	FreeKeyEditControl(display);	/* Free key edit control    */
 	FreeSomePresents(display);		/* Free some from presents  */
 	FreeHighScore(display);			/* Free high score memory 	*/
-	FreeInstructions(display);		/* Free instructions        */
 	FreeBonus(display);				/* Free bonus memory 		*/
 	FreeIntroduction(display);		/* Free introduction memory */
 	FreeMessageSystem(display);		/* Free message system 		*/
@@ -920,8 +919,8 @@ Display *InitialiseGame(char **argv, int argc)
 	DEBUG("SetUpKeys done.")
 	SetUpKeysEdit(display, 				playWindow, 	colormap);
 	DEBUG("SetUpKeysEdit done.")
-	SetUpInstructions(display, 			playWindow, 	colormap);
-	DEBUG("SetUpInstructions done.")
+	ResetInstructions();// [DEOXYGEN] changed from SetUpInstructions
+	DEBUG("ResetInstructions done.")
 	SetUpIntroduction(display, 			playWindow, 	colormap);
 	DEBUG("SetUpIntroduction done.")
 	SetUpBonus(display, 				mainWindow, 	colormap);

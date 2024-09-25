@@ -73,10 +73,8 @@ enum InstructStates
  *  Function prototypes:
  */
 
-void SetUpInstructions(Display *display, Window window, Colormap colormap);
 void Instructions(Display *display, Window window);
 void RedrawInstructions(Display *display, Window window);
-void FreeInstructions(Display *display);
 void ResetInstructions(void);
 
 extern enum InstructStates InstructState;
