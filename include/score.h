@@ -1,3 +1,15 @@
+/**
+ * @file score.h
+ * @author Justin C. Kibell (jck@techrescue.org)
+ * @brief Manages the user's score including drawing the digits on the screen.
+ * @version 1.1.1.1
+ * @date 16 Dec 1994
+ *
+ * @copyright Copyright (c) 1993, 1994, 1995, Justin C. Kibell, All Rights Reserved
+ *
+ * Calculates the user's score and keeps track of it throughout the game.
+ */
+
 #ifndef _SCORE_H_
 #define _SCORE_H_
 
@@ -68,8 +80,8 @@
 /**
  * Intializes the score on the screen
  *
- * @param Display display The display size that the score need to be
- * @param Window window The size the window needs to be
+ * @param Display display X11 display
+ * @param Window window X11 window size
  * @param Colormap colormap The color that the score needs to be
  * @pre The display, window, and color need to be selected
  * @post The score counter is displayed to the screen with the selected size and color
@@ -79,7 +91,7 @@ void InitialiseScoreDigits(Display *display, Window window, Colormap colormap);
 /**
  *Frees the memory for the score
  *
- *@param Display display The display size
+ *@param Display display X11 display
  *@pre
  *@post Memory taken up by the score is freed
  *
@@ -88,8 +100,8 @@ void FreeScoreDigits(Display *display);
 /**
  * Clear the old score display and creates a new one with new score digits
  *
- * @param Display display The display size
- * @param Window window The window size
+ * @param Display display X11 display
+ * @param Window window X11 window size
  * @param u_long score The current score
  * @pre The old score must have an increment added to it
  * @post The old score is erased while the new score is displayed
@@ -100,8 +112,8 @@ void DisplayScore(Display *display, Window window, u_long score);
  * Checks if the current score is divisible by 10 and sets the last digit to zero.
  Checks the score it needs to draw then calls the Drawdigit function.
  *
- * @param Display display The display size that the numbers need to be.
- * @param Window window The selected window size
+ * @param Display display X11 display
+ * @param Window window X11 window size
  * @param u_long score The current score
  * @param int x The x position of the number
  * @param int y The y position of the number
