@@ -80,12 +80,12 @@
  * @param Window window This is the X Identifier for the window that will display the messages.
  * @todo Update to use window management from a new graphics system
  * @param Colormap colormap This is the colormap for the window.  
- * @post This function sets up and prepares the message system.
- *
+ * 
  * @todo Implement new graphics system management 
  * @todo Check if the message system can handle multiple windows if needed.
  * @todo Add initialization checks.
- * 
+ *
+ * @post This function sets up and prepares the message system. 
  */
 void InitialiseMessageSystem(Display *display, Window window, 
 	Colormap colormap);
