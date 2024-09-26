@@ -50,6 +50,13 @@
  *  Dependencies on other include files:
  */
 
+/**
+ *
+ * @brief Includes the X11 library for the window graphics.
+ *
+ * @todo Remove this dependency with a new graphics system.
+ *
+ */ 
 #include <X11/Xlib.h>
 
 /*
@@ -65,13 +72,71 @@
  */
 
 #if NeedFunctionPrototypes
+/**
+ * Initializes the message system.
+ *
+ * @param Display *display Pointer to the X11 display struct
+ * @todo Update to remove X11 dependency
+ * @param Window window This is the X Identifier for the window that will display the messages.
+ * @todo Update to use window management from a new graphics system
+ * @param Colormap colormap This is the colormap for the window.  
+ * @post This function sets up and prepares the message system.
+ *
+ * @todo Implement new graphics system management 
+ * @todo Check if the message system can handle multiple windows if needed.
+ * @todo Add initialization checks.
+ * 
+ */
 void InitialiseMessageSystem(Display *display, Window window, 
 	Colormap colormap);
+/**
+ * Frees memory used by the message system.
+ *
+ * @param Display *display Pointer to the X11 display struct
+ * @todo Update to remove X11 dependency
+ *
+ * @todo Add some resource management for future message enhancements
+ * @todo Add checks to make sure that only allocated memory is being freed.
+ * 
+ * @post This function cleans and releases all memory that was allocated for the message system. 
+ * 
+ */
 void FreeMessageSystem(Display *display);
+/**
+ * Sets a new message to be displayed.
+ *
+ * @param Display *display Pointer to the X11 display struct
+ * @todo Update to remove X11 dependency  
+ * @param Window window This is the X Identifier for the window that will display the messages. 
+ * @todo Update to use window management from a new graphics system 
+ * @param *newMessage The new message to be displayed.
+ * @param clear If true, the display will be cleared before displaying the new message. 
+ * @todo Change the type of the clear parameter from int to boolean.
+ *
+ * @todo Make sure the new message is not NULL or empty before use.
+ * @todo Add some sort of strategy to handle messages that are larger than the buffer size allows.
+ * 
+ * @post This function copies the new message into the buffer and updates the display based on the parameters defined.
+ * 
+ */
 void SetCurrentMessage(Display *display, Window window, 
 	char *newMessage, int clear);
+/**
+ * Displays the current message. 
+ *
+ * @param Display *display Points to the X11 display struct.
+ * @todo Update to remove X11 dependency 
+ * @param Window window This is the X Identifier for the window that will display the messages. 
+ * @todo Update to use window management from a new graphics system 
+ * 
+ * @todo Implement new graphics system 
+ * @todo Add checks to ensure the message is displayed as expected.
+ * 
+ * @post This function takes the current message stored to the screen to be displayed.
+ * 
+ */
 void DisplayCurrentMessage(Display *display, Window window);
-#else
+#else // Handles each case where the condition is false, which is the same action as above 
 void InitialiseMessageSystem();
 void FreeMessageSystem();
 void SetCurrentMessage();
