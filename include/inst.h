@@ -60,6 +60,7 @@
  *  Type declarations:
  */
 
+// [DOXYGEN] The current state of drawing instructions. Used to determine current/next instruction (drawing) step.
 enum InstructStates 
 { 
 	INSTRUCT_TITLE, 
@@ -73,10 +74,16 @@ enum InstructStates
  *  Function prototypes:
  */
 
+// [DOXYGEN] Draws parts of the instructions using the current instruct state. Also updates state so that next call will complete the next instruction part.
 void Instructions(Display *display, Window window);
+
+// [DOXYGEN] Used to draw instructions on the screen after void Instruction() has already been called
 void RedrawInstructions(Display *display, Window window);
+
+// [DOXYGEN] Resets InstructState (prepares for displaying instructions)
 void ResetInstructions(void);
 
+// [DOXYGEN] Used to hold the current state of printing instructions to the screen. Used for determining next step.
 extern enum InstructStates InstructState;
 
 #endif
