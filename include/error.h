@@ -62,9 +62,16 @@
  *  Function prototypes:
  */
 
+// [DEOXYGEN] Prints a message to the console in the "Error" format & refers the user to the readme file
 void HandleXPMError(Display *display, int ErrorStatus, char *tag);
+
+// [DEOXYGEN] Prints a message to the console in the "Error" format & refers the user to the readme file
 void ErrorMessage(char *message);
+
+// [DEOXYGEN] Prints a message to the console in the "warning" format
 void WarningMessage(char *message);
+
+// [DEOXYGEN] Prints a message to the console in the "normal" format
 void NormalMessage(char *message);
 
 #endif

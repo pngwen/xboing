@@ -65,6 +65,7 @@
  *  Internal variable declarations:
  */
 
+// [DEOXYGEN] Prints a message to the console in the "normal" format
 void NormalMessage(char *message)
 {
 	/* Print a message to standard out flush it */
@@ -72,6 +73,7 @@ void NormalMessage(char *message)
 	fflush(stdout);
 }
 
+// [DEOXYGEN] Prints a message to the console in the "Error" format & refers the user to the readme file
 void ErrorMessage(char *message)
 {
 
@@ -87,6 +89,7 @@ void ErrorMessage(char *message)
 	fflush(stdout);
 }
 
+// [DEOXYGEN] Prints a message to the console in the "warning" format
 void WarningMessage(char *message)
 {
 	/* Print a standard warning message to stdout and flush it */
@@ -94,6 +97,7 @@ void WarningMessage(char *message)
 	fflush(stdout);
 }
 
+// [DOXYGEN] Prints error/warning messages. Shuts down the program is an error is encountered
 void HandleXPMError(Display *display, int ErrorStatus, char *tag)
 {
     char *error = NULL;
