@@ -54,18 +54,14 @@
 #include "error.h"
 
 /*
- *  Internal macro definitions:
- */
-
-/*
- *  Internal type declarations:
- */
-
-/*
  *  Internal variable declarations:
  */
 
-// [DEOXYGEN] Prints a message to the console in the "normal" format
+/**
+ * @brief Prints a message to the console in the "normal" format
+ * 
+ * @param message The string to be printed in the message.
+ */
 void NormalMessage(char *message)
 {
 	/* Print a message to standard out flush it */
@@ -73,7 +69,11 @@ void NormalMessage(char *message)
 	fflush(stdout);
 }
 
-// [DEOXYGEN] Prints a message to the console in the "Error" format & refers the user to the readme file
+/**
+ * @brief Prints a message to the console in the "Error" format & refers the user to the readme file
+ * 
+ * @param message The string to be printed in the message.
+ */
 void ErrorMessage(char *message)
 {
 
