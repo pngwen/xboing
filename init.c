@@ -306,7 +306,6 @@ void ShutDown(Display *display, int exit_code, char *message)
 	if (noSound == False)
 		(void) FreeAudioSystem();
 
-	FreeMisc(display);				/* Free backing store pixmap*/
 	FreeKeyControl(display);		/* Free key control         */
 	FreeKeyEditControl(display);	/* Free key edit control    */
 	FreeSomePresents(display);		/* Free some from presents  */
