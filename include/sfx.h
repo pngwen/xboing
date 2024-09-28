@@ -56,6 +56,7 @@
  *  Constants and macros:
  */
 
+// [DOXYGEN] Could replace list with enum
 #define SFX_NONE        0
 #define SFX_SHAKE      	1
 #define SFX_FADE  		2
@@ -64,27 +65,49 @@
 #define SFX_STATIC  	5
 
 /*
- *  Type declarations:
- */
-
-/*
  *  Function prototypes:
  */
 
+// [DOXYGEN] Accessor for modifying the value of the sfxEndFrame variable
 void SetSfxEndFrame(int endFrame);
-void changeSfxMode(int newMode);
-int oldSfxMode(void);
-int currentSfxMode(void);
-int WindowShakeEffect(Display *display, Window window);
-int WindowShatterEffect(Display *display, Window window);
-int WindowBlindEffect(Display *display, Window window);
-int WindowFadeEffect(Display *display, Window window, int w, int h);
-int WindowStaticEffect(Display *display, Window window, int w, int h);
-int getSpecialEffects(Display *display);
-void useSpecialEffects(int state);
-void ResetBorderGlow(Display *display, Window window);
-void BorderGlow(Display *display, Window window);
-void FadeAwayArea(Display *display, Window window, int x, int y, int w, int h);
 
+// [DOXYGEN] Accessor for modifying the value of the modeSfx variable
+void changeSfxMode(int newMode);
+
+// [DOXYGEN] Undefined function. Should be removed
+int oldSfxMode(void);
+
+// [DOXYGEN] Accessor for modeSfx variable (returns value)
+int currentSfxMode(void);
+
+// [DOXYGEN] Effect: Shakes the window (up to 3px x & y)
+int WindowShakeEffect(Display *display, Window window);
+
+// [DOXYGEN] Effect: Draws shattering window effect
+int WindowShatterEffect(Display *display, Window window);
+
+// [DOXYGEN] Effect: Little doors close over the screen
+int WindowBlindEffect(Display *display, Window window);
+
+// [DOXYGEN] Effect: Horizontal and Vertical bars slowely cover the screen (fade)
+int WindowFadeEffect(Display *display, Window window, int w, int h);
+
+// [DOXYGEN] Effect: draws static on screen
+int WindowStaticEffect(Display *display, Window window, int w, int h);
+
+// [DOXYGEN] Accessor for useSfx variable (returns value)
+int getSpecialEffects(Display *display);
+
+// [DOXYGEN] Accessor for modifying the value of the useSfx variable
+void useSpecialEffects(int state);
+
+// [DOXYGEN] Resets window border. Could be removed
+void ResetBorderGlow(Display *display, Window window);
+
+// [DOXYGEN] Effect: Window border glows red and green
+void BorderGlow(Display *display, Window window);
+
+// [DOXYGEN] Effect: Fade away / closing screen transtition
+void FadeAwayArea(Display *display, Window window, int x, int y, int w, int h);
 
 #endif

@@ -77,10 +77,6 @@
 #define RANDY(range) 		(rand() % (range))
 
 /*
- *  Internal type declarations:
- */
-
-/*
  *  Internal variable declarations:
  */
 
@@ -89,6 +85,7 @@ int modeSfx;
 static int xscat[NUM_SCAT] = { 1, 9, 3, 6, 2, 4, 0, 7, 5, 8 };
 static int yscat[NUM_SCAT] = { 2, 1, 0, 8, 6, 4, 9, 3, 7, 5 };
 
+// [DOXYGEN] Accessor for modifying the value of the useSfx variable
 void useSpecialEffects(int state)
 {
 	/* Set the state of the special effects - True = use */
@@ -96,6 +93,7 @@ void useSpecialEffects(int state)
 	useSfx = state;
 }
 
+// [DOXYGEN] Accessor for useSfx variable (returns value)
 int getSpecialEffects(Display *display)
 {
 	/* Only shake around if the server has backing store on */
@@ -106,17 +104,20 @@ int getSpecialEffects(Display *display)
 	return useSfx;
 }
 
+// [DOXYGEN] Accessor for modifying the value of the modeSfx variable
 void changeSfxMode(int newMode)
 {
 	modeSfx = newMode;
 }
 
+// [DOXYGEN] Accessor for modeSfx variable (returns value)
 int currentSfxMode(void)
 {
 	/* Return the current special effects mode */
 	return modeSfx;
 }
 
+// [DOXYGEN] Resets sfx-mode & window location on desktop
 static void resetEffect(Display *display)
 {
 	/* Just re-centre window return */
@@ -124,6 +125,7 @@ static void resetEffect(Display *display)
 	XMoveWindow(display, playWindow, 35, 60);
 }
 
+// [DOXYGEN] Effect: Little doors close over the screen
 int WindowBlindEffect(Display *display, Window window)
 {
 	int x, i;
@@ -149,7 +151,7 @@ int WindowBlindEffect(Display *display, Window window)
 	return False;
 }
 
-
+// [DOXYGEN] Effect: draws static on screen
 int WindowStaticEffect(Display *display, Window window, int w, int h)
 {
 	static int start = True;
@@ -173,6 +175,7 @@ int WindowStaticEffect(Display *display, Window window, int w, int h)
 	return True;
 }
 
+// [DOXYGEN] Effect: Draws shattering window effect
 int WindowShatterEffect(Display *display, Window window)
 {
     int offx, offy, sizeWidth, sizeHeight;
@@ -231,6 +234,7 @@ int WindowShatterEffect(Display *display, Window window)
 	return False;
 }
 
+// [DOXYGEN] Effect: Horizontal and Vertical bars slowely cover the screen (fade)
 int WindowFadeEffect(Display *display, Window window, int w, int h)
 {
 	static int done = False;
@@ -281,6 +285,7 @@ int WindowFadeEffect(Display *display, Window window, int w, int h)
 	return True;
 }
 
+// [DOXYGEN] Effect: Shakes the window (up to 3px x & y)
 int WindowShakeEffect(Display *display, Window window)
 {
 	static int x = 35;
@@ -321,11 +326,13 @@ int WindowShakeEffect(Display *display, Window window)
 	return True;
 }
 
+// [DOXYGEN] Accessor for modifying the value of the sfxEndFrame variable
 void SetSfxEndFrame(int endFrame)
 {
 	sfxEndFrame = endFrame;
 }
 
+// [DOXYGEN] Effect: Window border glows red and green
 void BorderGlow(Display *display, Window window)
 {
     static int i = 0;
@@ -363,11 +370,13 @@ void BorderGlow(Display *display, Window window)
      }
 }
 
+// [DOXYGEN] Resets window border. Could be removed
 void ResetBorderGlow(Display *display, Window window)
 {
     XSetWindowBorder(display, playWindow, red);
 }
 
+// [DOXYGEN] Effect: Fade away / closing screen transtition
 void FadeAwayArea(Display *display, Window window, int x, int y, int w, int h)
 {
 	int i, x1, y1, step;
