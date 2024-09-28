@@ -66,11 +66,22 @@
  *  Function prototypes:
  */
 
+// [DOXYGEN] Initialize sound
 int	 SetUpAudioSystem(Display *display);
+
+// [DOXYGEN] Deallocate memory used for audio system
 void FreeAudioSystem(void);
+
+// [DOXYGEN] Play sound effect from file (could be changed to play from memory instead of file by loading sounds first)
 void playSoundFile(char *filename, int volume);
+
+// [DOXYGEN] Generally unused (could be removed with implementation of newer library)
 void audioDeviceEvents(void);
+
+// [DOXYGEN] Defines master volume maximum
 void SetMaximumVolume(int Volume);
+
+// [DOXYGEN] Returns current master volume maximum
 int GetMaximumVolume(void);
 
 #endif

@@ -51,4 +51,6 @@
  * =========================================================================
  */
 
+// [DOXYGEN] Copyright / license could be moved to its own serparate file.
+
 #endif
