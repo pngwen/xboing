@@ -89,13 +89,26 @@
  *  Internal type declarations:
  */
 
-// [DOXYGEN] Sets instruction state & other properties to wait. Function-not-used, could be removed.
+/**
+ * @brief Sets instruction state & other properties to wait. Function-not-used, could be removed.
+ * 
+ * @param newMode The new instruction state to set
+ * @param waitFrame The new waiting frame to set
+ */
 void SetInstructWait(enum InstructStates newMode, int waitFrame);
 
-// [DOXYGEN] Draws sparkle animation
+/**
+ * @brief Draws sparkle animation
+ * 
+ * @param display The display of the X11 window
+ * @param window The X11 window to draw on
+ */
 static void DoSparkle(Display *display, Window window);
 
-// [DOXYGEN] Sets the instruction state to wait if the current frame is waiting. Single-use-function, could be removed
+/**
+ * @brief Sets the instruction state to wait if the current frame is waiting. Single-use-function, could be removed
+ * 
+ */
 void DoInstructWait(void);
 
 /*
@@ -108,7 +121,7 @@ enum InstructStates InstructState;
 static int waitingFrame;
 enum InstructStates waitMode;
 
-// [DOXYGEN] Instead of storing the instructions within the source file, code could be modified to read the instructions in from a separate file.
+// Instead of storing the instructions within the source file, code could be modified to read the instructions in from a separate file.
 char *instructionText[] =
 {
 	"XBoing is a blockout game where you use a paddle to bounce",
@@ -134,7 +147,12 @@ char *instructionText[] =
 	"Please read the manual for more information on how to play."
 };
 
-// [DOXYGEN] Draws instruction text to the screen
+/**
+ * @brief Draws instruction text to the screen
+ * 
+ * @param display The display of the X11 window
+ * @param window the X11 window to draw on
+ */
 static void DoText(Display *display, Window window)
 {
 	char string[80];// [DOXYGEN] Unneeded string used for unnecessary string copy
@@ -171,7 +189,12 @@ static void DoText(Display *display, Window window)
 		PLAY_HEIGHT - 40, tann, PLAY_WIDTH);
 }
 
-// [DOXYGEN] Draws sparkle animation
+/**
+ * @brief Draws sparkle animation
+ * 
+ * @param display The display of the X11 window
+ * @param window The X11 window to draw on
+ */
 static void DoSparkle(Display *display, Window window)
 {
     static Pixmap store;
@@ -211,6 +234,14 @@ static void DoSparkle(Display *display, Window window)
     }
 }
 
+/**
+ * @brief Set the mode to demo mode and play a demo song
+ * 
+ * @param display Unused parameter.
+ * @param window Unusued parameters.
+ * 
+ * @todo Remove unused parameters
+ */
 static void DoFinish(Display *display, Window window)
 {
 	ResetDemonstration();
@@ -220,7 +251,12 @@ static void DoFinish(Display *display, Window window)
 		playSoundFile("shark", 50);
 }
 
-// [DOXYGEN] Draws parts of the instructions using the current instruct state. Also updates state so that next call will complete the next instruction part.
+/**
+ * @brief Draws parts of the instructions using the current instruct state. Also updates state so that next call will complete the next instruction part.
+ * 
+ * @param display The display of the current X11 window
+ * @param window The X11 window to print the instructions to
+ */
 void Instructions(Display *display, Window window)
 {
 	switch (InstructState)
@@ -264,14 +300,22 @@ void Instructions(Display *display, Window window)
 	}
 }
 
-// [DOXYGEN] Used to draw instructions on the screen after void Instruction() has already been called
+/**
+ * @brief Used to draw instructions on the screen after void Instruction() has already been called
+ * 
+ * @param display The display of the current X11 window
+ * @param window The X11 window to print the instructions to
+ */
 void RedrawInstructions(Display *display, Window window)
 {
 	DoIntroTitle(display, window);
 	DoText(display, window);
 }
 
-// [DOXYGEN] Resets InstructState (prepares for displaying instructions)
+/**
+ * @brief Resets InstructState (prepares for displaying instructions)
+ * 
+ */
 void ResetInstructions(void)
 {
 	InstructState = INSTRUCT_TITLE;
@@ -281,7 +325,12 @@ void ResetInstructions(void)
 	DEBUG("Reset Instruction mode.")
 }
 
-// [DOXYGEN] Sets instruction state & other properties to wait. Function-not-used, could be removed.
+/**
+ * @brief Sets instruction state & other properties to wait. Function-not-used, could be removed.
+ * 
+ * @param newMode The new instruction state to set
+ * @param waitFrame The new waiting frame to set
+ */
 void SetInstructWait(enum InstructStates newMode, int waitFrame)
 {
 	waitingFrame 	= waitFrame;
@@ -289,7 +338,10 @@ void SetInstructWait(enum InstructStates newMode, int waitFrame)
 	InstructState 	= INSTRUCT_WAIT;
 }
 
-// [DOXYGEN] Sets the instruction state to wait if the current frame is waiting
+/**
+ * @brief Sets the instruction state to wait if the current frame is waiting. Single-use-function, could be removed
+ * 
+ */
 void DoInstructWait(void)
 {
 	if (frame == waitingFrame)
