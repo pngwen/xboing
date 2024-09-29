@@ -68,46 +68,133 @@
  *  Function prototypes:
  */
 
-// [DOXYGEN] Accessor for modifying the value of the sfxEndFrame variable
+/**
+ * Accessor for modifying the value of the sfxEndFrame variable.
+ *
+ * @param int endFrame The frame where the special effects should end.
+ *
+ *
+ */
 void SetSfxEndFrame(int endFrame);
 
-// [DOXYGEN] Accessor for modifying the value of the modeSfx variable
+/**
+ * Accessor for modifying the value of the modeSfx variable
+ *
+ * @param int newMode The new mode for the special effects.
+ *
+ */
 void changeSfxMode(int newMode);
 
 // [DOXYGEN] Undefined function. Should be removed
 int oldSfxMode(void);
 
-// [DOXYGEN] Accessor for modeSfx variable (returns value)
+/**
+ * Accessor for the current state of modeSfx variable
+ *
+ * @return int The current special effects mode
+ *
+ */
 int currentSfxMode(void);
 
-// [DOXYGEN] Effect: Shakes the window (up to 3px x & y)
+/**
+ * Creates a window shake effect.
+ *
+ * @param Display *display The display of the X11 window
+ * @param Window window The X11 window to draw on
+ *
+ * @return int True while the effect is going, False when the effect is finished.
+ *
+ */
 int WindowShakeEffect(Display *display, Window window);
 
-// [DOXYGEN] Effect: Draws shattering window effect
+/**
+ * Creates a window shattering effect.
+ *
+ * @param Display *display The display of the x11 window
+ * @param Window window The X11 window to draw on.
+ *
+ * @return int False when done.
+ *
+ */
 int WindowShatterEffect(Display *display, Window window);
 
-// [DOXYGEN] Effect: Little doors close over the screen
+/**
+ * Creates a window blind closing effect on the screen.
+ *
+ * @param Display *display The display of the X11 window
+ * @param Window window The X11 window to draw on
+ *
+ */
 int WindowBlindEffect(Display *display, Window window);
 
-// [DOXYGEN] Effect: Horizontal and Vertical bars slowely cover the screen (fade)
+/**
+ * Creates a window fade effect using horizontal and vertical bars.
+ *
+ * @param Display *display The displat to the X11 window
+ * @param Window window The X11 window to draw on
+ * @param int w The width of the window.
+ * @param int h The height of the window.
+ *
+ * @return int True while the effect is going, False when the effect is finished.
+ *
+ */
 int WindowFadeEffect(Display *display, Window window, int w, int h);
 
-// [DOXYGEN] Effect: draws static on screen
+/**
+ * Creates a static effect on the screen.
+ *
+ * @param Display *display The display of the X11 window
+ * @param Window window The X11 window to draw on
+ * @param int w The width of the window.
+ * @param int h The height of the window.
+ * @return int True while the effect is going, False when the effect is done.
+ */
 int WindowStaticEffect(Display *display, Window window, int w, int h);
 
-// [DOXYGEN] Accessor for useSfx variable (returns value)
+/**
+ * Accessor for useSfx variable (return value)
+ *
+ * @param Display *display The display of the X11 window
+ *
+ */
 int getSpecialEffects(Display *display);
 
-// [DOXYGEN] Accessor for modifying the value of the useSfx variable
+/**
+ * Accesor used for modyfying the state of special effects.
+ *
+ * @param int state True to enable special effects, False to disable.
+ *                                                                                                                          */
 void useSpecialEffects(int state);
 
-// [DOXYGEN] Resets window border. Could be removed
+/**
+ * Resets the window border.
+ *
+ * @param Display *display The display of the X11 window
+ * @param Window window The X11 window to draw on
+ *
+ */
 void ResetBorderGlow(Display *display, Window window);
 
-// [DOXYGEN] Effect: Window border glows red and green
+/**
+ * Creates a glowing border effect.
+ *
+ * @param Display *display The display of the X11 window
+ * @param Window window The X11 window to draw on
+ *
+ */
 void BorderGlow(Display *display, Window window);
 
-// [DOXYGEN] Effect: Fade away / closing screen transtition
+/**
+ * Creates a fade-away effect in specified area.
+ *
+ * @param Display *display The display of the X11 window
+ * @param Window window The X11 window to draw on
+ * @param int x The x coordinate of the area.
+ * @param int y The y coordinate of the area
+ * @param int w The width of the area.
+ * @param int h The height of hte area.
+ *
+ */
 void FadeAwayArea(Display *display, Window window, int x, int y, int w, int h);
 
 #endif

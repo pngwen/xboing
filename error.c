@@ -89,8 +89,6 @@ void ErrorMessage(char *message)
 	fflush(stdout);
 }
 
-// [DEOXYGEN] Prints a message to the console in the "warning" format
-
 /**
  * Prints a message to the console in the in the "warning" format.
  *
@@ -104,7 +102,6 @@ void WarningMessage(char *message)
 	fflush(stdout);
 }
 
-// [DOXYGEN] Prints error/warning messages. Shuts down the program is an error is encountered
 
 /**
  * Prints error/warning messages. Shuts down the program if an error is encountered.
