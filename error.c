@@ -90,6 +90,13 @@ void ErrorMessage(char *message)
 }
 
 // [DEOXYGEN] Prints a message to the console in the "warning" format
+
+/**
+ * Prints a message to the console in the in the "warning" format.
+ *
+ * @param char *message The string to be printed in the message
+ * 
+ */
 void WarningMessage(char *message)
 {
 	/* Print a standard warning message to stdout and flush it */
@@ -98,6 +105,15 @@ void WarningMessage(char *message)
 }
 
 // [DOXYGEN] Prints error/warning messages. Shuts down the program is an error is encountered
+
+/**
+ * Prints error/warning messages. Shuts down the program if an error is encountered.
+ *
+ * @param Display *display The display connection to the X server.
+ * @param int ErrorStatus The error status returned bt the XPM library.
+ * @param char *tag prefix the error or warning message.
+ * 
+ */
 void HandleXPMError(Display *display, int ErrorStatus, char *tag)
 {
     char *error = NULL;
