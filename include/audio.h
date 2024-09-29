@@ -66,22 +66,55 @@
  *  Function prototypes:
  */
 
-// [DOXYGEN] Initialize sound
-int	 SetUpAudioSystem(Display *display);
 
-// [DOXYGEN] Deallocate memory used for audio system
+/**
+ * Initialize the audio system.
+ *
+ * @param Display *display The display of the X11 window
+ * 
+ */
+int SetUpAudioSystem(Display *display);
+
+
+/**
+ * Deallocate memory and resources used by the audio system.
+ *
+ * 
+ */
 void FreeAudioSystem(void);
 
-// [DOXYGEN] Play sound effect from file (could be changed to play from memory instead of file by loading sounds first)
+
+/**
+ * Play a sound effect from a file
+ *
+ * @param char *filename The path to the sound file to be played.
+ * @param int volume The volume level.
+ * 
+ */
 void playSoundFile(char *filename, int volume);
 
-// [DOXYGEN] Generally unused (could be removed with implementation of newer library)
+
+/**
+ * Process audio device events
+ *
+ * 
+ */
 void audioDeviceEvents(void);
 
-// [DOXYGEN] Defines master volume maximum
-void SetMaximumVolume(int Volume);
+/**
+ * set the master volume to the maximum value.
+ *
+ * @param int Volume The maximum volume level to set.
+ * 
+ */
+Void SetMaximumVolume(int Volume);
 
-// [DOXYGEN] Returns current master volume maximum
+
+/**
+ * Get the current maximum volume
+ *
+ * @return The current maximum volume level.
+ */
 int GetMaximumVolume(void);
 
 #endif
