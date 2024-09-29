@@ -1,6 +1,11 @@
 #ifdef __COPYRIGHT_H__
 #define __COPYRIGHT_H__
 
+/**
+ * @brief Copyright / license could be moved to its own serparate file.
+ * 
+ */
+
 /*
  * XBoing - An X11 blockout style computer game
  *
@@ -50,7 +55,5 @@
  *
  * =========================================================================
  */
-
-// [DOXYGEN] Copyright / license could be moved to its own serparate file.
 
 #endif
