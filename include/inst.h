@@ -53,14 +53,10 @@
 #include <X11/Xlib.h>
 
 /*
- *  Constants and macros:
- */
-
-/*
  *  Type declarations:
  */
 
-// [DOXYGEN] The current state of drawing instructions. Used to determine current/next instruction (drawing) step.
+//The current state of drawing instructions. Used to determine current/next instruction (drawing) step.
 enum InstructStates 
 { 
 	INSTRUCT_TITLE, 
@@ -74,16 +70,29 @@ enum InstructStates
  *  Function prototypes:
  */
 
-// [DOXYGEN] Draws parts of the instructions using the current instruct state. Also updates state so that next call will complete the next instruction part.
+/**
+ * @brief Draws parts of the instructions using the current instruct state. Also updates state so that next call will complete the next instruction part.
+ * 
+ * @param display The display of the current X11 window
+ * @param window The X11 window to print the instructions to
+ */
 void Instructions(Display *display, Window window);
 
-// [DOXYGEN] Used to draw instructions on the screen after void Instruction() has already been called
+/**
+ * @brief Used to draw instructions on the screen after void Instruction() has already been called
+ * 
+ * @param display The display of the current X11 window
+ * @param window The X11 window to print the instructions to
+ */
 void RedrawInstructions(Display *display, Window window);
 
-// [DOXYGEN] Resets InstructState (prepares for displaying instructions)
+/**
+ * @brief Resets InstructState (prepares for displaying instructions)
+ * 
+ */
 void ResetInstructions(void);
 
-// [DOXYGEN] Used to hold the current state of printing instructions to the screen. Used for determining next step.
+// Used to hold the current state of printing instructions to the screen. Used for determining next step.
 extern enum InstructStates InstructState;
 
 #endif
