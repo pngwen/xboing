@@ -1,3 +1,13 @@
+/**
+ * @file stage.h
+ * @author Gerardo Gonzalez
+ * @date 2024-10-01
+ * @brief Handles the creation and management of various in-game xboing windows.
+ * 
+ * This file contains functions for initializing, creating, clearing, and mapping windows in the xboing, as well as managing pixmaps and window manager hints.
+ */
+
+
 #ifndef _STAGE_H_
 #define _STAGE_H_
 
