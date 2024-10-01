@@ -141,6 +141,16 @@ struct editData
 #if NeedFunctionPrototypes
 void SetUpEditor(Display *display, Window window, Colormap colormap)
 #else
+/**
+ * Calls ResetEditor in order to set up the editor for XBoing
+ *
+ * @param Display display X11 display
+ * @param Window window window X11 ID for window
+ * @param Colormap colormap Colormap for X11 system
+ *
+ * @todo remove reliance on X11
+ *
+ */
 void SetUpEditor(display, window, colormap)
 	Display *display;
 	Window window;
@@ -153,6 +163,15 @@ void SetUpEditor(display, window, colormap)
 #if NeedFunctionPrototypes
 static void DrawEditorGrid(Display *display, Window window)
 #else
+/**
+ * Draws the grid for the editor
+ *
+ * @param Display display X11 display
+ * @param Window window X11 window ID
+ *
+ * @todo Remove reliance on X11
+ *
+ */
 static void DrawEditorGrid(display, window)
 	Display *display;
 	Window window;
@@ -176,6 +195,15 @@ static void DrawEditorGrid(display, window)
 #if NeedFunctionPrototypes
 static void DoLoadLevel(Display *display, Window window)
 #else
+/**
+ * Loads a level by getting the window size, getting the input, and constructing the file
+ *
+ * @param Display display X11 display
+ * @param Window window X11 window ID
+ *
+ * @todo Remove reliance on X11
+ *
+ */
 static void DoLoadLevel(display, window)
 	Display *display;
 	Window window;
@@ -235,6 +263,15 @@ static void DoLoadLevel(display, window)
 #if NeedFunctionPrototypes
 static void RedrawEditorArea(Display *display, Window window)
 #else
+/**
+ * Redraws the entire editor window
+ *
+ * @param Display display X11 display
+ * @param Window window X11 window ID
+ *
+ * @todo Remove reliance on X11
+ *
+ */
 static void RedrawEditorArea(display, window)
 	Display *display;
 	Window window;
@@ -254,6 +291,12 @@ static void RedrawEditorArea(display, window)
 #if NeedFunctionPrototypes
 static void ClearEditorInfo(void)
 #else
+/**
+ * Destroys editor page
+ *
+ * @return info page destroyed
+ *
+ */
 static void ClearEditorInfo()
 #endif
 {
@@ -277,6 +320,12 @@ static void ClearEditorInfo()
 #if NeedFunctionPrototypes
 static int CheckBlockClicked(int x, int y)
 #else
+/**
+ * Checks which box is hit
+ * @param int x X position of block
+ * @param int y y position of block
+ *
+ */
 static int CheckBlockClicked(x, y)
 	int x, y;
 #endif
@@ -301,6 +350,15 @@ static int CheckBlockClicked(x, y)
 #if NeedFunctionPrototypes
 void SetCurrentSymbol(Display *display, int i)
 #else
+/**
+ * Sets the current symbol in the game
+ *
+ * @param Display display X11 display
+ * @param int i symbol id
+ *
+ * @todo Remove reliance on X11
+ *
+ */
 void SetCurrentSymbol(display, i)
     Display *display;
 	int i;
@@ -322,6 +380,16 @@ void SetCurrentSymbol(display, i)
 #if NeedFunctionPrototypes
 void HandleEditorToolBar(Display *display, XEvent event, int Down)
 #else
+/**
+ * Checks mouse position and if a button is pressed
+ *
+ * @param Display display X11 display
+ * @param XEvent event Event to carry out
+ * @param int Down What is pressed
+ *
+ * @todo remove reliance on X11
+ *
+ */
 void HandleEditorToolBar(display, event, Down)
     Display *display;
 	XEvent 	event;
@@ -361,6 +429,18 @@ void HandleEditorToolBar(display, event, Down)
 static void SetupBlockEditorInfo(int x, int y, int w, int h, int type, int i, 
 	int slide)
 #else
+/**
+ * Creates array for blocks as well as the click region
+ *
+ * @param int x x point
+ * @param int y y point
+ * @param int w w point
+ * @param int h h point
+ * @param int type type of symbol
+ * @param int i id for block
+ * @param int slide id for slide index
+ *
+ */
 static void SetupBlockEditorInfo(x, y, w, h, type, i, slide)
 	int x, y, w, h, type, i, slide;
 #endif
@@ -388,6 +468,15 @@ static void SetupBlockEditorInfo(x, y, w, h, type, i, slide)
 #if NeedFunctionPrototypes
 static void SetupBlockWindow(Display *display, Window window)
 #else
+/**
+ * Draws the blocks in the window
+ *
+ * @param Display display X11 display
+ * @param Window window X11 window ID
+ *
+ * @todo Remove reliance on X11
+ *
+ */
 static void SetupBlockWindow(display, window)
 	Display *display;
 	Window window;
