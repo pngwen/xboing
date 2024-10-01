@@ -1,5 +1,5 @@
 /**
- * @file file.h
+ * @file file.c
  * @author Justin C. Kibell (jck@techrescue.org)
  * @brief Controls file input/output for game states and initializes for game play
  * @version 1.1.1.1
@@ -42,7 +42,7 @@
 #include "blocks.h"
 #include "eyedude.h"
 
-#include "file.h"
+#include "include\file.h"
 
 /**
  * @def BUF_SIZE
