@@ -134,6 +134,12 @@ int						noicon;
 static int				useDefaultColourmap;
 int						noSound, debug;
 
+/**
+ * @brief Creates the necessary graphics contexts needed for the game
+ * 
+ * @param display The current display of the X11 window
+ * @param window The X11 window to create the graphical context on
+ */
 static void InitialiseGraphics(Display *display, Window window)
 {
     XGCValues	gcv;
@@ -184,6 +190,12 @@ static void InitialiseGraphics(Display *display, Window window)
 		ShutDown(display, 1, "Cannot create GXsfx graphics context.");
 }
 
+/**
+ * @brief Parses color names & initializes color variables with their values
+ * 
+ * @param display The current display of the X11 window
+ * @param colormap The colormap to use when parsing colors
+ */
 static void InitialiseColourNames(Display *display, Colormap colormap)
 {
     /* Obtain the colour index of several colours from colourmap */

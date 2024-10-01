@@ -65,10 +65,6 @@
 #define CURSOR_SKULL	5
 
 /*
- *  Type declarations:
- */
-
-/*
  *  Function prototypes:
  */
 
