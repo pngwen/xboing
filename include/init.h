@@ -72,7 +72,30 @@
  *  Function prototypes:
  */
 
+
+/**
+ * Initializes the game
+ *
+ * @param char **argv command line argument vector
+ * @param int argc command line argument counter
+ * @pre 
+ * @return Display 
+ * @post 
+ * 
+ */
 Display *InitialiseGame(char **argv, int argc);
+
+/**
+ * Shuts down the program
+ *
+ * @param Display *display 
+ * @param int exitCode 
+ * @param char *message The string to be printed in the message
+ * @pre 
+ * @return void 
+ * @post 
+ * 
+ */
 void ShutDown(Display *display, int exitCode, char *message);
 void GrabPointer(Display *display, Window window);
 void UnGrabPointer(Display *display);
