@@ -67,47 +67,142 @@
 #if NeedFunctionPrototypes
 
 
-/**
- * Draws text (modernize)
- *
- * @param Display *display display output
- * @param Window window window used to display
- * @param int x horizontal position
- * @param int y vertical position
- * @pre 
- * @return void 
- * @post 
- * 
-// */
-void 	DrawText(Display *display, Window window, int x, int y, 
-			XFontStruct *font, int colour, char *text, int numChar);
 
 /**
- * another draw text function. probably dont need both with modern systems(Delete?)
+ * displays text
  *
- * @param Display *display display output
- * @param Window window window that is used to display
- * @param int x x coordinate
+ * @param Display *display display pointer
+ * @param Window window window used to display
+ * @param int x x coordinatre
  * @param int y y coordinate
+ * @param XFontStruct *font font of the text
+ * @param int colour text color
+ * @param char *text text being displayed
+ * @param int numChar the number of characters
  * @pre 
  * @return void 
- * @post 
+ * @post displays text
  * 
  */
-void 	DrawTextFast(Display *display, Window window, int x, int y, 
-			XFontStruct *font, int colour, char *text, int numChar);
-void 	DrawLine(Display *display, Window window, int x, int y, int x2, int y2,
-			int colour, int width);
-void 	RenderShape(Display *display, Window window, Pixmap pixmap,
-			Pixmap mask, int x, int y, int w, int h, int clear);
-void 	DrawShadowCentredText(Display *display, Window window, 
-			XFontStruct *font, char *string, int y, int colour, int width);
-void 	DrawShadowText(Display *display, Window window, XFontStruct *font,
-			char *string, int x, int y, int colour);
-int 	ColourNameToPixel(Display *display, Colormap colormap, 
-			char *colourName);
+void 	DrawText(Display *display, Window window, int x, int y, XFontStruct *font, int colour, char *text, int numChar);
+
+
+/**
+ * draws text
+ *
+ * @param Display *display display pointer
+ * @param Window window display window
+ * @param int x x coordinate
+ * @param int y y coordinate
+ * @param XFontStruct *font font for text
+ * @param int colour color of text
+ * @param char *text text being displayed
+ * @param int numChar number of character
+ * @pre 
+ * @return void 
+ * @post dipalys text
+ * 
+ */
+void 	DrawTextFast(Display *display, Window window, int x, int y, XFontStruct *font, int colour, char *text, int numChar);
+
+
+/**
+ * renders a line
+ *
+ * @param Display *display display pointer
+ * @param Window window display window
+ * @param int x x coordinate of one end 
+ * @param int y y coordinate of one end
+ * @param int x2 x coordinate of other end
+ * @param int y2 y coordinate of other end
+ * @param int colour color of line
+ * @param int width width of line
+ * @pre 
+ * @return void 
+ * @post draws line
+ * 
+ */
+void 	DrawLine(Display *display, Window window, int x, int y, int x2, int y2,int colour, int width);
+
+
+/**
+ * renders a shape
+ *
+ * @param Display *display display pointer
+ * @param Window window display window
+ * @param Pixmap pixmap pixmap art
+ * @param Pixmap mask color mask for the pixmap
+ * @param int x x coordinate
+ * @param int y y coordinate
+ * @param int w width
+ * @param int h height
+ * @param int clear 
+ * @pre 
+ * @return void 
+ * @post displays a graphic
+ * 
+ */
+void 	RenderShape(Display *display, Window window, Pixmap pixmap,Pixmap mask, int x, int y, int w, int h, int clear);
+
+
+/**
+ * draws centered text with a shadow
+ *
+ * @param Display *display display pointer
+ * @param Window window display window
+ * @param XFontStruct *font font for text
+ * @param char *string text being displayed
+ * @param int y y coordinate of text
+ * @param int colour text color
+ * @param int width text window width
+ * @pre 
+ * @return void 
+ * @post displays text in the center of the screen
+ * 
+ */
+void 	DrawShadowCentredText(Display *display, Window window, XFontStruct *font, char *string, int y, int colour, int width);
+
+/**
+ * draws text with a shadow under it
+ *
+ * @param Display *display display pointer
+ * @param Window window display window
+ * @param XFontStruct *font text font
+ * @param char *string text being displayed
+ * @param int x x coordinate
+ * @param int y y coordinate
+ * @param int colour color
+ * @pre 
+ * @return void 
+ * @post draws text
+ * 
+ */
+void 	DrawShadowText(Display *display, Window window, XFontStruct *font,char *string, int x, int y, int colour);
+
+/**
+ * return color id of pixel
+ *
+ * @param Display *display display pointer
+ * @param Colormap colormap colormap for graphic
+ * @param char *colourName name of the color
+ * @pre 
+ * @return int color id
+ * @post returns color id
+ * 
+ */
+int 	ColourNameToPixel(Display *display, Colormap colormap, char *colourName);
+
+/**
+ * frees memory in display pointer
+ *
+ * @param Display *display display pointer
+ * @pre 
+ * @return void 
+ * @post frees data
+ * 
+ */
 void 	FreeMisc(Display *display);
-char 	*getUsersFullName(void);
+ char 	*getUsersFullName(void);
 char 	*GetHomeDir(void);
 int 	ResizeMainWindow(Display *display, Window window, int width, 
 			int height);
