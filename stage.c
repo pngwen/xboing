@@ -694,3 +694,5 @@ int BlinkDevilEyes(Display *display, Window window)
 
 	return True;
 }
+
+// TODO Find what Window is
