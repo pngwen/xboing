@@ -62,24 +62,101 @@
 #define FLASH		500
 
 /*
- *  Type declarations:
- */
-
-/*
  *  Function prototypes:
  */
 
+/**
+ * @brief Draws graphical elements of specials
+ * 
+ * @param display The current display of the X11 window
+ */
 void DrawSpecials(Display *display);
+
+/**
+ * @brief Accessor for modifying fastGun
+ * 
+ * @param display The current display of the X11 window
+ * @param state The state to set fastGun to
+ * 
+ * @todo Remove function and replace calls with contents
+ */
 void ToggleFastGun(Display *display, int state);
+
+/**
+ * @brief Turns the walls on or off (also updates state of noWalls)
+ * 
+ * @param display The current display of the X11 window
+ * @param state The state to set noWalls to (turn walls on/off)
+ */
 void ToggleWallsOn(Display *display, int state);
+
+/**
+ * @brief Turns off / disables special characteristics and bonuses
+ * 
+ * @param display The current display of the X11 window
+ */
 void TurnSpecialsOff(Display *display);
+
+/**
+ * @brief Accessor for modifying stickyBat
+ * 
+ * @param display The current display of the X11 window
+ * @param state The state to set stickyBat to
+ * 
+ * @todo Remove function and replace calls with contents
+ */
 void ToggleStickyBat(Display *display, int state);
+
+/**
+ * @brief Accessor for modifying saving
+ * 
+ * @param display The current display of the X11 window
+ * @param state The state to set saving to
+ * 
+ * @todo Remove function and replace calls with contents
+ */
 void ToggleSaving(Display *display, int state);
+
+/**
+ * @brief Accessor for modifying x2Bonus (set x2 bonus)
+ * 
+ * @param display The current display of the X11 window
+ * @param state The state to set x2Bonus to
+ * @todo Remove function and replace calls with contents
+ */
 void Togglex2Bonus(Display *display, int state);
+
+/**
+ * @brief Accessor for modifying x4Bonus (set x4 bonus)
+ * 
+ * @param display The current display of the X11 window
+ * @param state The state to set x4Bonus to
+ * 
+ * @todo Remove function and replace calls with contents
+ */
 void Togglex4Bonus(Display *display, int state);
+
+/**
+ * @brief Accessor for modifying Killer
+ * 
+ * @param display The current display of the X11 window
+ * @param state The state to set Killer to
+ * 
+ * @todo Remove function and replace calls with contents
+ */
 void ToggleKiller(Display *display, int state);
+
+/**
+ * @brief Randomizes the state of specials& changes score and level number
+ * 
+ * @param display The current display of the X11 window
+ */
 void RandomDrawSpecials(Display *display);
 
+/**
+ * @brief The state (true/false) of various specials
+ * 
+ */
 extern int saving;
 extern int stickyBat;
 extern int fastGun;

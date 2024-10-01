@@ -66,11 +66,55 @@
  *  Function prototypes:
  */
 
-int	 SetUpAudioSystem(Display *display);
+
+/**
+ * Initialize the audio system.
+ *
+ * @param Display *display The display of the X11 window
+ * 
+ */
+int SetUpAudioSystem(Display *display);
+
+
+/**
+ * Deallocate memory and resources used by the audio system.
+ *
+ * 
+ */
 void FreeAudioSystem(void);
+
+
+/**
+ * Play a sound effect from a file
+ *
+ * @param char *filename The path to the sound file to be played.
+ * @param int volume The volume level.
+ * 
+ */
 void playSoundFile(char *filename, int volume);
+
+
+/**
+ * Process audio device events
+ *
+ * 
+ */
 void audioDeviceEvents(void);
-void SetMaximumVolume(int Volume);
+
+/**
+ * set the master volume to the maximum value.
+ *
+ * @param int Volume The maximum volume level to set.
+ * 
+ */
+Void SetMaximumVolume(int Volume);
+
+
+/**
+ * Get the current maximum volume
+ *
+ * @return The current maximum volume level.
+ */
 int GetMaximumVolume(void);
 
 #endif

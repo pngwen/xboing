@@ -134,6 +134,12 @@ int						noicon;
 static int				useDefaultColourmap;
 int						noSound, debug;
 
+/**
+ * @brief Creates the necessary graphics contexts needed for the game
+ * 
+ * @param display The current display of the X11 window
+ * @param window The X11 window to create the graphical context on
+ */
 static void InitialiseGraphics(Display *display, Window window)
 {
     XGCValues	gcv;
@@ -184,6 +190,12 @@ static void InitialiseGraphics(Display *display, Window window)
 		ShutDown(display, 1, "Cannot create GXsfx graphics context.");
 }
 
+/**
+ * @brief Parses color names & initializes color variables with their values
+ * 
+ * @param display The current display of the X11 window
+ * @param colormap The colormap to use when parsing colors
+ */
 static void InitialiseColourNames(Display *display, Colormap colormap)
 {
     /* Obtain the colour index of several colours from colourmap */
@@ -306,12 +318,10 @@ void ShutDown(Display *display, int exit_code, char *message)
 	if (noSound == False)
 		(void) FreeAudioSystem();
 
-	FreeMisc(display);				/* Free backing store pixmap*/
 	FreeKeyControl(display);		/* Free key control         */
 	FreeKeyEditControl(display);	/* Free key edit control    */
 	FreeSomePresents(display);		/* Free some from presents  */
 	FreeHighScore(display);			/* Free high score memory 	*/
-	FreeInstructions(display);		/* Free instructions        */
 	FreeBonus(display);				/* Free bonus memory 		*/
 	FreeIntroduction(display);		/* Free introduction memory */
 	FreeMessageSystem(display);		/* Free message system 		*/
@@ -920,8 +930,8 @@ Display *InitialiseGame(char **argv, int argc)
 	DEBUG("SetUpKeys done.")
 	SetUpKeysEdit(display, 				playWindow, 	colormap);
 	DEBUG("SetUpKeysEdit done.")
-	SetUpInstructions(display, 			playWindow, 	colormap);
-	DEBUG("SetUpInstructions done.")
+	ResetInstructions();// [DEOXYGEN] changed from SetUpInstructions
+	DEBUG("ResetInstructions done.")
 	SetUpIntroduction(display, 			playWindow, 	colormap);
 	DEBUG("SetUpIntroduction done.")
 	SetUpBonus(display, 				mainWindow, 	colormap);

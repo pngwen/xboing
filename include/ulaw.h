@@ -18,8 +18,17 @@
  * =========================================================================
  */
 
+/**
+ * @brief Evaluates to the Linear value of a ulaw value
+ * 
+ * @param _x The ulaw value to convert
+ */
 #define UlToLin(_x) (ulawToLinearTable[(_x)])
 
+/**
+ * @brief Mu-law algorithm, table used for converting from Mu-law to 16-bit PCM
+ * 
+ */
 static short ulawToLinearTable[] =
 {
     0x8284, 0x8684, 0x8a84, 0x8e84, 0x9284, 0x9684, 0x9a84, 0x9e84,
@@ -56,7 +65,10 @@ static short ulawToLinearTable[] =
     0x0038, 0x0030, 0x0028, 0x0020, 0x0018, 0x0010, 0x0008, 0x0000,
 };
 
-
+/**
+ * @brief Low-level sound properties used for audio playback
+ * 
+ */
 typedef struct 
 {
     unsigned int  magic;
