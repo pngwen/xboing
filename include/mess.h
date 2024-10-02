@@ -4,7 +4,7 @@
 /**
  * @file mess.h
  * @author Justin C. Kibell (jck@techrescue.org)
- * @brief Controls file input/output for game states and initializes for game play
+ * @brief Manages the message system for xboing
  * @version 1.1.1.1
  * @date 16 Dec 1994
  * 
