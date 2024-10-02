@@ -202,22 +202,138 @@ int 	ColourNameToPixel(Display *display, Colormap colormap, char *colourName);
  * 
  */
 void 	FreeMisc(Display *display);
+
+/**
+ * gets users username
+ *
+ * @param void 
+ * @pre username and password
+ * @return char return users username
+ * @post user is logged in
+ * 
+ */
  char 	*getUsersFullName(void);
+
+/**
+ * gets users home directory
+ *
+ * @param void 
+ * @pre username and password
+ * @return char gets home directory
+ * @post 
+ * 
+ */
 char 	*GetHomeDir(void);
-int 	ResizeMainWindow(Display *display, Window window, int width, 
-			int height);
-int 	ObtainWindowWidthHeight(Display *display, Window window,
-			int *width, int *height);
+
+/**
+ * resizes the window
+ *
+ * @param Display *display display pointer
+ * @param Window window display window
+ * @param int width new width
+ * @param int height new height
+ * @pre window is open and displaying
+ * @return int bool
+ * @post resizes window
+ * 
+ */
+int 	ResizeMainWindow(Display *display, Window window, int width, int height);
+
+/**
+ * accessor for window width and height
+ *
+ * @param Display *display display pointer
+ * @param Window window display window
+ * @param int *width window width
+ * @param int *height window height
+ * @pre 
+ * @return int no return
+ * @post 
+ * 
+ */
+int 	ObtainWindowWidthHeight(Display *display, Window window,int *width, int *height);
+
+/**
+ * controls framerate
+ *
+ * @param Display *display display pointer
+ * @param unsigned long ms time between frames in milliseconds
+ * @pre 
+ * @return void 
+ * @post 
+ * 
+ */
 void 	sleepSync(Display *display, unsigned long ms);
 #ifdef NEED_USLEEP
+
+/**
+ * controls framerate
+ *
+ * @param unsigned long usec time between frames in microseconds
+ * @pre 
+ * @return void 
+ * @post 
+ * 
+ */
 void 	usleep(unsigned long usec);
 #endif
+
+/**
+ * gets mouse position
+ *
+ * @param Display *display diplay pointer
+ * @param Window window display window
+ * @param int *x x coordinate of mouse
+ * @param int *y y coordinate of mouse
+ * @pre 
+ * @return int bool
+ * @post 
+ * 
+ */
 int 	ObtainMousePosition(Display *display, Window window, int *x, int *y);
+
+/**
+ * displays prompt for user to answer a yes or no question
+ *
+ * @param Display *display display pointer
+ * @param char *message question prompt
+ * @pre 
+ * @return int bool
+ * @post 
+ * 
+ */
 int 	YesNoDialogue(Display *display, char *message);
-Pixmap 	ScalePixmap(Display *display, Window window, Pixmap source,
-			int swidth, int sheight, int dwidth, int dheight);
-void 	Draw4PointCurve(Display *display, Window window, XPoint *p, 
-			int num_steps);
+
+/**
+ * scales pixmap
+ *
+ * @param Display *display display pointer
+ * @param Window window display window
+ * @param Pixmap source pixmap source
+ * @param int swidth numerator of scaling factor in the x coordinate
+ * @param int sheight numerator of scaling factor in the y coordinate
+ * @param int dwidth demoninator of the scaling in the x coordinate
+ * @param int dheight demoninator of the scaling factor in the y coordinate
+ * @pre window is opwn
+ * @return Pixmap returns scaled pixmap
+ * @post 
+ * 
+ */
+Pixmap 	ScalePixmap(Display *display, Window window, Pixmap source,int swidth, int sheight, int dwidth, int dheight);
+
+/**
+ * draws a curve using 4 control points
+ *
+ * @param Display *display display pointer
+ * @param Window window display window
+ * @param XPoint *p control points
+ * @param int num_steps number of steps
+ * @pre 
+ * @return void 
+ * @post 
+ * 
+ */
+void 	Draw4PointCurve(Display *display, Window window, XPoint *p, int num_steps);
 #else
 void 	Draw4PointCurve();
 Pixmap 	ScalePixmap();
