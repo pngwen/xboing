@@ -135,10 +135,11 @@ static int				useDefaultColourmap;
 int						noSound, debug;
 
 /**
- * @brief Creates the necessary graphics contexts needed for the game
+ * Creates the necessary graphics contexts needed for the game.
  * 
- * @param display The current display of the X11 window
- * @param window The X11 window to create the graphical context on
+ * @param display The current display of the X11 window.
+ * @param window The X11 window to create the graphical context on.
+ *
  */
 static void InitialiseGraphics(Display *display, Window window)
 {
@@ -191,10 +192,11 @@ static void InitialiseGraphics(Display *display, Window window)
 }
 
 /**
- * @brief Parses color names & initializes color variables with their values
+ * Parses color names & initializes color variables with their values.
  * 
- * @param display The current display of the X11 window
- * @param colormap The colormap to use when parsing colors
+ * @param display The current display of the X11 window.
+ * @param colormap The colormap to use when parsing colors.
+ *
  */
 static void InitialiseColourNames(Display *display, Colormap colormap)
 {
@@ -209,6 +211,14 @@ static void InitialiseColourNames(Display *display, Colormap colormap)
 	blue    = ColourNameToPixel(display, colormap, "blue");
 }
 
+
+/**
+ * Initializes arrays of shades of red and green. 
+ *
+ * @param Display *display The display connection to the X server.
+ * @param Colormap colormap The colormap being used.
+ * 
+ */
 static void InitialiseCycleColourNames(Display *display, Colormap colormap)
 {
 	/* If you find that the game is running out of colours then make the
@@ -235,6 +245,13 @@ static void InitialiseCycleColourNames(Display *display, Colormap colormap)
 	greens[6] = ColourNameToPixel(display, colormap, "#030");
 }
 
+
+/**
+ * Loads all the fonts that are needed for this program. If there is an error, displays an error message and uses a default font called "fixed". 
+ *
+ * @param Display *display The display connection to the X server. 
+ * 
+ */
 static void InitialiseFonts(Display *display)
 {
 	/* Create all required font structures */
@@ -281,6 +298,13 @@ static void InitialiseFonts(Display *display)
 	}
 }
 
+
+/**
+ * Frees the fonts used.
+ *
+ * @param Display *display The display connection to the X server.
+ * 
+ */
 static void ReleaseFonts(Display *display)
 {
 	/* Free all the fonts used */
@@ -290,12 +314,26 @@ static void ReleaseFonts(Display *display)
 	if (dataFont)	XFreeFont(display, dataFont);
 }
 
+
+/**
+ * Terminates the program.
+ *
+ * @param int value The code that determines whether the program has terminated successfully or unsuccessfully. 
+ * 
+ */
 static void ExitProgramNow(int value)
 {
 	/* Return to the shell with error code */
 	exit(value);
 }
 
+
+/**
+ * Frees the graphics contexts.
+ *
+ * @param Display *display The display connection to the X server.
+ * 
+ */
 static void ReleaseGraphics(Display *display)
 {
 	/* Free the graphics contexts */
@@ -350,6 +388,14 @@ void ShutDown(Display *display, int exit_code, char *message)
 	ExitProgramNow(exit_code);
 }
 
+
+/**
+ * Obtains error message from the server and closes the program.
+ *
+ * @param Display *display The display connection to the X server.
+ * @param XErrorEvent *err Error pointer
+ * 
+ */
 static int ErrorHandler(Display *display, XErrorEvent *err)
 {
  	char msg[80];
@@ -366,6 +412,13 @@ static int ErrorHandler(Display *display, XErrorEvent *err)
 	return True;
 }
 
+
+/**
+ * Gives an error message if there is a display error.
+ *
+ * @param char *displayName Name of the display.
+ * 
+ */
 static void HandleDisplayErrors(char *displayName)
 {
  	char string[256];
@@ -380,6 +433,13 @@ static void HandleDisplayErrors(char *displayName)
 	}
 }
 
+
+/**
+ * Prints the version information to the command line.
+ *
+ * @param void  
+ * 
+ */
 static void PrintVersion(void)
 {
     /* Print version for program to user for command line help */
@@ -392,6 +452,13 @@ static void PrintVersion(void)
 	ExitProgramNow(0);
 }
 
+
+/**
+ * Prints the usage information to the command line.
+ *
+ * @param void 
+ * 
+ */
 static void PrintUsage(void)
 {
     /* Print usage to user for command line help */
@@ -410,6 +477,13 @@ static void PrintUsage(void)
 	ExitProgramNow(0);
 }
 
+
+/**
+ * Prints setup information to the command line.
+ *
+ * @param void  
+ * 
+ */
 static void PrintSetup(void)
 {
     /* Print setup information about xboing */
@@ -449,6 +523,13 @@ static void PrintSetup(void)
 }
 
 
+
+/**
+ * Prints help (list of commands) to the command line.
+ *
+ * @param void 
+ * 
+ */
 static void PrintHelp(void)
 {
     /* Print help for program to user for command line help */
@@ -481,6 +562,15 @@ static void PrintHelp(void)
 	ExitProgramNow(0);
 }
 
+
+/**
+ * Compares two strings to see if they are the same, mainly used to determine which command on the command line to activate. 
+ *
+ * @param char *arg1 The first argument.
+ * @param char *arg2 The second argument.
+ * @param int minMatch A number used to check if the function should proceed to the next step of comparison or end early. 
+ * 
+ */
 static int compareArgument(char *arg1, char *arg2, int minMatch)
 {
     if ((strlen(arg1) < minMatch) || (strlen(arg2) < minMatch)) 
@@ -492,12 +582,26 @@ static int compareArgument(char *arg1, char *arg2, int minMatch)
     return (strncmp(arg1, arg2, strlen(arg1)));
 }
 
+
+/**
+ * Activates the X synchronization.
+ *
+ * @param Display *display The display connection to the X server.
+ * 
+ */
 static void TurnOnSynchronise(Display *display)
 {
 	/* Turn the X synchronisation on to flush all calls each frame */
 	XSynchronize(display, True);
 }
 
+
+/**
+ * Initializes some default settings.
+ *
+ * @param void  
+ * 
+ */
 static void InitialiseSettings(void)
 {
 	/* Initialise some variables */
@@ -527,6 +631,14 @@ static void InitialiseSettings(void)
 	score = 0L;
 }
 
+
+/**
+ * Parses the command line so all the commands work when a user enters the given command.
+ *
+ * @param char **argv Command line argument vector.
+ * @param int argc Command line argument counter.
+ * 
+ */
 static void ParseCommandLine(char **argv, int argc)
 {
 	/* Parse the command line options */
@@ -776,6 +888,13 @@ void GrabPointer(Display *display, Window window)
 	}
 }
 
+
+/**
+ * Terminates the program with an error code, triggered by a user abort.
+ *
+ * @param int sig Signal number. 
+ * 
+ */
 void userAbortGame(int sig)
 {
 	/* Called as a result of a control-c or user break */
@@ -785,6 +904,13 @@ void userAbortGame(int sig)
 	ExitProgramNow(1);
 }
 
+
+/**
+ * Terminates the program and displays an error message as a result of a segmentation fault.
+ *
+ * @param int sig Signal number. 
+ * 
+ */
 void gameCoreDump(int sig)
 {
 	/* Called as a result of a segmentation violation */
