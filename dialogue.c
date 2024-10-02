@@ -251,7 +251,7 @@ static void ShowUserInputDialogue(display)
 
 	DEBUG("ShowUserInputDialogue() setting icon for dialogue.");
 
-	/*
+	/**
 	*
 	* @todo Impliment the C Boolean Library
 	*
@@ -361,6 +361,12 @@ static void redrawCurrentInput(display)
     Display *display;
 #endif //#End Remove
 {
+	/**
+	*
+	* @todo: Improve readability of this code
+	* @todo: Reference the constant ints, possibly make them const vars
+	*
+	*/
 	XClearArea(display, inputWindow, 0, 50, DIALOGUE_WIDTH, 50, False);
 	if (strlen(currentInput) > 0)
 		DrawShadowCentredText(display, inputWindow, textFont, currentInput, 
