@@ -113,8 +113,9 @@ Pixmap 	floppy, floppyM;
 Pixmap 	text, textM;
 
 #if NeedFunctionPrototypes 	// #Start Remove (Remove preprosser IF, keep the typed parameters)
+
 /**
- * Sets the Pixmap files for the dialogue for xboing
+ * @brief Sets the Pixmap files for the dialogue for xboing
  * 
  * @param Display display X11 system display
  * @param Window window X11 ID for window
@@ -158,8 +159,9 @@ void InitialiseDialoguePixmaps(display, window, colormap)
 }
 
 #if NeedFunctionPrototypes
+
 /**
- * Frees memory used by dialogue pixmap files
+ * @brief Frees memory used by dialogue pixmap files
  *
  * @param Display display X11 display
  *
@@ -182,8 +184,9 @@ void FreeDialoguePixmaps(display)
 }
 
 #if NeedFunctionPrototypes //#Start Remove (Remove preprosser IF, keep the typed parameters)
+
 /**
- * Takes a user's input message for dialogue
+ * @brief Takes a user's input message for dialogue
  *
  * @param Display display X11 display
  * @param char message The user's input message
@@ -223,8 +226,9 @@ char *UserInputDialogueMessage(display, message, type, entryValidation)
 }
 
 #if NeedFunctionPrototypes //#Start Remove (Remove preprosser IF, keep the typed parameters)
+
 /**
- * Draw the input dialogue for the user
+ * @brief Draw the input dialogue for the user
  *
  * @param Display display X11 display
  *
@@ -282,8 +286,9 @@ static void ShowUserInputDialogue(display)
 }
 
 #if NeedFunctionPrototypes //#Start Remove (Remove preprosser IF, keep the typed parameters)
+
 /**
- * Removes user's input dialogue
+ * @brief Removes user's input dialogue
  *
  * @param Display display X11 display
  *
@@ -307,8 +312,9 @@ static void RemoveUserInputDialogue(display)
 }
 
 #if NeedFunctionPrototypes //#Start Remove (Remove preprosser IF, keep the typed parameters)
+
 /**
- * Processes dialogue and carries out different functions in different situations
+ * @brief Processes dialogue and carries out different functions in different situations
  *
  * @param Display display X11 display
  *
@@ -347,8 +353,9 @@ void ProcessDialogue(display)
 }
 
 #if NeedFunctionPrototypes //#Start Remove (Remove preprosser IF, keep the typed parameters)
+
 /**
- * Redraws current input with new parameters
+ * @brief Redraws current input with new parameters
  *
  * @param Display display X11 display
  *
@@ -378,8 +385,9 @@ static void redrawCurrentInput(display)
 }
 
 #if NeedFunctionPrototypes //#Start Remove (Remove preprosser IF, keep the typed parameters)
+
 /**
- * Checks what keys are bein entered such as spacebar. The function will play sound based on certain actions.
+ * @brief Checks what keys are bein entered such as spacebar. The function will play sound based on certain actions.
  *
  * @param Display display X11 display
  * @param KeySym keysym The key being entered
@@ -453,8 +461,9 @@ static void validateDialogueKeys(display, keysym, str)
 }
 
 #if NeedFunctionPrototypes //#Start Remove (Remove preprosser IF, keep the typed parameters)
+
 /**
- * Checks what symbol is being pressed and carries out an action based on that
+ * @brief Checks what symbol is being pressed and carries out an action based on that
  *
  * @param Display display X11 display
  * @param XEvent event The symbil that has been pressed
@@ -516,8 +525,9 @@ void handleDialogueKeys(display, event)
 }
 
 #if NeedFunctionPrototypes //#Start Remove (Remove preprosser IF, keep the typed parameters)
+
 /**
- * Manages the dialogue event loop. It deals with one event then moves on to another.
+ * @brief Manages the dialogue event loop. It deals with one event then moves on to another.
  *
  * @param Display display X11 display
  *

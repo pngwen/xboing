@@ -96,9 +96,9 @@ enum DialogueStates
  *  Function prototypes:
  */
 
-#if NeedFunctionPrototypes
+
 /**
- * Processes dialogue and carries out different functions in different situations
+ * @brief Processes dialogue and carries out different functions in different situations
  *
  * @param Display display X11 display
  *
@@ -106,8 +106,9 @@ enum DialogueStates
  *
  */
 void ProcessDialogue(Display *display);
+
 /**
- * Checks what symbol is being pressed and carries out an action based on that
+ * @brief Checks what symbol is being pressed and carries out an action based on that
  *
  * @param Display display X11 display
  * @param XEvent event The symbil that has been pressed
@@ -116,8 +117,9 @@ void ProcessDialogue(Display *display);
  *
  */
 void handleDialogueKeys(Display *display, XEvent event);
+
 /**
- * Takes a user's input message for dialogue
+ * @brief Takes a user's input message for dialogue
  *
  * @param Display display X11 display
  * @param char message The user's input message
@@ -129,8 +131,9 @@ void handleDialogueKeys(Display *display, XEvent event);
  */ 
 char *UserInputDialogueMessage(Display *display, char *message, int type,
 	int entryValidation);
+
 /**
- * Frees memory used by dialogue pixmap files
+ * @brief Frees memory used by dialogue pixmap files
  *
  * @param Display display X11 display
  *
@@ -138,8 +141,9 @@ char *UserInputDialogueMessage(Display *display, char *message, int type,
  *
  */
 void FreeDialoguePixmaps(Display *display);
+
 /**
- * Sets the Pixmap files for the dialogue for xboing
+ * @brief Sets the Pixmap files for the dialogue for xboing
  * 
  * @param Display display X11 system display
  * @param Window window X11 ID for window
@@ -151,13 +155,6 @@ void FreeDialoguePixmaps(Display *display);
  */
 void InitialiseDialoguePixmaps(Display *display, Window window, 
 		Colormap colormap);
-#else
-void FreeDialoguePixmaps();
-void InitialiseDialoguePixmaps();
-char *UserInputDialogueMessage();
-void ProcessDialogue();
-void handleDialogueKeys();
-#endif
 
 extern Pixmap question, questionM;
 extern Pixmap floppy, floppyM;
