@@ -70,15 +70,122 @@
  */
 
 #if NeedFunctionPrototypes
+
+/**
+ * Draws text that tells the player what special powerup they have
+ *
+ * @param Display *display display pointer
+ * @pre in a game
+ * @return void 
+ * @post displays powerup name
+ * 
+ */
 void DrawSpecials(Display *display);
+
+/**
+ * toggles state of fast gun powerup
+ *
+ * @param Display *display pointer display
+ * @param int state boolean: state of gun
+ * @pre in a game
+ * @return void 
+ * @post toggles powerup 
+ * 
+ */
 void ToggleFastGun(Display *display, int state);
+
+/**
+ * toggles window walls
+ *
+ * @param Display *display display pointer
+ * @param int state boolean: state of window border'
+ * @pre 
+ * @return void 
+ * @post toggle window border
+ * 
+ */
 void ToggleWallsOn(Display *display, int state);
+
+/**
+ * turns off all specials
+ *
+ * @param Display *display display pointer
+ * @pre 
+ * @return void 
+ * @post turns specials off 
+ * 
+ */
 void TurnSpecialsOff(Display *display);
+
+/**
+ * toggtles Sticky Bat powerup
+ *
+ * @param Display *display display pointer
+ * @param int state Boolean: either on or off
+ * @pre in a game
+ * @return void 
+ * @post  toggles stickybat
+ * 
+ */
 void ToggleStickyBat(Display *display, int state);
+
+/**
+ * toggles whether game can be saved or not
+ *
+ * @param Display *display display pointer
+ * @param int state boolean: either can save or can't
+ * @pre in a game
+ * @return void 
+ * @post toggles save feature
+ * 
+ */
 void ToggleSaving(Display *display, int state);
+
+/**
+ * toggles 2x score bonus
+ *
+ * @param Display *display display pointer
+ * @param int state Boolean: bonus either on or off
+ * @pre in a game
+ * @return void 
+ * @post toggles score bonus
+ * 
+ */
 void Togglex2Bonus(Display *display, int state);
+
+/**
+ * toggles 4x score bonus
+ *
+ * @param Display *display diplay pointer
+ * @param int state boolean: either on or off
+ * @pre in a game
+ * @return void 
+ * @post toggles score bonus
+ * 
+ */
 void Togglex4Bonus(Display *display, int state);
+
+/**
+ * toggles killer mode
+ *
+ * @param Display *display display pointer
+ * @param int state Boolean: either on or off
+ * @pre in a game
+ * @return void 
+ * @post killer mode is toggled
+ * 
+ */
 void ToggleKiller(Display *display, int state);
+
+/**
+ * draws random special
+ *
+ * @param Display *display display pointer
+ * @pre in a game
+ * @return void 
+ * @post randomly spawns powerup
+ * 
+ */
 void RandomDrawSpecials(Display *display);
 #else
 void RandomDrawSpecials();

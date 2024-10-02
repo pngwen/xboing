@@ -1,3 +1,13 @@
+/**
+ * @file error.h
+ * @author Gerardo Gonzalez
+ * @date 2024-09-30
+ * @brief deals with displaying error messages 
+ * 
+ * This is the header file for the funtions that are dealing with displaying messages in xboing 
+ */
+
+
 #ifndef _ERROR_H_
 #define _ERROR_H_
 

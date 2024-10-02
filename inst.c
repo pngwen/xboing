@@ -109,6 +109,16 @@ enum InstructStates InstructState;
 static int waitingFrame;
 enum InstructStates waitMode;
 
+
+/**
+ * @brief Sets up the initial instruction display.
+ *
+ * This function resets the instruction display to its default state.
+ *
+ * @param display A pointer to the Display structure for graphics.
+ * @param window The window where instructions will be displayed.
+ * @param colormap The colormap used for rendering.
+ */
 #if NeedFunctionPrototypes
 void SetUpInstructions(Display *display, Window window, Colormap colormap)
 #else
@@ -148,6 +158,14 @@ char *instructionText[] =
 };
 
 
+/**
+ * @brief Displays the instruction text on the screen.
+ *
+ * This function renders the instructional text onto the specified window.
+ *
+ * @param display A pointer to the Display structure for graphics.
+ * @param window The window where instructions will be displayed.
+ */
 #if NeedFunctionPrototypes
 static void DoText(Display *display, Window window)
 #else
@@ -190,6 +208,14 @@ static void DoText(display, window)
 		PLAY_HEIGHT - 40, tann, PLAY_WIDTH);
 }
 
+/**
+ * @brief Creates a sparkle effect in the instruction display.
+ *
+ * This function animates a sparkle effect at a random position on the screen.
+ *
+ * @param display A pointer to the Display structure for graphics.
+ * @param window The window where the sparkle effect will be drawn.
+ */
 #if NeedFunctionPrototypes
 static void DoSparkle(Display *display, Window window)
 #else
@@ -235,6 +261,15 @@ static void DoSparkle(display, window)
     }
 }
 
+
+/**
+ * @brief Finalizes the instruction display.
+ *
+ * This function resets the demonstration mode and plays a sound.
+ *
+ * @param display A pointer to the Display structure for graphics.
+ * @param window The window where instructions will be displayed.
+ */
 #if NeedFunctionPrototypes
 static void DoFinish(Display *display, Window window)
 #else
@@ -250,7 +285,14 @@ static void DoFinish(display, window)
 		playSoundFile("shark", 50);
 }
 
-
+/**
+ * @brief Main function for handling instruction display states.
+ *
+ * This function updates the instruction display based on the current state.
+ *
+ * @param display A pointer to the Display structure for graphics.
+ * @param window The window where instructions will be displayed.
+ */
 #if NeedFunctionPrototypes
 void Instructions(Display *display, Window window)
 #else
@@ -300,6 +342,14 @@ void Instructions(display, window)
 	}
 }
 
+/**
+ * @brief Redraws the current instructions.
+ *
+ * This function re-renders the title and text instructions in the specified window.
+ *
+ * @param display A pointer to the Display structure for graphics.
+ * @param window The window where instructions will be redrawn.
+ */
 #if NeedFunctionPrototypes
 void RedrawInstructions(Display *display, Window window)
 #else
@@ -312,6 +362,13 @@ void RedrawInstructions(display, window)
 	DoText(display, window);
 }
 
+/**
+ * @brief Frees resources associated with instructions.
+ *
+ * This function currently does not perform any actions but is provided for future use.
+ *
+ * @param display A pointer to the Display structure for graphics.
+ */
 #if NeedFunctionPrototypes
 void FreeInstructions(Display *display)
 #else
@@ -321,6 +378,11 @@ void FreeInstructions(display)
 {
 }
 
+/**
+ * @brief Resets the instruction state.
+ *
+ * This function sets the instruction display back to its initial state.
+ */
 #if NeedFunctionPrototypes
 void ResetInstructions(void)
 #else
@@ -334,6 +396,14 @@ void ResetInstructions()
 	DEBUG("Reset Instruction mode.")
 }
 
+/**
+ * @brief Sets the state to wait before proceeding with instructions.
+ *
+ * This function updates the waiting frame and the next mode to proceed to.
+ *
+ * @param newMode The new instruction state to transition to.
+ * @param waitFrame The frame at which to transition to the new mode.
+ */
 #if NeedFunctionPrototypes
 void SetInstructWait(enum InstructStates newMode, int waitFrame)
 #else
@@ -347,6 +417,11 @@ void SetInstructWait(newMode, waitFrame)
 	InstructState 	= INSTRUCT_WAIT;
 }
 
+/**
+ * @brief Handles the waiting state in instruction display.
+ *
+ * This function checks if the wait duration has elapsed to transition to the next state.
+ */
 #if NeedFunctionPrototypes
 void DoInstructWait(void)
 #else

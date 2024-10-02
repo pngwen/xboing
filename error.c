@@ -65,6 +65,14 @@
  *  Internal variable declarations:
  */
 
+/**
+ * @brief Prints a normal message to the standard output.
+ *
+ * This function takes a message string and prints it to the standard output
+ * with a prefix indicating the application name.
+ *
+ * @param message The message string to be printed.
+ */
 #if NeedFunctionPrototypes
 void NormalMessage(char *message)
 #else
@@ -77,6 +85,14 @@ void NormalMessage(message)
 	fflush(stdout);
 }
 
+/**
+ * @brief Prints an error message to the standard output.
+ *
+ * This function takes an error message string, prints it to the standard output,
+ * and suggests reading a specific README file for help.
+ *
+ * @param message The error message string to be printed.
+ */
 #if NeedFunctionPrototypes
 void ErrorMessage(char *message)
 #else
@@ -97,6 +113,14 @@ void ErrorMessage(message)
 	fflush(stdout);
 }
 
+/**
+ * @brief Prints a warning message to the standard output.
+ *
+ * This function takes a warning message string and prints it to the standard output
+ * with a prefix indicating it is a warning.
+ *
+ * @param message The warning message string to be printed.
+ */
 #if NeedFunctionPrototypes
 void WarningMessage(char *message)
 #else
@@ -109,6 +133,16 @@ void WarningMessage(message)
 	fflush(stdout);
 }
 
+/**
+ * @brief Handles errors returned by the XPM library.
+ *
+ * This function checks the error status from the XPM library and prints
+ * appropriate error or warning messages based on the type of error.
+ *
+ * @param display A pointer to the Display structure used for graphics.
+ * @param ErrorStatus The status code returned by the XPM library indicating the error type.
+ * @param tag A string tag to help identify the source of the error in the output.
+ */
 #if NeedFunctionPrototypes
 void HandleXPMError(Display *display, int ErrorStatus, char *tag)
 #else
