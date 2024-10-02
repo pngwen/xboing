@@ -2,7 +2,7 @@
 #define _MESS_H_
 
 /**
- * @file mess.c
+ * @file mess.h
  * @author Justin C. Kibell (jck@techrescue.org)
  * @brief Controls file input/output for game states and initializes for game play
  * @version 1.1.1.1
