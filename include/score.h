@@ -76,9 +76,9 @@
  *  Function prototypes:
  */
 
-#if NeedFunctionPrototypes
+
 /**
- * Intializes the score on the screen
+ * @brief Intializes the score on the screen
  *
  * @param Display display X11 display
  * @param Window window X11 window size
@@ -88,8 +88,9 @@
  *
  */
 void InitialiseScoreDigits(Display *display, Window window, Colormap colormap);
+
 /**
- *Frees the memory for the score
+ * @brief Frees the memory for the score
  *
  *@param Display display X11 display
  *@pre
@@ -97,8 +98,9 @@ void InitialiseScoreDigits(Display *display, Window window, Colormap colormap);
  *
  */
 void FreeScoreDigits(Display *display);
+
 /**
- * Clear the old score display and creates a new one with new score digits
+ * @brief Clear the old score display and creates a new one with new score digits
  *
  * @param Display display X11 display
  * @param Window window X11 window size
@@ -108,9 +110,10 @@ void FreeScoreDigits(Display *display);
  *
  */
 void DisplayScore(Display *display, Window window, u_long score);
+
 /**
- * Checks if the current score is divisible by 10 and sets the last digit to zero.
- Checks the score it needs to draw then calls the Drawdigit function.
+ * @brief Checks if the current score is divisible by 10 and sets the last digit to zero.
+  Checks the score it needs to draw then calls the Drawdigit function.
  *
  * @param Display display X11 display
  * @param Window window X11 window size
@@ -121,6 +124,7 @@ void DisplayScore(Display *display, Window window, u_long score);
  * @post The number has been drawn
  */
 void DrawOutNumber(Display *display, Window window, u_long score, int x, int y);
+
 /**
  *Adds an increment to the score
  *
@@ -130,6 +134,7 @@ void DrawOutNumber(Display *display, Window window, u_long score, int x, int y);
  *
  */
 void AddToScore(u_long inc);
+
 /**
  * Calculates the score and takes any possible bonuses into account
  *
@@ -139,6 +144,7 @@ void AddToScore(u_long inc);
  *
  */
 u_long ComputeScore(u_long inc);
+
 /**
  * Sets the new score
  *
@@ -148,15 +154,6 @@ u_long ComputeScore(u_long inc);
  *
  */
 void SetTheScore(u_long new);
-#else
-void SetTheScore();
-u_long ComputeScore();
-void AddToScore();
-void InitialiseScoreDigits();
-void FreeScoreDigits();
-void DisplayScore();
-void DrawOutNumber();
-#endif
 
 extern u_long score;
 

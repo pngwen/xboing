@@ -108,7 +108,7 @@ u_long score = 0L;
 
 #if NeedFunctionPrototypes
 /**
- * Intializes the score on the screen
+ * @brief Intializes the score on the screen
  * 
  * @param Display display X11 display
  * @param Window window X11 window
@@ -180,7 +180,7 @@ void InitialiseScoreDigits(display, window, colormap)
 
 #if NeedFunctionPrototypes
 /**
- *Draws the digits that are used to count the score
+ * @brief Draws the digits that are used to count the score
  *
  * @param Display display X11 display
  * @param Window window X11 window
@@ -210,7 +210,7 @@ static void DrawDigit(display, window, digit, x, y)
 
 #if NeedFunctionPrototypes
 /**
- * Checks if the current score is divisible by 10 and sets the last digit to zero.
+ * @brief Checks if the current score is divisible by 10 and sets the last digit to zero.
  Checks the score it needs to draw then calls the Drawdigit function.
  *
  * @param Display display X11 display
@@ -248,7 +248,7 @@ void DrawOutNumber(display, window, score, x, y)
 
 #if NeedFunctionPrototypes
 /**
- * Sets the new score
+ * @brief Sets the new score
  *
  * @param u_long new The new score
  * @pre The score must exist
@@ -267,7 +267,7 @@ void SetTheScore(new)
 
 #if NeedFunctionPrototypes
 /**
- *Adds an increment to the score
+ * @brief Adds an increment to the score
  *
  * @param u_long inc The increment that will be added to the score
  * @pre The score must be declared
@@ -286,7 +286,7 @@ void AddToScore(inc)
 
 #if NeedFunctionPrototypes
 /**
- * Calculates the score and takes any possible bonuses into account
+ * @brief Calculates the score and takes any possible bonuses into account
  *
  * @param u_long inc The increment that will be added to the score
  * @pre The score must be declared as well as the increment
@@ -311,7 +311,7 @@ u_long ComputeScore(inc)
 
 #if NeedFunctionPrototypes
 /**
- * Clear the old score display and creates a new one with new score digits
+ * @brief Clear the old score display and creates a new one with new score digits
  *
  * @param Display display X11 display
  * @param Window window X11 window size
@@ -344,7 +344,7 @@ void DisplayScore(display, window, score)
 
 #if NeedFunctionPrototypes
 /**
- *Frees the memory for the score
+ * @brief Frees the memory for the score
  *
  *@param Display display X11 display
  *@pre
