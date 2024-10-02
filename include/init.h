@@ -70,31 +70,54 @@
 
 
 /**
- * Initializes the game
+ * Initializes everything needed to play the game and establishes some default settings.
  *
- * @param char **argv command line argument vector
- * @param int argc command line argument counter
- * @pre 
- * @return Display 
- * @post 
+ * @param char **argv Command line argument vector.
+ * @param int argc Command line argument counter.
+ * @return Display The new display after everything has been initialized.
  * 
  */
 Display *InitialiseGame(char **argv, int argc);
 
 /**
- * Shuts down the program
+ * Removes the colormap, closes the audio device, calls  all functions related to freeing memory or unloading things, and outputs error message if required.
  *
- * @param Display *display 
- * @param int exitCode 
- * @param char *message The string to be printed in the message
- * @pre 
+ * @param Display *display The display connection to the X server. 
+ * @param int exitCode Code that determines whether the normal or error message will be printed.
+ * @param char *message The string to be printed in the message.
  * @return void 
- * @post 
  * 
  */
 void ShutDown(Display *display, int exitCode, char *message);
+
+/**
+ * Grabs the pointer (cursor) so you can't move the mouse out of the main window.
+ *
+ * @param Display *display The display connection to the X server.
+ * @param Window window The window itself.
+ * @return void 
+ * 
+ */
 void GrabPointer(Display *display, Window window);
+
+/**
+ * Releases or "ungrabs" the pointer/cursor.
+ *
+ * @param Display *display The display connection to the X server. 
+ * @return void 
+ * 
+ */
 void UnGrabPointer(Display *display);
+
+/**
+ * Changes the look of the cursor based on what state it is in.
+ *
+ * @param Display *display The display connection to the X server.
+ * @param Window window The window itself.
+ * @param int cursorState The state of the cursor, determines which cursor to make.
+ * @return void  
+ * 
+ */
 void ChangePointer(Display *display, Window window, int cursorState);
 
 extern GC gccopy, gc, gcxor, gcand, gcor, gcsfx;
