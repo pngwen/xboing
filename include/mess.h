@@ -1,6 +1,21 @@
 #ifndef _MESS_H_
 #define _MESS_H_
 
+/**
+ * @file mess.c
+ * @author Justin C. Kibell (jck@techrescue.org)
+ * @brief Controls file input/output for game states and initializes for game play
+ * @version 1.1.1.1
+ * @date 16 Dec 1994
+ * 
+ * @copyright Copyright (c) 1993, 1994, 1995, Justin C. Kibell, All Rights Reserved 
+ * @copyright (see COPYRIGHT file for full text)
+ * 
+ * mess.h/mess.c manage the message system for xboing. Deals with setting up the message system.
+ * The files also display messages and free message memory
+ *  
+ */
+
 /*
  * XBoing - An X11 blockout style computer game
  *
@@ -71,9 +86,9 @@
  *  Function prototypes:
  */
 
-#if NeedFunctionPrototypes
+
 /**
- * Initializes the message system.
+ *  @brief Initializes the message system.
  *
  * @param Display *display Pointer to the X11 display struct
  * @todo Update to remove X11 dependency
@@ -89,8 +104,9 @@
  */
 void InitialiseMessageSystem(Display *display, Window window, 
 	Colormap colormap);
+
 /**
- * Frees memory used by the message system.
+ * @brief Frees memory used by the message system.
  *
  * @param Display *display Pointer to the X11 display struct
  * @todo Update to remove X11 dependency
@@ -102,8 +118,9 @@ void InitialiseMessageSystem(Display *display, Window window,
  * 
  */
 void FreeMessageSystem(Display *display);
+
 /**
- * Sets a new message to be displayed.
+ * @brief Sets a new message to be displayed.
  *
  * @param Display *display Pointer to the X11 display struct
  * @todo Update to remove X11 dependency  
@@ -121,8 +138,9 @@ void FreeMessageSystem(Display *display);
  */
 void SetCurrentMessage(Display *display, Window window, 
 	char *newMessage, int clear);
+
 /**
- * Displays the current message. 
+ * @brief Displays the current message. 
  *
  * @param Display *display Points to the X11 display struct.
  * @todo Update to remove X11 dependency 
@@ -136,11 +154,5 @@ void SetCurrentMessage(Display *display, Window window,
  * 
  */
 void DisplayCurrentMessage(Display *display, Window window);
-#else // Handles each case where the condition is false, which is the same action as above 
-void InitialiseMessageSystem();
-void FreeMessageSystem();
-void SetCurrentMessage();
-void DisplayCurrentMessage();
-#endif
 
 #endif
