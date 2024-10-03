@@ -68,7 +68,6 @@
  *  Function prototypes:
  */
 
-#if NeedFunctionPrototypes
 void InitialiseLevelInfo(Display *display, Window window, Colormap colormap);
 void FreeLevelInfo(Display *display);
 void DisplayLevelInfo(Display *display, Window window, u_long level);
@@ -94,33 +93,6 @@ int GetNumberLife(void);
 void AddToLevelTimeBonus(Display *display, Window window, int seconds);
 void ChangeStartingLevel(Display *display);
 void SetLivesLeft(int new);
-#else
-void SetLivesLeft();
-void ChangeStartingLevel();
-void AddToLevelTimeBonus();
-int GetNumberLife();
-void DecExtraLife();
-void HandleGameTimer();
-void EndTheGame();
-void AddExtraLife();
-void UpdateHighScores();
-int GetLevelTimeBonus();
-void SetLevelTimeBonus();
-void DecLevelTimeBonus();
-char *GetLevelName();
-void InitialiseLevelInfo();
-void FreeLevelInfo();
-void DisplayLevelInfo();
-void CheckGameRules();
-void DeadBall();
-void DeleteABullet();
-void AddABullet();
-void ReDrawBulletsLeft();
-void RedrawLevelInfo();
-void SetLevelNumber();
-void SetStartingLevel();
-int GetStartingLevel();
-#endif
 
 extern int bonus, livesLeft, bonusBlock;
 extern time_t gameTime;

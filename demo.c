@@ -91,13 +91,8 @@
  *  Internal type declarations:
  */
 
-#if NeedFunctionPrototypes
 void SetDemoWait(enum DemoStates newMode, int waitFrame);
 void DoDemoWait(void);
-#else
-void SetDemoWait();
-void DoDemoWait();
-#endif
 
 /*
  *  Internal variable declarations:
@@ -109,25 +104,12 @@ enum DemoStates DemoState;
 static int waitingFrame;
 enum DemoStates waitMode;
 
-#if NeedFunctionPrototypes
 void SetUpDemonstration(Display *display, Window window, Colormap colormap)
-#else
-void SetUpDemonstration(display, window, colormap)
-	Display *display;
-	Window window;
-	Colormap colormap;
-#endif
 {
 	ResetDemonstration();
 }
 
-#if NeedFunctionPrototypes
 void DoDemoTitle(Display *display, Window window)
-#else
-void DoDemoTitle(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	/* Clear and draw background pattern */
     DrawStageBackground(display, window, BACKGROUND_0, True);
@@ -136,13 +118,7 @@ void DoDemoTitle(display, window)
 	DrawIntroTitle(display, window, 10, 10);
 }
 
-#if NeedFunctionPrototypes
 static void DoBlocks(Display *display, Window window)
-#else
-static void DoBlocks(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	int y = 120;
 	int x = 40;
@@ -204,13 +180,7 @@ static void DoBlocks(display, window)
 		"Paddle moves left to intercept ball.", 160, PLAY_HEIGHT - 60, yellow);
 }
 
-#if NeedFunctionPrototypes
 static void DoSparkle(Display *display, Window window)
-#else
-static void DoSparkle(display, window)
-    Display *display;
-    Window window;
-#endif
 {
     static Pixmap store;
     static int x = 100;
@@ -249,13 +219,7 @@ static void DoSparkle(display, window)
     }
 }
 
-#if NeedFunctionPrototypes
 static void DoText(Display *display, Window window)
-#else
-static void DoText(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	char string[80];
 	int y;
@@ -271,13 +235,7 @@ static void DoText(display, window)
 	DemoState = DEMO_SPARKLE;
 }
 
-#if NeedFunctionPrototypes
 static void DoFinish(Display *display, Window window)
-#else
-static void DoFinish(display, window)
-	Display *display;
-	Window window;
-#endif
 {
     ResetKeys();
     mode = MODE_KEYS;
@@ -286,13 +244,7 @@ static void DoFinish(display, window)
 		playSoundFile("whizzo", 50);
 }
 
-#if NeedFunctionPrototypes
 void Demonstration(Display *display, Window window)
-#else
-void Demonstration(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	switch (DemoState)
 	{
@@ -342,33 +294,18 @@ void Demonstration(display, window)
 	}
 }
 
-#if NeedFunctionPrototypes
 void RedrawDemonstration(Display *display, Window window)
-#else
-void RedrawDemonstration(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	DoDemoTitle(display, window);
 	DoBlocks(display, window);
 	DoText(display, window);
 }
 
-#if NeedFunctionPrototypes
 void FreeDemonstration(Display *display)
-#else
-void FreeDemonstration(display)
-	Display *display;
-#endif
 {
 }
 
-#if NeedFunctionPrototypes
 void ResetDemonstration(void)
-#else
-void ResetDemonstration()
-#endif
 {
 	DemoState = DEMO_TITLE;
 	startFrame = frame + 10;
@@ -377,24 +314,14 @@ void ResetDemonstration()
 	DEBUG("Reset Demonstration mode.")
 }
 
-#if NeedFunctionPrototypes
 void SetDemoWait(enum DemoStates newMode, int waitFrame)
-#else
-void SetDemoWait(newMode, waitFrame)
-	enum DemoStates newMode;
-	int waitFrame;
-#endif
 {
 	waitingFrame = waitFrame;
 	waitMode = newMode;
 	DemoState = DEMO_WAIT;
 }
 
-#if NeedFunctionPrototypes
 void DoDemoWait(void)
-#else
-void DoDemoWait()
-#endif
 {
 	if (frame == waitingFrame)
 		DemoState = waitMode;

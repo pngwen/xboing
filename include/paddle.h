@@ -79,7 +79,6 @@
  *  Function prototypes:
  */
 
-#if NeedFunctionPrototypes
 void InitialisePaddle(Display *display, Window window, Colormap colormap);
 void FreePaddle(Display *display);
 void DrawPaddle(Display *display, Window window, int x, int y, int size);
@@ -92,19 +91,6 @@ void FlushPaddleBackingStore(Display *display, Window window);
 void ToggleReverse(Display *display);
 void SetReverseOff(void);
 void ChangePaddleSize(Display *display, Window window, int type);
-#else
-void ChangePaddleSize();
-void SetReverseOff();
-void ToggleReverse();
-void InitialisePaddle();
-void FreePaddle();
-void DrawPaddle();
-void MovePaddle();
-void ResetPaddleStart();
-int GetPaddleSize();
-void RedrawPaddle();
-void FlushPaddleBackingStore();
-#endif
 
 extern int currentPaddleSize, paddlePos, reverseOn, stickyOn;
 

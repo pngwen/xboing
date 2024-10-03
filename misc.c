@@ -79,12 +79,7 @@
  */
 
 #ifdef NEED_USLEEP
-#if NeedFunctionPrototypes
 void usleep(unsigned long usec)
-#else
-void usleep(usec)
-        unsigned long usec;
-#endif
 {
 #ifdef SYSV
 #ifdef __clipper__
@@ -104,13 +99,7 @@ void usleep(usec)
 }
 #endif
 
-#if NeedFunctionPrototypes
 void sleepSync(Display *display, unsigned long ms)
-#else
-void sleepSync(display, ms)
-    Display *display;
-    unsigned long ms;
-#endif
 {
     struct timeval st, et;
     long SyncTime;
@@ -135,20 +124,8 @@ void sleepSync(display, ms)
        accu += (ms - SyncTime);
 }
 
-#if NeedFunctionPrototypes
 void DrawLine(Display *display, Window window, int x, int y, int x2, int y2, 
 	int colour, int width)
-#else
-void DrawLine(display, window, x, y, x2, y2, colour, width)
-	Display *display;
-	Window window;
-	int x;
-	int y;
-	int x2;
-	int y2; 
-	int colour;
-	int width;
-#endif
 {
 	/* Change the width of the line */
 	XSetLineAttributes(display, gcxor, width, LineSolid, CapProjecting, 
@@ -166,19 +143,8 @@ void DrawLine(display, window, x, y, x2, y2, colour, width)
 	XDrawLine(display, window, gcxor, x, y, x2, y2);
 }
 
-#if NeedFunctionPrototypes
 void DrawShadowCentredText(Display *display, Window window, XFontStruct *font,
 	char *string, int y, int colour, int width)
-#else
-void DrawShadowCentredText(display, window, font, string, y, colour, width)
-	Display *display;
-	Window window;
-	XFontStruct *font;
-	char *string;
-	int y;
-	int colour;
-	int width;
-#endif
 {
     int plen, len, x;
 
@@ -196,19 +162,8 @@ void DrawShadowCentredText(display, window, font, string, y, colour, width)
     DrawText(display, window, x, y, font, colour, string, -1);
 }
 
-#if NeedFunctionPrototypes
 void DrawShadowText(Display *display, Window window, XFontStruct *font,
 	char *string, int x, int y, int colour)
-#else
-void DrawShadowText(display, window, font, string, x, y, colour)
-	Display *display;
-	Window window;
-	XFontStruct *font;
-	char *string;
-	int x;
-	int y;
-	int colour;
-#endif
 {
     int len;
 
@@ -220,20 +175,8 @@ void DrawShadowText(display, window, font, string, x, y, colour)
     DrawText(display, window, x, y, font, colour, string, -1);
 }
 
-#if NeedFunctionPrototypes
 void DrawTextFast(Display *display, Window window, int x, int y, XFontStruct *font, 
 	int colour, char *text, int numChar)
-#else
-void DrawTextFast(display, window, x, y, font, colour, text, numChar)
-	Display *display;
-	Window window;
-	int x;
-	int y;
-	XFontStruct *font;
-	int colour;
-	char *text;
-	int numChar;
-#endif
 {
 	int len = strlen(text);
 
@@ -251,20 +194,8 @@ void DrawTextFast(display, window, x, y, font, colour, text, numChar)
 	XDrawString(display, window, gccopy, x, y + font->ascent, text, len);
 }
 
-#if NeedFunctionPrototypes
 void DrawText(Display *display, Window window, int x, int y, XFontStruct *font, 
 	int colour, char *text, int numChar)
-#else
-void DrawText(display, window, x, y, font, colour, text, numChar)
-	Display *display;
-	Window window;
-	int x;
-	int y;
-	XFontStruct *font;
-	int colour;
-	char *text;
-	int numChar;
-#endif
 {
 	int len = strlen(text);
 
@@ -286,21 +217,8 @@ void DrawText(display, window, x, y, font, colour, text, numChar)
 	XDrawString(display, window, gcxor, x, y + font->ascent, text, len);
 }
 
-#if NeedFunctionPrototypes
 void RenderShape(Display *display, Window window, Pixmap pixmap, 
 	Pixmap mask, int x, int y, int w, int h, int clear)
-#else
-void RenderShape(display, window, pixmap, mask, x, y, w, h, clear)
-	Display *display;
-	Window window;
-	Pixmap pixmap;
-	Pixmap mask;
-	int x;
-	int y;
-	int w;
-	int h;
-	int clear;
-#endif
 {
 	/* Clear the background first? */
     if (clear) XClearArea(display, window, x, y, w, h, False);
@@ -317,23 +235,11 @@ void RenderShape(display, window, pixmap, mask, x, y, w, h, clear)
     XSetClipMask(display, gc, None);   
 }
 
-#if NeedFunctionPrototypes
 void FreeMisc(Display *display)
-#else
-void FreeMisc(display)
-    Display *display;
-#endif
 {
 }
 
-#if NeedFunctionPrototypes
 int ColourNameToPixel(Display *display, Colormap colormap, char *colourName)
-#else
-int ColourNameToPixel(display, colormap, colourName)
-    Display *display;
-    Colormap colormap;
-    char *colourName;
-#endif
 {
     XColor colour;
 
@@ -357,11 +263,7 @@ int ColourNameToPixel(display, colormap, colourName)
 }
 
 
-#if NeedFunctionPrototypes
 char *getUsersFullName(void)
-#else
-char *getUsersFullName()
-#endif
 {
     struct passwd *pass;
     char *comma;
@@ -410,11 +312,7 @@ char *getUsersFullName()
     return(fullname);
 }
 
-#if NeedFunctionPrototypes
 char *GetHomeDir(void)
-#else
-char *GetHomeDir()
-#endif
 {
     int uid;
     struct passwd *pw;
@@ -450,15 +348,7 @@ char *GetHomeDir()
     return dest;
 }
 
-#if NeedFunctionPrototypes
 int ResizeMainWindow(Display *display, Window window, int width, int height)
-#else
-int ResizeMainWindow(display, window, width, height)
-	Display	*display;
-	Window	window;
-	int 	width;
- 	int 	height;
-#endif
 {
     XWindowChanges values;
     unsigned int value_mask;
@@ -475,16 +365,8 @@ int ResizeMainWindow(display, window, width, height)
 	return True;
 }
 
-#if NeedFunctionPrototypes
 int ObtainWindowWidthHeight(Display *display, Window window, 
 	int *width, int *height)
-#else
-int ObtainWindowWidthHeight(display, window, width, height)
-	Display	*display;
-	Window	window;
-	int 	*width;
- 	int 	*height;
-#endif
 {
     XWindowAttributes attributes;
 
@@ -495,14 +377,7 @@ int ObtainWindowWidthHeight(display, window, width, height)
     *height = attributes.height;
 }
 
-#if NeedFunctionPrototypes
 int ObtainMousePosition(Display *display, Window window, int *x, int *y)
-#else
-int ObtainMousePosition(display, window, x, y)
-    Display *display;
-    Window  window;
-    int     *x, *y;
-#endif
 {
     int rx, ry, x1, y1;
     unsigned int mask;
@@ -523,13 +398,7 @@ int ObtainMousePosition(display, window, x, y)
 	return False;
 }
 
-#if NeedFunctionPrototypes
 int YesNoDialogue(Display *display, char *message)
-#else
-int YesNoDialogue(display, message)
-    Display *display;
-	char	*message;
-#endif
 {
     char str[80];
 
@@ -551,17 +420,8 @@ int YesNoDialogue(display, message)
 	return False;
 }
 
-#if NeedFunctionPrototypes
 Pixmap ScalePixmap(Display *display, Window window, Pixmap source, 
 	int swidth, int sheight, int dwidth, int dheight)
-#else
-Pixmap ScalePixmap(display, window, source, swidth, sheight, dwidth, dheight)
-	Display *display;
-	Window 	window;
-	Pixmap 	source;
-	int 	swidth, sheight;
-	int 	dwidth,dheight;
-#endif
 {
    	Pixmap 	temp, dest;
    	int 		j, end;
@@ -601,15 +461,7 @@ Pixmap ScalePixmap(display, window, source, swidth, sheight, dwidth, dheight)
    	return (Pixmap) dest;
 }
 
-#if NeedFunctionPrototypes
 void Draw4PointCurve(Display *display, Window window, XPoint *p, int num_steps)
-#else
-void Draw4PointCurve(display, window, p, num_steps)
-	Display *display;
-	Window 	window;
-	XPoint 	*p;
- 	int num_steps;
-#endif
 {
     double t, t_sq, t_cb, incr;
     double r1, r2, r3, r4;

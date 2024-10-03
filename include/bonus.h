@@ -86,7 +86,6 @@ enum BonusStates
  *  Function prototypes:
  */
 
-#if NeedFunctionPrototypes
 void SetUpBonus(Display *display, Window window, Colormap colormap);
 void DoBonus(Display *display, Window window);
 void RedrawBonus(Display *display, Window window);
@@ -100,21 +99,6 @@ void MoveSmallIntroTitle(Display *display, Window window, int x, int y);
 void ComputeAndAddBonusScore(void);
 void SetBonusWait(enum BonusStates newMode, int waitFrame);
 int GetNumberBonus(void);
-#else
-int GetNumberBonus();
-void SetBonusWait();
-void ComputeAndAddBonusScore();
-void DrawSmallIntroTitle();
-void MoveSmallIntroTitle();
-void SetUpBonus();
-void DoBonus();
-void RedrawBonus();
-void FreeBonus();
-void ResetBonus();
-void SetupBonusScreen();
-void IncNumberBonus();
-void ResetNumberBonus();
-#endif
 
 
 extern enum BonusStates BonusState;

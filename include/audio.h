@@ -66,20 +66,11 @@
  *  Function prototypes:
  */
 
-#if NeedFunctionPrototypes
 int	 SetUpAudioSystem(Display *display);
 void FreeAudioSystem(void);
 void playSoundFile(char *filename, int volume);
 void audioDeviceEvents(void);
 void SetMaximumVolume(int Volume);
 int GetMaximumVolume(void);
-#else
-int GetMaximumVolume();
-void SetMaximumVolume();
-void audioDeviceEvents();
-int  SetUpAudioSystem();
-void FreeAudioSystem();
-void playSoundFile();
-#endif
 
 #endif

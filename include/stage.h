@@ -97,7 +97,6 @@ extern Window timeWindow;
 extern Window inputWindow;
 extern Window blockWindow, typeWindow;
 
-#if NeedFunctionPrototypes
 void CreateAllWindows(Display *display, Colormap colormap, char **argv, 
 	int argc);
 void RedrawPlayWindow(Display *display, Window window);
@@ -108,16 +107,6 @@ void DrawStageBackground(Display *display, Window window, int stageType,
 void SetBackgrounds(Display *display, Colormap colormap);
 int BlinkDevilEyes(Display *display, Window window);
 void SetWindowSizeHints(Display *display, int w, int h);
-#else
-void SetWindowSizeHints();
-int BlinkDevilEyes();
-void CreateAllWindows();
-void RedrawPlayWindow();
-void MapAllWindows();
-void ClearMainWindow();
-void DrawStageBackground();
-void SetBackgrounds();
-#endif
 
 
 #endif

@@ -88,13 +88,8 @@
  *  Internal type declarations:
  */
 
-#if NeedFunctionPrototypes
 void SetPreviewWait(enum PreviewStates newMode, int waitFrame);
 void DoPreviewWait(void);
-#else
-void SetPreviewWait();
-void DoPreviewWait();
-#endif
 
 /*
  *  Internal variable declarations:
@@ -104,25 +99,12 @@ enum PreviewStates PreviewState;
 static int waitingFrame;
 enum PreviewStates waitMode;
 
-#if NeedFunctionPrototypes
 void SetUpPreviewLevel(Display *display, Window window, Colormap colormap)
-#else
-void SetUpPreviewLevel(display, window, colormap)
-	Display *display;
-	Window window;
-	Colormap colormap;
-#endif
 {
 	ResetPreviewLevel();
 }
 
-#if NeedFunctionPrototypes
 static void DoLoadLevel(Display *display, Window window)
-#else
-static void DoLoadLevel(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	int lnum = 1;
     char levelPath[1024];
@@ -158,13 +140,7 @@ static void DoLoadLevel(display, window)
 	DisplayLevelInfo(display, levelWindow, (u_long) lnum);
 }
 
-#if NeedFunctionPrototypes
 static void DoText(Display *display, Window window)
-#else
-static void DoText(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	char string[80];
 	int y;
@@ -184,13 +160,7 @@ static void DoText(display, window)
 	SetPreviewWait(PREVIEW_FINISH, frame + 5000);
 }
 
-#if NeedFunctionPrototypes
 static void DoFinish(Display *display, Window window)
-#else
-static void DoFinish(display, window)
-	Display *display;
-	Window window;
-#endif
 {
     mode = MODE_INTRO;
     ResetIntroduction();
@@ -201,13 +171,7 @@ static void DoFinish(display, window)
     SetGameSpeed(FAST_SPEED);
 }
 
-#if NeedFunctionPrototypes
 void PreviewLevel(Display *display, Window window)
-#else
-void PreviewLevel(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	switch (PreviewState)
 	{
@@ -246,56 +210,31 @@ void PreviewLevel(display, window)
 	}
 }
 
-#if NeedFunctionPrototypes
 void RedrawPreviewLevel(Display *display, Window window)
-#else
-void RedrawPreviewLevel(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	DoLoadLevel(display, window);
 	DoText(display, window);
 }
 
-#if NeedFunctionPrototypes
 void FreePreviewLevel(Display *display)
-#else
-void FreePreviewLevel(display)
-	Display *display;
-#endif
 {
 }
 
-#if NeedFunctionPrototypes
 void ResetPreviewLevel(void)
-#else
-void ResetPreviewLevel()
-#endif
 {
 	PreviewState = PREVIEW_LEVEL;
 
 	DEBUG("Reset PreviewLevel mode.")
 }
 
-#if NeedFunctionPrototypes
 void SetPreviewWait(enum PreviewStates newMode, int waitFrame)
-#else
-void SetPreviewWait(newMode, waitFrame)
-	enum PreviewStates newMode;
-	int waitFrame;
-#endif
 {
 	waitingFrame = waitFrame;
 	waitMode = newMode;
 	PreviewState = PREVIEW_WAIT;
 }
 
-#if NeedFunctionPrototypes
 void DoPreviewWait(void)
-#else
-void DoPreviewWait()
-#endif
 {
 	if (frame == waitingFrame)
 		PreviewState = waitMode;
