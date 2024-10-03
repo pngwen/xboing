@@ -1,3 +1,15 @@
+/**
+ * @file dialogue.c
+ * @author Justin C. Kibell (jck@techrescue.org)
+ * @brief Manages the dialogue for XBoing including taking user input
+ * @version 1.1.1.1
+ * @date 16 Dec 1994
+ * 
+ * @copyright Copyright (c) 1993, 1994, 1995, Justin C. Kibell, All Rights Reserved
+ *  
+ * Manages the dialogue process and draws and redraws dialogue to the screen to match certain parameters
+ */
+
 /*
  * XBoing - An X11 blockout style computer game
  *
@@ -50,10 +62,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stddef.h>
-#include <X11/Xlib.h>
-#include <X11/Xutil.h>
-#include <X11/Xos.h>
-#include <X11/keysym.h>
+#include <X11/Xlib.h>	//Replace this with RayLib
+#include <X11/Xutil.h>	//Replace this with RayLib
+#include <X11/Xos.h>	//Replace this with RayLib
+#include <X11/keysym.h>	//Replace this with RayLib
 #include <xpm.h>
 
 #include "error.h"
@@ -100,7 +112,19 @@ Pixmap 	question, questionM;
 Pixmap 	floppy, floppyM;
 Pixmap 	text, textM;
 
-#if NeedFunctionPrototypes
+#if NeedFunctionPrototypes 	// #Start Remove (Remove preprosser IF, keep the typed parameters)
+
+/**
+ * @brief Sets the Pixmap files for the dialogue for xboing
+ * 
+ * @param Display display X11 system display
+ * @param Window window X11 ID for window
+ * @pre Need to have X11 system
+ * @post The pixmap files for the dialogue have been initialized
+ * 
+ * @todo Need to rewrite code so that it no longer relies on X11 system
+ *
+ */
 void InitialiseDialoguePixmaps(Display *display, Window window,
     Colormap colormap)
 #else
@@ -108,7 +132,7 @@ void InitialiseDialoguePixmaps(display, window, colormap)
     Display *display;
     Window window;
     Colormap colormap;
-#endif
+#endif	//#End Remove
 {
     XpmAttributes   attributes;
     int         XpmErrorStatus;
@@ -135,6 +159,15 @@ void InitialiseDialoguePixmaps(display, window, colormap)
 }
 
 #if NeedFunctionPrototypes
+
+/**
+ * @brief Frees memory used by dialogue pixmap files
+ *
+ * @param Display display X11 display
+ *
+ * @todo Remove reliance on X11 system
+ *
+ */
 void FreeDialoguePixmaps(Display *display)
 #else
 void FreeDialoguePixmaps(display)
@@ -150,7 +183,19 @@ void FreeDialoguePixmaps(display)
     if (textM)    		XFreePixmap(display, textM);
 }
 
-#if NeedFunctionPrototypes
+#if NeedFunctionPrototypes //#Start Remove (Remove preprosser IF, keep the typed parameters)
+
+/**
+ * @brief Takes a user's input message for dialogue
+ *
+ * @param Display display X11 display
+ * @param char message The user's input message
+ * @param int type The type of dialogue
+ * @param int entryValidation User's entry confirmation
+ * 
+ * @todo remove reliance on X11 systems
+ *
+ */ 
 char *UserInputDialogueMessage(Display *display, char *message, int type,
 	int entryValidation)
 #else
@@ -159,7 +204,7 @@ char *UserInputDialogueMessage(display, message, type, entryValidation)
 	char *message;
 	int type;
 	int entryValidation;
-#endif
+#endif			//#end Remove
 {
 	/* Change the message for the dialogue */
 	strcpy(theMessage, message);
@@ -180,12 +225,21 @@ char *UserInputDialogueMessage(display, message, type, entryValidation)
 	return (currentInput);
 }
 
-#if NeedFunctionPrototypes
+#if NeedFunctionPrototypes //#Start Remove (Remove preprosser IF, keep the typed parameters)
+
+/**
+ * @brief Draw the input dialogue for the user
+ *
+ * @param Display display X11 display
+ *
+ * @todo remove reliance on X11 system
+ *
+ */
 static void ShowUserInputDialogue(Display *display)
 #else
 static void ShowUserInputDialogue(display)
 	Display *display;
-#endif
+#endif	//#End Remove
 {
 	int dw = DIALOGUE_WIDTH;
 
@@ -201,6 +255,11 @@ static void ShowUserInputDialogue(display)
 
 	DEBUG("ShowUserInputDialogue() setting icon for dialogue.");
 
+	/**
+	*
+	* @todo Impliment the C Boolean Library
+	*
+	*/
 	switch (dialogueType)
 	{
 		case DISK_ICON:
@@ -226,12 +285,21 @@ static void ShowUserInputDialogue(display)
 	DEBUG("ShowUserInputDialogue() mapping complete.");
 }
 
-#if NeedFunctionPrototypes
+#if NeedFunctionPrototypes //#Start Remove (Remove preprosser IF, keep the typed parameters)
+
+/**
+ * @brief Removes user's input dialogue
+ *
+ * @param Display display X11 display
+ *
+ * @todo remove reliance on X11 system
+ *
+ */
 static void RemoveUserInputDialogue(Display *display)
 #else
 static void RemoveUserInputDialogue(display)
 	Display *display;
-#endif
+#endif  //#End Remove
 {
 	while (WindowFadeEffect(display, inputWindow, 
 		DIALOGUE_WIDTH, DIALOGUE_HEIGHT));
@@ -243,12 +311,21 @@ static void RemoveUserInputDialogue(display)
 	XFlush(display);
 }
 
-#if NeedFunctionPrototypes
+#if NeedFunctionPrototypes //#Start Remove (Remove preprosser IF, keep the typed parameters)
+
+/**
+ * @brief Processes dialogue and carries out different functions in different situations
+ *
+ * @param Display display X11 display
+ *
+ * @todo Remove reliance on X11 system
+ *
+ */
 void ProcessDialogue(Display *display)
 #else
 void ProcessDialogue(display)
 	Display *display;
-#endif
+#endif //#End Remove
 {
     /* The states within the dialogue mode */
     switch (dialogueState)
@@ -275,13 +352,28 @@ void ProcessDialogue(display)
 	}
 }
 
-#if NeedFunctionPrototypes
+#if NeedFunctionPrototypes //#Start Remove (Remove preprosser IF, keep the typed parameters)
+
+/**
+ * @brief Redraws current input with new parameters
+ *
+ * @param Display display X11 display
+ *
+ * @todo remove X11 system
+ *
+ */
 static void redrawCurrentInput(Display *display)
 #else
 static void redrawCurrentInput(display)
     Display *display;
-#endif
+#endif //#End Remove
 {
+	/**
+	*
+	* @todo: Improve readability of this code
+	* @todo: Reference the constant ints, possibly make them const vars
+	*
+	*/
 	XClearArea(display, inputWindow, 0, 50, DIALOGUE_WIDTH, 50, False);
 	if (strlen(currentInput) > 0)
 		DrawShadowCentredText(display, inputWindow, textFont, currentInput, 
@@ -292,14 +384,26 @@ static void redrawCurrentInput(display)
 			32, 32, False);
 }
 
-#if NeedFunctionPrototypes
+#if NeedFunctionPrototypes //#Start Remove (Remove preprosser IF, keep the typed parameters)
+
+/**
+ * @brief Checks what keys are bein entered such as spacebar. The function will play sound based on certain actions.
+ *
+ * @param Display display X11 display
+ * @param KeySym keysym The key being entered
+ * @param char str The user input
+ *
+ * @todo Remove reliance on X11
+ * @todo Choose new sound libraries
+ *
+ */
 static void validateDialogueKeys(Display *display, KeySym keysym, char *str)
 #else
 static void validateDialogueKeys(display, keysym, str)
     Display *display;
 	KeySym keysym;
 	char *str;
-#endif
+#endif //#End Remove
 {
 	/* Check the type of keyboard input needed */
 	switch (validation)
@@ -356,13 +460,23 @@ static void validateDialogueKeys(display, keysym, str)
 	}
 }
 
-#if NeedFunctionPrototypes
+#if NeedFunctionPrototypes //#Start Remove (Remove preprosser IF, keep the typed parameters)
+
+/**
+ * @brief Checks what symbol is being pressed and carries out an action based on that
+ *
+ * @param Display display X11 display
+ * @param XEvent event The symbil that has been pressed
+ *
+ * @todo Remove reliance on X11 system
+ *
+ */
 void handleDialogueKeys(Display *display, XEvent event)
 #else
 void handleDialogueKeys(display, event)
     Display *display;
 	XEvent event;
-#endif
+#endif //End Remove
 {
 	char *str;
 	int len;
@@ -410,12 +524,21 @@ void handleDialogueKeys(display, event)
 	free(str);
 }
 
-#if NeedFunctionPrototypes
+#if NeedFunctionPrototypes //#Start Remove (Remove preprosser IF, keep the typed parameters)
+
+/**
+ * @brief Manages the dialogue event loop. It deals with one event then moves on to another.
+ *
+ * @param Display display X11 display
+ *
+ * @todo remove reliance on X11
+ *
+ */
 static void handleDialogueEventLoop(Display *display)
 #else
 static void handleDialogueEventLoop(display)
     Display *display;
-#endif
+#endif //#End Remove
 {
     XEvent event;
     int pending;

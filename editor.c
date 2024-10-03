@@ -1,3 +1,18 @@
+/**
+ * @file editor.c
+ * @author Justin C. Kibell (jck@techrescue.org)
+ * @brief Controls functions for editor and deals with clicks and button presses
+ * @version 1.1.1.1
+ * @date 16 Dec 1994
+ * 
+ * @copyright Copyright (c) 1993, 1994, 1995, Justin C. Kibell, All Rights Reserved 
+ * @copyright (see COPYRIGHT file for full text)
+ * 
+ * Editor.c/h handles the editor and manages functions for saving and loading levels, building the editor, and managing the 
+ * clicks and button presses
+ *  
+ */
+
 /*
  * XBoing - An X11 blockout style computer game
  *
@@ -141,6 +156,16 @@ struct editData
 #if NeedFunctionPrototypes
 void SetUpEditor(Display *display, Window window, Colormap colormap)
 #else
+/**
+ * @brief Calls ResetEditor in order to set up the editor for XBoing
+ *
+ * @param Display display X11 display
+ * @param Window window window X11 ID for window
+ * @param Colormap colormap Colormap for X11 system
+ *
+ * @todo remove reliance on X11
+ *
+ */
 void SetUpEditor(display, window, colormap)
 	Display *display;
 	Window window;
@@ -153,6 +178,15 @@ void SetUpEditor(display, window, colormap)
 #if NeedFunctionPrototypes
 static void DrawEditorGrid(Display *display, Window window)
 #else
+/**
+ * @brief Draws the grid for the editor
+ *
+ * @param Display display X11 display
+ * @param Window window X11 window ID
+ *
+ * @todo Remove reliance on X11
+ *
+ */
 static void DrawEditorGrid(display, window)
 	Display *display;
 	Window window;
@@ -176,6 +210,15 @@ static void DrawEditorGrid(display, window)
 #if NeedFunctionPrototypes
 static void DoLoadLevel(Display *display, Window window)
 #else
+/**
+ * @brief Loads a level by getting the window size, getting the input, and constructing the file
+ *
+ * @param Display display X11 display
+ * @param Window window X11 window ID
+ *
+ * @todo Remove reliance on X11
+ *
+ */
 static void DoLoadLevel(display, window)
 	Display *display;
 	Window window;
@@ -235,6 +278,15 @@ static void DoLoadLevel(display, window)
 #if NeedFunctionPrototypes
 static void RedrawEditorArea(Display *display, Window window)
 #else
+/**
+ * @brief Redraws the entire editor window
+ *
+ * @param Display display X11 display
+ * @param Window window X11 window ID
+ *
+ * @todo Remove reliance on X11
+ *
+ */
 static void RedrawEditorArea(display, window)
 	Display *display;
 	Window window;
@@ -254,6 +306,10 @@ static void RedrawEditorArea(display, window)
 #if NeedFunctionPrototypes
 static void ClearEditorInfo(void)
 #else
+/**
+ * @brief Destroys editor page
+ *
+ */
 static void ClearEditorInfo()
 #endif
 {
@@ -277,6 +333,13 @@ static void ClearEditorInfo()
 #if NeedFunctionPrototypes
 static int CheckBlockClicked(int x, int y)
 #else
+/**
+ * @brief Checks which box is hit
+ *
+ * @param int x X position of block
+ * @param int y y position of block
+ *
+ */
 static int CheckBlockClicked(x, y)
 	int x, y;
 #endif
@@ -301,6 +364,15 @@ static int CheckBlockClicked(x, y)
 #if NeedFunctionPrototypes
 void SetCurrentSymbol(Display *display, int i)
 #else
+/**
+ * @brief Sets the current symbol in the game
+ *
+ * @param Display display X11 display
+ * @param int i symbol id
+ *
+ * @todo Remove reliance on X11
+ *
+ */
 void SetCurrentSymbol(display, i)
     Display *display;
 	int i;
@@ -322,6 +394,16 @@ void SetCurrentSymbol(display, i)
 #if NeedFunctionPrototypes
 void HandleEditorToolBar(Display *display, XEvent event, int Down)
 #else
+/**
+ * @brief Checks mouse position and if a button is pressed
+ *
+ * @param Display display X11 display
+ * @param XEvent event Event to carry out
+ * @param int Down What is pressed
+ *
+ * @todo remove reliance on X11
+ *
+ */
 void HandleEditorToolBar(display, event, Down)
     Display *display;
 	XEvent 	event;
@@ -361,6 +443,18 @@ void HandleEditorToolBar(display, event, Down)
 static void SetupBlockEditorInfo(int x, int y, int w, int h, int type, int i, 
 	int slide)
 #else
+/**
+ * @brief Creates array for blocks as well as the click region
+ *
+ * @param int x x point
+ * @param int y y point
+ * @param int w w point
+ * @param int h h point
+ * @param int type type of symbol
+ * @param int i id for block
+ * @param int slide id for slide index
+ *
+ */
 static void SetupBlockEditorInfo(x, y, w, h, type, i, slide)
 	int x, y, w, h, type, i, slide;
 #endif
@@ -388,6 +482,15 @@ static void SetupBlockEditorInfo(x, y, w, h, type, i, slide)
 #if NeedFunctionPrototypes
 static void SetupBlockWindow(Display *display, Window window)
 #else
+/**
+ * @brief Draws the blocks in the window
+ *
+ * @param Display display X11 display
+ * @param Window window X11 window ID
+ *
+ * @todo Remove reliance on X11
+ *
+ */
 static void SetupBlockWindow(display, window)
 	Display *display;
 	Window window;
@@ -439,6 +542,15 @@ static void SetupBlockWindow(display, window)
 #if NeedFunctionPrototypes
 static void DoFinish(Display *display, Window window)
 #else
+/**
+ * @brief Carries out actions to close editor window and return to normal XBoing mode
+ *
+ * @param Display display X11 display
+ * @param Window window X11 window ID
+ *
+ * @todo Remove reliance on X11
+ *
+ */
 static void DoFinish(display, window)
 	Display *display;
 	Window window;
@@ -472,6 +584,16 @@ static void DoFinish(display, window)
 #if NeedFunctionPrototypes
 void HandleButtonMotion(Display *display, XEvent event)
 #else
+/**
+ * @brief Deals with all mouse and button events
+ *
+ * @param Display display X11 display ID
+ * @param XEvent events The button or motion event
+ *
+ * @todo Remove Reliance on X11
+ * @todo Possibly split this function into smaller functions
+ *
+ */
 void HandleButtonMotion(display, event)
     Display *display;
 	XEvent 	event;
@@ -536,6 +658,16 @@ void HandleButtonMotion(display, event)
 #if NeedFunctionPrototypes
 void HandleEditorMouseButtons(Display *display, XEvent event, int Down)
 #else
+/**
+ * @brief Carries out actions based on mouse and button presses
+ *
+ * @param Display Display X11 Display
+ * @param XEvent event the button event
+ * @param int Down tells if the button is pressed or not
+ *
+ * @todo remove reliance on X11
+ *
+ */
 void HandleEditorMouseButtons(display, event, Down)
     Display *display;
 	XEvent 	event;
@@ -648,6 +780,14 @@ void HandleEditorMouseButtons(display, event, Down)
 #if NeedFunctionPrototypes
 static void SetupPlayTest(Display *display)
 #else
+/**
+ * @brief Sets Up playtest for xboing
+ *
+ * @param Display display X11 display
+ *
+ * @todo remove reliance on X11
+ *
+ */
 static void SetupPlayTest(display)
     Display *display;
 #endif
@@ -690,6 +830,14 @@ static void SetupPlayTest(display)
 #if NeedFunctionPrototypes
 static void FinishPlayTest(Display *display)
 #else
+/**
+ * @brief Ends playtest by saving the playtest and changing the blocks
+ *
+ * @param Display display X11 display
+ *
+ * @todo Remove reliance on X11 system
+ *
+ */
 static void FinishPlayTest(display)
     Display *display;
 #endif
@@ -720,6 +868,14 @@ static void FinishPlayTest(display)
 #if NeedFunctionPrototypes
 static void FlipBoardHorizontal(Display *display)
 #else
+/**
+ * @brief Goes through the board and recreates it horizontally
+ *
+ * @param Display display X11 display
+ *
+ * @todo Remove reliance on X11 system
+ *
+ */
 static void FlipBoardHorizontal(display)
 	Display *display;
 #endif
@@ -759,6 +915,14 @@ static void FlipBoardHorizontal(display)
 #if NeedFunctionPrototypes
 static void ScrollBoardHorizontal(Display *display)
 #else
+/**
+ * @brief Recreates the entire board slightly differently
+ *
+ * @param Display display X11 display
+ *
+ * @todo Remove reliance on X11
+ *
+ */
 static void ScrollBoardHorizontal(display)
 	Display *display;
 #endif
@@ -812,6 +976,14 @@ static void ScrollBoardHorizontal(display)
 #if NeedFunctionPrototypes
 static void FlipBoardVertical(Display *display)
 #else
+/**
+ * @brief Recreates the entire board vertically
+ *
+ * @param Display display X11 display
+ * 
+ * @todo Remove reliance on X11
+ *
+ */
 static void FlipBoardVertical(display)
 	Display *display;
 #endif
@@ -854,6 +1026,14 @@ static void FlipBoardVertical(display)
 #if NeedFunctionPrototypes
 static void ScrollBoardVertical(Display *display)
 #else
+/**
+ * @brief Recreates the whole board scrolled vertically
+ *
+ * @param Display display X11 display
+ *
+ * @todo Remove reliance on X11
+ *
+ */
 static void ScrollBoardVertical(display)
 	Display *display;
 #endif
@@ -907,6 +1087,14 @@ static void ScrollBoardVertical(display)
 #if NeedFunctionPrototypes
 static void HandleRandomBlocks(Display *display)
 #else
+/**
+ * @brief Changes blocks to RANDOM BLOCKS
+ * 
+ * @param Display display X11 display
+ *
+ * @todo Remove reliance on X11 system
+ *
+ */
 static void HandleRandomBlocks(display)
     Display *display;
 #endif
@@ -926,6 +1114,14 @@ static void HandleRandomBlocks(display)
 #if NeedFunctionPrototypes
 static void LoadALevel(Display *display)
 #else
+/**
+ * @brief This function takes user input and loads a XBoing level into the level editor
+ *
+ * @param Display display X11 display
+ *
+ * @todo Remove reliance on X11
+ *
+ */
 static void LoadALevel(display)
     Display *display;
 #endif
@@ -992,6 +1188,14 @@ static void LoadALevel(display)
 #if NeedFunctionPrototypes
 static void SaveALevel(Display *display)
 #else
+/**
+ * @brief Takes user input in order to create a XBoing level save
+ *
+ * @param Display display X11 display
+ *
+ * @todo Remove reliance on X11
+ *
+ */
 static void SaveALevel(display)
     Display *display;
 #endif
@@ -1044,6 +1248,14 @@ static void SaveALevel(display)
 #if NeedFunctionPrototypes
 static void SetTimeForLevel(Display *display)
 #else
+/**
+ * @brief Takes user input to set time limit for XBoing level
+ *
+ * @param Display display X11 display
+ *
+ * @todo Remove reliance on X11
+ *
+ */
 static void SetTimeForLevel(display)
     Display *display;
 #endif
@@ -1078,6 +1290,14 @@ static void SetTimeForLevel(display)
 #if NeedFunctionPrototypes
 static void SetNameForLevel(Display *display)
 #else
+/**
+ * @brief Takes user input in order to set a name for a XBoing level
+ *
+ * @param Display display X11 display
+ *
+ * @todo Remove reliance on X11
+ *
+ */
 static void SetNameForLevel(display)
     Display *display;
 #endif
@@ -1110,6 +1330,15 @@ static void SetNameForLevel(display)
 #if NeedFunctionPrototypes
 static void handleAllEditorKeys(Display *display, KeySym keysym)
 #else
+/**
+ * @brief Handles all button presses for the editor
+ *
+ * @param Display display X11 display
+ * @param KeySym keysym Button pressed
+ *
+ * @todo Remove reliance on X11
+ *
+ */
 static void handleAllEditorKeys(display, keysym)
     Display *display;
     KeySym keysym;
@@ -1236,6 +1465,15 @@ static void handleAllEditorKeys(display, keysym)
 #if NeedFunctionPrototypes
 void handleEditorKeys(Display *display, KeySym keysym)
 #else
+/**
+ * @brief Calls the handleEditorkeys function to deal with all button presses in the editor
+ *
+ * @param Display display X11 display
+ * @param KeySym keysym The symbol pressed
+ *
+ * @todo remove reliance on x11
+ *
+ */
 void handleEditorKeys(display, keysym)
     Display *display;
     KeySym keysym;
@@ -1253,6 +1491,15 @@ void handleEditorKeys(display, keysym)
 #if NeedFunctionPrototypes
 void Editor(Display *display, Window window)
 #else
+/**
+ * @brief Handles the editor state
+ *
+ * @param Display display X11 display
+ * @param Window window X11 window ID
+ *
+ * @todo Remove reliance on X11
+ *
+ */
 void Editor(display, window)
 	Display *display;
 	Window window;
@@ -1297,6 +1544,16 @@ void Editor(display, window)
 #if NeedFunctionPrototypes
 void RedrawEditor(Display *display, Window window)
 #else
+/**
+ * @brief Redraws editor
+ *
+ * @param Display display X11 display
+ * @param Window window X11 window id
+ *
+ * @todo Remove reliance on X11
+ * @todo Possibly delete this function
+ *
+ */
 void RedrawEditor(display, window)
 	Display *display;
 	Window window;
@@ -1307,6 +1564,14 @@ void RedrawEditor(display, window)
 #if NeedFunctionPrototypes
 void FreeEditor(Display *display)
 #else
+/**
+ * @brief Free editor action
+ *
+ * @param Display display X11 display
+ *
+ * @todo Remove reliance on X11
+ *
+ */
 void FreeEditor(display)
 	Display *display;
 #endif
@@ -1317,6 +1582,10 @@ void FreeEditor(display)
 #if NeedFunctionPrototypes
 void ResetEditor(void)
 #else
+/**
+ * @brief Sets edit state back to editor mode
+ *
+ */
 void ResetEditor()
 #endif
 {
@@ -1328,6 +1597,13 @@ void ResetEditor()
 #if NeedFunctionPrototypes
 void SetEditWait(enum EditStates newMode, int waitFrame)
 #else
+/**
+ * @brief Sets wait time in the editor
+ *
+ * @param EditStates newMode Is set to wait in the function
+ * @param int waitFrame Amount of time to wait
+ *
+ */
 void SetEditWait(newMode, waitFrame)
 	enum EditStates newMode;
 	int waitFrame;
@@ -1341,6 +1617,10 @@ void SetEditWait(newMode, waitFrame)
 #if NeedFunctionPrototypes
 void DoEditWait(void)
 #else
+/**
+ * @brief Sets state to wait mode if waiting 
+ *
+ */
 void DoEditWait()
 #endif
 {

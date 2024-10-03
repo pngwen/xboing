@@ -1,3 +1,17 @@
+/**
+ * @file preview.c
+ * @author Justin C. Kibell (jck@techrescue.org)
+ * @brief Manages the preview mode for xboing
+ * @version 1.1.1.1
+ * @date 16 Dec 1994
+ *
+ * @copyright Copyright (C) 1993, 1994, 1995, Justin C. Kibell, All Rights Reserved
+ * @copyright (see COPYRIGHT file for full text)
+ *
+ * preview.h/c manage the preview mode for xboing. The files call functions to load a level and set up the preview.
+ *
+ */
+
 /*
  * XBoing - An X11 blockout style computer game
  *
@@ -107,6 +121,16 @@ enum PreviewStates waitMode;
 #if NeedFunctionPrototypes
 void SetUpPreviewLevel(Display *display, Window window, Colormap colormap)
 #else
+/**
+ * @brief Calls ResetPreviewLevel function in order to set the view mode back to preview mode.
+ *
+ * @param Display *display X11 display
+ * @param Window window X11 window ID
+ * @param Colormap colormap X11 colormap
+ *
+ * @todo Remove reliance on X11
+ *
+ */
 void SetUpPreviewLevel(display, window, colormap)
 	Display *display;
 	Window window;
@@ -117,6 +141,15 @@ void SetUpPreviewLevel(display, window, colormap)
 }
 
 #if NeedFunctionPrototypes
+/**
+ * @brief loads a level into the preview mode
+ *
+ * @param Display *display X11 display
+ * @param Window window X11 window ID
+ *
+ * @todo remove reliance on X11
+ *
+ */
 static void DoLoadLevel(Display *display, Window window)
 #else
 static void DoLoadLevel(display, window)
@@ -159,6 +192,15 @@ static void DoLoadLevel(display, window)
 }
 
 #if NeedFunctionPrototypes
+/**
+ * @brief Displays preview text to the screen
+ *
+ * @param Display *display X11 display
+ * @param Window window X11 window ID
+ *
+ * @todo remove reliance on X11
+ *
+ */
 static void DoText(Display *display, Window window)
 #else
 static void DoText(display, window)
@@ -185,6 +227,16 @@ static void DoText(display, window)
 }
 
 #if NeedFunctionPrototypes
+
+/**
+ * @brief resets the indroduction and plays a sound
+ *
+ * @param Display *display X11 display
+ * @param Window window X11 window ID
+ *
+ * @todo Remove reliance on X11
+ *
+ */
 static void DoFinish(Display *display, Window window)
 #else
 static void DoFinish(display, window)
@@ -204,6 +256,18 @@ static void DoFinish(display, window)
 #if NeedFunctionPrototypes
 void PreviewLevel(Display *display, Window window)
 #else
+
+/**
+ * @brief Creates the preview level by loading the level, setting up the display, and drawing the special blocks
+ *
+ * @param Display *display X11 display
+ * @param Window window X11 window ID
+ * @param Colormap colormap X11 colormap
+ *
+ * @todo Remove reliance on X11
+ * @todo Possibly split this function into smaller functions
+ *
+ */
 void PreviewLevel(display, window)
 	Display *display;
 	Window window;
@@ -249,6 +313,16 @@ void PreviewLevel(display, window)
 #if NeedFunctionPrototypes
 void RedrawPreviewLevel(Display *display, Window window)
 #else
+
+/**
+ * Calls DoLoadLevel and DoText in order to load the level and display the preview text
+ *
+ * @param Display *display X11 display
+ * @param Window window X11 window ID
+ *
+ * @todo Remove reliance on X11
+ *
+ */
 void RedrawPreviewLevel(display, window)
 	Display *display;
 	Window window;
@@ -261,6 +335,17 @@ void RedrawPreviewLevel(display, window)
 #if NeedFunctionPrototypes
 void FreePreviewLevel(Display *display)
 #else
+
+/**
+ * @brief Frees memory for preview level
+ *
+ * @param Display *display X11 display
+ * @param Window window X11 window ID
+ *
+ * @todo Remove reliance on X11
+ * @todo Consider deleting this function
+ *
+ */
 void FreePreviewLevel(display)
 	Display *display;
 #endif
@@ -270,6 +355,11 @@ void FreePreviewLevel(display)
 #if NeedFunctionPrototypes
 void ResetPreviewLevel(void)
 #else
+
+/**
+ * @brief Sets the preview state to preview mode
+ *
+ */
 void ResetPreviewLevel()
 #endif
 {
@@ -279,6 +369,13 @@ void ResetPreviewLevel()
 }
 
 #if NeedFunctionPrototypes
+/**
+ * @brief Sets the wait time for preview mode
+ *
+ * @param enum PreviewStates newmode The new mode that waitMode will be set to
+ * @param int waitFrame the frames that need to pass
+ *
+ */
 void SetPreviewWait(enum PreviewStates newMode, int waitFrame)
 #else
 void SetPreviewWait(newMode, waitFrame)
@@ -292,6 +389,10 @@ void SetPreviewWait(newMode, waitFrame)
 }
 
 #if NeedFunctionPrototypes
+/**
+ * @brief Sets state to waitmode if frame is a waiting frame
+ *
+ */
 void DoPreviewWait(void)
 #else
 void DoPreviewWait()
