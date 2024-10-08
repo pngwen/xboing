@@ -62,9 +62,36 @@
  *  Function prototypes:
  */
 
+/**
+ * Prints error/warning messages. Shuts down the program if an error is encountered.
+ *
+ * @param Display *display The display connection to the X server.
+ * @param int ErrorStatus The error status returned bt the XPM library.
+ * @param char *tag prefix the error or warning message.
+ *
+ */
 void HandleXPMError(Display *display, int ErrorStatus, char *tag);
+
+/**
+ * @brief Prints a message to the console in the "Error" format & refers the user to the readme file
+ *
+ * @param message The string to be printed in the message.
+ */
 void ErrorMessage(char *message);
+
+/**
+ * Prints a message to the console in the in the "warning" format.
+ *
+ * @param char *message The string to be printed in the message
+ *
+ */
 void WarningMessage(char *message);
+
+/**
+ * @brief Prints a message to the console in the "normal" format
+ *
+ * @param message The string to be printed in the message.
+ */
 void NormalMessage(char *message);
 
 #endif

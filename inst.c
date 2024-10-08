@@ -89,8 +89,26 @@
  *  Internal type declarations:
  */
 
+/**
+ * @brief Sets instruction state & other properties to wait. Function-not-used, could be removed.
+ * 
+ * @param newMode The new instruction state to set
+ * @param waitFrame The new waiting frame to set
+ */
 void SetInstructWait(enum InstructStates newMode, int waitFrame);
+
+/**
+ * @brief Draws sparkle animation
+ * 
+ * @param display The display of the X11 window
+ * @param window The X11 window to draw on
+ */
 static void DoSparkle(Display *display, Window window);
+
+/**
+ * @brief Sets the instruction state to wait if the current frame is waiting. Single-use-function, could be removed
+ * 
+ */
 void DoInstructWait(void);
 
 /*
@@ -103,12 +121,7 @@ enum InstructStates InstructState;
 static int waitingFrame;
 enum InstructStates waitMode;
 
-void SetUpInstructions(Display *display, Window window, Colormap colormap)
-{
-	/* Umm. Reset the instructions to default state */
-	ResetInstructions();
-}
-
+// Instead of storing the instructions within the source file, code could be modified to read the instructions in from a separate file.
 char *instructionText[] =
 {
 	"XBoing is a blockout game where you use a paddle to bounce",
@@ -134,10 +147,15 @@ char *instructionText[] =
 	"Please read the manual for more information on how to play."
 };
 
-
+/**
+ * @brief Draws instruction text to the screen
+ * 
+ * @param display The display of the X11 window
+ * @param window the X11 window to draw on
+ */
 static void DoText(Display *display, Window window)
 {
-	char string[80];
+	char string[80];// [DOXYGEN] Unneeded string used for unnecessary string copy
 	int y, i = 0, j = 0;
 
 	SetCurrentMessage(display, messWindow, "Save the rainforests", False);
@@ -153,7 +171,7 @@ static void DoText(Display *display, Window window)
 		/* If the text is not null then print it */
 		if (instructionText[i] != '\0')
 		{
-			strcpy(string, instructionText[i]); 
+			strcpy(string, instructionText[i]);// [DOXYGEN] Unnecessary string copy, could be removed.
 			DrawShadowCentredText(display, window, dataFont, 
 				string, y, j % 2 ? greens[0] : greens[2], PLAY_WIDTH);
 			y += dataFont->ascent + GAP;
@@ -171,6 +189,12 @@ static void DoText(Display *display, Window window)
 		PLAY_HEIGHT - 40, tann, PLAY_WIDTH);
 }
 
+/**
+ * @brief Draws sparkle animation
+ * 
+ * @param display The display of the X11 window
+ * @param window The X11 window to draw on
+ */
 static void DoSparkle(Display *display, Window window)
 {
     static Pixmap store;
@@ -210,6 +234,14 @@ static void DoSparkle(Display *display, Window window)
     }
 }
 
+/**
+ * @brief Set the mode to demo mode and play a demo song
+ * 
+ * @param display Unused parameter.
+ * @param window Unusued parameters.
+ * 
+ * @todo Remove unused parameters
+ */
 static void DoFinish(Display *display, Window window)
 {
 	ResetDemonstration();
@@ -219,7 +251,12 @@ static void DoFinish(Display *display, Window window)
 		playSoundFile("shark", 50);
 }
 
-
+/**
+ * @brief Draws parts of the instructions using the current instruct state. Also updates state so that next call will complete the next instruction part.
+ * 
+ * @param display The display of the current X11 window
+ * @param window The X11 window to print the instructions to
+ */
 void Instructions(Display *display, Window window)
 {
 	switch (InstructState)
@@ -263,16 +300,22 @@ void Instructions(Display *display, Window window)
 	}
 }
 
+/**
+ * @brief Used to draw instructions on the screen after void Instruction() has already been called
+ * 
+ * @param display The display of the current X11 window
+ * @param window The X11 window to print the instructions to
+ */
 void RedrawInstructions(Display *display, Window window)
 {
 	DoIntroTitle(display, window);
 	DoText(display, window);
 }
 
-void FreeInstructions(Display *display)
-{
-}
-
+/**
+ * @brief Resets InstructState (prepares for displaying instructions)
+ * 
+ */
 void ResetInstructions(void)
 {
 	InstructState = INSTRUCT_TITLE;
@@ -282,6 +325,12 @@ void ResetInstructions(void)
 	DEBUG("Reset Instruction mode.")
 }
 
+/**
+ * @brief Sets instruction state & other properties to wait. Function-not-used, could be removed.
+ * 
+ * @param newMode The new instruction state to set
+ * @param waitFrame The new waiting frame to set
+ */
 void SetInstructWait(enum InstructStates newMode, int waitFrame)
 {
 	waitingFrame 	= waitFrame;
@@ -289,6 +338,10 @@ void SetInstructWait(enum InstructStates newMode, int waitFrame)
 	InstructState 	= INSTRUCT_WAIT;
 }
 
+/**
+ * @brief Sets the instruction state to wait if the current frame is waiting. Single-use-function, could be removed
+ * 
+ */
 void DoInstructWait(void)
 {
 	if (frame == waitingFrame)

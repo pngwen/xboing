@@ -66,19 +66,12 @@
 
 #include "misc.h"
 
-/*
- *  Internal macro definitions:
- */
-
-/*
- *  Internal type declarations:
- */
-
-/*
- *  Internal variable declarations:
- */
-
 #ifdef NEED_USLEEP
+/**
+ * @brief Halts program execution for a specified number of microseconds
+ * 
+ * @param usec The number of microseconds to sleep
+ */
 void usleep(unsigned long usec)
 {
 #ifdef SYSV
@@ -99,11 +92,17 @@ void usleep(unsigned long usec)
 }
 #endif
 
+/**
+ * @brief Stops program execution (usleep()) if needed to meet target framerate.
+ * 
+ * @param display The display of the current X11 window
+ * @param ms The number of miliseconds to wait between each frame
+ */
 void sleepSync(Display *display, unsigned long ms)
 {
     struct timeval st, et;
     long SyncTime;
-    static unsigned long accu;
+    static unsigned long accu;// Unitialized static variable could lead to ambiguous behavior on first function call
 
     gettimeofday(&st, NULL);
     XSync(display, False);
@@ -124,6 +123,18 @@ void sleepSync(Display *display, unsigned long ms)
        accu += (ms - SyncTime);
 }
 
+/**
+ * @brief Draws a formatted line between 2 points using X11 library calls
+ * 
+ * @param display The display of the current X11 window
+ * @param window  The X11 window to draw on
+ * @param x The x-coordinate of the first point of the line
+ * @param y The y-coordinate of the first point of the line
+ * @param x2 The x-coordinate of the second point of the line
+ * @param y2 The y-coordinate of the second point of the line
+ * @param colour The color of the line
+ * @param width The width of the line (in px)
+ */
 void DrawLine(Display *display, Window window, int x, int y, int x2, int y2, 
 	int colour, int width)
 {
@@ -143,11 +154,22 @@ void DrawLine(Display *display, Window window, int x, int y, int x2, int y2,
 	XDrawLine(display, window, gcxor, x, y, x2, y2);
 }
 
+/**
+ * @brief Draws text centered with a 2px offset shadow
+ * 
+ * @param display The display of the current X11 window
+ * @param window The X11 window to draw on
+ * @param font The font of the text
+ * @param string The text to draw
+ * @param y The y-coordinate of the text
+ * @param colour The color of the text
+ * @param width The width of the area to draw the centered text in
+ */
 void DrawShadowCentredText(Display *display, Window window, XFontStruct *font,
 	char *string, int y, int colour, int width)
 {
     int plen, len, x;
-
+ 
 	/* String length */
     len = strlen(string);
 
@@ -162,6 +184,17 @@ void DrawShadowCentredText(Display *display, Window window, XFontStruct *font,
     DrawText(display, window, x, y, font, colour, string, -1);
 }
 
+/**
+ * @brief Draws text with a 2px offset shadow
+ * 
+ * @param display The display of the current X11 window
+ * @param window The X11 window to draw on
+ * @param font The font of the text
+ * @param string The text to draw
+ * @param x The x-coordinate of the text
+ * @param y The y-coordinate of the text
+ * @param colour The color of the text
+ */
 void DrawShadowText(Display *display, Window window, XFontStruct *font,
 	char *string, int x, int y, int colour)
 {
@@ -175,6 +208,18 @@ void DrawShadowText(Display *display, Window window, XFontStruct *font,
     DrawText(display, window, x, y, font, colour, string, -1);
 }
 
+/**
+ * @brief Draws text (single layer)
+ * 
+ * @param display The display of the current X11 window
+ * @param window The X11 window to draw on
+ * @param font The font of the text
+ * @param string The text to draw
+ * @param x The x-coordinate of the text
+ * @param y The y-coordinate of the text
+ * @param colour The color of the text
+ * @param numChar The number of characters of "string" to draw
+ */
 void DrawTextFast(Display *display, Window window, int x, int y, XFontStruct *font, 
 	int colour, char *text, int numChar)
 {
@@ -194,6 +239,18 @@ void DrawTextFast(Display *display, Window window, int x, int y, XFontStruct *fo
 	XDrawString(display, window, gccopy, x, y + font->ascent, text, len);
 }
 
+/**
+ * @brief Draws text (multi-layer, smoother)
+ * 
+ * @param display The display of the current X11 window
+ * @param window The X11 window to draw on
+ * @param font The font of the text
+ * @param string The text to draw
+ * @param x The x-coordinate of the text
+ * @param y The y-coordinate of the text
+ * @param colour The color of the text
+ * @param numChar The number of characters of "string" to draw
+ */
 void DrawText(Display *display, Window window, int x, int y, XFontStruct *font, 
 	int colour, char *text, int numChar)
 {
@@ -217,6 +274,19 @@ void DrawText(Display *display, Window window, int x, int y, XFontStruct *font,
 	XDrawString(display, window, gcxor, x, y + font->ascent, text, len);
 }
 
+/**
+ * @brief Draws a pixmap (and can also clear background)
+ * 
+ * @param display The display of the current X11 window
+ * @param window The X11 window to draw on
+ * @param pixmap The pixmap to draw
+ * @param mask The clip-mask of the pixmap
+ * @param x The x-coordinate of the pixmap
+ * @param y The y-coordinate of the pixmap
+ * @param w The width of the pixmap
+ * @param h The height of the pixmap
+ * @param clear Clear the background before drawing?
+ */
 void RenderShape(Display *display, Window window, Pixmap pixmap, 
 	Pixmap mask, int x, int y, int w, int h, int clear)
 {
@@ -235,10 +305,14 @@ void RenderShape(Display *display, Window window, Pixmap pixmap,
     XSetClipMask(display, gc, None);   
 }
 
-void FreeMisc(Display *display)
-{
-}
-
+/**
+ * @brief Obtains color data from X11 library (Used for initialization)
+ * 
+ * @param window The X11 window to draw on
+ * @param pixmap The pixmap to draw
+ * @param colourName The name of the color to find color data for
+ * @return int The color-data of the given color name
+ */
 int ColourNameToPixel(Display *display, Colormap colormap, char *colourName)
 {
     XColor colour;
@@ -262,7 +336,11 @@ int ColourNameToPixel(Display *display, Colormap colormap, char *colourName)
     return 1;
 }
 
-
+/**
+ * @brief Parses the user's name from their password file
+ * 
+ * @return char* The user's name 
+ */
 char *getUsersFullName(void)
 {
     struct passwd *pass;
@@ -312,6 +390,11 @@ char *getUsersFullName(void)
     return(fullname);
 }
 
+/**
+ * @brief Returns the path of the home directory
+ * 
+ * @return char* The path of the Home directory
+ */
 char *GetHomeDir(void)
 {
     int uid;
@@ -348,6 +431,15 @@ char *GetHomeDir(void)
     return dest;
 }
 
+/**
+ * @brief Resizes the main window (returns the success of resize)
+ * 
+ * @param display The display of the current X11 window
+ * @param window The X11 window to draw on
+ * @param width The width of the window
+ * @param height The height of the window
+ * @return int Whether the window could be resized or not. (0/1)
+ */
 int ResizeMainWindow(Display *display, Window window, int width, int height)
 {
     XWindowChanges values;
@@ -365,6 +457,17 @@ int ResizeMainWindow(Display *display, Window window, int width, int height)
 	return True;
 }
 
+/**
+ * @brief Obtains the current window size & propogates it (width&height) to parameter variables.
+ * 
+ * @param display The display of the current X11 window
+ * @param window The X11 window to draw on
+ * @param width The variable to propogate the window width to
+ * @param height The variable to propogate the window height to
+ * @return int (nothing)
+ * 
+ * @todo Add return values for function or make return type void
+ */
 int ObtainWindowWidthHeight(Display *display, Window window, 
 	int *width, int *height)
 {
@@ -377,6 +480,15 @@ int ObtainWindowWidthHeight(Display *display, Window window,
     *height = attributes.height;
 }
 
+/**
+ * @brief Updates parameter varibles with mouse position (set to 0 if cursor is off-window)
+ * 
+ * @param display The display of the current X11 window
+ * @param window The X11 window to draw on
+ * @param x The variable to propogate the mouse x-position to
+ * @param y The variable to propogate the mouse y-position to
+ * @return int Whether or not the mouse is on the window
+ */
 int ObtainMousePosition(Display *display, Window window, int *x, int *y)
 {
     int rx, ry, x1, y1;
@@ -398,6 +510,13 @@ int ObtainMousePosition(Display *display, Window window, int *x, int *y)
 	return False;
 }
 
+/**
+ * @brief Prints a message to the user and prompts them with y/n. (Returns user answer)
+ * 
+ * @param display The display of the current X11 window
+ * @param message The message to prompt the user with
+ * @return int The user's response
+ */
 int YesNoDialogue(Display *display, char *message)
 {
     char str[80];
@@ -420,6 +539,18 @@ int YesNoDialogue(Display *display, char *message)
 	return False;
 }
 
+/**
+ * @brief Creates a scaled copy of the source Pixmap
+ * 
+ * @param display The display of the current X11 window
+ * @param window The X11 window to draw on
+ * @param source The source pixmap
+ * @param swidth The width of the source pixmap
+ * @param sheight The height of the source pixmap
+ * @param dwidth The width of the output pixmap
+ * @param dheight The height of the output pixmap
+ * @return Pixmap The new scaled-copy of the source pixmap
+ */
 Pixmap ScalePixmap(Display *display, Window window, Pixmap source, 
 	int swidth, int sheight, int dwidth, int dheight)
 {
@@ -461,6 +592,14 @@ Pixmap ScalePixmap(Display *display, Window window, Pixmap source,
    	return (Pixmap) dest;
 }
 
+/**
+ * @brief Generates a list of points for a 4-point curve and draws lines connecting them
+ * 
+ * @param display The display of the current X11 window
+ * @param window The X11 window to draw on
+ * @param p The array of points of the 4-point curve
+ * @param num_steps The number of steps of the curve (more steps = higher quality)
+ */
 void Draw4PointCurve(Display *display, Window window, XPoint *p, int num_steps)
 {
     double t, t_sq, t_cb, incr;
@@ -521,4 +660,3 @@ void Draw4PointCurve(Display *display, Window window, XPoint *p, int num_steps)
 	/* Don't forget to free points */
 	free(pts);
 }
-

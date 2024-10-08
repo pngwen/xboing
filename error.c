@@ -54,17 +54,14 @@
 #include "error.h"
 
 /*
- *  Internal macro definitions:
- */
-
-/*
- *  Internal type declarations:
- */
-
-/*
  *  Internal variable declarations:
  */
 
+/**
+ * @brief Prints a message to the console in the "normal" format
+ * 
+ * @param message The string to be printed in the message.
+ */
 void NormalMessage(char *message)
 {
 	/* Print a message to standard out flush it */
@@ -72,6 +69,11 @@ void NormalMessage(char *message)
 	fflush(stdout);
 }
 
+/**
+ * @brief Prints a message to the console in the "Error" format & refers the user to the readme file
+ * 
+ * @param message The string to be printed in the message.
+ */
 void ErrorMessage(char *message)
 {
 
@@ -87,6 +89,12 @@ void ErrorMessage(char *message)
 	fflush(stdout);
 }
 
+/**
+ * Prints a message to the console in the in the "warning" format.
+ *
+ * @param char *message The string to be printed in the message
+ * 
+ */
 void WarningMessage(char *message)
 {
 	/* Print a standard warning message to stdout and flush it */
@@ -94,6 +102,15 @@ void WarningMessage(char *message)
 	fflush(stdout);
 }
 
+
+/**
+ * Prints error/warning messages. Shuts down the program if an error is encountered.
+ *
+ * @param Display *display The display connection to the X server.
+ * @param int ErrorStatus The error status returned bt the XPM library.
+ * @param char *tag prefix the error or warning message.
+ * 
+ */
 void HandleXPMError(Display *display, int ErrorStatus, char *tag)
 {
     char *error = NULL;

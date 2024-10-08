@@ -77,10 +77,6 @@
 #define RANDY(range) 		(rand() % (range))
 
 /*
- *  Internal type declarations:
- */
-
-/*
  *  Internal variable declarations:
  */
 
@@ -89,6 +85,13 @@ int modeSfx;
 static int xscat[NUM_SCAT] = { 1, 9, 3, 6, 2, 4, 0, 7, 5, 8 };
 static int yscat[NUM_SCAT] = { 2, 1, 0, 8, 6, 4, 9, 3, 7, 5 };
 
+
+/**
+ * Accesor used for modyfying the state of special effects.
+ *
+ * @param int state True to enable special effects, False to disable.
+ * 
+ */
 void useSpecialEffects(int state)
 {
 	/* Set the state of the special effects - True = use */
@@ -96,6 +99,13 @@ void useSpecialEffects(int state)
 	useSfx = state;
 }
 
+
+/**
+ * Accessor for useSfx variable (return value)
+ *
+ * @param Display *display The display of the X11 window
+ * 
+ */
 int getSpecialEffects(Display *display)
 {
 	/* Only shake around if the server has backing store on */
@@ -106,17 +116,37 @@ int getSpecialEffects(Display *display)
 	return useSfx;
 }
 
+
+/**
+ * Accessor for modifying the value of the modeSfx variable
+ *
+ * @param int newMode The new mode for the special effects.
+ * 
+ */
 void changeSfxMode(int newMode)
 {
 	modeSfx = newMode;
 }
 
+
+/**
+ * Accessor for the current state of modeSfx variable
+ * 
+ * @return int The current special effects mode
+ * 
+ */
 int currentSfxMode(void)
 {
 	/* Return the current special effects mode */
 	return modeSfx;
 }
 
+/**
+ * Resets the sfx-mode and recenters the window
+ *
+ * @param Display *display The display of the X11 window
+ * 
+ */
 static void resetEffect(Display *display)
 {
 	/* Just re-centre window return */
@@ -124,6 +154,14 @@ static void resetEffect(Display *display)
 	XMoveWindow(display, playWindow, 35, 60);
 }
 
+
+/**
+ * Creates a window blind closing effect on the screen.
+ *
+ * @param Display *display The display of the X11 window
+ * @param Window window The X11 window to draw on
+ * 
+ */
 int WindowBlindEffect(Display *display, Window window)
 {
 	int x, i;
@@ -150,6 +188,15 @@ int WindowBlindEffect(Display *display, Window window)
 }
 
 
+/**
+ * Creates a static effect on the screen.
+ *
+ * @param Display *display The display of the X11 window
+ * @param Window window The X11 window to draw on
+ * @param int w The width of the window.
+ * @param int h The height of the window.
+ * @return int True while the effect is going, False when the effect is done.
+ */
 int WindowStaticEffect(Display *display, Window window, int w, int h)
 {
 	static int start = True;
@@ -173,6 +220,16 @@ int WindowStaticEffect(Display *display, Window window, int w, int h)
 	return True;
 }
 
+
+/**
+ * Creates a window shattering effect.
+ *
+ * @param Display *display The display of the x11 window
+ * @param Window window The X11 window to draw on.
+ *  
+ * @return int False when done.
+ * 
+ */
 int WindowShatterEffect(Display *display, Window window)
 {
     int offx, offy, sizeWidth, sizeHeight;
@@ -231,6 +288,18 @@ int WindowShatterEffect(Display *display, Window window)
 	return False;
 }
 
+
+/**
+ * Creates a window fade effect using horizontal and vertical bars.
+ *
+ * @param Display *display The displat to the X11 window
+ * @param Window window The X11 window to draw on
+ * @param int w The width of the window.
+ * @param int h The height of the window.
+ *  
+ * @return int True while the effect is going, False when the effect is finished.
+ * 
+ */
 int WindowFadeEffect(Display *display, Window window, int w, int h)
 {
 	static int done = False;
@@ -281,6 +350,17 @@ int WindowFadeEffect(Display *display, Window window, int w, int h)
 	return True;
 }
 
+
+
+/**
+ * Creates a window shake effect.
+ *
+ * @param Display *display The display of the X11 window
+ * @param Window window The X11 window to draw on
+ *  
+ * @return int True while the effect is going, False when the effect is finished.
+ * 
+ */
 int WindowShakeEffect(Display *display, Window window)
 {
 	static int x = 35;
@@ -321,11 +401,28 @@ int WindowShakeEffect(Display *display, Window window)
 	return True;
 }
 
+
+/**
+ * Accessor for modifying the value of the sfxEndFrame variable.
+ *
+ * @param int endFrame The frame where the special effects should end.
+ *  
+ * 
+ */
 void SetSfxEndFrame(int endFrame)
 {
 	sfxEndFrame = endFrame;
 }
 
+
+
+/**
+ * Creates a glowing border effect.
+ *
+ * @param Display *display The display of the X11 window
+ * @param Window window The X11 window to draw on
+ * 
+ */
 void BorderGlow(Display *display, Window window)
 {
     static int i = 0;
@@ -363,11 +460,32 @@ void BorderGlow(Display *display, Window window)
      }
 }
 
+
+
+/**
+ * Resets the window border.
+ *
+ * @param Display *display The display of the X11 window
+ * @param Window window The X11 window to draw on
+ * 
+ */
 void ResetBorderGlow(Display *display, Window window)
 {
     XSetWindowBorder(display, playWindow, red);
 }
 
+
+/**
+ * Creates a fade-away effect in specified area.
+ *
+ * @param Display *display The display of the X11 window
+ * @param Window window The X11 window to draw on
+ * @param int x The x coordinate of the area.
+ * @param int y The y coordinate of the area
+ * @param int w The width of the area.
+ * @param int h The height of hte area.
+ * 
+ */
 void FadeAwayArea(Display *display, Window window, int x, int y, int w, int h)
 {
 	int i, x1, y1, step;

@@ -127,6 +127,15 @@ int 	blinkslides[] = { 0, 1, 2, 3, 4, 5, 5, 4, 3, 2, 1, 0, 0, 0,
 					      0, 1, 2, 3, 4, 5, 5, 4, 3, 2, 1, 0 };
 
 
+
+/**
+ * Inits the background pixel map
+ *
+ * @param Display *display Display connection to x server
+ * @param Window window Literally the window itself
+ *
+ * 
+ */
 void InitialiseMainBackPixmap(Display *display, Window window, 
 	Colormap colormap)
 {
@@ -202,6 +211,15 @@ void InitialiseMainBackPixmap(Display *display, Window window,
 	XpmFreeAttributes(&attributes);
 }
 
+
+/**
+ * Clears the main window and returns it to its blank form
+ *
+ * @param Display *display Display connection to X server
+ * @param Window window The display window itself
+ *  
+ * 
+ */
 void ClearMainWindow(Display *display, Window window)
 {
 	/* Make sure that it is drawn */
@@ -209,6 +227,16 @@ void ClearMainWindow(Display *display, Window window)
 	XClearWindow(display, mainWindow);
 }
 
+
+/**
+ * Sets window size
+ *
+ * @param Display *display Display connection to display x server
+ * @param int w Window Width
+ * @param int h Window Height 
+ *  
+ * 
+ */
 void SetWindowSizeHints(Display *display, int w, int h)
 {
 	XSizeHints 		sizehints;
@@ -224,6 +252,14 @@ void SetWindowSizeHints(Display *display, int w, int h)
 	XSetWMNormalHints(display, mainWindow, &sizehints);
 }
 
+
+/**
+ * Creates all the game windows (score, level, gameplay, etc)
+ *
+ * @param Display *display Display connection to x server
+ * @param Colormap colormap Map of colors
+ * 
+ */
 void CreateAllWindows(Display *display, Colormap colormap,
 	char **argv, int argc)
 {
@@ -381,6 +417,14 @@ void CreateAllWindows(Display *display, Colormap colormap,
 	XChangeWindowAttributes(display, typeWindow, 	valuemask, &winattr);
 }
 
+
+/**
+ * Sets the backgrounds for the game
+ *
+ * @param Display *display Display connection to x server
+ * @param Colormap colormap Map of colors
+ * 
+ */
 void SetBackgrounds(Display *display, Colormap colormap)
 {
 	InitialiseMainBackPixmap(display, mainWindow, colormap);
@@ -398,6 +442,13 @@ void SetBackgrounds(Display *display, Colormap colormap)
 	XClearWindow(display, inputWindow);
 }
 
+
+/**
+ * Makes the windows visible
+ *
+ * @param Display *display Display connection for x server
+ *
+ */
 void MapAllWindows(Display *display)
 {
 	/* Actually make everything visible */
@@ -411,6 +462,14 @@ void MapAllWindows(Display *display)
 	XFlush(display);
 }
 
+
+/**
+ * Redraws play area
+ *
+ * @param Display *display Display connection to x server
+ * @param Window window Window itself
+ * 
+ */
 void RedrawPlayWindow(Display *display, Window window)
 {
 	/* Redraw the main playfield */
@@ -420,6 +479,13 @@ void RedrawPlayWindow(Display *display, Window window)
 	RedrawBall(display, window);
 }
 
+
+/**
+ * Frees background from current state
+ *
+ * @param Display *display Display connection to x server
+ * 
+ */
 void FreeBackgroundPixmaps(Display *display)
 {
 	int i;
@@ -444,6 +510,13 @@ void FreeBackgroundPixmaps(Display *display)
 	}
 }
 
+
+/**
+ * Sets icon window
+ *
+ * @param Display *display Display connection to x server
+ * 
+ */
 static Window SetWMIcon(Display *display)
 {
     XpmAttributes   attributes;
@@ -481,6 +554,15 @@ static Window SetWMIcon(Display *display)
 	return win;
 }
 
+
+/**
+ * Actually draws the background to whatever specification
+ *
+ * @param Display *display Display connection to x server
+ * @param Window window The window itself
+ * @param int stageType What color/type of background
+ * 
+ */
 void DrawStageBackground(Display *display, Window window, int stageType,
 	int clear)
 {
@@ -542,6 +624,14 @@ void DrawStageBackground(Display *display, Window window, int stageType,
 		XClearWindow(display, window);
 }
 
+
+/**
+ * Clears devil eyes (?)
+ *
+ * @param Display *display Display connection to x server
+ * @param Window window The window itself
+ * 
+ */
 void ClearDevilEyes(Display *display, Window window)
 {
 	/* Clear the devil eyes from current location */
@@ -550,6 +640,16 @@ void ClearDevilEyes(Display *display, Window window)
 		DEVILEYE_WIDTH, DEVILEYE_HEIGHT, False);
 }
 
+
+/**
+ * Draw the devil eye
+ *
+ * @param Display *display Display connection to x server
+ * @param Window window The window itself
+ * @param int x x coord
+ * @param int y y coord
+ * 
+ */
 static void DrawTheDevilEye(Display *display, Window window, int x, int y,
     int slide)
 {
@@ -559,6 +659,14 @@ static void DrawTheDevilEye(Display *display, Window window, int x, int y,
         False);
 }
 
+
+/**
+ * Makes the devil eye blink
+ *
+ * @param Display *display Display connection to x server
+ * @param Window window The window itself
+ * 
+ */
 int BlinkDevilEyes(Display *display, Window window)
 {
 	static int slide = 0;
@@ -586,3 +694,5 @@ int BlinkDevilEyes(Display *display, Window window)
 
 	return True;
 }
+
+// TODO Find what Window is
