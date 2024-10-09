@@ -105,16 +105,8 @@ static AC			ac;
 static AFAudioConn	*aud;
 
 
-#if NeedFunctionPrototypes
 static int FindPlayDevice(AFAudioConn *aud, int rate,
 	AEncodeType type, int nchan)
-#else
-static int FindPlayDevice(aud, rate, type, nchan)
-	AFAudioConn	*aud;
-	int		rate;
-	AEncodeType	type;
-	int		nchan;
-#endif
 {
     AFDeviceDescriptor	*aDev;
     int			ndevices;
@@ -145,12 +137,7 @@ static int FindPlayDevice(aud, rate, type, nchan)
     return -1;
 }
 
-#if NeedFunctionPrototypes
 int SetUpAudioSystem(Display *display)
-#else
-int SetUpAudioSystem(display)
-	Display *display;
-#endif
 {
     AFSetACAttributes 	attributes;
     int 		device;
@@ -241,20 +228,12 @@ int SetUpAudioSystem(display)
     return True;
 }
 
-#if NeedFunctionPrototypes
 static void flushAudioDevice(void)
-#else
-static void flushAudioDevice()
-#endif
 {
     /* Not needed */
 }
 
-#if NeedFunctionPrototypes
 void FreeAudioSystem(void)
-#else
-void FreeAudioSystem()
-#endif
 {
     /* Close connection to the audiofile sound server */
     AFFreeAC(ac);
@@ -264,32 +243,17 @@ void FreeAudioSystem()
     if (buf != (char *) NULL) free(buf);
 }
 
-#if NeedFunctionPrototypes
 void SetMaximumVolume(int Volume)
-#else
-void SetMaximumVolume(Volume)
-	int Volume;
-#endif
 {
     /* Not needed */
 }
 
-#if NeedFunctionPrototypes
 int GetMaximumVolume(void)
-#else
-int GetMaximumVolume()
-#endif
 {
     return 0;
 }
 
-#if NeedFunctionPrototypes
 void playSoundFile(char *filename, int volume)
-#else
-void playSoundFile(filename, volume)
-	char *filename;
-	int volume;
-#endif
 {
     int			fd;
     char		soundfile[1024];
@@ -352,11 +316,7 @@ void playSoundFile(filename, volume)
     (void) close(fd);
 }
 
-#if NeedFunctionPrototypes
 void audioDeviceEvents(void)
-#else
-void audioDeviceEvents()
-#endif
 {
     /* None to do */
 }

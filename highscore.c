@@ -114,19 +114,11 @@
  *  Internal type declarations:
  */
 
-#if NeedFunctionPrototypes
 static void SetHighScoreWait(enum HighScoreStates newMode, int waitFrame);
 static void InitialiseHighScores(void);
 static void SortHighScores(void);
 static void DeleteScore(int i);
 static int LockUnlock(int cmd);
-#else
-static int LockUnlock();
-static void DeleteScore();
-static void SetHighScoreWait();
-static void InitialiseHighScores();
-static void SortHighScores();
-#endif
 
 /*
  *  Internal variable declarations:
@@ -147,33 +139,19 @@ static char nickName[22];
 highScoreEntry 	highScores[NUM_HIGHSCORES];
 highScoreHeader scoresHeader;
 
-#if NeedFunctionPrototypes
 void SetNickName(char *nick)
-#else
-void SetNickName(nick)
-	char *nick;
-#endif
 {
 	/* Change the users nick name */
 	strncpy(nickName, nick, 20);
 }
 
-#if NeedFunctionPrototypes
 void SetBoingMasterText(char *message)
-#else
-void SetBoingMasterText(message)
-	char *message;
-#endif
 {
 	/* Change the boing masters text */
 	strcpy(scoresHeader.masterText, message);
 }
 
-#if NeedFunctionPrototypes
 char *GetNickName(void)
-#else
-char *GetNickName()
-#endif
 {
 	/* Return the nickname or NULL */
 	if (nickName[0] == '\0')
@@ -182,14 +160,7 @@ char *GetNickName()
 		return nickName;
 }
 
-#if NeedFunctionPrototypes
 void SetUpHighScore(Display *display, Window window, Colormap colormap)
-#else
-void SetUpHighScore(display, window, colormap)
-	Display *display;
-	Window window;
-	Colormap colormap;
-#endif
 {
 	XpmAttributes   attributes;
 	int             XpmErrorStatus;
@@ -210,13 +181,7 @@ void SetUpHighScore(display, window, colormap)
 	ResetHighScore(GLOBAL);
 }
 
-#if NeedFunctionPrototypes
 static void DoTitle(Display *display, Window window)
-#else
-static void DoTitle(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	char string[80];
 
@@ -244,13 +209,7 @@ static void DoTitle(display, window)
 	SetHighScoreWait(HIGHSCORE_SHOW, frame + 10);
 }
 
-#if NeedFunctionPrototypes
 static void DoHighScores(Display *display, Window window)
-#else
-static void DoHighScores(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	int i, len, plen;
 	int xr = 30;
@@ -440,13 +399,7 @@ static void DoHighScores(display, window)
 	SetHighScoreWait(HIGHSCORE_SPARKLE, frame + 2);
 }
 
-#if NeedFunctionPrototypes
 static void DoTitleSparkle(Display *display, Window window)
-#else
-static void DoTitleSparkle(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	static int sindex = 0;
 	static int delay = 30;
@@ -474,13 +427,7 @@ static void DoTitleSparkle(display, window)
 	}
 }
 
-#if NeedFunctionPrototypes
 static void DoSparkle(Display *display, Window window)
-#else
-static void DoSparkle(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	static Pixmap store;	/* backing store for the sparkle */
 	static int x = 6;		/* X position of the sparkle */
@@ -540,37 +487,21 @@ static void DoSparkle(display, window)
 
 
 
-#if NeedFunctionPrototypes
 static void SetHighScoreWait(enum HighScoreStates newMode, int waitFrame)
-#else
-static void SetHighScoreWait(newMode, waitFrame)
-	enum HighScoreStates newMode;
-	int waitFrame;
-#endif
 {
 	waitingFrame = waitFrame;
 	waitMode = newMode;
 	HighScoreState = HIGHSCORE_WAIT;
 }
 
-#if NeedFunctionPrototypes
 void DoHighScoreWait(void)
-#else
-void DoHighScoreWait()
-#endif
 {
 	/* Wait for the end frame then change mode */
 	if (frame == waitingFrame)
 		HighScoreState = waitMode;
 }
 
-#if NeedFunctionPrototypes
 static void DoFinish(Display *display, Window window)
-#else
-static void DoFinish(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	mode = MODE_PREVIEW;
 	HighScoreState = HIGHSCORE_TITLE;
@@ -582,13 +513,7 @@ static void DoFinish(display, window)
 	SetGameSpeed(FAST_SPEED);
 }
 
-#if NeedFunctionPrototypes
 void HighScore(Display *display, Window window)
-#else
-void HighScore(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	/* Switch on the highscore table state */
 	switch (HighScoreState)
@@ -638,11 +563,7 @@ void HighScore(display, window)
 	}
 }
 
-#if NeedFunctionPrototypes
 void CommandlineHighscorePrint(void)
-#else
-void CommandlineHighscorePrint()
-#endif
 {
 	char string[11];
 	int i;
@@ -733,12 +654,7 @@ void CommandlineHighscorePrint()
 	fflush(stdout);
 }
 
-#if NeedFunctionPrototypes
 int GetHighScoreRanking(u_long score)
-#else
-int GetHighScoreRanking(score)
-	u_long score;
-#endif
 {
 	int i;
 
@@ -758,17 +674,8 @@ int GetHighScoreRanking(score)
 	return -1;
 }
 
-#if NeedFunctionPrototypes
 static void ShiftScoresDown(int j, u_long score, u_long level, 
 	time_t gameTime, char *name)
-#else
-static void ShiftScoresDown(j, score, level, gameTime, name)
-	int j;
-	u_long score;
-	u_long level;
-	time_t gameTime;
-	char *name;
-#endif
 {
 	/* This function will shift all score below the index down
 	 * towards the end and kill off the last dude. Sorry mate.
@@ -796,12 +703,7 @@ static void ShiftScoresDown(j, score, level, gameTime, name)
 	strcpy(highScores[j].name, name);
 }
 
-#if NeedFunctionPrototypes
 static void DeleteScore(int j)
-#else
-static void DeleteScore(j)
-	int j;
-#endif
 {
 	/* Delete the given score and shift all others up to fill in the hole */
 	int i;
@@ -826,17 +728,8 @@ static void DeleteScore(j)
 	strcpy(highScores[i].name, "To be announced!");
 }
 
-#if NeedFunctionPrototypes
 int CheckAndAddScoreToHighScore(u_long score, u_long level, time_t gameTime,
 	int type, char *message)
-#else
-int CheckAndAddScoreToHighScore(score, level, gameTime, type, message)
-	u_long score;
-	u_long level;
-	time_t gameTime;
-	int type;
-	char *message;
-#endif
 {
 	int i;
 	int id = -1;
@@ -935,11 +828,7 @@ int CheckAndAddScoreToHighScore(score, level, gameTime, type, message)
 	}
 }
 
-#if NeedFunctionPrototypes
 static void SortHighScores(void)
-#else
-static void SortHighScores()
-#endif
 {
 	int i, j;
 	highScoreEntry tempHighScore;
@@ -980,11 +869,7 @@ static void SortHighScores()
 	}
 }
 
-#if NeedFunctionPrototypes
 static void InitialiseHighScores(void)
-#else
-static void InitialiseHighScores()
-#endif
 {
 	int i;
 
@@ -1005,12 +890,7 @@ static void InitialiseHighScores()
 	}
 }
 
-#if NeedFunctionPrototypes
 int ReadHighScoreTable(int type)
-#else
-int ReadHighScoreTable(type)
-	int type;
-#endif
 {
 	/* Read the high score table into memory structure */
 	FILE *hsfp;
@@ -1074,12 +954,7 @@ int ReadHighScoreTable(type)
 }
 
 
-#if NeedFunctionPrototypes
 int WriteHighScoreTable(int type)
-#else
-int WriteHighScoreTable(type)
-	int type;
-#endif
 {
 	/* write the high score table to the high score file */
 	FILE *hsfp;
@@ -1140,36 +1015,20 @@ int WriteHighScoreTable(type)
 	return True;
 }
 
-#if NeedFunctionPrototypes
 void RedrawHighScore(Display *display, Window window)
-#else
-void RedrawHighScore(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	/* Draw the title screen for highscore table */
 	DoTitle(display, window);
 }
 
-#if NeedFunctionPrototypes
 void FreeHighScore(Display *display)
-#else
-void FreeHighScore(display)
-	Display *display;
-#endif
 {
 	/* Free up those memory leaks thanks */
 	if (titlePixmap) 	XFreePixmap(display, titlePixmap);
 	if (titlePixmapM) 	XFreePixmap(display, titlePixmapM);
 }
 
-#if NeedFunctionPrototypes
 void ResetHighScore(int type)
-#else
-void ResetHighScore(type)
-	int type;
-#endif
 {
 	HighScoreState = HIGHSCORE_TITLE;
 	nextFrame = frame + 100;
@@ -1184,12 +1043,7 @@ void ResetHighScore(type)
 	DEBUG("Reset highscore mode.")
 }
 
-#if NeedFunctionPrototypes
 static int LockUnlock(int cmd)
-#else
-static int LockUnlock(cmd)
-	int cmd;
-#endif
 {
 	static int 	inter = -1;
 	char 		filename[1024];

@@ -89,24 +89,14 @@ int modeSfx;
 static int xscat[NUM_SCAT] = { 1, 9, 3, 6, 2, 4, 0, 7, 5, 8 };
 static int yscat[NUM_SCAT] = { 2, 1, 0, 8, 6, 4, 9, 3, 7, 5 };
 
-#if NeedFunctionPrototypes
 void useSpecialEffects(int state)
-#else
-void useSpecialEffects(state)
-	int state;
-#endif
 {
 	/* Set the state of the special effects - True = use */
 	/* Of course - if the sfx are not possible then no effect */
 	useSfx = state;
 }
 
-#if NeedFunctionPrototypes
 int getSpecialEffects(Display *display)
-#else
-int getSpecialEffects(display)
-	Display *display;
-#endif
 {
 	/* Only shake around if the server has backing store on */
 	if (DoesBackingStore(XDefaultScreenOfDisplay(display)) != Always)
@@ -116,45 +106,25 @@ int getSpecialEffects(display)
 	return useSfx;
 }
 
-#if NeedFunctionPrototypes
 void changeSfxMode(int newMode)
-#else
-void changeSfxMode(newMode)
-	int newMode;
-#endif
 {
 	modeSfx = newMode;
 }
 
-#if NeedFunctionPrototypes
 int currentSfxMode(void)
-#else
-int currentSfxMode()
-#endif
 {
 	/* Return the current special effects mode */
 	return modeSfx;
 }
 
-#if NeedFunctionPrototypes
 static void resetEffect(Display *display)
-#else
-static void resetEffect(display)
-	Display *display;
-#endif
 {
 	/* Just re-centre window return */
 	modeSfx = SFX_NONE;
 	XMoveWindow(display, playWindow, 35, 60);
 }
 
-#if NeedFunctionPrototypes
 int WindowBlindEffect(Display *display, Window window)
-#else
-int WindowBlindEffect(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	int x, i;
 
@@ -180,14 +150,7 @@ int WindowBlindEffect(display, window)
 }
 
 
-#if NeedFunctionPrototypes
 int WindowStaticEffect(Display *display, Window window, int w, int h)
-#else
-int WindowStaticEffect(display, window, w, h)
-	Display *display;
-	Window window;
-	int w, h;
-#endif
 {
 	static int start = True;
 
@@ -210,13 +173,7 @@ int WindowStaticEffect(display, window, w, h)
 	return True;
 }
 
-#if NeedFunctionPrototypes
 int WindowShatterEffect(Display *display, Window window)
-#else
-int WindowShatterEffect(display, window)
-	Display *display;
-	Window window;
-#endif
 {
     int offx, offy, sizeWidth, sizeHeight;
     int srcx, srcy, destx, desty;
@@ -274,14 +231,7 @@ int WindowShatterEffect(display, window)
 	return False;
 }
 
-#if NeedFunctionPrototypes
 int WindowFadeEffect(Display *display, Window window, int w, int h)
-#else
-int WindowFadeEffect(display, window, w, h)
-	Display *display;
-	Window window;
-	int w, h;
-#endif
 {
 	static int done = False;
 	static int first = True;
@@ -331,13 +281,7 @@ int WindowFadeEffect(display, window, w, h)
 	return True;
 }
 
-#if NeedFunctionPrototypes
 int WindowShakeEffect(Display *display, Window window)
-#else
-int WindowShakeEffect(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	static int x = 35;
 	static int y = 60;
@@ -377,23 +321,12 @@ int WindowShakeEffect(display, window)
 	return True;
 }
 
-#if NeedFunctionPrototypes
 void SetSfxEndFrame(int endFrame)
-#else
-void SetSfxEndFrame(endFrame)
-	int endFrame;
-#endif
 {
 	sfxEndFrame = endFrame;
 }
 
-#if NeedFunctionPrototypes
 void BorderGlow(Display *display, Window window)
-#else
-void BorderGlow(display, window)
-    Display *display;
-    Window window;
-#endif
 {
     static int i = 0;
     static int d = 1;
@@ -430,25 +363,12 @@ void BorderGlow(display, window)
      }
 }
 
-#if NeedFunctionPrototypes
 void ResetBorderGlow(Display *display, Window window)
-#else
-void ResetBorderGlow(display, window)
-    Display *display;
-    Window window;
-#endif
 {
     XSetWindowBorder(display, playWindow, red);
 }
 
-#if NeedFunctionPrototypes
 void FadeAwayArea(Display *display, Window window, int x, int y, int w, int h)
-#else
-void FadeAwayArea(display, window, x, y, w, h)
-	Display *display;
-	Window window;
-	int x, y, w, h;
-#endif
 {
 	int i, x1, y1, step;
 

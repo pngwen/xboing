@@ -90,11 +90,7 @@
  *  Internal type declarations:
  */
 
-#if NeedFunctionPrototypes
 static void DoKeysWait(void);
-#else
-static void DoKeysWait();
-#endif
 
 
 /*
@@ -109,14 +105,7 @@ enum KeysStates waitMode;
 Pixmap mouse, leftarrow, rightarrow;
 Pixmap mouseM, leftarrowM, rightarrowM;
 
-#if NeedFunctionPrototypes
 void SetUpKeys(Display *display, Window window, Colormap colormap)
-#else
-void SetUpKeys(display, window, colormap)
-	Display *display;
-	Window window;
-	Colormap colormap;
-#endif
 {
     XpmAttributes   attributes;
     int             XpmErrorStatus;
@@ -142,13 +131,7 @@ void SetUpKeys(display, window, colormap)
 	ResetKeys();
 }
 
-#if NeedFunctionPrototypes
 static void DoText(Display *display, Window window)
-#else
-static void DoText(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	char string[80];
 	int y;
@@ -279,13 +262,7 @@ static void DoText(display, window)
 		PLAY_HEIGHT - 30, tann, PLAY_WIDTH);
 }
 
-#if NeedFunctionPrototypes
 static void DoSparkle(Display *display, Window window)
-#else
-static void DoSparkle(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	static Pixmap store;
 	static int x = 100;
@@ -324,13 +301,7 @@ static void DoSparkle(display, window)
 	}
 }
 
-#if NeedFunctionPrototypes
 static void DoFinish(Display *display, Window window)
-#else
-static void DoFinish(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	ResetKeysEdit();
 	mode = MODE_KEYSEDIT;
@@ -339,13 +310,7 @@ static void DoFinish(display, window)
 }
 
 
-#if NeedFunctionPrototypes
 void Keys(Display *display, Window window)
-#else
-void Keys(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	switch (KeysState)
 	{
@@ -389,24 +354,13 @@ void Keys(display, window)
 	}
 }
 
-#if NeedFunctionPrototypes
 void RedrawKeys(Display *display, Window window)
-#else
-void RedrawKeys(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	DoIntroTitle(display, window);
 	DoText(display, window);
 }
 
-#if NeedFunctionPrototypes
 void FreeKeyControl(Display *display)
-#else
-void FreeKeyControl(display)
-	Display *display;
-#endif
 {
     if (mouse)     		XFreePixmap(display, mouse);
     if (mouseM)     	XFreePixmap(display, mouseM);
@@ -416,11 +370,7 @@ void FreeKeyControl(display)
     if (rightarrowM)   	XFreePixmap(display, rightarrowM);
 }
 
-#if NeedFunctionPrototypes
 void ResetKeys(void)
-#else
-void ResetKeys()
-#endif
 {
 	KeysState = KEYS_TITLE;
 	startFrame 	= frame + 100;
@@ -430,11 +380,7 @@ void ResetKeys()
 	DEBUG("Reset keys mode.")
 }
 
-#if NeedFunctionPrototypes
 static void DoKeysWait(void)
-#else
-static void DoKeysWait()
-#endif
 {
 	if (frame == waitingFrame)
 		KeysState = waitMode;

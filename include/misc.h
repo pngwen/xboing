@@ -64,7 +64,6 @@
  *  Function prototypes:
  */
 
-#if NeedFunctionPrototypes
 void 	DrawText(Display *display, Window window, int x, int y, 
 			XFontStruct *font, int colour, char *text, int numChar);
 void 	DrawTextFast(Display *display, Window window, int x, int y, 
@@ -96,27 +95,5 @@ Pixmap 	ScalePixmap(Display *display, Window window, Pixmap source,
 			int swidth, int sheight, int dwidth, int dheight);
 void 	Draw4PointCurve(Display *display, Window window, XPoint *p, 
 			int num_steps);
-#else
-void 	Draw4PointCurve();
-Pixmap 	ScalePixmap();
-int 	YesNoDialogue();
-int 	ObtainMousePosition();
-void 	sleepSync();
-#ifdef NEED_USLEEP
-void 	usleep();
-#endif
-int 	ObtainWindowWidthHeight();
-int 	ResizeMainWindow();
-char 	*GetHomeDir();
-char 	*getUsersFullName();
-void 	FreeMisc();
-int 	ColourNameToPixel();
-void 	DrawText();
-void 	DrawTextFast();
-void 	DrawLine();
-void 	RenderShape();
-void 	DrawShadowCentredText();
-void 	DrawShadowText();
-#endif
 
 #endif

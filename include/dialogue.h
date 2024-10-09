@@ -84,7 +84,6 @@ enum DialogueStates
  *  Function prototypes:
  */
 
-#if NeedFunctionPrototypes
 void ProcessDialogue(Display *display);
 void handleDialogueKeys(Display *display, XEvent event);
 char *UserInputDialogueMessage(Display *display, char *message, int type,
@@ -92,13 +91,6 @@ char *UserInputDialogueMessage(Display *display, char *message, int type,
 void FreeDialoguePixmaps(Display *display);
 void InitialiseDialoguePixmaps(Display *display, Window window, 
 		Colormap colormap);
-#else
-void FreeDialoguePixmaps();
-void InitialiseDialoguePixmaps();
-char *UserInputDialogueMessage();
-void ProcessDialogue();
-void handleDialogueKeys();
-#endif
 
 extern Pixmap question, questionM;
 extern Pixmap floppy, floppyM;

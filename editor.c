@@ -102,17 +102,10 @@
  *  Internal type declarations:
  */
 
-#if NeedFunctionPrototypes
 void SetEditWait(enum EditStates newMode, int waitFrame);
 void DoEditWait(void);
 static void HandleRandomBlocks(Display *display);
 void SetCurrentSymbol(Display *display, int i);
-#else
-void SetCurrentSymbol();
-static void HandleRandomBlocks();
-void SetEditWait();
-void DoEditWait();
-#endif
 
 /*
  *  Internal variable declarations:
@@ -138,25 +131,12 @@ struct editData
 	int			slideIndex;
 } EditorInfo[50];
 
-#if NeedFunctionPrototypes
 void SetUpEditor(Display *display, Window window, Colormap colormap)
-#else
-void SetUpEditor(display, window, colormap)
-	Display *display;
-	Window window;
-	Colormap colormap;
-#endif
 {
 	ResetEditor();
 }
 
-#if NeedFunctionPrototypes
 static void DrawEditorGrid(Display *display, Window window)
-#else
-static void DrawEditorGrid(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	/* Draw a grid on editor window */
 	int x, y, xinc, yinc;
@@ -173,13 +153,7 @@ static void DrawEditorGrid(display, window)
 		DrawLine(display, window, 0, y, PLAY_WIDTH, y, reds[4], 1);
 }
 
-#if NeedFunctionPrototypes
 static void DoLoadLevel(Display *display, Window window)
-#else
-static void DoLoadLevel(display, window)
-	Display *display;
-	Window window;
-#endif
 {
     char levelPath[1024];
     char *str;
@@ -232,13 +206,7 @@ static void DoLoadLevel(display, window)
 	modified = False;
 }
 
-#if NeedFunctionPrototypes
 static void RedrawEditorArea(Display *display, Window window)
-#else
-static void RedrawEditorArea(display, window)
-	Display *display;
-	Window window;
-#endif
 {
     DrawStageBackground(display, window, 3, True);
 
@@ -251,11 +219,7 @@ static void RedrawEditorArea(display, window)
 }
 
 
-#if NeedFunctionPrototypes
 static void ClearEditorInfo(void)
-#else
-static void ClearEditorInfo()
-#endif
 {
 	int i;
 
@@ -274,12 +238,7 @@ static void ClearEditorInfo()
 	}
 }
 
-#if NeedFunctionPrototypes
 static int CheckBlockClicked(int x, int y)
-#else
-static int CheckBlockClicked(x, y)
-	int x, y;
-#endif
 {
 	int i;
 
@@ -298,13 +257,7 @@ static int CheckBlockClicked(x, y)
 	return -1;
 }
 
-#if NeedFunctionPrototypes
 void SetCurrentSymbol(Display *display, int i)
-#else
-void SetCurrentSymbol(display, i)
-    Display *display;
-	int i;
-#endif
 {
 	int y;
 
@@ -319,14 +272,7 @@ void SetCurrentSymbol(display, i)
 		EditorInfo[i].symbolType, EditorInfo[i].slideIndex, 0, 0);
 }
 
-#if NeedFunctionPrototypes
 void HandleEditorToolBar(Display *display, XEvent event, int Down)
-#else
-void HandleEditorToolBar(display, event, Down)
-    Display *display;
-	XEvent 	event;
-	int 	Down;
-#endif
 {
     int x, y, i;
 
@@ -357,13 +303,8 @@ void HandleEditorToolBar(display, event, Down)
 	}
 }
 
-#if NeedFunctionPrototypes
 static void SetupBlockEditorInfo(int x, int y, int w, int h, int type, int i, 
 	int slide)
-#else
-static void SetupBlockEditorInfo(x, y, w, h, type, i, slide)
-	int x, y, w, h, type, i, slide;
-#endif
 {
 	XPoint points[5];
 
@@ -385,13 +326,7 @@ static void SetupBlockEditorInfo(x, y, w, h, type, i, slide)
     EditorInfo[i].slideIndex = slide;
 }
 
-#if NeedFunctionPrototypes
 static void SetupBlockWindow(Display *display, Window window)
-#else
-static void SetupBlockWindow(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	int x, y, x1, y1, i, j, k;
 	int rowHeight = (PLAY_HEIGHT / MAX_ROW);
@@ -436,13 +371,7 @@ static void SetupBlockWindow(display, window)
 	}
 }
 
-#if NeedFunctionPrototypes
 static void DoFinish(Display *display, Window window)
-#else
-static void DoFinish(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	/* Close down the editor and return to normal state */
 
@@ -469,13 +398,7 @@ static void DoFinish(display, window)
     SetGameSpeed(FAST_SPEED);
 }
 
-#if NeedFunctionPrototypes
 void HandleButtonMotion(Display *display, XEvent event)
-#else
-void HandleButtonMotion(display, event)
-    Display *display;
-	XEvent 	event;
-#endif
 {
 	/* Handle all button down and motion events */
     int x, y, col, row;
@@ -533,14 +456,7 @@ void HandleButtonMotion(display, event)
 	}
 }
 
-#if NeedFunctionPrototypes
 void HandleEditorMouseButtons(Display *display, XEvent event, int Down)
-#else
-void HandleEditorMouseButtons(display, event, Down)
-    Display *display;
-	XEvent 	event;
-	int 	Down;
-#endif
 {
     int x, y, col, row;
 	struct aBlock *blockP;
@@ -645,12 +561,7 @@ void HandleEditorMouseButtons(display, event, Down)
 }
 
 
-#if NeedFunctionPrototypes
 static void SetupPlayTest(Display *display)
-#else
-static void SetupPlayTest(display)
-    Display *display;
-#endif
 {
 	EditState = EDIT_TEST;
 
@@ -687,12 +598,7 @@ static void SetupPlayTest(display)
     DrawSpecials(display);
 }
 
-#if NeedFunctionPrototypes
 static void FinishPlayTest(Display *display)
-#else
-static void FinishPlayTest(display)
-    Display *display;
-#endif
 {
 	EditState = EDIT_NONE;
 
@@ -717,12 +623,7 @@ static void FinishPlayTest(display)
 	unlink(tempName);
 }
 
-#if NeedFunctionPrototypes
 static void FlipBoardHorizontal(Display *display)
-#else
-static void FlipBoardHorizontal(display)
-	Display *display;
-#endif
 {
     register int r, c;
 	int temp[MAX_ROW_EDIT][2];
@@ -756,12 +657,7 @@ static void FlipBoardHorizontal(display)
 	modified = True;
 }
 
-#if NeedFunctionPrototypes
 static void ScrollBoardHorizontal(Display *display)
-#else
-static void ScrollBoardHorizontal(display)
-	Display *display;
-#endif
 {
     register int r, c;
 	int temp[MAX_ROW_EDIT][2];
@@ -809,12 +705,7 @@ static void ScrollBoardHorizontal(display)
 	modified = True;
 }
 
-#if NeedFunctionPrototypes
 static void FlipBoardVertical(Display *display)
-#else
-static void FlipBoardVertical(display)
-	Display *display;
-#endif
 {
     register int r, c;
 	int temp[MAX_COL_EDIT][2];
@@ -851,12 +742,7 @@ static void FlipBoardVertical(display)
 	modified = True;
 }
 
-#if NeedFunctionPrototypes
 static void ScrollBoardVertical(Display *display)
-#else
-static void ScrollBoardVertical(display)
-	Display *display;
-#endif
 {
     register int r, c;
 	int temp[MAX_COL_EDIT][2];
@@ -904,12 +790,7 @@ static void ScrollBoardVertical(display)
 	modified = True;
 }
 
-#if NeedFunctionPrototypes
 static void HandleRandomBlocks(Display *display)
-#else
-static void HandleRandomBlocks(display)
-    Display *display;
-#endif
 {
 	int r, c;
 
@@ -923,12 +804,7 @@ static void HandleRandomBlocks(display)
 	}
 }
 
-#if NeedFunctionPrototypes
 static void LoadALevel(Display *display)
-#else
-static void LoadALevel(display)
-    Display *display;
-#endif
 {
     /*
      * This function will display the user input dialogue and ask the
@@ -989,12 +865,7 @@ static void LoadALevel(display)
     }
 }
 
-#if NeedFunctionPrototypes
 static void SaveALevel(Display *display)
-#else
-static void SaveALevel(display)
-    Display *display;
-#endif
 {
     char str[80];
     char levelPath[1024];
@@ -1041,12 +912,7 @@ static void SaveALevel(display)
     }
 }
 
-#if NeedFunctionPrototypes
 static void SetTimeForLevel(Display *display)
-#else
-static void SetTimeForLevel(display)
-    Display *display;
-#endif
 {
     char str[80];
     int num;
@@ -1075,12 +941,7 @@ static void SetTimeForLevel(display)
 	}
 }
 
-#if NeedFunctionPrototypes
 static void SetNameForLevel(Display *display)
-#else
-static void SetNameForLevel(display)
-    Display *display;
-#endif
 {
     char str[80];
 
@@ -1107,13 +968,7 @@ static void SetNameForLevel(display)
 	modified = True;
 }
 
-#if NeedFunctionPrototypes
 static void handleAllEditorKeys(Display *display, KeySym keysym)
-#else
-static void handleAllEditorKeys(display, keysym)
-    Display *display;
-    KeySym keysym;
-#endif
 {
 	if (EditState == EDIT_TEST)
 	{
@@ -1233,13 +1088,7 @@ static void handleAllEditorKeys(display, keysym)
     }
 }
 
-#if NeedFunctionPrototypes
 void handleEditorKeys(Display *display, KeySym keysym)
-#else
-void handleEditorKeys(display, keysym)
-    Display *display;
-    KeySym keysym;
-#endif
 {
 	switch (EditState)
 	{
@@ -1250,13 +1099,7 @@ void handleEditorKeys(display, keysym)
 }
 
 
-#if NeedFunctionPrototypes
 void Editor(Display *display, Window window)
-#else
-void Editor(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	switch (EditState)
 	{
@@ -1294,55 +1137,30 @@ void Editor(display, window)
 	}
 }
 
-#if NeedFunctionPrototypes
 void RedrawEditor(Display *display, Window window)
-#else
-void RedrawEditor(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 }
 
-#if NeedFunctionPrototypes
 void FreeEditor(Display *display)
-#else
-void FreeEditor(display)
-	Display *display;
-#endif
 {
 	ClearEditorInfo();
 }
 
-#if NeedFunctionPrototypes
 void ResetEditor(void)
-#else
-void ResetEditor()
-#endif
 {
 	EditState = EDIT_LEVEL;
 
 	DEBUG("Reset Editor mode.")
 }
 
-#if NeedFunctionPrototypes
 void SetEditWait(enum EditStates newMode, int waitFrame)
-#else
-void SetEditWait(newMode, waitFrame)
-	enum EditStates newMode;
-	int waitFrame;
-#endif
 {
 	waitingFrame = waitFrame;
 	waitMode = newMode;
 	EditState = EDIT_WAIT;
 }
 
-#if NeedFunctionPrototypes
 void DoEditWait(void)
-#else
-void DoEditWait()
-#endif
 {
 	if (frame == waitingFrame)
 		EditState = waitMode;

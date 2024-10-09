@@ -65,24 +65,14 @@
  *  Internal variable declarations:
  */
 
-#if NeedFunctionPrototypes
 void NormalMessage(char *message)
-#else
-void NormalMessage(message)
-	char *message;
-#endif
 {
 	/* Print a message to standard out flush it */
 	fprintf(stdout, "XBoing - %s\n", message);
 	fflush(stdout);
 }
 
-#if NeedFunctionPrototypes
 void ErrorMessage(char *message)
-#else
-void ErrorMessage(message)
-	char *message;
-#endif
 {
 
 #ifndef READMEP_FILE
@@ -97,26 +87,14 @@ void ErrorMessage(message)
 	fflush(stdout);
 }
 
-#if NeedFunctionPrototypes
 void WarningMessage(char *message)
-#else
-void WarningMessage(message)
-	char *message;
-#endif
 {
 	/* Print a standard warning message to stdout and flush it */
 	fprintf(stdout, "XBoing - Warning: %s\n", message);
 	fflush(stdout);
 }
 
-#if NeedFunctionPrototypes
 void HandleXPMError(Display *display, int ErrorStatus, char *tag)
-#else
-void HandleXPMError(display, ErrorStatus, tag)
-	Display *display;
-	int ErrorStatus;
-	char *tag;
-#endif
 {
     char *error = NULL;
 	char *warning = NULL;

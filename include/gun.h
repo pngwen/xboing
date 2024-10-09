@@ -66,7 +66,6 @@
  *  Function prototypes:
  */
 
-#if NeedFunctionPrototypes
 void InitialiseBullet(Display *display, Window window, Colormap colormap);
 void FreeBullet(Display *display);
 void SetNumberBullets(int num);
@@ -79,19 +78,5 @@ void EraseTheBullet(Display *display, Window window, int x, int y);
 void HandleBulletMode(Display *display, Window window);
 void ClearBullets(void);
 void SetUnlimitedBullets(int state);
-#else
-void SetUnlimitedBullets();
-void InitialiseBullet();
-void FreeBullet();
-void SetNumberBullets();
-void IncNumberBullets();
-void DecNumberBullets();
-int GetNumberBullets();
-void shootBullet();
-void DrawTheBullet();
-void EraseTheBullet();
-void HandleBulletMode();
-void ClearBullets();
-#endif
 
 #endif

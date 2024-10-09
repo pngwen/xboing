@@ -101,11 +101,7 @@
  *  Internal type declarations:
  */
 
-#if NeedFunctionPrototypes
 static Window SetWMIcon(Display *display);
-#else
-static Window SetWMIcon();
-#endif
 
 /*
  *  Internal variable declarations:
@@ -131,15 +127,8 @@ int 	blinkslides[] = { 0, 1, 2, 3, 4, 5, 5, 4, 3, 2, 1, 0, 0, 0,
 					      0, 1, 2, 3, 4, 5, 5, 4, 3, 2, 1, 0 };
 
 
-#if NeedFunctionPrototypes
 void InitialiseMainBackPixmap(Display *display, Window window, 
 	Colormap colormap)
-#else
-void InitialiseMainBackPixmap(display, window, colormap)
-	Display *display;
-	Window window;
-	Colormap colormap;
-#endif
 {
 	XpmAttributes   attributes;
 	int		    XpmErrorStatus;
@@ -213,26 +202,14 @@ void InitialiseMainBackPixmap(display, window, colormap)
 	XpmFreeAttributes(&attributes);
 }
 
-#if NeedFunctionPrototypes
 void ClearMainWindow(Display *display, Window window)
-#else
-void ClearMainWindow(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	/* Make sure that it is drawn */
 	XSetWindowBackgroundPixmap(display, mainWindow, spacePixmap);
 	XClearWindow(display, mainWindow);
 }
 
-#if NeedFunctionPrototypes
 void SetWindowSizeHints(Display *display, int w, int h)
-#else
-void SetWindowSizeHints(display, w, h)
-	Display *display;
-	int w, h;
-#endif
 {
 	XSizeHints 		sizehints;
 	
@@ -247,16 +224,8 @@ void SetWindowSizeHints(display, w, h)
 	XSetWMNormalHints(display, mainWindow, &sizehints);
 }
 
-#if NeedFunctionPrototypes
 void CreateAllWindows(Display *display, Colormap colormap,
 	char **argv, int argc)
-#else
-void CreateAllWindows(display, colormap, argv, argc)
-	Display *display;
-	Colormap colormap;
-	char **argv;
-	int argc;
-#endif
 {
     char 			title[80];
 	int 			offsetX, offsetY, scoreWidth;
@@ -412,13 +381,7 @@ void CreateAllWindows(display, colormap, argv, argc)
 	XChangeWindowAttributes(display, typeWindow, 	valuemask, &winattr);
 }
 
-#if NeedFunctionPrototypes
 void SetBackgrounds(Display *display, Colormap colormap)
-#else
-void SetBackgrounds(display, colormap)
-	Display *display;
-	Colormap colormap;
-#endif
 {
 	InitialiseMainBackPixmap(display, mainWindow, colormap);
 
@@ -435,12 +398,7 @@ void SetBackgrounds(display, colormap)
 	XClearWindow(display, inputWindow);
 }
 
-#if NeedFunctionPrototypes
 void MapAllWindows(Display *display)
-#else
-void MapAllWindows(display)
-	Display *display;
-#endif
 {
 	/* Actually make everything visible */
   	XMapWindow(display, specialWindow);
@@ -453,13 +411,7 @@ void MapAllWindows(display)
 	XFlush(display);
 }
 
-#if NeedFunctionPrototypes
 void RedrawPlayWindow(Display *display, Window window)
-#else
-void RedrawPlayWindow(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	/* Redraw the main playfield */
 	XClearWindow(display, playWindow);
@@ -468,12 +420,7 @@ void RedrawPlayWindow(display, window)
 	RedrawBall(display, window);
 }
 
-#if NeedFunctionPrototypes
 void FreeBackgroundPixmaps(Display *display)
-#else
-void FreeBackgroundPixmaps(display)
-	Display *display;
-#endif
 {
 	int i;
 
@@ -497,12 +444,7 @@ void FreeBackgroundPixmaps(display)
 	}
 }
 
-#if NeedFunctionPrototypes
 static Window SetWMIcon(Display *display)
-#else
-static Window SetWMIcon(display)
-	Display *display;
-#endif
 {
     XpmAttributes   attributes;
 	Window	   		win, root;
@@ -539,16 +481,8 @@ static Window SetWMIcon(display)
 	return win;
 }
 
-#if NeedFunctionPrototypes
 void DrawStageBackground(Display *display, Window window, int stageType,
 	int clear)
-#else
-void DrawStageBackground(display, window, stageType, clear)
-	Display *display;
-	Window window;
-	int stageType;
-	int clear;
-#endif
 {
 	char type[80];
 
@@ -608,13 +542,7 @@ void DrawStageBackground(display, window, stageType, clear)
 		XClearWindow(display, window);
 }
 
-#if NeedFunctionPrototypes
 void ClearDevilEyes(Display *display, Window window)
-#else
-void ClearDevilEyes(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	/* Clear the devil eyes from current location */
 	XClearArea(display, window, 
@@ -622,17 +550,8 @@ void ClearDevilEyes(display, window)
 		DEVILEYE_WIDTH, DEVILEYE_HEIGHT, False);
 }
 
-#if NeedFunctionPrototypes
 static void DrawTheDevilEye(Display *display, Window window, int x, int y,
     int slide)
-#else
-static void DrawTheDevilEye(display, window, x, y, slide)
-    Display *display;
-    Window window;
-    int x;
-    int y;
-    int slide;
-#endif
 {
 	/* Draw a frame of the devil eyes */
     RenderShape(display, window, devilblink[slide], devilblinkM[slide],
@@ -640,13 +559,7 @@ static void DrawTheDevilEye(display, window, x, y, slide)
         False);
 }
 
-#if NeedFunctionPrototypes
 int BlinkDevilEyes(Display *display, Window window)
-#else
-int BlinkDevilEyes(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	static int slide = 0;
 	static int first = True;
