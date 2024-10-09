@@ -1293,7 +1293,7 @@ void Editor(display, window)
 			break;
 	}
 }
-
+/*DELETE RedrawEditor once confirmed for deletion
 #if NeedFunctionPrototypes
 void RedrawEditor(Display *display, Window window)
 #else
@@ -1303,6 +1303,7 @@ void RedrawEditor(display, window)
 #endif
 {
 }
+*/
 
 #if NeedFunctionPrototypes
 void FreeEditor(Display *display)

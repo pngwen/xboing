@@ -90,7 +90,8 @@ void HandleEditorMouseButtons();
 void handleEditorKeys();
 void SetUpEditor();
 void Editor();
-void RedrawEditor();
+//DELETE RedrawEditor once confirmed for deletion
+//void RedrawEditor();
 void FreeEditor();
 void ResetEditor();
 #endif
