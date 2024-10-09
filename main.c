@@ -362,11 +362,11 @@ void SelectiveRedraw(display)
 		case MODE_PAUSE:
 			RedrawPlayWindow(display, playWindow);
 			break;
-
-		case MODE_EDIT:
+			//DELETE REDRAWEDITOR IF NOT NEEDED
+			/*case MODE_EDIT:
 			RedrawEditor(display, playWindow);
 			break;
-
+			*/
 		case MODE_INTRO:
 			RedrawIntroduction(display, playWindow);
 			break;

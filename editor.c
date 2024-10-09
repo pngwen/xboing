@@ -1540,8 +1540,8 @@ void Editor(display, window)
 			break;
 	}
 }
-
-#if NeedFunctionPrototypes
+//DELETE IF NOT NEEDED
+/*#if NeedFunctionPrototypes
 void RedrawEditor(Display *display, Window window)
 #else
 /**
@@ -1554,12 +1554,13 @@ void RedrawEditor(Display *display, Window window)
  * @todo Possibly delete this function
  *
  */
-void RedrawEditor(display, window)
+/*void RedrawEditor(display, window)
 	Display *display;
 	Window window;
 #endif
 {
 }
+*/
 
 #if NeedFunctionPrototypes
 void FreeEditor(Display *display)

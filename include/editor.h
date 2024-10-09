@@ -113,6 +113,8 @@ void SetUpEditor(Display *display, Window window, Colormap colormap);
  */
 void Editor(Display *display, Window window);
 
+
+/* DELETE REDRAW EDITOR IF NOT NEEDED
 /**
  * @brief Redraws editor
  *
@@ -123,7 +125,9 @@ void Editor(Display *display, Window window);
  * @todo Possibly delete this function
  *
  */
+/*
 void RedrawEditor(Display *display, Window window);
+*/
 
 /**
  * @brief Free editor action
