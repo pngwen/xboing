@@ -1,4 +1,9 @@
-/*
+/**
+ * @file highscore.c
+ * @author Group 1
+ * @date 2024-10-08
+ * @brief 
+ * 
  * XBoing - An X11 blockout style computer game
  *
  * (c) Copyright 1993, 1994, 1995, Justin C. Kibell, All Rights Reserved
@@ -24,9 +29,7 @@
  * purpose.  The software provided hereunder is on an "AS IS" basis, and the
  * author has no obligation to provide maintenance, support, updates,
  * enhancements, or modifications.
- */
-
-/* 
+ * 
  * =========================================================================
  *
  * $Id: highscore.c,v 1.1.1.1 1994/12/16 01:36:46 jck Exp $
