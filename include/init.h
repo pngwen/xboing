@@ -70,52 +70,62 @@
 
 
 /**
- * Initializes everything needed to play the game and establishes some default settings.
+ * ilitialises game and checks for command line arguments
  *
- * @param char **argv Command line argument vector.
- * @param int argc Command line argument counter.
- * @return Display The new display after everything has been initialized.
+ * @param char **argv command arguement
+ * @param int argc amount of arguements
+ * @pre 
+ * @return Display starts displaying the game
+ * @post game starts
  * 
  */
 Display *InitialiseGame(char **argv, int argc);
 
 /**
- * Removes the colormap, closes the audio device, calls  all functions related to freeing memory or unloading things, and outputs error message if required.
+ * shuts down the game
  *
- * @param Display *display The display connection to the X server. 
- * @param int exitCode Code that determines whether the normal or error message will be printed.
- * @param char *message The string to be printed in the message.
+ * @param Display *display display pointer
+ * @param int exitCode exit code for debugging sakes
+ * @param char *message exit message
+ * @pre game is running
  * @return void 
+ * @post game is shut down
  * 
  */
 void ShutDown(Display *display, int exitCode, char *message);
 
 /**
- * Grabs the pointer (cursor) so you can't move the mouse out of the main window.
+ * grabs mouse so it cant exit window
  *
- * @param Display *display The display connection to the X server.
- * @param Window window The window itself.
+ * @param Display *display display pointer
+ * @param Window window display window
+ * @pre window is open
  * @return void 
+ * @post cursor cant leave window
  * 
  */
 void GrabPointer(Display *display, Window window);
 
 /**
- * Releases or "ungrabs" the pointer/cursor.
+ * release the cursor from the grasp of the window
  *
- * @param Display *display The display connection to the X server. 
+ * @param Display *display display pointer
+ * @pre window is open
  * @return void 
+ * @post cursor is free to move anywhere
  * 
  */
 void UnGrabPointer(Display *display);
 
 /**
- * Changes the look of the cursor based on what state it is in.
+ * changes the way the pointer looks
  *
- * @param Display *display The display connection to the X server.
- * @param Window window The window itself.
- * @param int cursorState The state of the cursor, determines which cursor to make.
- * @return void  
+ * @param Display *display display pointer
+ * @param Window window display window
+ * @param int cursorState state of the cursor defined by constants
+ * @pre cursor
+ * @return void 
+ * @post new cursor styles
  * 
  */
 void ChangePointer(Display *display, Window window, int cursorState);

@@ -65,91 +65,121 @@
  *  Function prototypes:
  */
 
+
 /**
- * @brief Draws graphical elements of specials
+ * Draws text that tells the player what special powerup they have
+ *
+ * @param Display *display display pointer
+ * @pre in a game
+ * @return void 
+ * @post displays powerup name
  * 
- * @param display The current display of the X11 window
  */
 void DrawSpecials(Display *display);
 
 /**
- * @brief Accessor for modifying fastGun
+ * toggles state of fast gun powerup
+ *
+ * @param Display *display pointer display
+ * @param int state boolean: state of gun
+ * @pre in a game
+ * @return void 
+ * @post toggles powerup 
  * 
- * @param display The current display of the X11 window
- * @param state The state to set fastGun to
- * 
- * @todo Remove function and replace calls with contents
  */
 void ToggleFastGun(Display *display, int state);
 
 /**
- * @brief Turns the walls on or off (also updates state of noWalls)
+ * toggles window walls
+ *
+ * @param Display *display display pointer
+ * @param int state boolean: state of window border'
+ * @pre 
+ * @return void 
+ * @post toggle window border
  * 
- * @param display The current display of the X11 window
- * @param state The state to set noWalls to (turn walls on/off)
  */
 void ToggleWallsOn(Display *display, int state);
 
 /**
- * @brief Turns off / disables special characteristics and bonuses
+ * turns off all specials
+ *
+ * @param Display *display display pointer
+ * @pre 
+ * @return void 
+ * @post turns specials off 
  * 
- * @param display The current display of the X11 window
  */
 void TurnSpecialsOff(Display *display);
 
 /**
- * @brief Accessor for modifying stickyBat
+ * toggtles Sticky Bat powerup
+ *
+ * @param Display *display display pointer
+ * @param int state Boolean: either on or off
+ * @pre in a game
+ * @return void 
+ * @post  toggles stickybat
  * 
- * @param display The current display of the X11 window
- * @param state The state to set stickyBat to
- * 
- * @todo Remove function and replace calls with contents
  */
 void ToggleStickyBat(Display *display, int state);
 
 /**
- * @brief Accessor for modifying saving
+ * toggles whether game can be saved or not
+ *
+ * @param Display *display display pointer
+ * @param int state boolean: either can save or can't
+ * @pre in a game
+ * @return void 
+ * @post toggles save feature
  * 
- * @param display The current display of the X11 window
- * @param state The state to set saving to
- * 
- * @todo Remove function and replace calls with contents
  */
 void ToggleSaving(Display *display, int state);
 
 /**
- * @brief Accessor for modifying x2Bonus (set x2 bonus)
+ * toggles 2x score bonus
+ *
+ * @param Display *display display pointer
+ * @param int state Boolean: bonus either on or off
+ * @pre in a game
+ * @return void 
+ * @post toggles score bonus
  * 
- * @param display The current display of the X11 window
- * @param state The state to set x2Bonus to
- * @todo Remove function and replace calls with contents
  */
 void Togglex2Bonus(Display *display, int state);
 
 /**
- * @brief Accessor for modifying x4Bonus (set x4 bonus)
+ * toggles 4x score bonus
+ *
+ * @param Display *display diplay pointer
+ * @param int state boolean: either on or off
+ * @pre in a game
+ * @return void 
+ * @post toggles score bonus
  * 
- * @param display The current display of the X11 window
- * @param state The state to set x4Bonus to
- * 
- * @todo Remove function and replace calls with contents
  */
 void Togglex4Bonus(Display *display, int state);
 
 /**
- * @brief Accessor for modifying Killer
+ * toggles killer mode
+ *
+ * @param Display *display display pointer
+ * @param int state Boolean: either on or off
+ * @pre in a game
+ * @return void 
+ * @post killer mode is toggled
  * 
- * @param display The current display of the X11 window
- * @param state The state to set Killer to
- * 
- * @todo Remove function and replace calls with contents
  */
 void ToggleKiller(Display *display, int state);
 
 /**
- * @brief Randomizes the state of specials& changes score and level number
+ * draws random special
+ *
+ * @param Display *display display pointer
+ * @pre in a game
+ * @return void 
+ * @post randomly spawns powerup
  * 
- * @param display The current display of the X11 window
  */
 void RandomDrawSpecials(Display *display);
 

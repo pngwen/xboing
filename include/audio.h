@@ -1,3 +1,13 @@
+/**
+ * @file audio.h
+ * @author Gerardo Gonzalez
+ * @date 2024-10-01
+ * @brief The header file for the audio of xboing
+ * 
+ * This header file contains the functions for the various audio sounds that xboing supported as well as the controls for raising and lowering the audio in-game
+ */
+
+
 #ifndef _AUDIO_H_
 #define _AUDIO_H_
 

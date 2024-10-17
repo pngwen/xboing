@@ -58,9 +58,12 @@
  */
 
 /**
- * @brief Prints a message to the console in the "normal" format
- * 
- * @param message The string to be printed in the message.
+ * @brief Prints a normal message to the standard output.
+ *
+ * This function takes a message string and prints it to the standard output
+ * with a prefix indicating the application name.
+ *
+ * @param message The message string to be printed.
  */
 void NormalMessage(char *message)
 {
@@ -70,9 +73,12 @@ void NormalMessage(char *message)
 }
 
 /**
- * @brief Prints a message to the console in the "Error" format & refers the user to the readme file
- * 
- * @param message The string to be printed in the message.
+ * @brief Prints an error message to the standard output.
+ *
+ * This function takes an error message string, prints it to the standard output,
+ * and suggests reading a specific README file for help.
+ *
+ * @param message The error message string to be printed.
  */
 void ErrorMessage(char *message)
 {
@@ -90,10 +96,12 @@ void ErrorMessage(char *message)
 }
 
 /**
- * Prints a message to the console in the in the "warning" format.
+ * @brief Prints a warning message to the standard output.
  *
- * @param char *message The string to be printed in the message
- * 
+ * This function takes a warning message string and prints it to the standard output
+ * with a prefix indicating it is a warning.
+ *
+ * @param message The warning message string to be printed.
  */
 void WarningMessage(char *message)
 {
@@ -102,14 +110,15 @@ void WarningMessage(char *message)
 	fflush(stdout);
 }
 
-
 /**
- * Prints error/warning messages. Shuts down the program if an error is encountered.
+ * @brief Handles errors returned by the XPM library.
  *
- * @param Display *display The display connection to the X server.
- * @param int ErrorStatus The error status returned bt the XPM library.
- * @param char *tag prefix the error or warning message.
- * 
+ * This function checks the error status from the XPM library and prints
+ * appropriate error or warning messages based on the type of error.
+ *
+ * @param display A pointer to the Display structure used for graphics.
+ * @param ErrorStatus The status code returned by the XPM library indicating the error type.
+ * @param tag A string tag to help identify the source of the error in the output.
  */
 void HandleXPMError(Display *display, int ErrorStatus, char *tag)
 {

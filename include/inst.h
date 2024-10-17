@@ -1,3 +1,13 @@
+/**
+ * @file inst.h
+ * @author Gerardo Gonzalez
+ * @date 2024-10-01
+ * @brief Thos file deals with the instructions
+ * 
+ * This is the header file for displaying the instructions of the game to the player
+ */
+
+
 #ifndef _INST_H_
 #define _INST_H_
 
@@ -56,7 +66,11 @@
  *  Type declarations:
  */
 
-//The current state of drawing instructions. Used to determine current/next instruction (drawing) step.
+/**
+ * @brief Enumeration for instruction states.
+ *
+ * This enumeration defines the different states of instructions in the game.
+ */
 enum InstructStates 
 { 
 	INSTRUCT_TITLE, 

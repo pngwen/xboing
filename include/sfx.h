@@ -1,3 +1,13 @@
+/**
+ * @file sfx.h
+ * @author Gerardo Gonzalez
+ * @date 2024-10-01
+ * @brief Special effects implementation for xboing
+ * 
+ * This header file houses the functions for the implementation of various visual effects used in xboing including shaking, blinding, and fading effects for game elements
+ */
+
+
 #ifndef _SFX_H_
 #define _SFX_H_
 

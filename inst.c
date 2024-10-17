@@ -121,7 +121,22 @@ enum InstructStates InstructState;
 static int waitingFrame;
 enum InstructStates waitMode;
 
-// Instead of storing the instructions within the source file, code could be modified to read the instructions in from a separate file.
+
+/**
+ * @brief Sets up the initial instruction display.
+ *
+ * This function resets the instruction display to its default state.
+ *
+ * @param display A pointer to the Display structure for graphics.
+ * @param window The window where instructions will be displayed.
+ * @param colormap The colormap used for rendering.
+ */
+void SetUpInstructions(Display *display, Window window, Colormap colormap)
+{
+	/* Umm. Reset the instructions to default state */
+	ResetInstructions();
+}
+
 char *instructionText[] =
 {
 	"XBoing is a blockout game where you use a paddle to bounce",
@@ -190,10 +205,12 @@ static void DoText(Display *display, Window window)
 }
 
 /**
- * @brief Draws sparkle animation
- * 
- * @param display The display of the X11 window
- * @param window The X11 window to draw on
+ * @brief Creates a sparkle effect in the instruction display.
+ *
+ * This function animates a sparkle effect at a random position on the screen.
+ *
+ * @param display A pointer to the Display structure for graphics.
+ * @param window The window where the sparkle effect will be drawn.
  */
 static void DoSparkle(Display *display, Window window)
 {
@@ -234,13 +251,14 @@ static void DoSparkle(Display *display, Window window)
     }
 }
 
+
 /**
- * @brief Set the mode to demo mode and play a demo song
- * 
- * @param display Unused parameter.
- * @param window Unusued parameters.
- * 
- * @todo Remove unused parameters
+ * @brief Finalizes the instruction display.
+ *
+ * This function resets the demonstration mode and plays a sound.
+ *
+ * @param display A pointer to the Display structure for graphics.
+ * @param window The window where instructions will be displayed.
  */
 static void DoFinish(Display *display, Window window)
 {
@@ -252,11 +270,14 @@ static void DoFinish(Display *display, Window window)
 }
 
 /**
- * @brief Draws parts of the instructions using the current instruct state. Also updates state so that next call will complete the next instruction part.
- * 
- * @param display The display of the current X11 window
- * @param window The X11 window to print the instructions to
+ * @brief Main function for handling instruction display states.
+ *
+ * This function updates the instruction display based on the current state.
+ *
+ * @param display A pointer to the Display structure for graphics.
+ * @param window The window where instructions will be displayed.
  */
+
 void Instructions(Display *display, Window window)
 {
 	switch (InstructState)
@@ -301,10 +322,12 @@ void Instructions(Display *display, Window window)
 }
 
 /**
- * @brief Used to draw instructions on the screen after void Instruction() has already been called
- * 
- * @param display The display of the current X11 window
- * @param window The X11 window to print the instructions to
+ * @brief Redraws the current instructions.
+ *
+ * This function re-renders the title and text instructions in the specified window.
+ *
+ * @param display A pointer to the Display structure for graphics.
+ * @param window The window where instructions will be redrawn.
  */
 void RedrawInstructions(Display *display, Window window)
 {
@@ -313,8 +336,20 @@ void RedrawInstructions(Display *display, Window window)
 }
 
 /**
- * @brief Resets InstructState (prepares for displaying instructions)
- * 
+ * @brief Frees resources associated with instructions.
+ *
+ * This function currently does not perform any actions but is provided for future use.
+ *
+ * @param display A pointer to the Display structure for graphics.
+ */
+void FreeInstructions(Display *display)
+{
+}
+
+/**
+ * @brief Resets the instruction state.
+ *
+ * This function sets the instruction display back to its initial state.
  */
 void ResetInstructions(void)
 {
@@ -326,10 +361,12 @@ void ResetInstructions(void)
 }
 
 /**
- * @brief Sets instruction state & other properties to wait. Function-not-used, could be removed.
- * 
- * @param newMode The new instruction state to set
- * @param waitFrame The new waiting frame to set
+ * @brief Sets the state to wait before proceeding with instructions.
+ *
+ * This function updates the waiting frame and the next mode to proceed to.
+ *
+ * @param newMode The new instruction state to transition to.
+ * @param waitFrame The frame at which to transition to the new mode.
  */
 void SetInstructWait(enum InstructStates newMode, int waitFrame)
 {
@@ -339,8 +376,9 @@ void SetInstructWait(enum InstructStates newMode, int waitFrame)
 }
 
 /**
- * @brief Sets the instruction state to wait if the current frame is waiting. Single-use-function, could be removed
- * 
+ * @brief Handles the waiting state in instruction display.
+ *
+ * This function checks if the wait duration has elapsed to transition to the next state.
  */
 void DoInstructWait(void)
 {

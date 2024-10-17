@@ -127,14 +127,15 @@ int 	blinkslides[] = { 0, 1, 2, 3, 4, 5, 5, 4, 3, 2, 1, 0, 0, 0,
 					      0, 1, 2, 3, 4, 5, 5, 4, 3, 2, 1, 0 };
 
 
-
 /**
- * Inits the background pixel map
- *
- * @param Display *display Display connection to x server
- * @param Window window Literally the window itself
- *
+ * @brief Initializes the main background pixmap and various other pixmaps.
  * 
+ * Creates the main background pixmap along with several other background pixmaps,
+ * including the devil blink animation frames.
+ *
+ * @param display The X11 display connection.
+ * @param window The window in which the pixmap will be drawn.
+ * @param colormap The colormap to use for the pixmaps.
  */
 void InitialiseMainBackPixmap(Display *display, Window window, 
 	Colormap colormap)
@@ -211,14 +212,13 @@ void InitialiseMainBackPixmap(Display *display, Window window,
 	XpmFreeAttributes(&attributes);
 }
 
-
 /**
- * Clears the main window and returns it to its blank form
- *
- * @param Display *display Display connection to X server
- * @param Window window The display window itself
- *  
+ * @brief Clears the main game window.
  * 
+ * Sets the main window's background pixmap to `spacePixmap` and clears it.
+ *
+ * @param display The X11 display connection.
+ * @param window The main game window.
  */
 void ClearMainWindow(Display *display, Window window)
 {
@@ -227,15 +227,14 @@ void ClearMainWindow(Display *display, Window window)
 	XClearWindow(display, mainWindow);
 }
 
-
 /**
- * Sets window size
- *
- * @param Display *display Display connection to display x server
- * @param int w Window Width
- * @param int h Window Height 
- *  
+ * @brief Sets window size hints for the main window.
  * 
+ * Defines the minimum and maximum sizes for the main game window.
+ *
+ * @param display The X11 display connection.
+ * @param w The width of the window.
+ * @param h The height of the window.
  */
 void SetWindowSizeHints(Display *display, int w, int h)
 {
@@ -252,13 +251,16 @@ void SetWindowSizeHints(Display *display, int w, int h)
 	XSetWMNormalHints(display, mainWindow, &sizehints);
 }
 
-
 /**
- * Creates all the game windows (score, level, gameplay, etc)
- *
- * @param Display *display Display connection to x server
- * @param Colormap colormap Map of colors
+ * @brief Creates all the windows needed for the game.
  * 
+ * This function creates the main game window, the score window, the play window,
+ * and other sub-windows used by the game. It also sets window manager properties.
+ *
+ * @param display The X11 display connection.
+ * @param colormap The colormap to be used for the windows.
+ * @param argv The arguments used to run the program.
+ * @param argc The number of arguments.
  */
 void CreateAllWindows(Display *display, Colormap colormap,
 	char **argv, int argc)
@@ -417,13 +419,13 @@ void CreateAllWindows(Display *display, Colormap colormap,
 	XChangeWindowAttributes(display, typeWindow, 	valuemask, &winattr);
 }
 
-
 /**
- * Sets the backgrounds for the game
- *
- * @param Display *display Display connection to x server
- * @param Colormap colormap Map of colors
+ * @brief Sets the backgrounds for the different game windows.
  * 
+ * Initializes pixmaps for the background of the game windows and clears the windows.
+ *
+ * @param display The X11 display connection.
+ * @param colormap The colormap used for the pixmaps.
  */
 void SetBackgrounds(Display *display, Colormap colormap)
 {
@@ -442,12 +444,12 @@ void SetBackgrounds(Display *display, Colormap colormap)
 	XClearWindow(display, inputWindow);
 }
 
-
 /**
- * Makes the windows visible
+ * @brief Maps all game windows to make them visible.
+ * 
+ * Maps all the game windows, making them visible on the screen.
  *
- * @param Display *display Display connection for x server
- *
+ * @param display The X11 display connection.
  */
 void MapAllWindows(Display *display)
 {
@@ -462,13 +464,14 @@ void MapAllWindows(Display *display)
 	XFlush(display);
 }
 
-
 /**
- * Redraws play area
- *
- * @param Display *display Display connection to x server
- * @param Window window Window itself
+ * @brief Redraws the play window.
  * 
+ * Clears the play window and redraws the game components, such as blocks, paddle,
+ * and ball.
+ *
+ * @param display The X11 display connection.
+ * @param window The play window.
  */
 void RedrawPlayWindow(Display *display, Window window)
 {
@@ -479,12 +482,13 @@ void RedrawPlayWindow(Display *display, Window window)
 	RedrawBall(display, window);
 }
 
-
 /**
- * Frees background from current state
- *
- * @param Display *display Display connection to x server
+ * @brief Frees all background pixmaps.
  * 
+ * Frees all pixmaps that were allocated for backgrounds, the icon, and devil blink
+ * animations.
+ *
+ * @param display The X11 display connection.
  */
 void FreeBackgroundPixmaps(Display *display)
 {
@@ -510,12 +514,14 @@ void FreeBackgroundPixmaps(Display *display)
 	}
 }
 
-
 /**
- * Sets icon window
- *
- * @param Display *display Display connection to x server
+ * @brief Sets the window manager icon.
  * 
+ * Creates an icon window and sets it as the window manager icon for the main game
+ * window.
+ *
+ * @param display The X11 display connection.
+ * @return The created icon window.
  */
 static Window SetWMIcon(Display *display)
 {
@@ -554,14 +560,15 @@ static Window SetWMIcon(Display *display)
 	return win;
 }
 
-
 /**
- * Actually draws the background to whatever specification
- *
- * @param Display *display Display connection to x server
- * @param Window window The window itself
- * @param int stageType What color/type of background
+ * @brief Draws the background for the current game stage.
  * 
+ * Draws the appropriate background for the current stage of the game.
+ *
+ * @param display The X11 display connection.
+ * @param window The window in which to draw the stage background.
+ * @param stageType The type of stage background to draw.
+ * @param clear Whether to clear the window before drawing.
  */
 void DrawStageBackground(Display *display, Window window, int stageType,
 	int clear)
@@ -624,13 +631,13 @@ void DrawStageBackground(Display *display, Window window, int stageType,
 		XClearWindow(display, window);
 }
 
-
 /**
- * Clears devil eyes (?)
- *
- * @param Display *display Display connection to x server
- * @param Window window The window itself
+ * @brief Clear the devil eyes from the current location on the screen.
  * 
+ * This function erases the drawn devil eyes from their previous position.
+ * 
+ * @param display The display connection.
+ * @param window The window from which the devil eyes will be cleared.
  */
 void ClearDevilEyes(Display *display, Window window)
 {
@@ -640,15 +647,17 @@ void ClearDevilEyes(Display *display, Window window)
 		DEVILEYE_WIDTH, DEVILEYE_HEIGHT, False);
 }
 
-
 /**
- * Draw the devil eye
- *
- * @param Display *display Display connection to x server
- * @param Window window The window itself
- * @param int x x coord
- * @param int y y coord
+ * @brief Draw a frame of the devil eyes at the specified position.
  * 
+ * This function draws one frame of the devil eye animation at the given
+ * coordinates, applying the specified frame (slide) of the animation.
+ * 
+ * @param display The display connection.
+ * @param window The window where the devil eye will be drawn.
+ * @param x The x-coordinate where the devil eye will be drawn.
+ * @param y The y-coordinate where the devil eye will be drawn.
+ * @param slide The animation frame index of the devil eye.
  */
 static void DrawTheDevilEye(Display *display, Window window, int x, int y,
     int slide)
@@ -659,13 +668,15 @@ static void DrawTheDevilEye(Display *display, Window window, int x, int y,
         False);
 }
 
-
 /**
- * Makes the devil eye blink
- *
- * @param Display *display Display connection to x server
- * @param Window window The window itself
+ * @brief Perform the devil eye blinking animation.
  * 
+ * This function animates the blinking of the devil eyes by cycling through
+ * frames. The devil eyes are drawn at a fixed position on the play area.
+ * 
+ * @param display The display connection.
+ * @param window The window where the devil eyes will be animated.
+ * @return True if the animation should continue, False if it is finished.
  */
 int BlinkDevilEyes(Display *display, Window window)
 {
