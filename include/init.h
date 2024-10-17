@@ -72,7 +72,6 @@
  *  Function prototypes:
  */
 
-#if NeedFunctionPrototypes
 
 /**
  * ilitialises game and checks for command line arguments
@@ -134,13 +133,6 @@ void UnGrabPointer(Display *display);
  * 
  */
 void ChangePointer(Display *display, Window window, int cursorState);
-#else
-void ChangePointer();
-void GrabPointer();
-void UnGrabPointer();
-Display *InitialiseGame();
-void ShutDown();
-#endif
 
 extern GC gccopy, gc, gcxor, gcand, gcor, gcsfx;
 extern XFontStruct *titleFont, *copyFont, *textFont, *dataFont;

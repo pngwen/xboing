@@ -108,7 +108,6 @@
  *  Internal type declarations:
  */
 
-#if NeedFunctionPrototypes
 static int 	ResetBulletStart(Display *display, Window window);
 static void CheckTinks(Display *display, Window window);
 static void AddTink(Display *display, Window window, int xpos);
@@ -125,21 +124,6 @@ static int CheckBallBulletCollision(Display *display, Window window,
 	int bx, int by, int j);
 static int CheckEyeDudeBulletCollision(Display *display, Window window, 
 	int bx, int by);
-#else
-static int CheckEyeDudeBulletCollision();
-static int 	ResetBulletStart();
-static void CheckTinks();
-static void AddTink();
-static void ClearTinks();
-static void UpdateBullet();
-static int 	StartABullet();
-static void ClearBullet();
-static void DrawTheTink();
-static void EraseTheTink();
-static void DrawBullet();
-static int CheckForBulletCollision();
-static int CheckBallBulletCollision();
-#endif
 
 static struct 
 {
@@ -163,14 +147,7 @@ static Pixmap bulletPixmap, bulletMask;
 static Pixmap tinkPixmap, tinkMask;
 static int numBullets, unlimitedBullets;
 
-#if NeedFunctionPrototypes
 void InitialiseBullet(Display *display, Window window, Colormap colormap)
-#else
-void InitialiseBullet(display, window, colormap)
-	Display *display;
-	Window window;
-	Colormap colormap;
-#endif
 {
     XpmAttributes   attributes;
 	int		    XpmErrorStatus;
@@ -196,13 +173,7 @@ void InitialiseBullet(display, window, colormap)
 	ClearBullets();
 }
 
-#if NeedFunctionPrototypes
 static void CheckTinks(Display *display, Window window)
-#else
-static void CheckTinks(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	int i;
 
@@ -226,14 +197,7 @@ static void CheckTinks(display, window)
 	}
 }
 
-#if NeedFunctionPrototypes
 static void AddTink(Display *display, Window window, int xpos)
-#else
-static void AddTink(display, window, xpos)
-	Display *display;
-	Window window;
-	int xpos;
-#endif
 {
 	int i;
 
@@ -260,11 +224,7 @@ static void AddTink(display, window, xpos)
 	WarningMessage("Cannot draw tink - tink array full.");
 }
 
-#if NeedFunctionPrototypes
 static void ClearTinks(void)
-#else
-static void ClearTinks()
-#endif
 {
 	int i;
 
@@ -277,13 +237,7 @@ static void ClearTinks()
 }
 
 
-#if NeedFunctionPrototypes
 static void UpdateBullet(Display *display, Window window)
-#else
-static void UpdateBullet(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	int i, j;
 	int row, col;
@@ -440,14 +394,7 @@ static void UpdateBullet(display, window)
 }
 
 
-#if NeedFunctionPrototypes
 static int StartABullet(Display *display, Window window, int xpos)
-#else
-static int StartABullet(display, window, xpos)
-	Display *display;
-	Window window;
-	int xpos;
-#endif
 {
 	int i;
 
@@ -474,12 +421,7 @@ static int StartABullet(display, window, xpos)
 	return False;
 }
 
-#if NeedFunctionPrototypes
 static void ClearBullet(int i)
-#else
-static void ClearBullet(i)
-	int i;
-#endif
 {
 	/* Setup the bullet entry */
 	bullets[i].xpos 			= -1;
@@ -488,11 +430,7 @@ static void ClearBullet(i)
 	bullets[i].dy 				= BULLET_DY;
 }
 
-#if NeedFunctionPrototypes
 void ClearBullets(void)
-#else
-void ClearBullets()
-#endif
 {
 	int i;
 
@@ -501,12 +439,7 @@ void ClearBullets()
 		ClearBullet(i);
 }
 
-#if NeedFunctionPrototypes
 void FreeBullet(Display *display)
-#else
-void FreeBullet(display)
-	Display *display;
-#endif
 {
 	if (bulletPixmap)	XFreePixmap(display, bulletPixmap);
  	if (bulletMask) 	XFreePixmap(display, bulletMask);
@@ -515,22 +448,13 @@ void FreeBullet(display)
  	if (tinkMask) 	XFreePixmap(display, tinkMask);
 }
 
-#if NeedFunctionPrototypes
 void SetNumberBullets(int num)
-#else
-void SetNumberBullets(num)
-	int num;
-#endif
 {
 	/* Set the number of bullets available */
 	numBullets = num;
 }
 
-#if NeedFunctionPrototypes
 void IncNumberBullets(void)
-#else
-void IncNumberBullets()
-#endif
 {
 	/* Increment the number of bullets */
 	numBullets++;
@@ -540,22 +464,13 @@ void IncNumberBullets()
 		numBullets = MAX_BULLETS;
 }
 
-#if NeedFunctionPrototypes
 void SetUnlimitedBullets(int state)
-#else
-void SetUnlimitedBullets(state)
-	int state;
-#endif
 {
 	/* Set the unlimit bullets state */
 	unlimitedBullets = state;
 }
 
-#if NeedFunctionPrototypes
 void DecNumberBullets(void)
-#else
-void DecNumberBullets()
-#endif
 {
 	/* Only decrement number of bullets if the unlimited ammo is off */
 	if (unlimitedBullets == False)
@@ -569,11 +484,7 @@ void DecNumberBullets()
 	}
 }
 
-#if NeedFunctionPrototypes
 int GetNumberBullets(void)
-#else
-int GetNumberBullets()
-#endif
 {
 	assert(numBullets >= 0);
 
@@ -581,13 +492,7 @@ int GetNumberBullets()
 	return numBullets;
 }
 
-#if NeedFunctionPrototypes
 void shootBullet(Display *display, Window window)
-#else
-void shootBullet(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	/* Only shoot if no bullet is active and bullets and ball active */
 	if ((GetNumberBullets() > 0) && (IsBallWaiting() == False))
@@ -609,74 +514,35 @@ void shootBullet(display, window)
 	}
 }
 
-#if NeedFunctionPrototypes
 void EraseTheBullet(Display *display, Window window, int x, int y)
-#else
-void EraseTheBullet(display, window, x, y)
-	Display *display;
-	Window window;
-	int x;
-	int y;
-#endif
 {
 	/* Erase the bullet pixmap from the window */
     XClearArea(display, window, x - BULLET_WC, y - BULLET_HC, 
 		BULLET_WIDTH, BULLET_HEIGHT, False);
 }
 
-#if NeedFunctionPrototypes
 static void DrawTheTink(Display *display, Window window, int x, int y)
-#else
-static void DrawTheTink(display, window, x, y)
-	Display *display;
-	Window window;
-	int x;
-	int y;
-#endif
 {
 	/* Draw the tink pixmap into the window */
     RenderShape(display, window, tinkPixmap, tinkMask,
 		x - TINK_WC, y - TINK_HC, TINK_WIDTH, TINK_HEIGHT, False);
 }
 
-#if NeedFunctionPrototypes
 static void EraseTheTink(Display *display, Window window, int x, int y)
-#else
-static void EraseTheTink(display, window, x, y)
-	Display *display;
-	Window window;
-	int x;
-	int y;
-#endif
 {
 	/* Erase the tink pixmap from the window */
     XClearArea(display, window, x - TINK_WC, y - TINK_HC, 
 		TINK_WIDTH, TINK_HEIGHT, False);
 }
 
-#if NeedFunctionPrototypes
 void DrawTheBullet(Display *display, Window window, int x, int y)
-#else
-void DrawTheBullet(display, window, x, y)
-	Display *display;
-	Window window;
-	int x;
-	int y;
-#endif
 {
 	/* Draw the bullet pixmap into the window */
     RenderShape(display, window, bulletPixmap, bulletMask,
 		x - BULLET_WC, y - BULLET_HC, BULLET_WIDTH, BULLET_HEIGHT, False);
 }
 
-#if NeedFunctionPrototypes
 static void DrawBullet(Display *display, Window window, int i)
-#else
-static void DrawBullet(display, window, i)
-	Display *display;
-	Window window;
-	int i;
-#endif
 {
 	/* Clear the window of the bullet in the old position */
 	XClearArea(display, window, bullets[i].xpos - BULLET_WC, 
@@ -686,16 +552,8 @@ static void DrawBullet(display, window, i)
 	DrawTheBullet(display, window, bullets[i].xpos, bullets[i].ypos);
 }
 
-#if NeedFunctionPrototypes
 static int CheckEyeDudeBulletCollision(Display *display, Window window, 
 	int bx, int by)
-#else
-static int CheckEyeDudeBulletCollision(display, window, bx, by)
-	Display *display;
-	Window window;
-	int bx;
-	int by;
-#endif
 {
 	/*
 	 * Check if the bullet has hit an eye dude.
@@ -715,17 +573,8 @@ static int CheckEyeDudeBulletCollision(display, window, bx, by)
 		return False;
 }
 
-#if NeedFunctionPrototypes
 static int CheckBallBulletCollision(Display *display, Window window, 
 	int bx, int by, int j)
-#else
-static int CheckBallBulletCollision(display, window, bx, by, j)
-	Display *display;
-	Window window;
-	int bx;
-	int by;
-	int j;
-#endif
 {
 	int ballX, ballY;
 
@@ -741,16 +590,8 @@ static int CheckBallBulletCollision(display, window, bx, by, j)
 		return False;
 }
 
-#if NeedFunctionPrototypes
 static int CheckForBulletCollision(Display *display, Window window, 
 	int x, int y)
-#else
-static int CheckForBulletCollision(display, window, x, y)
-	Display *display;
-	Window window;
-	int x;
-	int y;
-#endif
 {
     /* Check for bullet to block collision */
     int row, col;
@@ -782,13 +623,7 @@ static int CheckForBulletCollision(display, window, x, y)
     return False;
 }
 
-#if NeedFunctionPrototypes
 static int ResetBulletStart(Display *display, Window window)
-#else
-static int ResetBulletStart(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	int status, size;
 
@@ -809,13 +644,7 @@ static int ResetBulletStart(display, window)
 	return status;
 }
 
-#if NeedFunctionPrototypes
 void HandleBulletMode(Display *display, Window window)
-#else
-void HandleBulletMode(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	/* Update all the bullets that may be moving */
 	if ((frame % BULLET_FRAME_RATE) == 0)

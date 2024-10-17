@@ -73,12 +73,7 @@
  *
  * @param message The message string to be printed.
  */
-#if NeedFunctionPrototypes
 void NormalMessage(char *message)
-#else
-void NormalMessage(message)
-	char *message;
-#endif
 {
 	/* Print a message to standard out flush it */
 	fprintf(stdout, "XBoing - %s\n", message);
@@ -93,12 +88,7 @@ void NormalMessage(message)
  *
  * @param message The error message string to be printed.
  */
-#if NeedFunctionPrototypes
 void ErrorMessage(char *message)
-#else
-void ErrorMessage(message)
-	char *message;
-#endif
 {
 
 #ifndef READMEP_FILE
@@ -121,12 +111,7 @@ void ErrorMessage(message)
  *
  * @param message The warning message string to be printed.
  */
-#if NeedFunctionPrototypes
 void WarningMessage(char *message)
-#else
-void WarningMessage(message)
-	char *message;
-#endif
 {
 	/* Print a standard warning message to stdout and flush it */
 	fprintf(stdout, "XBoing - Warning: %s\n", message);
@@ -143,14 +128,7 @@ void WarningMessage(message)
  * @param ErrorStatus The status code returned by the XPM library indicating the error type.
  * @param tag A string tag to help identify the source of the error in the output.
  */
-#if NeedFunctionPrototypes
 void HandleXPMError(Display *display, int ErrorStatus, char *tag)
-#else
-void HandleXPMError(display, ErrorStatus, tag)
-	Display *display;
-	int ErrorStatus;
-	char *tag;
-#endif
 {
     char *error = NULL;
 	char *warning = NULL;

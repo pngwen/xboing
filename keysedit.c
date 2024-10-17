@@ -85,11 +85,7 @@
  *  Internal type declarations:
  */
 
-#if NeedFunctionPrototypes
 static void DoKeysEditWait(void);
-#else
-static void DoKeysEditWait();
-#endif
 
 
 /*
@@ -102,14 +98,7 @@ enum KeysEditStates KeysEditState;
 static int waitingFrame;
 enum KeysEditStates waitMode;
 
-#if NeedFunctionPrototypes
 void SetUpKeysEdit(Display *display, Window window, Colormap colormap)
-#else
-void SetUpKeysEdit(display, window, colormap)
-	Display *display;
-	Window window;
-	Colormap colormap;
-#endif
 {
 	ResetKeysEdit();
 }
@@ -125,13 +114,7 @@ char *infoText[] =
 	"to finish. Remember that random specials will appear.",
 };
 
-#if NeedFunctionPrototypes
 static void DoText(Display *display, Window window)
-#else
-static void DoText(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	char string[80];
 	int y, i, j, x, y1;
@@ -224,13 +207,7 @@ static void DoText(display, window)
 		PLAY_HEIGHT - 30, tann, PLAY_WIDTH);
 }
 
-#if NeedFunctionPrototypes
 static void DoSparkle(Display *display, Window window)
-#else
-static void DoSparkle(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	static Pixmap store;
 	static int x = 100;
@@ -269,13 +246,7 @@ static void DoSparkle(display, window)
 	}
 }
 
-#if NeedFunctionPrototypes
 static void DoFinish(Display *display, Window window)
-#else
-static void DoFinish(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	static int toggle = GLOBAL;
 
@@ -293,13 +264,7 @@ static void DoFinish(display, window)
 }
 
 
-#if NeedFunctionPrototypes
 void KeysEdit(Display *display, Window window)
-#else
-void KeysEdit(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	switch (KeysEditState)
 	{
@@ -342,32 +307,17 @@ void KeysEdit(display, window)
 	}
 }
 
-#if NeedFunctionPrototypes
 void RedrawKeysEdit(Display *display, Window window)
-#else
-void RedrawKeysEdit(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	DoIntroTitle(display, window);
 	DoText(display, window);
 }
 
-#if NeedFunctionPrototypes
 void FreeKeyEditControl(Display *display)
-#else
-void FreeKeyEditControl(display)
-	Display *display;
-#endif
 {
 }
 
-#if NeedFunctionPrototypes
 void ResetKeysEdit(void)
-#else
-void ResetKeysEdit()
-#endif
 {
 	KeysEditState = KEYSEDIT_TITLE;
 	startFrame 	= frame + 100;
@@ -376,11 +326,7 @@ void ResetKeysEdit()
 	DEBUG("Reset KeysEdit mode.")
 }
 
-#if NeedFunctionPrototypes
 static void DoKeysEditWait(void)
-#else
-static void DoKeysEditWait()
-#endif
 {
 	if (frame == waitingFrame)
 		KeysEditState = waitMode;

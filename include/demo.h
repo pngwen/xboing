@@ -74,21 +74,12 @@ enum DemoStates
  *  Function prototypes:
  */
 
-#if NeedFunctionPrototypes
 void SetUpDemonstration(Display *display, Window window, Colormap colormap);
 void Demonstration(Display *display, Window window);
 void RedrawDemonstration(Display *display, Window window);
 void FreeDemonstration(Display *display);
 void ResetDemonstration(void);
 void DoDemoTitle(Display *display, Window window);
-#else
-void SetUpDemonstration();
-void Demonstration();
-void RedrawDemonstration();
-void FreeDemonstration();
-void ResetDemonstration();
-void DoDemoTitle();
-#endif
 
 extern 	enum DemoStates DemoState;
 

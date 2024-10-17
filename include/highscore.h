@@ -96,7 +96,6 @@ typedef struct
  *  Function prototypes:
  */
 
-#if NeedFunctionPrototypes
 void SetUpHighScore(Display *display, Window window, Colormap colormap);
 void HighScore(Display *display, Window window);
 void RedrawHighScore(Display *display, Window window);
@@ -111,21 +110,6 @@ void CommandlineHighscorePrint(void);
 void SetNickName(char *nick);
 char *GetNickName(void);
 void SetBoingMasterText(char *message);
-#else
-void SetBoingMasterText();
-char *GetNickName();
-void SetNickName();
-void CommandlineHighscorePrint();
-void SetUpHighScore();
-void HighScore();
-void RedrawHighScore();
-void FreeHighScore();
-void ResetHighScore();
-int ReadHighScoreTable();
-int WriteHighScoreTable();
-int CheckAndAddScoreToHighScore();
-int GetHighScoreRanking();
-#endif
 
 extern enum HighScoreStates HighScoreState;
 

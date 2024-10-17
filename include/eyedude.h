@@ -87,7 +87,6 @@ typedef enum EyeDudeStates
  *  Function prototypes:
  */
 
-#if NeedFunctionPrototypes
 void InitialiseEyeDudes(Display *display, Window window, Colormap colormap);
 void FreeEyeDudes(Display *display);
 void HandleEyeDudeMode(Display *display, Window window);
@@ -95,14 +94,5 @@ void ChangeEyeDudeMode(eyeDudeStates state);
 eyeDudeStates getEyeDudeMode(void);
 void GetEyeDudePosition(int *x, int *y);
 int CheckBallEyeDudeCollision(Display *display, Window window, int j);
-#else
-int CheckBallEyeDudeCollision();
-void GetEyeDudePosition();
-eyeDudeStates getEyeDudeMode();
-void InitialiseEyeDudes();
-void FreeEyeDudes();
-void HandleEyeDudeMode();
-void ChangeEyeDudeMode();
-#endif
 
 #endif

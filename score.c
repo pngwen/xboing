@@ -94,14 +94,7 @@ Pixmap	digitPixmapsM[NUM_DIGITS];
 u_long score = 0L;
 
 
-#if NeedFunctionPrototypes
 void InitialiseScoreDigits(Display *display, Window window, Colormap colormap)
-#else
-void InitialiseScoreDigits(display, window, colormap)
-	Display *display;
-	Window window;
-	Colormap colormap;
-#endif
 {
 	XpmAttributes   attributes;
 	int 			XpmErrorStatus;
@@ -154,32 +147,14 @@ void InitialiseScoreDigits(display, window, colormap)
 	XpmFreeAttributes(&attributes);
 }
 
-#if NeedFunctionPrototypes
 static void DrawDigit(Display *display, Window window, int digit, int x, int y)
-#else
-static void DrawDigit(display, window, digit, x, y)
-	Display *display;
-	Window window;
-	int digit;
-	int x;
-	int y;
-#endif
 {
 	/* Draw the digit in the window */
 	RenderShape(display, window, 
 		digitPixmaps[digit], digitPixmapsM[digit], x, y, 30, 40, True);
 }
 
-#if NeedFunctionPrototypes
 void DrawOutNumber(Display *display, Window window, u_long score, int x, int y)
-#else
-void DrawOutNumber(display, window, score, x, y)
-	Display *display;
-	Window window;
-	u_long score;
-	int x;
-	int y;
-#endif
 {
 	int digit;
 
@@ -193,34 +168,19 @@ void DrawOutNumber(display, window, score, x, y)
 	DrawDigit(display, window, digit, x - 32, y);
 }
 
-#if NeedFunctionPrototypes
 void SetTheScore(u_long new)
-#else
-void SetTheScore(new)
-	u_long new;
-#endif
 {
 	/* Set the score */
 	score = new;
 }
 
-#if NeedFunctionPrototypes
 void AddToScore(u_long inc)
-#else
-void AddToScore(inc)
-	u_long inc;
-#endif
 {
 	/* Compute the score */
 	score += ComputeScore(inc);
 }
 
-#if NeedFunctionPrototypes
 u_long ComputeScore(u_long inc)
-#else
-u_long ComputeScore(inc)
-    u_long inc;
-#endif
 {
     /* Take into account any score bonuses */
     if (x2Bonus == True)
@@ -232,14 +192,7 @@ u_long ComputeScore(inc)
     return (u_long) (inc);
 }
 
-#if NeedFunctionPrototypes
 void DisplayScore(Display *display, Window window, u_long score)
-#else
-void DisplayScore(display, window, score)
-	Display *display;
-	Window window;
-	u_long score;
-#endif
 {
 	/* Erase the old score in the window */
 	XClearWindow(display, window);
@@ -253,12 +206,7 @@ void DisplayScore(display, window, score)
 		DrawOutNumber(display, window, score, 224, 0);
 }
 
-#if NeedFunctionPrototypes
 void FreeScoreDigits(Display *display)
-#else
-void FreeScoreDigits(display)
-	Display *display;
-#endif
 {
 	int i;
 

@@ -132,7 +132,6 @@
  *  Internal type declarations:
  */
 
-#if NeedFunctionPrototypes
 static void MoveBall(Display *display, Window window, int x, int y, int replace,
 	int i);
 static void MoveBallBirth(Display *display, Window window, int x, int y, 
@@ -152,22 +151,6 @@ static void EraseTheBall(Display *display, Window window, int x, int y);
 static void ChangeBallDirectionToGuide(int i);
 static void Ball2BallCollision(BALL *ball1, BALL *ball2);
 static int WhenBallsCollide(BALL *ball1, BALL *ball2, float *time);
-#else
-static void Ball2BallCollision();
-static int WhenBallsCollide();
-static void ChangeBallDirectionToGuide();
-static void MoveBall();
-static void MoveBallBirth();
-static void TeleportBall();
-static int BallHitPaddle();
-static void UpdateABall();
-static int CheckRegions();
-static int CheckForCollision();
-static void updateBallVariables();
-static void SetBallWait();
-static void DoBallWait();
-static void EraseTheBall();
-#endif
 
 typedef struct
 {
@@ -190,14 +173,7 @@ static int guidePos = 6;	 /* Start in middle of guider */
 /* global constant machine epsilon */
 float MACHINE_EPS;
 
-#if NeedFunctionPrototypes
 void InitialiseBall(Display *display, Window window, Colormap colormap)
-#else
-void InitialiseBall(display, window, colormap)
-	Display 	*display;
-	Window 		window;
-	Colormap 	colormap;
-#endif
 {
 	/*
 	 * Read and create all the animation frames for the balls and guides.
@@ -320,12 +296,7 @@ void InitialiseBall(display, window, colormap)
 	ClearAllBalls();
 }
 
-#if NeedFunctionPrototypes
 void FreeBall(Display *display)
-#else
-void FreeBall(display)
-	Display *display;
-#endif
 {
 	/*
 	 * Free all the animation frames for the balls and guides etc.
@@ -356,26 +327,12 @@ void FreeBall(display)
 	}
 }
 
-#if NeedFunctionPrototypes
 void RedrawBall(Display *display, Window window)
-#else
-void RedrawBall(display, window)
-	Display *display; 
-	Window window;
-#endif
 {
 	/* not hard - STILL TO BE IMPLEMENTED */
 }
 
-#if NeedFunctionPrototypes
 static void EraseTheBall(Display *display, Window window, int x, int y)
-#else
-static void EraseTheBall(display, window, x, y)
-	Display *display;
-	Window window;
-	int x;
-	int y;
-#endif
 {
 	/* 
 	 * Clear the ball area! The x, y coordinates are the centre of ball 
@@ -385,16 +342,7 @@ static void EraseTheBall(display, window, x, y)
 		BALL_WIDTH, BALL_HEIGHT, False);
 }
 
-#if NeedFunctionPrototypes
 void DrawTheBall(Display *display, Window window, int x, int y, int slide)
-#else
-void DrawTheBall(display, window, x, y, slide)
-	Display *display;
-	Window window;
-	int x;
-	int y; 
-	int slide;
-#endif
 {
 	/* 
 	 * Draw the ball using the slide variable as the index into the frames
@@ -405,16 +353,7 @@ void DrawTheBall(display, window, x, y, slide)
 		x - BALL_WC, y - BALL_HC, BALL_WIDTH, BALL_HEIGHT, False);
 }
 
-#if NeedFunctionPrototypes
 void DrawTheBallBirth(Display *display, Window window, int x, int y, int slide)
-#else
-void DrawTheBallBirth(display, window, x, y, slide)
-	Display *display;
-	Window window;
-	int x;
-	int y;
-	int slide;
-#endif
 {
 	/* 
 	 * Draw the ball using the slide variable as the index into the frames
@@ -425,19 +364,8 @@ void DrawTheBallBirth(display, window, x, y, slide)
 		x - BALL_WC, y - BALL_HC, BALL_WIDTH, BALL_HEIGHT, False);
 }
 
-#if NeedFunctionPrototypes
 static void MoveBallBirth(Display *display, Window window, int x, int y, 
 	int slide, int replace, int i)
-#else
-static void MoveBallBirth(display, window, x, y, slide, replace, i)
-	Display *display;
-	Window window;
-	int x;
-	int y; 
-	int slide;
-	int replace;
-	int i;
-#endif
 {
 	/* 
 	 * Remove any debris under ball first by clearing it 
@@ -461,18 +389,8 @@ static void MoveBallBirth(display, window, x, y, slide, replace, i)
         DrawTheBallBirth(display, window, x, y, slide);
 }
 
-#if NeedFunctionPrototypes
 static void MoveBall(Display *display, Window window, int x, int y, int replace,
 	int i)
-#else
-static void MoveBall(display, window, x, y, replace, i)
-	Display *display; 
-	Window window;
-	int x;
-	int y;
-	int replace;
-	int i;
-#endif
 {
 	/*
 	 * Move the ball from one position to the next and also update the
@@ -506,15 +424,7 @@ static void MoveBall(display, window, x, y, replace, i)
 	if (balls[i].slide == BALL_SLIDES-1) balls[i].slide = 0;
 }
 
-#if NeedFunctionPrototypes
 static void MoveGuides(Display *display, Window window, int i, int remove)
-#else
-static void MoveGuides(display, window, i, remove)
-	Display *display; 
-	Window window;
-	int i;
-	int remove;
-#endif
 {
 	/*
 	 * The guide hangs out above a READY ball when waiting to be sent into
@@ -556,12 +466,7 @@ static void MoveGuides(display, window, i, remove)
 		guidePos = 6;
 }
 
-#if NeedFunctionPrototypes
 void RandomiseBallVelocity(int i)
-#else
-void RandomiseBallVelocity(i)
-	int i;
-#endif
 {
 	balls[i].dx = balls[i].dy = 0;
 
@@ -582,13 +487,7 @@ void RandomiseBallVelocity(i)
 	}
 }
 
-#if NeedFunctionPrototypes
 void DoBoardTilt(Display *display, int i)
-#else
-void DoBoardTilt(display, i)
-	Display *display;
-	int i;
-#endif
 {
 	/*
 	 * In the event of a ball loop bounce then this function will fiddle
@@ -608,14 +507,7 @@ void DoBoardTilt(display, i)
 	}
 }
 
-#if NeedFunctionPrototypes
 static void TeleportBall(Display *display, Window window, int i)
-#else
-static void TeleportBall(display, window, i)
-	Display *display;
- 	Window window;
-	int i;
-#endif
 {
 	/* 
 	 * This function will teleport the ball to some other space not occupied
@@ -728,13 +620,7 @@ static void TeleportBall(display, window, i)
 	DEBUG("Ball was NOT Teleported.");
 }
 
-#if NeedFunctionPrototypes
 void SplitBallInTwo(Display *display, Window window)
-#else
-void SplitBallInTwo(display, window)
-	Display *display;
- 	Window window;
-#endif
 {
 	/*
 	 * If a multiball block was hit then start another ball from somewhere.
@@ -758,14 +644,7 @@ void SplitBallInTwo(display, window)
 			"Cannot add ball!", True);
 }
 
-#if NeedFunctionPrototypes
 void ClearBallNow(Display *display, Window window, int i)
-#else
-void ClearBallNow(display, window, i)
-	Display *display;
- 	Window window;
-	int i;
-#endif
 {
 	/*
 	 * Terminate and clear this ball.
@@ -778,14 +657,7 @@ void ClearBallNow(display, window, i)
 	DEBUG("Clear ball now called.");
 }
 
-#if NeedFunctionPrototypes
 void KillBallNow(Display *display, Window window, int i)
-#else
-void KillBallNow(display, window, i)
-	Display *display;
- 	Window window;
-	int i;
-#endif
 {
 	/*
 	 * Set the ball to die by popping.
@@ -796,14 +668,7 @@ void KillBallNow(display, window, i)
 	DEBUG("Ball mode now BALL_POP.");
 }
 
-#if NeedFunctionPrototypes
 void GetBallPosition(int *ballX, int *ballY, int i)
-#else
-void GetBallPosition(ballX, ballY, i)
-	int *ballX;
-	int *ballY;
-	int i;
-#endif
 {
 	/*
 	 * Get the position of ball i.
@@ -813,17 +678,8 @@ void GetBallPosition(ballX, ballY, i)
 	*ballY = balls[i].bally;
 }
 
-#if NeedFunctionPrototypes
 static int BallHitPaddle(Display *display, Window window, int *hit, int i,
 	int *x, int *y)
-#else
-static int BallHitPaddle(display, window, hit, i, x, y)
-	Display *display;
-	Window window;
-	int *hit;
-	int i;
-	int *x, *y;
-#endif
 {
 	/*
 	 * Handle the ball hitting the paddle if it is. The bounce it back
@@ -914,15 +770,8 @@ static int BallHitPaddle(display, window, hit, i, x, y)
    	return False;
 }
 
-#if NeedFunctionPrototypes
 static int HandleTheBlocks(Display *display, Window window, int row, int col,
 	int i)
-#else
-static int HandleTheBlocks(display, window, row, col, i)
-	int row;
-	int col;
-	int i;
-#endif
 {
 	/*
 	 * When a ball hits a block it calls this routine and this routine
@@ -1153,14 +1002,7 @@ static int HandleTheBlocks(display, window, row, col, i)
 	return False;
 }
 
-#if NeedFunctionPrototypes
 static void UpdateABall(Display *display, Window window, int i)
-#else
-static void UpdateABall(display, window, i)
-	Display *display;
-	Window window;
-	int i;
-#endif
 {
 	/*
 	 * Main routine that will update the ball given and handle all collisions
@@ -1481,18 +1323,8 @@ static void UpdateABall(display, window, i)
 	}
 }
 
-#if NeedFunctionPrototypes
 static int CheckRegions(Display *display, Window window, int row, int col,
 	int x, int y, int i)
-#else
-static int CheckRegions(display, window, row, col, x, y, i)
-	Display *display;
-	Window window;
-	int row;
-	int col;
-	int x, y;
-	int i;
-#endif
 {
 	/*
 	 * Check each region and see if the ball has hit it.
@@ -1599,17 +1431,8 @@ static int CheckRegions(display, window, row, col, x, y, i)
 	return region;
 }
 
-#if NeedFunctionPrototypes
 static int CheckForCollision(Display *display, Window window, int x, int y, 
 	int *r, int *c, int i)
-#else
-static int CheckForCollision(display, window, x, y, r, c, i)
-	Display *display;
-	Window window;
-	int x, y;
-	int *r, *c;
-	int i;
-#endif
 {
 	/*
 	 * Check each adjoining block and see if the ball has hit any region in
@@ -1652,14 +1475,7 @@ static int CheckForCollision(display, window, x, y, r, c, i)
 	return ret;
 }
 
-#if NeedFunctionPrototypes
 static int WhenBallsCollide(BALL *ball1, BALL *ball2, float *time)
-#else
-static int WhenBallsCollide(ball1, ball2, time)
-    BALL *ball1;
-    BALL *ball2;
-    float *time;
-#endif
 {
     /*
      * Calculate when 2 balls will collide.
@@ -1722,13 +1538,7 @@ static int WhenBallsCollide(ball1, ball2, time)
    	return False;
 }
 
-#if NeedFunctionPrototypes
 static void Ball2BallCollision(BALL *ball1, BALL *ball2)
-#else
-static void Ball2BallCollision(ball1, ball2)
-    BALL *ball1;
-    BALL *ball2;
-#endif
 {
     /*
      * Calclulate the new velocity (direction) of the balls after a collision.
@@ -1765,12 +1575,7 @@ static void Ball2BallCollision(ball1, ball2)
    ball2->dy += (int) (k * p.y);
 }
 
-#if NeedFunctionPrototypes
 static void updateBallVariables(int i)
-#else
-static void updateBallVariables(i)
-	int i;
-#endif
 {
 	/*
 	 * Update the balls x and old pos for a ball moving on the paddle 
@@ -1783,11 +1588,7 @@ static void updateBallVariables(i)
 	balls[i].oldy 	= balls[i].bally;
 }
 
-#if NeedFunctionPrototypes
 int GetNumberOfActiveBalls(void)
-#else
-int GetNumberOfActiveBalls()
-#endif
 {
 	/*
 	 * Return the number of balls active in the arena.
@@ -1808,11 +1609,7 @@ int GetNumberOfActiveBalls()
 	return t;
 }
 
-#if NeedFunctionPrototypes
 int GetAnActiveBall(void)
-#else
-int GetAnActiveBall()
-#endif
 {
 	/*
 	 * 
@@ -1830,11 +1627,7 @@ int GetAnActiveBall()
 	return -1;
 }
 
-#if NeedFunctionPrototypes
 int IsBallWaiting(void)
-#else
-int IsBallWaiting()
-#endif
 {
 	/*
 	 * Check to see if any ball is ready to be actiavted.
@@ -1852,12 +1645,7 @@ int IsBallWaiting()
 	return False;
 }
 
-#if NeedFunctionPrototypes
 static void ChangeBallDirectionToGuide(int i)
-#else
-static void ChangeBallDirectionToGuide(i)
-	int i;
-#endif
 {
 	/* 
 	 * Change the direction vector of the ball to that of the guide
@@ -1899,13 +1687,7 @@ static void ChangeBallDirectionToGuide(i)
 	DEBUG("Changed ball start direction to guide.");
 }
 
-#if NeedFunctionPrototypes
 int ActivateWaitingBall(Display *display, Window window)
-#else
-int ActivateWaitingBall(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	/* 
 	 * Loop through all balls and find the first one that is ready to
@@ -1933,13 +1715,7 @@ int ActivateWaitingBall(display, window)
 	return False;
 }
 
-#if NeedFunctionPrototypes
 void ResetBallStart(Display *display, Window window)
-#else
-void ResetBallStart(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	/*
 	 * Add a new ball and create it on the paddle. It will then wait to be
@@ -1965,14 +1741,7 @@ void ResetBallStart(display, window)
 	}
 }
 
-#if NeedFunctionPrototypes
 static void AnimateBallPop(Display *display, Window window, int i)
-#else
-static void AnimateBallPop(display, window, i)
-	Display *display;
-	Window window;
-	int i;
-#endif
 {
 	/*
 	 * Animate a ball popping and then kill it off.
@@ -2016,14 +1785,7 @@ static void AnimateBallPop(display, window, i)
 	}
 }
 
-#if NeedFunctionPrototypes
 static void AnimateBallCreate(Display *display, Window window, int i)
-#else
-static void AnimateBallCreate(display, window, i)
-	Display *display;
-	Window window;
-	int i;
-#endif
 {
 	/*
 	 * Animate a ball being created and then make it READY on the paddle.
@@ -2074,13 +1836,7 @@ static void AnimateBallCreate(display, window, i)
 	}
 }
 
-#if NeedFunctionPrototypes
 void ChangeBallMode(enum BallStates newMode, int i)
-#else
-void ChangeBallMode(newMode, i)
-	enum BallStates newMode;
-	int i;
-#endif
 {
 	/*
 	 * Change the mode of a ball to a new one.
@@ -2090,14 +1846,7 @@ void ChangeBallMode(newMode, i)
 	balls[i].ballState = newMode;
 }
 
-#if NeedFunctionPrototypes
 static void SetBallWait(enum BallStates newMode, int waitFrame, int i)
-#else
-static void SetBallWait(newMode, waitFrame, i)
-	enum BallStates newMode;
-	int waitFrame;
-	int i;
-#endif
 {
 	/*
 	 * While the ball is waiting stay in ball wait mode.
@@ -2109,12 +1858,7 @@ static void SetBallWait(newMode, waitFrame, i)
 	balls[i].ballState 		= BALL_WAIT;
 }
 
-#if NeedFunctionPrototypes
 static void DoBallWait(int i)
-#else
-static void DoBallWait(i)
-	int i;
-#endif
 {
 	/*
 	 * Do the waiting for a ball that is in BALL_WAIT mode.
@@ -2128,16 +1872,7 @@ static void DoBallWait(i)
 	}
 }
 
-#if NeedFunctionPrototypes
 int AddANewBall(Display *display, int x, int y, int dx, int dy)
-#else
-int AddANewBall(display, x, y, dx, dy)
-	Display *display;
-	int x;
-	int y;
-	int dx;
-	int dy;
-#endif
 {
 	/*
 	 * Function that adds a new ball.
@@ -2183,12 +1918,7 @@ int AddANewBall(display, x, y, dx, dy)
 	return -1;
 }
 
-#if NeedFunctionPrototypes
 void ClearBall(int i)
-#else
-void ClearBall(i)
-	int i;
-#endif
 {
 	/*
 	 * Initialise all the ball structure to default values.
@@ -2212,11 +1942,7 @@ void ClearBall(i)
 	balls[i].ballState 			= BALL_CREATE;
 }
 
-#if NeedFunctionPrototypes
 void ClearAllBalls(void)
-#else
-void ClearAllBalls()
-#endif
 {
 	/*
 	 * Clear all ball data so we can start afresh next time.
@@ -2234,13 +1960,7 @@ void ClearAllBalls()
 	}
 }
 
-#if NeedFunctionPrototypes
 void HandleBallMode(Display *display, Window window)
-#else
-void HandleBallMode(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	/*
 	 * Handle each active ball and handle each of their modes.

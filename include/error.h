@@ -72,16 +72,9 @@
  *  Function prototypes:
  */
 
-#if NeedFunctionPrototypes
 void HandleXPMError(Display *display, int ErrorStatus, char *tag);
 void ErrorMessage(char *message);
 void WarningMessage(char *message);
 void NormalMessage(char *message);
-#else
-void NormalMessage();
-void WarningMessage();
-void HandleXPMError();
-void ErrorMessage();
-#endif
 
 #endif

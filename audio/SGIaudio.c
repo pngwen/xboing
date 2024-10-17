@@ -119,21 +119,12 @@ static long gainConf[] =
  * static interface functions
  */
 
-#if NeedFunctionPrototypes
 static void audioSetConfig(void)
-#else
-static void audioSetConfig()
-#endif
 {
     /* do nothing */
 }
 
-#if NeedFunctionPrototypes
 static void audioSetGain(int volume)
-#else
-static void audioSetGain(volume)
-	int volume;
-#endif
 {
 	/*
 	 * set Volume (0-100%)
@@ -148,11 +139,7 @@ static void audioSetGain(volume)
 }
 
 
-#if NeedFunctionPrototypes
 static int audioOpenPort(void)
-#else
-static int audioOpenPort()
-#endif
 {
 	/*
 	 * open audio
@@ -173,11 +160,7 @@ static int audioOpenPort()
     return False;   
 }
 
-#if NeedFunctionPrototypes
 static void audioClosePort(void)
-#else
-static void audioClosePort()
-#endif
 {
 	/*
 	 * close audio
@@ -189,11 +172,7 @@ static void audioClosePort()
     thePort = 0;
 }
 
-#if NeedFunctionPrototypes
 static int audioFlushPort(void)
-#else
-static int audioFlushPort()
-#endif
 {
 	/*
 	 * flush audio device please.
@@ -223,13 +202,7 @@ static int audioFlushPort()
 }
 
 
-#if NeedFunctionPrototypes
 static void auFileReadHeader(FILE *fp, sndHeader *hdr)
-#else
-static void auFileReadHeader(fp, hdr)
-	FILE *fp;
-	sndHeader *hdr;
-#endif
 {
 	/*
 	 * just jump over header
@@ -240,23 +213,14 @@ static void auFileReadHeader(fp, hdr)
     fseek(fp, (long)(hdr->dataOffset), SEEK_SET);
 }
 
-#if NeedFunctionPrototypes
 int SetUpAudioSystem(Display *display)
-#else
-int SetUpAudioSystem(display)
-	Display *display;
-#endif
 {
     int ok = audioOpenPort();
     audioSetGain(60);
     return ok;
 }
 
-#if NeedFunctionPrototypes
 void FreeAudioSystem(void)
-#else
-void FreeAudioSystem()
-#endif
 {
     while (ALgetfilled(thePort)) 
 		sginap(1);
@@ -264,23 +228,12 @@ void FreeAudioSystem()
     audioClosePort();
 }
 
-#if NeedFunctionPrototypes
 void setNewVolume(unsigned int Volume)
-#else
-void setNewVolume(Volume)
-	unsigned int Volume;
-#endif
 {
     audioSetGain(Volume);
 }
 
-#if NeedFunctionPrototypes
 void playSoundFile(char *filename, int volume)
-#else
-void playSoundFile(filename, volume)
-	char *filename;
-	int volume;
-#endif
 {
     char	  		soundfile[1024];
     unsigned char 	frameBuff[1024];
@@ -336,30 +289,17 @@ void playSoundFile(filename, volume)
     fclose(theFile);
 }
 
-#if NeedFunctionPrototypes
 void audioDeviceEvents(void)
-#else
-void audioDeviceEvents()
-#endif
 {
     /* None to do */
 }
 
-#if NeedFunctionPrototypes
 void SetMaximumVolume(int Volume)
-#else
-void SetMaximumVolume(Volume)
-    int Volume;
-#endif
 {
     MaxVolum = (float) Volume;
 }
 
-#if NeedFunctionPrototypes
 int GetMaximumVolume(void)
-#else
-int GetMaximumVolume()
-#endif
 {
     return (int) MaxVolum;
 }

@@ -82,12 +82,7 @@ typedef struct
     AuBucketID  bucket;
 } audioRec, *audioPtr;
 
-#if NeedFunctionPrototypes
 int SetUpAudioSystem(Display *display)
-#else
-int SetUpAudioSystem(display)
-    Display	*display;
-#endif
 {
     int         i;
     char       *displayname = DisplayString(display);
@@ -131,48 +126,24 @@ int SetUpAudioSystem(display)
     return True;
 }
 
-#if NeedFunctionPrototypes
 void FreeAudioSystem(void)
-#else
-void FreeAudioSystem()
-#endif
 {
     /* Turn off the connection to the au server */
 	AuCloseServer(aud);
     audio_on = False;
 }
 
-#if NeedFunctionPrototypes
 void setNewVolume(unsigned int Volume)
-#else
-void setNewVolume(Volume)
-    unsigned int Volume;
-#endif
 {
     /* Do nothing here as we don't need too */
 }
 
-#if NeedFunctionPrototypes
 static void doneCB(AuServer *aud, AuEventHandlerRec *handler, AuEvent *event,		audioPtr info)
-#else
-static void doneCB(aud, handler, event, info)
-    AuServer   			*aud;
-    AuEventHandlerRec 	*handler;
-    AuEvent    			*event;
-    audioPtr    		info;
-#endif
 {
     info->playing = False;
 }
 
-#if NeedFunctionPrototypes
 void audioDevicePlay(char *filename, int volume, void **private)
-#else
-void audioDevicePlay(filename, volume, private)
-    char	*filename;
-    int     volume;
-    void    **private;
-#endif
 {
     audioPtr   *info = (audioPtr *) private;
 	char str[1024];
@@ -207,22 +178,12 @@ void audioDevicePlay(filename, volume, private)
     }
 }
 
-#if NeedFunctionPrototypes
 void audioDeviceEvents(void)
-#else
-void audioDeviceEvents()
-#endif
 {
     if (aud) AuHandleEvents(aud);
 }
 
-#if NeedFunctionPrototypes
 void playSoundFile(char *filename, int volume)
-#else
-void playSoundFile(filename, volume)
-    char       *filename;
-    int         volume;
-#endif
 {
     int         i;
     char        fbuf[1024];
@@ -257,20 +218,11 @@ void playSoundFile(filename, volume)
     audioDevicePlay(sound_table[i].filename, volume, &sound_table[i].private);
 }
 
-#if NeedFunctionPrototypes
 void SetMaximumVolume(int Volume)
-#else
-void SetMaximumVolume(Volume)
-    int Volume;
-#endif
 {
 }
 
-#if NeedFunctionPrototypes
 int GetMaximumVolume(void)
-#else
-int GetMaximumVolume()
-#endif
 {
     return 0;
 }

@@ -82,7 +82,6 @@ enum PresentStates
  *  Function prototypes:
  */
 
-#if NeedFunctionPrototypes
 void SetUpPresents(Display *display, Window window, Colormap colormap);
 void Presents(Display *display, Window window);
 void RedrawPresents(Display *display, Window window);
@@ -90,15 +89,6 @@ void FreeAllPresents(Display *display);
 void ResetPresents(void);
 void QuickFinish(Display *display, Window window);
 void FreeSomePresents(Display *display);
-#else
-void FreeSomePresents();
-void QuickFinish();
-void SetUpPresents();
-void Presents();
-void RedrawPresents();
-void FreeAllPresents();
-void ResetPresents();
-#endif
 
 extern 	enum PresentStates PresentState;
 extern Pixmap earthPixmap, earthPixmapM;

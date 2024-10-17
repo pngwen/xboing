@@ -69,7 +69,6 @@
  *  Function prototypes:
  */
 
-#if NeedFunctionPrototypes
 
 /**
  * Draws text that tells the player what special powerup they have
@@ -187,18 +186,6 @@ void ToggleKiller(Display *display, int state);
  * 
  */
 void RandomDrawSpecials(Display *display);
-#else
-void RandomDrawSpecials();
-void ToggleKiller();
-void TurnSpecialsOff();
-void DrawSpecials();
-void ToggleFastGun();
-void ToggleWallsOn();
-void ToggleStickyBat();
-void ToggleSaving();
-void Togglex2Bonus();
-void Togglex4Bonus();
-#endif
 
 extern int saving;
 extern int stickyBat;

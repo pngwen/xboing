@@ -81,7 +81,6 @@
  *  Function prototypes:
  */
 
-#if NeedFunctionPrototypes
 void SetSfxEndFrame(int endFrame);
 void changeSfxMode(int newMode);
 int oldSfxMode(void);
@@ -96,22 +95,6 @@ void useSpecialEffects(int state);
 void ResetBorderGlow(Display *display, Window window);
 void BorderGlow(Display *display, Window window);
 void FadeAwayArea(Display *display, Window window, int x, int y, int w, int h);
-#else
-void FadeAwayArea();
-void ResetBorderGlow();
-int WindowShatterEffect();
-int WindowBlindEffect();
-int WindowFadeEffect();
-int WindowShakeEffect();
-int WindowStaticEffect();
-void BorderGlow();
-void useSpecialEffects();
-int getSpecialEffects();
-void SetSfxEndFrame();
-void changeSfxMode();
-int oldSfxMode();
-int currentSfxMode();
-#endif
 
 
 #endif

@@ -80,13 +80,8 @@
  *  Internal type declarations:
  */
 
-#if NeedFunctionPrototypes
 static void redrawCurrentInput(Display *display);
 static void handleDialogueEventLoop(Display *display);
-#else
-static void handleDialogueEventLoop();
-static void redrawCurrentInput();
-#endif
 
 /*
  *  Internal variable declarations:
@@ -100,15 +95,8 @@ Pixmap 	question, questionM;
 Pixmap 	floppy, floppyM;
 Pixmap 	text, textM;
 
-#if NeedFunctionPrototypes
 void InitialiseDialoguePixmaps(Display *display, Window window,
     Colormap colormap)
-#else
-void InitialiseDialoguePixmaps(display, window, colormap)
-    Display *display;
-    Window window;
-    Colormap colormap;
-#endif
 {
     XpmAttributes   attributes;
     int         XpmErrorStatus;
@@ -134,12 +122,7 @@ void InitialiseDialoguePixmaps(display, window, colormap)
 		"InitialiseDialoguePixmaps(text)");
 }
 
-#if NeedFunctionPrototypes
 void FreeDialoguePixmaps(Display *display)
-#else
-void FreeDialoguePixmaps(display)
-    Display *display;
-#endif
 {
     /* Free all the Dialogue Pixmaps */
     if (floppy)    		XFreePixmap(display, floppy);
@@ -150,16 +133,8 @@ void FreeDialoguePixmaps(display)
     if (textM)    		XFreePixmap(display, textM);
 }
 
-#if NeedFunctionPrototypes
 char *UserInputDialogueMessage(Display *display, char *message, int type,
 	int entryValidation)
-#else
-char *UserInputDialogueMessage(display, message, type, entryValidation)
-	Display *display;
-	char *message;
-	int type;
-	int entryValidation;
-#endif
 {
 	/* Change the message for the dialogue */
 	strcpy(theMessage, message);
@@ -180,12 +155,7 @@ char *UserInputDialogueMessage(display, message, type, entryValidation)
 	return (currentInput);
 }
 
-#if NeedFunctionPrototypes
 static void ShowUserInputDialogue(Display *display)
-#else
-static void ShowUserInputDialogue(display)
-	Display *display;
-#endif
 {
 	int dw = DIALOGUE_WIDTH;
 
@@ -226,12 +196,7 @@ static void ShowUserInputDialogue(display)
 	DEBUG("ShowUserInputDialogue() mapping complete.");
 }
 
-#if NeedFunctionPrototypes
 static void RemoveUserInputDialogue(Display *display)
-#else
-static void RemoveUserInputDialogue(display)
-	Display *display;
-#endif
 {
 	while (WindowFadeEffect(display, inputWindow, 
 		DIALOGUE_WIDTH, DIALOGUE_HEIGHT));
@@ -243,12 +208,7 @@ static void RemoveUserInputDialogue(display)
 	XFlush(display);
 }
 
-#if NeedFunctionPrototypes
 void ProcessDialogue(Display *display)
-#else
-void ProcessDialogue(display)
-	Display *display;
-#endif
 {
     /* The states within the dialogue mode */
     switch (dialogueState)
@@ -275,12 +235,7 @@ void ProcessDialogue(display)
 	}
 }
 
-#if NeedFunctionPrototypes
 static void redrawCurrentInput(Display *display)
-#else
-static void redrawCurrentInput(display)
-    Display *display;
-#endif
 {
 	XClearArea(display, inputWindow, 0, 50, DIALOGUE_WIDTH, 50, False);
 	if (strlen(currentInput) > 0)
@@ -292,14 +247,7 @@ static void redrawCurrentInput(display)
 			32, 32, False);
 }
 
-#if NeedFunctionPrototypes
 static void validateDialogueKeys(Display *display, KeySym keysym, char *str)
-#else
-static void validateDialogueKeys(display, keysym, str)
-    Display *display;
-	KeySym keysym;
-	char *str;
-#endif
 {
 	/* Check the type of keyboard input needed */
 	switch (validation)
@@ -356,13 +304,7 @@ static void validateDialogueKeys(display, keysym, str)
 	}
 }
 
-#if NeedFunctionPrototypes
 void handleDialogueKeys(Display *display, XEvent event)
-#else
-void handleDialogueKeys(display, event)
-    Display *display;
-	XEvent event;
-#endif
 {
 	char *str;
 	int len;
@@ -410,12 +352,7 @@ void handleDialogueKeys(display, event)
 	free(str);
 }
 
-#if NeedFunctionPrototypes
 static void handleDialogueEventLoop(Display *display)
-#else
-static void handleDialogueEventLoop(display)
-    Display *display;
-#endif
 {
     XEvent event;
     int pending;

@@ -89,15 +89,9 @@
  *  Internal type declarations:
  */
 
-#if NeedFunctionPrototypes
 void SetInstructWait(enum InstructStates newMode, int waitFrame);
 static void DoSparkle(Display *display, Window window);
 void DoInstructWait(void);
-#else
-static void DoSparkle();
-void SetInstructWait();
-void DoInstructWait();
-#endif
 
 /*
  *  Internal variable declarations:
@@ -119,14 +113,7 @@ enum InstructStates waitMode;
  * @param window The window where instructions will be displayed.
  * @param colormap The colormap used for rendering.
  */
-#if NeedFunctionPrototypes
 void SetUpInstructions(Display *display, Window window, Colormap colormap)
-#else
-void SetUpInstructions(display, window, colormap)
-	Display *display;
-	Window window;
-	Colormap colormap;
-#endif
 {
 	/* Umm. Reset the instructions to default state */
 	ResetInstructions();
@@ -166,13 +153,7 @@ char *instructionText[] =
  * @param display A pointer to the Display structure for graphics.
  * @param window The window where instructions will be displayed.
  */
-#if NeedFunctionPrototypes
 static void DoText(Display *display, Window window)
-#else
-static void DoText(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	char string[80];
 	int y, i = 0, j = 0;
@@ -216,13 +197,7 @@ static void DoText(display, window)
  * @param display A pointer to the Display structure for graphics.
  * @param window The window where the sparkle effect will be drawn.
  */
-#if NeedFunctionPrototypes
 static void DoSparkle(Display *display, Window window)
-#else
-static void DoSparkle(display, window)
-	Display *display;
-	Window window;
-#endif
 {
     static Pixmap store;
     static int x = 100;
@@ -270,13 +245,7 @@ static void DoSparkle(display, window)
  * @param display A pointer to the Display structure for graphics.
  * @param window The window where instructions will be displayed.
  */
-#if NeedFunctionPrototypes
 static void DoFinish(Display *display, Window window)
-#else
-static void DoFinish(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	ResetDemonstration();
 	mode = MODE_DEMO;
@@ -293,13 +262,8 @@ static void DoFinish(display, window)
  * @param display A pointer to the Display structure for graphics.
  * @param window The window where instructions will be displayed.
  */
-#if NeedFunctionPrototypes
+
 void Instructions(Display *display, Window window)
-#else
-void Instructions(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	switch (InstructState)
 	{
@@ -350,13 +314,7 @@ void Instructions(display, window)
  * @param display A pointer to the Display structure for graphics.
  * @param window The window where instructions will be redrawn.
  */
-#if NeedFunctionPrototypes
 void RedrawInstructions(Display *display, Window window)
-#else
-void RedrawInstructions(display, window)
-	Display *display; 
-	Window window;
-#endif
 {
 	DoIntroTitle(display, window);
 	DoText(display, window);
@@ -369,12 +327,7 @@ void RedrawInstructions(display, window)
  *
  * @param display A pointer to the Display structure for graphics.
  */
-#if NeedFunctionPrototypes
 void FreeInstructions(Display *display)
-#else
-void FreeInstructions(display)
-	Display *display;
-#endif
 {
 }
 
@@ -383,11 +336,7 @@ void FreeInstructions(display)
  *
  * This function sets the instruction display back to its initial state.
  */
-#if NeedFunctionPrototypes
 void ResetInstructions(void)
-#else
-void ResetInstructions()
-#endif
 {
 	InstructState = INSTRUCT_TITLE;
 	nextFrame 	= frame + 100;
@@ -404,13 +353,7 @@ void ResetInstructions()
  * @param newMode The new instruction state to transition to.
  * @param waitFrame The frame at which to transition to the new mode.
  */
-#if NeedFunctionPrototypes
 void SetInstructWait(enum InstructStates newMode, int waitFrame)
-#else
-void SetInstructWait(newMode, waitFrame)
-	enum InstructStates newMode;
-	int waitFrame;
-#endif
 {
 	waitingFrame 	= waitFrame;
 	waitMode 		= newMode;
@@ -422,11 +365,7 @@ void SetInstructWait(newMode, waitFrame)
  *
  * This function checks if the wait duration has elapsed to transition to the next state.
  */
-#if NeedFunctionPrototypes
 void DoInstructWait(void)
-#else
-void DoInstructWait()
-#endif
 {
 	if (frame == waitingFrame)
 		InstructState = waitMode;

@@ -83,40 +83,19 @@ char 	currentMessage[1024];
 int		clearFrame;
 int 	newMessageStart;
 
-#if NeedFunctionPrototypes
 void InitialiseMessageSystem(Display *display, Window window, Colormap colormap)
-#else
-void InitialiseMessageSystem(display, window, colormap)
-	Display *display;
-	Window window;
-	Colormap colormap;
-#endif
 {
 	/* Frame to clear message area */
 	clearFrame = 0;
 }
 
-#if NeedFunctionPrototypes
 void FreeMessageSystem(Display *display)
-#else
-void FreeMessageSystem(display)
-	Display *display;
-#endif
 {
 	/* Not much to free yet - maybe one day .... */
 }
 
-#if NeedFunctionPrototypes
 void DrawMessage(Display *display, Window window, char *message, int clear,
 	int ci)
-#else
-void DrawMessage(display, window, message, clear, ci)
-	Display *display; 
-	Window window;
-	char *message;
-	int clear;
-	int ci;
-#endif
 {
 	int len = strlen(message);
 	int plen;
@@ -135,16 +114,8 @@ void DrawMessage(display, window, message, clear, ci)
 	XFlush(display);
 }
 
-#if NeedFunctionPrototypes
 void SetCurrentMessage(Display *display, Window window, char *newMessage, 
 	int clear)
-#else
-void SetCurrentMessage(display, window, newMessage, clear)
-	Display *display;
-	Window window;
-	char *newMessage;
-	int clear;
-#endif
 {
 	/* Draw out new message */
 	strcpy(currentMessage, newMessage);
@@ -158,13 +129,7 @@ void SetCurrentMessage(display, window, newMessage, clear)
 	DisplayCurrentMessage(display, window);
 }
 
-#if NeedFunctionPrototypes
 void DisplayCurrentMessage(Display *display, Window window)
-#else
-void DisplayCurrentMessage(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	char str[80];
 	char str2[80];
