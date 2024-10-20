@@ -1,3 +1,13 @@
+/**
+ * @file sfx.h
+ * @author Gerardo Gonzalez
+ * @date 2024-10-01
+ * @brief Special effects implementation for xboing
+ * 
+ * This header file houses the functions for the implementation of various visual effects used in xboing including shaking, blinding, and fading effects for game elements
+ */
+
+
 #ifndef _SFX_H_
 #define _SFX_H_
 
@@ -56,6 +66,7 @@
  *  Constants and macros:
  */
 
+// [DOXYGEN] Could replace list with enum
 #define SFX_NONE        0
 #define SFX_SHAKE      	1
 #define SFX_FADE  		2
@@ -64,27 +75,136 @@
 #define SFX_STATIC  	5
 
 /*
- *  Type declarations:
- */
-
-/*
  *  Function prototypes:
  */
 
+/**
+ * Accessor for modifying the value of the sfxEndFrame variable.
+ *
+ * @param int endFrame The frame where the special effects should end.
+ *
+ *
+ */
 void SetSfxEndFrame(int endFrame);
-void changeSfxMode(int newMode);
-int oldSfxMode(void);
-int currentSfxMode(void);
-int WindowShakeEffect(Display *display, Window window);
-int WindowShatterEffect(Display *display, Window window);
-int WindowBlindEffect(Display *display, Window window);
-int WindowFadeEffect(Display *display, Window window, int w, int h);
-int WindowStaticEffect(Display *display, Window window, int w, int h);
-int getSpecialEffects(Display *display);
-void useSpecialEffects(int state);
-void ResetBorderGlow(Display *display, Window window);
-void BorderGlow(Display *display, Window window);
-void FadeAwayArea(Display *display, Window window, int x, int y, int w, int h);
 
+/**
+ * Accessor for modifying the value of the modeSfx variable
+ *
+ * @param int newMode The new mode for the special effects.
+ *
+ */
+void changeSfxMode(int newMode);
+
+// [DOXYGEN] Undefined function. Should be removed
+int oldSfxMode(void);
+
+/**
+ * Accessor for the current state of modeSfx variable
+ *
+ * @return int The current special effects mode
+ *
+ */
+int currentSfxMode(void);
+
+/**
+ * Creates a window shake effect.
+ *
+ * @param Display *display The display of the X11 window
+ * @param Window window The X11 window to draw on
+ *
+ * @return int True while the effect is going, False when the effect is finished.
+ *
+ */
+int WindowShakeEffect(Display *display, Window window);
+
+/**
+ * Creates a window shattering effect.
+ *
+ * @param Display *display The display of the x11 window
+ * @param Window window The X11 window to draw on.
+ *
+ * @return int False when done.
+ *
+ */
+int WindowShatterEffect(Display *display, Window window);
+
+/**
+ * Creates a window blind closing effect on the screen.
+ *
+ * @param Display *display The display of the X11 window
+ * @param Window window The X11 window to draw on
+ *
+ */
+int WindowBlindEffect(Display *display, Window window);
+
+/**
+ * Creates a window fade effect using horizontal and vertical bars.
+ *
+ * @param Display *display The displat to the X11 window
+ * @param Window window The X11 window to draw on
+ * @param int w The width of the window.
+ * @param int h The height of the window.
+ *
+ * @return int True while the effect is going, False when the effect is finished.
+ *
+ */
+int WindowFadeEffect(Display *display, Window window, int w, int h);
+
+/**
+ * Creates a static effect on the screen.
+ *
+ * @param Display *display The display of the X11 window
+ * @param Window window The X11 window to draw on
+ * @param int w The width of the window.
+ * @param int h The height of the window.
+ * @return int True while the effect is going, False when the effect is done.
+ */
+int WindowStaticEffect(Display *display, Window window, int w, int h);
+
+/**
+ * Accessor for useSfx variable (return value)
+ *
+ * @param Display *display The display of the X11 window
+ *
+ */
+int getSpecialEffects(Display *display);
+
+/**
+ * Accesor used for modyfying the state of special effects.
+ *
+ * @param int state True to enable special effects, False to disable.
+ *                                                                                                                          */
+void useSpecialEffects(int state);
+
+/**
+ * Resets the window border.
+ *
+ * @param Display *display The display of the X11 window
+ * @param Window window The X11 window to draw on
+ *
+ */
+void ResetBorderGlow(Display *display, Window window);
+
+/**
+ * Creates a glowing border effect.
+ *
+ * @param Display *display The display of the X11 window
+ * @param Window window The X11 window to draw on
+ *
+ */
+void BorderGlow(Display *display, Window window);
+
+/**
+ * Creates a fade-away effect in specified area.
+ *
+ * @param Display *display The display of the X11 window
+ * @param Window window The X11 window to draw on
+ * @param int x The x coordinate of the area.
+ * @param int y The y coordinate of the area
+ * @param int w The width of the area.
+ * @param int h The height of hte area.
+ *
+ */
+void FadeAwayArea(Display *display, Window window, int x, int y, int w, int h);
 
 #endif

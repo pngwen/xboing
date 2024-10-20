@@ -65,17 +65,69 @@
 #define CURSOR_SKULL	5
 
 /*
- *  Type declarations:
- */
-
-/*
  *  Function prototypes:
  */
 
+
+/**
+ * ilitialises game and checks for command line arguments
+ *
+ * @param char **argv command arguement
+ * @param int argc amount of arguements
+ * @pre 
+ * @return Display starts displaying the game
+ * @post game starts
+ * 
+ */
 Display *InitialiseGame(char **argv, int argc);
+
+/**
+ * shuts down the game
+ *
+ * @param Display *display display pointer
+ * @param int exitCode exit code for debugging sakes
+ * @param char *message exit message
+ * @pre game is running
+ * @return void 
+ * @post game is shut down
+ * 
+ */
 void ShutDown(Display *display, int exitCode, char *message);
+
+/**
+ * grabs mouse so it cant exit window
+ *
+ * @param Display *display display pointer
+ * @param Window window display window
+ * @pre window is open
+ * @return void 
+ * @post cursor cant leave window
+ * 
+ */
 void GrabPointer(Display *display, Window window);
+
+/**
+ * release the cursor from the grasp of the window
+ *
+ * @param Display *display display pointer
+ * @pre window is open
+ * @return void 
+ * @post cursor is free to move anywhere
+ * 
+ */
 void UnGrabPointer(Display *display);
+
+/**
+ * changes the way the pointer looks
+ *
+ * @param Display *display display pointer
+ * @param Window window display window
+ * @param int cursorState state of the cursor defined by constants
+ * @pre cursor
+ * @return void 
+ * @post new cursor styles
+ * 
+ */
 void ChangePointer(Display *display, Window window, int cursorState);
 
 extern GC gccopy, gc, gcxor, gcand, gcor, gcsfx;

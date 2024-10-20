@@ -66,13 +66,13 @@
 #define GAP			5
 
 /*
- *  Internal type declarations:
- */
-
-/*
  *  Internal variable declarations:
  */
 
+/**
+ * @brief The state (true/false) of various specials
+ * 
+ */
 int saving;
 int stickyBat;
 int fastGun;
@@ -81,6 +81,11 @@ int Killer;
 int x2Bonus;
 int x4Bonus;
 
+/**
+ * @brief Turns off / disables special characteristics and bonuses
+ * 
+ * @param display The current display of the X11 window
+ */
 void TurnSpecialsOff(Display *display)
 {
 	/* Turn all specials off */
@@ -94,42 +99,95 @@ void TurnSpecialsOff(Display *display)
 	ToggleKiller(display, False);
 }
 
+/**
+ * @brief Accessor for modifying x2Bonus (set x2 bonus)
+ * 
+ * @param display The current display of the X11 window
+ * @param state The state to set x2Bonus to
+ * @todo Remove function and replace calls with contents
+ */
 void Togglex2Bonus(Display *display, int state)
 {
 	/* Set the x2Bonus flag to true or false */
 	x2Bonus = state;
 }
 
+/**
+ * @brief Accessor for modifying Killer
+ * 
+ * @param display The current display of the X11 window
+ * @param state The state to set Killer to
+ * 
+ * @todo Remove function and replace calls with contents
+ */
 void ToggleKiller(Display *display, int state)
 {
 	/* Set the Killer flag to true or false */
 	Killer = state;
 }
 
+/**
+ * @brief Accessor for modifying x4Bonus (set x4 bonus)
+ * 
+ * @param display The current display of the X11 window
+ * @param state The state to set x4Bonus to
+ * 
+ * @todo Remove function and replace calls with contents
+ */
 void Togglex4Bonus(Display *display, int state)
 {
 	/* Set the x4Bonus flag to true or false */
 	x4Bonus = state;
 }
 
+/**
+ * @brief Accessor for modifying stickyBat
+ * 
+ * @param display The current display of the X11 window
+ * @param state The state to set stickyBat to
+ * 
+ * @todo Remove function and replace calls with contents
+ */
 void ToggleStickyBat(Display *display, int state)
 {
 	/* Set the stickyBat flag to true or false */
 	stickyBat = state;
 }
 
+/**
+ * @brief Accessor for modifying saving
+ * 
+ * @param display The current display of the X11 window
+ * @param state The state to set saving to
+ * 
+ * @todo Remove function and replace calls with contents
+ */
 void ToggleSaving(Display *display, int state)
 {
 	/* Set the Saving flag to true or false */
 	saving = state;
 }
 
+/**
+ * @brief Accessor for modifying fastGun
+ * 
+ * @param display The current display of the X11 window
+ * @param state The state to set fastGun to
+ * 
+ * @todo Remove function and replace calls with contents
+ */
 void ToggleFastGun(Display *display, int state)
 {
 	/* Set the fastgun flag to true or false */
 	fastGun = state;
 }
 
+/**
+ * @brief Turns the walls on or off (also updates state of noWalls)
+ * 
+ * @param display The current display of the X11 window
+ * @param state The state to set noWalls to (turn walls on/off)
+ */
 void ToggleWallsOn(Display *display, int state)
 {
 	/* Set the noWalls flag to true or false */
@@ -147,6 +205,11 @@ void ToggleWallsOn(Display *display, int state)
 	}
 }
 
+/**
+ * @brief Draws graphical elements of specials
+ * 
+ * @param display The current display of the X11 window
+ */
 void DrawSpecials(Display *display)
 {
 	int y = 3;
@@ -235,7 +298,11 @@ void DrawSpecials(Display *display)
 			string, x, y, white);
 }
 
-
+/**
+ * @brief Randomizes the state of specials& changes score and level number
+ * 
+ * @param display The current display of the X11 window
+ */
 void RandomDrawSpecials(Display *display)
 {
 	int n;

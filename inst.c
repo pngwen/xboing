@@ -89,8 +89,26 @@
  *  Internal type declarations:
  */
 
+/**
+ * @brief Sets instruction state & other properties to wait. Function-not-used, could be removed.
+ * 
+ * @param newMode The new instruction state to set
+ * @param waitFrame The new waiting frame to set
+ */
 void SetInstructWait(enum InstructStates newMode, int waitFrame);
+
+/**
+ * @brief Draws sparkle animation
+ * 
+ * @param display The display of the X11 window
+ * @param window The X11 window to draw on
+ */
 static void DoSparkle(Display *display, Window window);
+
+/**
+ * @brief Sets the instruction state to wait if the current frame is waiting. Single-use-function, could be removed
+ * 
+ */
 void DoInstructWait(void);
 
 /*
@@ -103,6 +121,16 @@ enum InstructStates InstructState;
 static int waitingFrame;
 enum InstructStates waitMode;
 
+
+/**
+ * @brief Sets up the initial instruction display.
+ *
+ * This function resets the instruction display to its default state.
+ *
+ * @param display A pointer to the Display structure for graphics.
+ * @param window The window where instructions will be displayed.
+ * @param colormap The colormap used for rendering.
+ */
 void SetUpInstructions(Display *display, Window window, Colormap colormap)
 {
 	/* Umm. Reset the instructions to default state */
@@ -134,10 +162,15 @@ char *instructionText[] =
 	"Please read the manual for more information on how to play."
 };
 
-
+/**
+ * @brief Draws instruction text to the screen
+ * 
+ * @param display The display of the X11 window
+ * @param window the X11 window to draw on
+ */
 static void DoText(Display *display, Window window)
 {
-	char string[80];
+	char string[80];// [DOXYGEN] Unneeded string used for unnecessary string copy
 	int y, i = 0, j = 0;
 
 	SetCurrentMessage(display, messWindow, "Save the rainforests", False);
@@ -153,7 +186,7 @@ static void DoText(Display *display, Window window)
 		/* If the text is not null then print it */
 		if (instructionText[i] != '\0')
 		{
-			strcpy(string, instructionText[i]); 
+			strcpy(string, instructionText[i]);// [DOXYGEN] Unnecessary string copy, could be removed.
 			DrawShadowCentredText(display, window, dataFont, 
 				string, y, j % 2 ? greens[0] : greens[2], PLAY_WIDTH);
 			y += dataFont->ascent + GAP;
@@ -171,6 +204,14 @@ static void DoText(Display *display, Window window)
 		PLAY_HEIGHT - 40, tann, PLAY_WIDTH);
 }
 
+/**
+ * @brief Creates a sparkle effect in the instruction display.
+ *
+ * This function animates a sparkle effect at a random position on the screen.
+ *
+ * @param display A pointer to the Display structure for graphics.
+ * @param window The window where the sparkle effect will be drawn.
+ */
 static void DoSparkle(Display *display, Window window)
 {
     static Pixmap store;
@@ -210,6 +251,15 @@ static void DoSparkle(Display *display, Window window)
     }
 }
 
+
+/**
+ * @brief Finalizes the instruction display.
+ *
+ * This function resets the demonstration mode and plays a sound.
+ *
+ * @param display A pointer to the Display structure for graphics.
+ * @param window The window where instructions will be displayed.
+ */
 static void DoFinish(Display *display, Window window)
 {
 	ResetDemonstration();
@@ -219,6 +269,14 @@ static void DoFinish(Display *display, Window window)
 		playSoundFile("shark", 50);
 }
 
+/**
+ * @brief Main function for handling instruction display states.
+ *
+ * This function updates the instruction display based on the current state.
+ *
+ * @param display A pointer to the Display structure for graphics.
+ * @param window The window where instructions will be displayed.
+ */
 
 void Instructions(Display *display, Window window)
 {
@@ -263,16 +321,36 @@ void Instructions(Display *display, Window window)
 	}
 }
 
+/**
+ * @brief Redraws the current instructions.
+ *
+ * This function re-renders the title and text instructions in the specified window.
+ *
+ * @param display A pointer to the Display structure for graphics.
+ * @param window The window where instructions will be redrawn.
+ */
 void RedrawInstructions(Display *display, Window window)
 {
 	DoIntroTitle(display, window);
 	DoText(display, window);
 }
 
+/**
+ * @brief Frees resources associated with instructions.
+ *
+ * This function currently does not perform any actions but is provided for future use.
+ *
+ * @param display A pointer to the Display structure for graphics.
+ */
 void FreeInstructions(Display *display)
 {
 }
 
+/**
+ * @brief Resets the instruction state.
+ *
+ * This function sets the instruction display back to its initial state.
+ */
 void ResetInstructions(void)
 {
 	InstructState = INSTRUCT_TITLE;
@@ -282,6 +360,14 @@ void ResetInstructions(void)
 	DEBUG("Reset Instruction mode.")
 }
 
+/**
+ * @brief Sets the state to wait before proceeding with instructions.
+ *
+ * This function updates the waiting frame and the next mode to proceed to.
+ *
+ * @param newMode The new instruction state to transition to.
+ * @param waitFrame The frame at which to transition to the new mode.
+ */
 void SetInstructWait(enum InstructStates newMode, int waitFrame)
 {
 	waitingFrame 	= waitFrame;
@@ -289,6 +375,11 @@ void SetInstructWait(enum InstructStates newMode, int waitFrame)
 	InstructState 	= INSTRUCT_WAIT;
 }
 
+/**
+ * @brief Handles the waiting state in instruction display.
+ *
+ * This function checks if the wait duration has elapsed to transition to the next state.
+ */
 void DoInstructWait(void)
 {
 	if (frame == waitingFrame)
