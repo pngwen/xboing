@@ -56,14 +56,7 @@
 
 saveGameStruct saveGame;
 
-
-#if NeedFunctionPrototypes
 void SetupStage(Display *display, Window window)
-#else
-void SetupStage(display, window)
-    Display *display;
-    Window window;
-#endif
 {
     char levelPath[1024];
     char *str;
@@ -120,13 +113,7 @@ void SetupStage(display, window)
     XFlush(display);
 }
 
-#if NeedFunctionPrototypes
 int LoadSavedGame(Display *display, Window window)
-#else
-int LoadSavedGame(display, window)
-    Display *display;
-    Window window;
-#endif
 {
 	/*
 	 * This routine will load the last saved game. 
@@ -218,13 +205,7 @@ int LoadSavedGame(display, window)
 	return True;
 }
 
-#if NeedFunctionPrototypes
 int SaveCurrentGame(Display *display, Window window)
-#else
-int SaveCurrentGame(display, window)
-    Display *display;
-    Window window;
-#endif
 {
 	/*
 	 * This routine will save the current state of the game for loading
@@ -296,15 +277,7 @@ int SaveCurrentGame(display, window)
 }
 
 
-#if NeedFunctionPrototypes
 int ReadNextLevel(Display *display, Window window, char *levelName, int draw)
-#else
-int ReadNextLevel(display, window, levelName, draw)
-    Display *display;
-    Window window;
-    char *levelName;
-	int draw;
-#endif
 {
     FILE *levelFile;
     int row, col, type;
@@ -518,13 +491,7 @@ int ReadNextLevel(display, window, levelName, draw)
     return True;
 }
 
-#if NeedFunctionPrototypes
 int SaveLevelDataFile(Display *display, char *levelName)
-#else
-int SaveLevelDataFile(display, levelName)
-    Display *display;
-    char *levelName;
-#endif
 {
     FILE *levelFile;
     int row, col;

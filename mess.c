@@ -98,10 +98,6 @@ char 	currentMessage[1024];
 int		clearFrame;
 int 	newMessageStart;
 
-#if NeedFunctionPrototypes
-void InitialiseMessageSystem(Display *display, Window window, Colormap colormap)
-#else
-
 /**
  *  @brief Initializes the message system.
  *
@@ -117,19 +113,11 @@ void InitialiseMessageSystem(Display *display, Window window, Colormap colormap)
  *
  * @post This function sets up and prepares the message system.
  */
-void InitialiseMessageSystem(display, window, colormap)
-	Display *display;
-	Window window;
-	Colormap colormap;
-#endif
+void InitialiseMessageSystem(Display *display, Window window, Colormap colormap)
 {
 	/* Frame to clear message area */
 	clearFrame = 0;
 }
-
-#if NeedFunctionPrototypes
-void FreeMessageSystem(Display *display)
-#else
 
 /**
  * @brief Frees memory used by the message system.
@@ -142,14 +130,11 @@ void FreeMessageSystem(Display *display)
  * @post This function cleans and releases all memory that was allocated for the message system.
  *
  */
-void FreeMessageSystem(display)
-	Display *display;
-#endif
+void FreeMessageSystem(Display *display)
 {
 	/* Not much to free yet - maybe one day .... */
 }
 
-#if NeedFunctionPrototypes
 /**
  * @brief Draws the message to the screen
  *
@@ -164,15 +149,6 @@ void FreeMessageSystem(display)
  */
 void DrawMessage(Display *display, Window window, char *message, int clear,
 	int ci)
-#else
-
-void DrawMessage(display, window, message, clear, ci)
-	Display *display; 
-	Window window;
-	char *message;
-	int clear;
-	int ci;
-#endif
 {
 	int len = strlen(message);
 	int plen;
@@ -191,11 +167,6 @@ void DrawMessage(display, window, message, clear, ci)
 	XFlush(display);
 }
 
-#if NeedFunctionPrototypes
-void SetCurrentMessage(Display *display, Window window, char *newMessage, 
-	int clear)
-#else
-
 /**
  * @brief Sets a new message to be displayed.
  *
@@ -213,12 +184,8 @@ void SetCurrentMessage(Display *display, Window window, char *newMessage,
  * @post This function copies the new message into the buffer and updates the display based on the parameters defined.
  *
  */
-void SetCurrentMessage(display, window, newMessage, clear)
-	Display *display;
-	Window window;
-	char *newMessage;
-	int clear;
-#endif
+void SetCurrentMessage(Display *display, Window window, char *newMessage, 
+	int clear)
 {
 	/* Draw out new message */
 	strcpy(currentMessage, newMessage);
@@ -231,10 +198,6 @@ void SetCurrentMessage(display, window, newMessage, clear)
 
 	DisplayCurrentMessage(display, window);
 }
-
-#if NeedFunctionPrototypes
-void DisplayCurrentMessage(Display *display, Window window)
-#else
 
 /**
  * @brief Displays the current message.
@@ -250,10 +213,7 @@ void DisplayCurrentMessage(Display *display, Window window)
  * @post This function takes the current message stored to the screen to be displayed.
  *
  */
-void DisplayCurrentMessage(display, window)
-	Display *display;
-	Window window;
-#endif
+void DisplayCurrentMessage(Display *display, Window window)
 {
 	char str[80];
 	char str2[80];

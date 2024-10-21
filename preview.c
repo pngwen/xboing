@@ -102,13 +102,8 @@
  *  Internal type declarations:
  */
 
-#if NeedFunctionPrototypes
 void SetPreviewWait(enum PreviewStates newMode, int waitFrame);
 void DoPreviewWait(void);
-#else
-void SetPreviewWait();
-void DoPreviewWait();
-#endif
 
 /*
  *  Internal variable declarations:
@@ -118,9 +113,6 @@ enum PreviewStates PreviewState;
 static int waitingFrame;
 enum PreviewStates waitMode;
 
-#if NeedFunctionPrototypes
-void SetUpPreviewLevel(Display *display, Window window, Colormap colormap)
-#else
 /**
  * @brief Calls ResetPreviewLevel function in order to set the view mode back to preview mode.
  *
@@ -131,16 +123,11 @@ void SetUpPreviewLevel(Display *display, Window window, Colormap colormap)
  * @todo Remove reliance on X11
  *
  */
-void SetUpPreviewLevel(display, window, colormap)
-	Display *display;
-	Window window;
-	Colormap colormap;
-#endif
+void SetUpPreviewLevel(Display *display, Window window, Colormap colormap)
 {
 	ResetPreviewLevel();
 }
 
-#if NeedFunctionPrototypes
 /**
  * @brief loads a level into the preview mode
  *
@@ -151,11 +138,6 @@ void SetUpPreviewLevel(display, window, colormap)
  *
  */
 static void DoLoadLevel(Display *display, Window window)
-#else
-static void DoLoadLevel(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	int lnum = 1;
     char levelPath[1024];
@@ -191,7 +173,6 @@ static void DoLoadLevel(display, window)
 	DisplayLevelInfo(display, levelWindow, (u_long) lnum);
 }
 
-#if NeedFunctionPrototypes
 /**
  * @brief Displays preview text to the screen
  *
@@ -202,11 +183,6 @@ static void DoLoadLevel(display, window)
  *
  */
 static void DoText(Display *display, Window window)
-#else
-static void DoText(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	char string[80];
 	int y;
@@ -226,8 +202,6 @@ static void DoText(display, window)
 	SetPreviewWait(PREVIEW_FINISH, frame + 5000);
 }
 
-#if NeedFunctionPrototypes
-
 /**
  * @brief resets the indroduction and plays a sound
  *
@@ -238,11 +212,6 @@ static void DoText(display, window)
  *
  */
 static void DoFinish(Display *display, Window window)
-#else
-static void DoFinish(display, window)
-	Display *display;
-	Window window;
-#endif
 {
     mode = MODE_INTRO;
     ResetIntroduction();
@@ -253,9 +222,6 @@ static void DoFinish(display, window)
     SetGameSpeed(FAST_SPEED);
 }
 
-#if NeedFunctionPrototypes
-void PreviewLevel(Display *display, Window window)
-#else
 
 /**
  * @brief Creates the preview level by loading the level, setting up the display, and drawing the special blocks
@@ -268,10 +234,7 @@ void PreviewLevel(Display *display, Window window)
  * @todo Possibly split this function into smaller functions
  *
  */
-void PreviewLevel(display, window)
-	Display *display;
-	Window window;
-#endif
+void PreviewLevel(Display *display, Window window)
 {
 	switch (PreviewState)
 	{
@@ -310,9 +273,6 @@ void PreviewLevel(display, window)
 	}
 }
 
-#if NeedFunctionPrototypes
-void RedrawPreviewLevel(Display *display, Window window)
-#else
 
 /**
  * Calls DoLoadLevel and DoText in order to load the level and display the preview text
@@ -323,18 +283,12 @@ void RedrawPreviewLevel(Display *display, Window window)
  * @todo Remove reliance on X11
  *
  */
-void RedrawPreviewLevel(display, window)
-	Display *display;
-	Window window;
-#endif
+void RedrawPreviewLevel(Display *display, Window window)
 {
 	DoLoadLevel(display, window);
 	DoText(display, window);
 }
 
-#if NeedFunctionPrototypes
-void FreePreviewLevel(Display *display)
-#else
 
 /**
  * @brief Frees memory for preview level
@@ -346,29 +300,22 @@ void FreePreviewLevel(Display *display)
  * @todo Consider deleting this function
  *
  */
-void FreePreviewLevel(display)
-	Display *display;
-#endif
+void FreePreviewLevel(Display *display)
 {
 }
 
-#if NeedFunctionPrototypes
-void ResetPreviewLevel(void)
-#else
 
 /**
  * @brief Sets the preview state to preview mode
  *
  */
-void ResetPreviewLevel()
-#endif
+void ResetPreviewLevel(void)
 {
 	PreviewState = PREVIEW_LEVEL;
 
 	DEBUG("Reset PreviewLevel mode.")
 }
 
-#if NeedFunctionPrototypes
 /**
  * @brief Sets the wait time for preview mode
  *
@@ -377,26 +324,17 @@ void ResetPreviewLevel()
  *
  */
 void SetPreviewWait(enum PreviewStates newMode, int waitFrame)
-#else
-void SetPreviewWait(newMode, waitFrame)
-	enum PreviewStates newMode;
-	int waitFrame;
-#endif
 {
 	waitingFrame = waitFrame;
 	waitMode = newMode;
 	PreviewState = PREVIEW_WAIT;
 }
 
-#if NeedFunctionPrototypes
 /**
  * @brief Sets state to waitmode if frame is a waiting frame
  *
  */
 void DoPreviewWait(void)
-#else
-void DoPreviewWait()
-#endif
 {
 	if (frame == waitingFrame)
 		PreviewState = waitMode;

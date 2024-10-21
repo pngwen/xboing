@@ -193,7 +193,6 @@ typedef struct aBlock **BLOCKPTR;
  *  Function prototypes:
  */
 
-#if NeedFunctionPrototypes
 void FreeBlockPixmaps(Display *display);
 void InitialiseBlocks(Display *display, Window window, Colormap colormap);
 void DrawBlock(Display *display, Window window, int row, int col, 
@@ -222,29 +221,6 @@ void SetExplodeAllType(Display *display, Window window, int type);
 void EraseVisibleBlock(Display *display, Window window, int row, int col);
 void ClearBlock(int row, int col);
 void SetupBlockInfo(void);
-#else
-void SetupBlockInfo();
-void ClearBlock();
-void EraseVisibleBlock();
-void SetExplodeAllType();
-int GetRandomType();
-void HandlePendingSpecials();
-void AddSpecialBlock();
-void PlaySoundForBlock();
-void FreeBlockPixmaps();
-void InitialiseBlocks();
-void DrawBlock();
-void ExplodeBlocksPending();
-void RedrawAllBlocks();
-void DrawTheBlock();
-void ExplodeBlockType();
-void AddNewBlock();
-void HandlePendingAnimations();
-void AddBonusBlock();
-void ClearBlockArray();
-int StillActiveBlocks();
-void SkipToNextLevel();
-#endif
 
 extern struct aBlock blocks[MAX_ROW][MAX_COL];
 extern int rowHeight;

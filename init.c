@@ -101,7 +101,6 @@
  *  Internal type declarations:
  */
 
-#if NeedFunctionPrototypes
 static void ParseCommandLine(char **argv, int argc);
 static void InitialiseSettings(void);
 static int compareArgument(char *arg1, char *arg2, int minMatch);
@@ -116,22 +115,6 @@ static void ReleaseGraphics(Display *display);
 static void ReleaseFonts(Display *display);
 static void ExitProgramNow(int value);
 static void TurnOnSynchronise(Display *display);
-#else
-static void ExitProgramNow();
-static void ParseCommandLine();
-static void InitialiseSettings();
-static int compareArgument();
-static void HandleDisplayErrors();
-static void PrintVersion();
-static void PrintUsage();
-static void PrintHelp();
-static void InitialiseGraphics();
-static void InitialiseColourNames();
-static void InitialiseFonts();
-static void ReleaseGraphics();
-static void ReleaseFonts();
-static void TurnOnSynchronise();
-#endif
 
 /*
  *  Internal variable declarations:
@@ -151,13 +134,14 @@ int						noicon;
 static int				useDefaultColourmap;
 int						noSound, debug;
 
-#if NeedFunctionPrototypes
+/**
+ * Creates the necessary graphics contexts needed for the game.
+ * 
+ * @param display The current display of the X11 window.
+ * @param window The X11 window to create the graphical context on.
+ *
+ */
 static void InitialiseGraphics(Display *display, Window window)
-#else
-static void InitialiseGraphics(display, window)
-	Display *display;
-	Window window;
-#endif
 {
     XGCValues	gcv;
 
@@ -207,13 +191,14 @@ static void InitialiseGraphics(display, window)
 		ShutDown(display, 1, "Cannot create GXsfx graphics context.");
 }
 
-#if NeedFunctionPrototypes
+/**
+ * Parses color names & initializes color variables with their values.
+ * 
+ * @param display The current display of the X11 window.
+ * @param colormap The colormap to use when parsing colors.
+ *
+ */
 static void InitialiseColourNames(Display *display, Colormap colormap)
-#else
-static void InitialiseColourNames(display, colormap)
-	Display *display;
-	Colormap colormap;
-#endif
 {
     /* Obtain the colour index of several colours from colourmap */
 	red     = ColourNameToPixel(display, colormap, "red");
@@ -226,13 +211,15 @@ static void InitialiseColourNames(display, colormap)
 	blue    = ColourNameToPixel(display, colormap, "blue");
 }
 
-#if NeedFunctionPrototypes
+
+/**
+ * Initializes arrays of shades of red and green. 
+ *
+ * @param Display *display The display connection to the X server.
+ * @param Colormap colormap The colormap being used.
+ * 
+ */
 static void InitialiseCycleColourNames(Display *display, Colormap colormap)
-#else
-static void InitialiseCycleColourNames(display, colormap)
-	Display *display;
-	Colormap colormap;
-#endif
 {
 	/* If you find that the game is running out of colours then make the
 	 * arrays below only allocate every 2nd one and copy the first into 2nd 
@@ -258,12 +245,14 @@ static void InitialiseCycleColourNames(display, colormap)
 	greens[6] = ColourNameToPixel(display, colormap, "#030");
 }
 
-#if NeedFunctionPrototypes
+
+/**
+ * Loads all the fonts that are needed for this program. If there is an error, displays an error message and uses a default font called "fixed". 
+ *
+ * @param Display *display The display connection to the X server. 
+ * 
+ */
 static void InitialiseFonts(Display *display)
-#else
-static void InitialiseFonts(display)
-	Display *display;
-#endif
 {
 	/* Create all required font structures */
 	char str[80];
@@ -309,12 +298,14 @@ static void InitialiseFonts(display)
 	}
 }
 
-#if NeedFunctionPrototypes
+
+/**
+ * Frees the fonts used.
+ *
+ * @param Display *display The display connection to the X server.
+ * 
+ */
 static void ReleaseFonts(Display *display)
-#else
-static void ReleaseFonts(display)
-	Display *display;
-#endif
 {
 	/* Free all the fonts used */
 	if (titleFont)	XFreeFont(display, titleFont);
@@ -323,23 +314,27 @@ static void ReleaseFonts(display)
 	if (dataFont)	XFreeFont(display, dataFont);
 }
 
-#if NeedFunctionPrototypes
+
+/**
+ * Terminates the program.
+ *
+ * @param int value The code that determines whether the program has terminated successfully or unsuccessfully. 
+ * 
+ */
 static void ExitProgramNow(int value)
-#else
-static void ExitProgramNow(value)
-	int value;
-#endif
 {
 	/* Return to the shell with error code */
 	exit(value);
 }
 
-#if NeedFunctionPrototypes
+
+/**
+ * Frees the graphics contexts.
+ *
+ * @param Display *display The display connection to the X server.
+ * 
+ */
 static void ReleaseGraphics(Display *display)
-#else
-static void ReleaseGraphics(display)
-	Display *display;
-#endif
 {
 	/* Free the graphics contexts */
 	if (gccopy) XFreeGC(display, gccopy);
@@ -350,14 +345,7 @@ static void ReleaseGraphics(display)
 	if (gcsfx) 	XFreeGC(display, gcsfx);
 }
 
-#if NeedFunctionPrototypes
 void ShutDown(Display *display, int exit_code, char *message)
-#else
-void ShutDown(display, exit_code, message)
-	Display *display;
-	int exit_code;
-	char *message;
-#endif
 {
 	/* This is the last function called when exiting */
 
@@ -368,12 +356,10 @@ void ShutDown(display, exit_code, message)
 	if (noSound == False)
 		(void) FreeAudioSystem();
 
-	FreeMisc(display);				/* Free backing store pixmap*/
 	FreeKeyControl(display);		/* Free key control         */
 	FreeKeyEditControl(display);	/* Free key edit control    */
 	FreeSomePresents(display);		/* Free some from presents  */
 	FreeHighScore(display);			/* Free high score memory 	*/
-	FreeInstructions(display);		/* Free instructions        */
 	FreeBonus(display);				/* Free bonus memory 		*/
 	FreeIntroduction(display);		/* Free introduction memory */
 	FreeMessageSystem(display);		/* Free message system 		*/
@@ -402,13 +388,15 @@ void ShutDown(display, exit_code, message)
 	ExitProgramNow(exit_code);
 }
 
-#if NeedFunctionPrototypes
+
+/**
+ * Obtains error message from the server and closes the program.
+ *
+ * @param Display *display The display connection to the X server.
+ * @param XErrorEvent *err Error pointer
+ * 
+ */
 static int ErrorHandler(Display *display, XErrorEvent *err)
-#else
-static int ErrorHandler(display, err)
-	Display *display;
-	XErrorEvent *err;
-#endif
 {
  	char msg[80];
  	char string[256];
@@ -424,12 +412,14 @@ static int ErrorHandler(display, err)
 	return True;
 }
 
-#if NeedFunctionPrototypes
+
+/**
+ * Gives an error message if there is a display error.
+ *
+ * @param char *displayName Name of the display.
+ * 
+ */
 static void HandleDisplayErrors(char *displayName)
-#else
-static void HandleDisplayErrors(displayName)
-	char *displayName;
-#endif
 {
  	char string[256];
 
@@ -443,11 +433,14 @@ static void HandleDisplayErrors(displayName)
 	}
 }
 
-#if NeedFunctionPrototypes
+
+/**
+ * Prints the version information to the command line.
+ *
+ * @param void  
+ * 
+ */
 static void PrintVersion(void)
-#else
-static void PrintVersion()
-#endif
 {
     /* Print version for program to user for command line help */
     fprintf(stdout, "XBoing by Justin Kibell (jck@catt.rmit.edu.au)\n"); 
@@ -459,11 +452,14 @@ static void PrintVersion()
 	ExitProgramNow(0);
 }
 
-#if NeedFunctionPrototypes
+
+/**
+ * Prints the usage information to the command line.
+ *
+ * @param void 
+ * 
+ */
 static void PrintUsage(void)
-#else
-static void PrintUsage()
-#endif
 {
     /* Print usage to user for command line help */
 
@@ -481,11 +477,14 @@ static void PrintUsage()
 	ExitProgramNow(0);
 }
 
-#if NeedFunctionPrototypes
+
+/**
+ * Prints setup information to the command line.
+ *
+ * @param void  
+ * 
+ */
 static void PrintSetup(void)
-#else
-static void PrintSetup()
-#endif
 {
     /* Print setup information about xboing */
 	char *str;
@@ -524,11 +523,14 @@ static void PrintSetup()
 }
 
 
-#if NeedFunctionPrototypes
+
+/**
+ * Prints help (list of commands) to the command line.
+ *
+ * @param void 
+ * 
+ */
 static void PrintHelp(void)
-#else
-static void PrintHelp()
-#endif
 {
     /* Print help for program to user for command line help */
     fprintf(stdout, 
@@ -560,14 +562,16 @@ static void PrintHelp()
 	ExitProgramNow(0);
 }
 
-#if NeedFunctionPrototypes
+
+/**
+ * Compares two strings to see if they are the same, mainly used to determine which command on the command line to activate. 
+ *
+ * @param char *arg1 The first argument.
+ * @param char *arg2 The second argument.
+ * @param int minMatch A number used to check if the function should proceed to the next step of comparison or end early. 
+ * 
+ */
 static int compareArgument(char *arg1, char *arg2, int minMatch)
-#else
-static int compareArgument(arg1, arg2, minMatch)
-	char *arg1;
-	char *arg2;
-	int minMatch;
-#endif
 {
     if ((strlen(arg1) < minMatch) || (strlen(arg2) < minMatch)) 
         return 1;
@@ -578,22 +582,27 @@ static int compareArgument(arg1, arg2, minMatch)
     return (strncmp(arg1, arg2, strlen(arg1)));
 }
 
-#if NeedFunctionPrototypes
+
+/**
+ * Activates the X synchronization.
+ *
+ * @param Display *display The display connection to the X server.
+ * 
+ */
 static void TurnOnSynchronise(Display *display)
-#else
-static void TurnOnSynchronise(display)
-	Display *display;
-#endif
 {
 	/* Turn the X synchronisation on to flush all calls each frame */
 	XSynchronize(display, True);
 }
 
-#if NeedFunctionPrototypes
+
+/**
+ * Initializes some default settings.
+ *
+ * @param void  
+ * 
+ */
 static void InitialiseSettings(void)
-#else
-static void InitialiseSettings()
-#endif
 {
 	/* Initialise some variables */
 	syncOn = False;
@@ -622,13 +631,15 @@ static void InitialiseSettings()
 	score = 0L;
 }
 
-#if NeedFunctionPrototypes
+
+/**
+ * Parses the command line so all the commands work when a user enters the given command.
+ *
+ * @param char **argv Command line argument vector.
+ * @param int argc Command line argument counter.
+ * 
+ */
 static void ParseCommandLine(char **argv, int argc)
-#else
-static void ParseCommandLine(argv, argc)
-	char **argv;
-	int argc;
-#endif
 {
 	/* Parse the command line options */
 	int i, l;
@@ -808,26 +819,14 @@ static void ParseCommandLine(argv, argc)
 	}
 }
 
-#if NeedFunctionPrototypes
 void UnGrabPointer(Display *display)
-#else
-void UnGrabPointer(display)
-	Display *display;
-#endif
 {
 	/* Ungrab the pointer */
 	if (grabPointer == True)
 		XUngrabPointer(display, CurrentTime);
 }
 
-#if NeedFunctionPrototypes
 void ChangePointer(Display *display, Window window, int cursorState)
-#else
-void ChangePointer(display, window, cursorState)
-	Display *display;
-	Window window;
-	int cursorState;
-#endif
 {
 	static Cursor cursor;
 	XColor colour;
@@ -871,13 +870,7 @@ void ChangePointer(display, window, cursorState)
 	XDefineCursor(display, window, cursor);
 }
 
-#if NeedFunctionPrototypes
 void GrabPointer(Display *display, Window window)
-#else
-void GrabPointer(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	if (grabPointer == True)
 	{
@@ -895,12 +888,14 @@ void GrabPointer(display, window)
 	}
 }
 
-#if NeedFunctionPrototypes
+
+/**
+ * Terminates the program with an error code, triggered by a user abort.
+ *
+ * @param int sig Signal number. 
+ * 
+ */
 void userAbortGame(int sig)
-#else
-void userAbortGame(sig)
-	int sig;
-#endif
 {
 	/* Called as a result of a control-c or user break */
 	NormalMessage("USER ABORT - Logging out ...");
@@ -909,12 +904,14 @@ void userAbortGame(sig)
 	ExitProgramNow(1);
 }
 
-#if NeedFunctionPrototypes
+
+/**
+ * Terminates the program and displays an error message as a result of a segmentation fault.
+ *
+ * @param int sig Signal number. 
+ * 
+ */
 void gameCoreDump(int sig)
-#else
-void gameCoreDump(sig)
-	int sig;
-#endif
 {
 	/* Called as a result of a segmentation violation */
 	ErrorMessage("Segmentation violation - xboing terminating.");
@@ -923,13 +920,7 @@ void gameCoreDump(sig)
 	ExitProgramNow(1);
 }
 
-#if NeedFunctionPrototypes
 Display *InitialiseGame(char **argv, int argc)
-#else
-Display *InitialiseGame(argv, argc)
-	char **argv;
-	int argc;
-#endif
 {
 	int screen_num;
 	static Display *display;
@@ -1065,8 +1056,8 @@ Display *InitialiseGame(argv, argc)
 	DEBUG("SetUpKeys done.")
 	SetUpKeysEdit(display, 				playWindow, 	colormap);
 	DEBUG("SetUpKeysEdit done.")
-	SetUpInstructions(display, 			playWindow, 	colormap);
-	DEBUG("SetUpInstructions done.")
+	ResetInstructions();// [DEOXYGEN] changed from SetUpInstructions
+	DEBUG("ResetInstructions done.")
 	SetUpIntroduction(display, 			playWindow, 	colormap);
 	DEBUG("SetUpIntroduction done.")
 	SetUpBonus(display, 				mainWindow, 	colormap);

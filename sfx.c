@@ -77,10 +77,6 @@
 #define RANDY(range) 		(rand() % (range))
 
 /*
- *  Internal type declarations:
- */
-
-/*
  *  Internal variable declarations:
  */
 
@@ -89,24 +85,30 @@ int modeSfx;
 static int xscat[NUM_SCAT] = { 1, 9, 3, 6, 2, 4, 0, 7, 5, 8 };
 static int yscat[NUM_SCAT] = { 2, 1, 0, 8, 6, 4, 9, 3, 7, 5 };
 
-#if NeedFunctionPrototypes
+/**
+ * @brief Enables or disables special effects.
+ *
+ * This function sets the state of special effects based on the given parameter.
+ *
+ * @param state A boolean value to enable (non-zero) or disable (zero) special effects.
+ */
 void useSpecialEffects(int state)
-#else
-void useSpecialEffects(state)
-	int state;
-#endif
 {
 	/* Set the state of the special effects - True = use */
 	/* Of course - if the sfx are not possible then no effect */
 	useSfx = state;
 }
 
-#if NeedFunctionPrototypes
+/**
+ * @brief Gets the current state of special effects.
+ *
+ * This function checks if the display supports backing store and returns
+ * the current state of special effects.
+ *
+ * @param display Pointer to the X Display structure.
+ * @return int Returns 1 if special effects are enabled, 0 if disabled, and -1 if not supported.
+ */
 int getSpecialEffects(Display *display)
-#else
-int getSpecialEffects(display)
-	Display *display;
-#endif
 {
 	/* Only shake around if the server has backing store on */
 	if (DoesBackingStore(XDefaultScreenOfDisplay(display)) != Always)
@@ -116,45 +118,56 @@ int getSpecialEffects(display)
 	return useSfx;
 }
 
-#if NeedFunctionPrototypes
+/**
+ * @brief Changes the current mode of special effects.
+ *
+ * This function sets the new special effects mode.
+ *
+ * @param newMode The new mode to set for special effects.
+ */
 void changeSfxMode(int newMode)
-#else
-void changeSfxMode(newMode)
-	int newMode;
-#endif
 {
 	modeSfx = newMode;
 }
 
-#if NeedFunctionPrototypes
+
+/**
+ * @brief Retrieves the current special effects mode.
+ *
+ * @return int Returns the current special effects mode.
+ */
 int currentSfxMode(void)
-#else
-int currentSfxMode()
-#endif
 {
 	/* Return the current special effects mode */
 	return modeSfx;
 }
 
-#if NeedFunctionPrototypes
+/**
+ * @brief Resets the current special effect.
+ *
+ * This function re-centers the game window to its original position
+ * and turns off the current special effect.
+ *
+ * @param display Pointer to the X Display structure.
+ */
 static void resetEffect(Display *display)
-#else
-static void resetEffect(display)
-	Display *display;
-#endif
 {
 	/* Just re-centre window return */
 	modeSfx = SFX_NONE;
 	XMoveWindow(display, playWindow, 35, 60);
 }
 
-#if NeedFunctionPrototypes
+/**
+ * @brief Creates a window blind closing effect.
+ *
+ * This function creates a visual effect where blinds appear to close over
+ * the specified window.
+ *
+ * @param display Pointer to the X Display structure.
+ * @param window The X Window to apply the effect.
+ * @return int Returns 0 (False) to indicate completion of the effect.
+ */
 int WindowBlindEffect(Display *display, Window window)
-#else
-int WindowBlindEffect(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	int x, i;
 
@@ -179,15 +192,16 @@ int WindowBlindEffect(display, window)
 	return False;
 }
 
-
-#if NeedFunctionPrototypes
+/**
+ * @brief Creates a static noise effect over the window.
+ *
+ * @param display Pointer to the X Display structure.
+ * @param window The X Window to apply the effect.
+ * @param w Width of the effect area.
+ * @param h Height of the effect area.
+ * @return int Returns 1 (True) while the effect is ongoing, 0 (False) when finished.
+ */
 int WindowStaticEffect(Display *display, Window window, int w, int h)
-#else
-int WindowStaticEffect(display, window, w, h)
-	Display *display;
-	Window window;
-	int w, h;
-#endif
 {
 	static int start = True;
 
@@ -210,13 +224,16 @@ int WindowStaticEffect(display, window, w, h)
 	return True;
 }
 
-#if NeedFunctionPrototypes
+/**
+ * @brief Creates a window shattering effect.
+ *
+ * This effect simulates a window breaking into pieces and scattering.
+ *
+ * @param display Pointer to the X Display structure.
+ * @param window The X Window to apply the effect.
+ * @return int Returns 0 (False) after the effect is completed.
+ */
 int WindowShatterEffect(Display *display, Window window)
-#else
-int WindowShatterEffect(display, window)
-	Display *display;
-	Window window;
-#endif
 {
     int offx, offy, sizeWidth, sizeHeight;
     int srcx, srcy, destx, desty;
@@ -274,14 +291,19 @@ int WindowShatterEffect(display, window)
 	return False;
 }
 
-#if NeedFunctionPrototypes
+/**
+ * @brief Creates a window fade effect.
+ *
+ * This function fades a window in and out by drawing vertical and horizontal lines
+ * over the window area, creating a fading effect.
+ *
+ * @param display Pointer to the X Display structure.
+ * @param window The X Window to apply the effect.
+ * @param w Width of the window.
+ * @param h Height of the window.
+ * @return int Returns 1 (True) while the effect is ongoing, 0 (False) when finished.
+ */
 int WindowFadeEffect(Display *display, Window window, int w, int h)
-#else
-int WindowFadeEffect(display, window, w, h)
-	Display *display;
-	Window window;
-	int w, h;
-#endif
 {
 	static int done = False;
 	static int first = True;
@@ -331,13 +353,17 @@ int WindowFadeEffect(display, window, w, h)
 	return True;
 }
 
-#if NeedFunctionPrototypes
+/**
+ * @brief Creates a window shake effect.
+ *
+ * This function shakes a window by periodically changing its position slightly.
+ * The shake stops after a certain number of frames.
+ *
+ * @param display Pointer to the X Display structure.
+ * @param window The X Window to apply the effect.
+ * @return int Returns 1 (True) while the effect is ongoing, 0 (False) when finished.
+ */
 int WindowShakeEffect(Display *display, Window window)
-#else
-int WindowShakeEffect(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	static int x = 35;
 	static int y = 60;
@@ -377,23 +403,29 @@ int WindowShakeEffect(display, window)
 	return True;
 }
 
-#if NeedFunctionPrototypes
+/**
+ * @brief Sets the frame at which the special effects end.
+ *
+ * This function sets the value for `sfxEndFrame`, which determines when
+ * special effects should stop.
+ *
+ * @param endFrame The frame number to end the special effects.
+ */
 void SetSfxEndFrame(int endFrame)
-#else
-void SetSfxEndFrame(endFrame)
-	int endFrame;
-#endif
 {
 	sfxEndFrame = endFrame;
 }
 
-#if NeedFunctionPrototypes
+/**
+ * @brief Creates a border glow effect.
+ *
+ * This function alternates the border color of a window between red and green,
+ * giving a glowing effect.
+ *
+ * @param display Pointer to the X Display structure.
+ * @param window The X Window to apply the effect.
+ */
 void BorderGlow(Display *display, Window window)
-#else
-void BorderGlow(display, window)
-    Display *display;
-    Window window;
-#endif
 {
     static int i = 0;
     static int d = 1;
@@ -404,7 +436,7 @@ void BorderGlow(display, window)
 	{
 		/* No - Just return out */
 		return;
-	}
+ 	}
 
 	/* Only update every n frames */
     if ((frame % 40) == 0)
@@ -430,25 +462,33 @@ void BorderGlow(display, window)
      }
 }
 
-#if NeedFunctionPrototypes
+/**
+ * @brief Resets the border glow effect.
+ *
+ * This function resets the border of the window to its original color.
+ *
+ * @param display Pointer to the X Display structure.
+ * @param window The X Window to reset.
+ */
 void ResetBorderGlow(Display *display, Window window)
-#else
-void ResetBorderGlow(display, window)
-    Display *display;
-    Window window;
-#endif
 {
     XSetWindowBorder(display, playWindow, red);
 }
 
-#if NeedFunctionPrototypes
+/**
+ * @brief Fades away an area of the window.
+ *
+ * This function fades out an area of the window by slowly clearing the pixels
+ * in a grid pattern.
+ *
+ * @param display Pointer to the X Display structure.
+ * @param window The X Window to apply the effect.
+ * @param x X-coordinate of the area to fade.
+ * @param y Y-coordinate of the area to fade.
+ * @param w Width of the area to fade.
+ * @param h Height of the area to fade.
+ */
 void FadeAwayArea(Display *display, Window window, int x, int y, int w, int h)
-#else
-void FadeAwayArea(display, window, x, y, w, h)
-	Display *display;
-	Window window;
-	int x, y, w, h;
-#endif
 {
 	int i, x1, y1, step;
 

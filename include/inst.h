@@ -1,3 +1,13 @@
+/**
+ * @file inst.h
+ * @author Gerardo Gonzalez
+ * @date 2024-10-01
+ * @brief Thos file deals with the instructions
+ * 
+ * This is the header file for displaying the instructions of the game to the player
+ */
+
+
 #ifndef _INST_H_
 #define _INST_H_
 
@@ -53,13 +63,14 @@
 #include <X11/Xlib.h>
 
 /*
- *  Constants and macros:
- */
-
-/*
  *  Type declarations:
  */
 
+/**
+ * @brief Enumeration for instruction states.
+ *
+ * This enumeration defines the different states of instructions in the game.
+ */
 enum InstructStates 
 { 
 	INSTRUCT_TITLE, 
@@ -73,20 +84,29 @@ enum InstructStates
  *  Function prototypes:
  */
 
-#if NeedFunctionPrototypes
-void SetUpInstructions(Display *display, Window window, Colormap colormap);
+/**
+ * @brief Draws parts of the instructions using the current instruct state. Also updates state so that next call will complete the next instruction part.
+ * 
+ * @param display The display of the current X11 window
+ * @param window The X11 window to print the instructions to
+ */
 void Instructions(Display *display, Window window);
-void RedrawInstructions(Display *display, Window window);
-void FreeInstructions(Display *display);
-void ResetInstructions(void);
-#else
-void SetUpInstructions();
-void Instructions();
-void RedrawInstructions();
-void FreeInstructions();
-void ResetInstructions();
-#endif
 
+/**
+ * @brief Used to draw instructions on the screen after void Instruction() has already been called
+ * 
+ * @param display The display of the current X11 window
+ * @param window The X11 window to print the instructions to
+ */
+void RedrawInstructions(Display *display, Window window);
+
+/**
+ * @brief Resets InstructState (prepares for displaying instructions)
+ * 
+ */
+void ResetInstructions(void);
+
+// Used to hold the current state of printing instructions to the screen. Used for determining next step.
 extern enum InstructStates InstructState;
 
 #endif

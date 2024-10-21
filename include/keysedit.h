@@ -73,19 +73,11 @@ enum KeysEditStates
  *  Function prototypes:
  */
 
-#if NeedFunctionPrototypes
 void SetUpKeysEdit(Display *display, Window window, Colormap colormap);
 void KeysEdit(Display *display, Window window);
 void RedrawKeysEdit(Display *display, Window window);
 void FreeKeyEditControl(Display *display);
 void ResetKeysEdit(void);
-#else
-void SetUpKeysEdit();
-void KeysEdit();
-void RedrawKeysEdit();
-void FreeKeyEditControl();
-void ResetKeysEdit();
-#endif
 
 extern enum KeysEditStates KeysEditState;
 

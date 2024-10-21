@@ -111,5 +111,4 @@ int SaveCurrentGame(Display *display, Window window);
  */
 int LoadSavedGame(Display *display, Window window);
 
-
 #endif

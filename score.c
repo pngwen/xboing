@@ -106,7 +106,6 @@ Pixmap	digitPixmapsM[NUM_DIGITS];
 u_long score = 0L;
 
 
-#if NeedFunctionPrototypes
 /**
  * @brief Intializes the score on the screen
  * 
@@ -120,12 +119,6 @@ u_long score = 0L;
  *
  */
 void InitialiseScoreDigits(Display *display, Window window, Colormap colormap)
-#else
-void InitialiseScoreDigits(display, window, colormap)
-	Display *display;
-	Window window;
-	Colormap colormap;
-#endif
 {
 	XpmAttributes   attributes;
 	int 			XpmErrorStatus;
@@ -178,7 +171,6 @@ void InitialiseScoreDigits(display, window, colormap)
 	XpmFreeAttributes(&attributes);
 }
 
-#if NeedFunctionPrototypes
 /**
  * @brief Draws the digits that are used to count the score
  *
@@ -194,21 +186,12 @@ void InitialiseScoreDigits(display, window, colormap)
  *
  */
 static void DrawDigit(Display *display, Window window, int digit, int x, int y)
-#else
-static void DrawDigit(display, window, digit, x, y)
-	Display *display;
-	Window window;
-	int digit;
-	int x;
-	int y;
-#endif
 {
 	/* Draw the digit in the window */
 	RenderShape(display, window, 
 		digitPixmaps[digit], digitPixmapsM[digit], x, y, 30, 40, True);
 }
 
-#if NeedFunctionPrototypes
 /**
  * @brief Checks if the current score is divisible by 10 and sets the last digit to zero.
  Checks the score it needs to draw then calls the Drawdigit function.
@@ -225,14 +208,6 @@ static void DrawDigit(display, window, digit, x, y)
  *
  */
 void DrawOutNumber(Display *display, Window window, u_long score, int x, int y)
-#else
-void DrawOutNumber(display, window, score, x, y)
-	Display *display;
-	Window window;
-	u_long score;
-	int x;
-	int y;
-#endif
 {
 	int digit;
 
@@ -246,7 +221,6 @@ void DrawOutNumber(display, window, score, x, y)
 	DrawDigit(display, window, digit, x - 32, y);
 }
 
-#if NeedFunctionPrototypes
 /**
  * @brief Sets the new score
  *
@@ -256,16 +230,11 @@ void DrawOutNumber(display, window, score, x, y)
  *
  */
 void SetTheScore(u_long new)
-#else
-void SetTheScore(new)
-	u_long new;
-#endif
 {
 	/* Set the score */
 	score = new;
 }
 
-#if NeedFunctionPrototypes
 /**
  * @brief Adds an increment to the score
  *
@@ -275,16 +244,11 @@ void SetTheScore(new)
  *
  */
 void AddToScore(u_long inc)
-#else
-void AddToScore(inc)
-	u_long inc;
-#endif
 {
 	/* Compute the score */
 	score += ComputeScore(inc);
 }
 
-#if NeedFunctionPrototypes
 /**
  * @brief Calculates the score and takes any possible bonuses into account
  *
@@ -294,10 +258,6 @@ void AddToScore(inc)
  *
  */
 u_long ComputeScore(u_long inc)
-#else
-u_long ComputeScore(inc)
-    u_long inc;
-#endif
 {
     /* Take into account any score bonuses */
     if (x2Bonus == True)
@@ -309,7 +269,6 @@ u_long ComputeScore(inc)
     return (u_long) (inc);
 }
 
-#if NeedFunctionPrototypes
 /**
  * @brief Clear the old score display and creates a new one with new score digits
  *
@@ -323,12 +282,6 @@ u_long ComputeScore(inc)
  *
  */
 void DisplayScore(Display *display, Window window, u_long score)
-#else
-void DisplayScore(display, window, score)
-	Display *display;
-	Window window;
-	u_long score;
-#endif
 {
 	/* Erase the old score in the window */
 	XClearWindow(display, window);
@@ -342,7 +295,6 @@ void DisplayScore(display, window, score)
 		DrawOutNumber(display, window, score, 224, 0);
 }
 
-#if NeedFunctionPrototypes
 /**
  * @brief Frees the memory for the score
  *
@@ -352,10 +304,6 @@ void DisplayScore(display, window, score)
  *
  */
 void FreeScoreDigits(Display *display)
-#else
-void FreeScoreDigits(display)
-	Display *display;
-#endif
 {
 	int i;
 

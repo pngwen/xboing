@@ -155,13 +155,7 @@ char	errorString[255];
 
 
 /* Slurp in a .au file */
-#if NeedFunctionPrototypes
 static int read_audio_header(int fd, Sun_audio_hdr *buf)
-#else
-static int read_audio_header(fd, buf)
-	int fd;
-	Sun_audio_hdr *buf;
-#endif
 {
     read(fd, buf, sizeof(Sun_audio_hdr));
 
@@ -177,12 +171,7 @@ static int read_audio_header(fd, buf)
     return buf->magic == SUN_AUDIO_MAGIC;
 }
 
-#if NeedFunctionPrototypes
 static int set_volume(int volume)
-#else
-static int set_volume(volume)
-	int volume;
-#endif
 {
     static struct sb_mixer_levels save;	/* Saved mixer level settings */
     struct sb_mixer_levels l;		/* New mixer level settings */
@@ -215,12 +204,7 @@ static int set_volume(volume)
     if (ioctl(Audio_fd, DSP_IOCTL_##cmd, arg) == -1) \
         perror ("ioctl") \
 
-#if NeedFunctionPrototypes
 int SetUpAudioSystem(Display *display)	
-#else
-int SetUpAudioSystem(display)	
-	Display *display;
-#endif
 {
     Audio_fd = open("/dev/sb_dsp", O_RDWR);
     if (Audio_fd < 1) 
@@ -234,45 +218,26 @@ int SetUpAudioSystem(display)
     return True;
 }
 
-#if NeedFunctionPrototypes
 void SetMaximumVolume(int Volume)
-#else
-void SetMaximumVolume(Volume)
-	int Volume;
-#endif
 {
     /* Set the maximum volume for the audio system */
     set_volume(volume);
 }
 
-#if NeedFunctionPrototypes
 int GetMaximumVolume(void)
-#else
-int GetMaximumVolume()
-#endif
 {
     /* Return the maximum volume as a % of 100 */
     return 100;
 }
 
 
-#if NeedFunctionPrototypes
 void FreeAudioSystem(void)
-#else
-void FreeAudioSystem()
-#endif
 {
     /* Close the audio device thanks */
     (void) close(Audio_fd);
 }
 
-#if NeedFunctionPrototypes
 void playSoundFile(char *filename, int volume)
-#else
-void playSoundFile(filename, volume)
-	char *filename; 
-	int volume;
-#endif
 {
     Sun_audio_hdr 	ahdr;
     int 			fd;
@@ -351,11 +316,7 @@ void playSoundFile(filename, volume)
     (void) close(fd);
 }
 
-#if NeedFunctionPrototypes
 void audioDeviceEvents(void)
-#else
-void audioDeviceEvents()
-#endif
 {
 	/* None to do */
 }

@@ -151,12 +151,7 @@ int Snd_loadUlawSample( const char *file, Sample *sample )
  return 0;
  }
 
-#if NeedFunctionPrototypes
 int SetUpAudioSystem(Display *display)
-#else
-int SetUpAudioSystem(display)
-	Display *display;
-#endif
 {
 int i, len;
 char *sounddir;
@@ -228,11 +223,7 @@ if (Snd_init( (samplecount+1), snd, 8000, 4, "/dev/dsp" )==EXIT_FAILURE)
 return 1;
 }
 
-#if NeedFunctionPrototypes
 void FreeAudioSystem(void)
-#else
-void FreeAudioSystem()
-#endif
 {
 int i;
 
@@ -255,41 +246,22 @@ free(snd);
 Snd_restore();
 }
 
-#if NeedFunctionPrototypes
 static void flushAudioDevice(void)
-#else
-static void flushAudioDevice()
-#endif
 {
 /* Nothing */
 }
 
-#if NeedFunctionPrototypes
 void setNewVolume(unsigned int Volume)
-#else
-void setNewVolume(Volume)
-	unsigned int Volume;
-#endif
 {
 	/* Do nothing here as we don't have audio support */
 }
 
-#if NeedFunctionPrototypes
 void audioDeviceEvents(void)
-#else
-void audioDeviceEvents()
-#endif
 {
     /* None to do */
 }
 
-#if NeedFunctionPrototypes
 void playSoundFile(char *filename, int volume)
-#else
-void playSoundFile(filename, volume)
-	char *filename;
-	int volume;
-#endif
 {
 struct Transtab *lsampleptr;
 
@@ -309,20 +281,11 @@ channels++;
 if (channels > 3) channels = 0;
 }
 
-#if NeedFunctionPrototypes
 void SetMaximumVolume(int Volume)
-#else
-void SetMaximumVolume(Volume)
-    int Volume;
-#endif
 {
 }
 
-#if NeedFunctionPrototypes
 int GetMaximumVolume(void)
-#else
-int GetMaximumVolume()
-#endif
 {
     return 0;
 }

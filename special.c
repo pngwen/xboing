@@ -66,13 +66,13 @@
 #define GAP			5
 
 /*
- *  Internal type declarations:
- */
-
-/*
  *  Internal variable declarations:
  */
 
+/**
+ * @brief The state (true/false) of various specials
+ * 
+ */
 int saving;
 int stickyBat;
 int fastGun;
@@ -81,12 +81,12 @@ int Killer;
 int x2Bonus;
 int x4Bonus;
 
-#if NeedFunctionPrototypes
+/**
+ * @brief Turns off / disables special characteristics and bonuses
+ * 
+ * @param display The current display of the X11 window
+ */
 void TurnSpecialsOff(Display *display)
-#else
-void TurnSpecialsOff(display)
-	Display *display;
-#endif
 {
 	/* Turn all specials off */
 
@@ -99,85 +99,96 @@ void TurnSpecialsOff(display)
 	ToggleKiller(display, False);
 }
 
-#if NeedFunctionPrototypes
+/**
+ * @brief Accessor for modifying x2Bonus (set x2 bonus)
+ * 
+ * @param display The current display of the X11 window
+ * @param state The state to set x2Bonus to
+ * @todo Remove function and replace calls with contents
+ */
 void Togglex2Bonus(Display *display, int state)
-#else
-void Togglex2Bonus(display, state)
-	Display *display;
-	int state;
-#endif
 {
 	/* Set the x2Bonus flag to true or false */
 	x2Bonus = state;
 }
 
-#if NeedFunctionPrototypes
+/**
+ * @brief Accessor for modifying Killer
+ * 
+ * @param display The current display of the X11 window
+ * @param state The state to set Killer to
+ * 
+ * @todo Remove function and replace calls with contents
+ */
 void ToggleKiller(Display *display, int state)
-#else
-void ToggleKiller(display, state)
-	Display *display;
-	int state;
-#endif
 {
 	/* Set the Killer flag to true or false */
 	Killer = state;
 }
 
-#if NeedFunctionPrototypes
+/**
+ * @brief Accessor for modifying x4Bonus (set x4 bonus)
+ * 
+ * @param display The current display of the X11 window
+ * @param state The state to set x4Bonus to
+ * 
+ * @todo Remove function and replace calls with contents
+ */
 void Togglex4Bonus(Display *display, int state)
-#else
-void Togglex4Bonus(display, state)
-	Display *display;
-	int state;
-#endif
 {
 	/* Set the x4Bonus flag to true or false */
 	x4Bonus = state;
 }
 
-#if NeedFunctionPrototypes
+/**
+ * @brief Accessor for modifying stickyBat
+ * 
+ * @param display The current display of the X11 window
+ * @param state The state to set stickyBat to
+ * 
+ * @todo Remove function and replace calls with contents
+ */
 void ToggleStickyBat(Display *display, int state)
-#else
-void ToggleStickyBat(display, state)
-	Display *display;
-	int state;
-#endif
 {
 	/* Set the stickyBat flag to true or false */
 	stickyBat = state;
 }
 
-#if NeedFunctionPrototypes
+/**
+ * @brief Accessor for modifying saving
+ * 
+ * @param display The current display of the X11 window
+ * @param state The state to set saving to
+ * 
+ * @todo Remove function and replace calls with contents
+ */
 void ToggleSaving(Display *display, int state)
-#else
-void ToggleSaving(display, state)
-	Display *display;
-	int state;
-#endif
 {
 	/* Set the Saving flag to true or false */
 	saving = state;
 }
 
-#if NeedFunctionPrototypes
+/**
+ * @brief Accessor for modifying fastGun
+ * 
+ * @param display The current display of the X11 window
+ * @param state The state to set fastGun to
+ * 
+ * @todo Remove function and replace calls with contents
+ */
 void ToggleFastGun(Display *display, int state)
-#else
-void ToggleFastGun(display, state)
-	Display *display;
-	int state;
-#endif
 {
 	/* Set the fastgun flag to true or false */
 	fastGun = state;
 }
 
-#if NeedFunctionPrototypes
+/**
+ * @brief Turns the walls on or off (also updates state of noWalls)
+ * 
+ * @param display The current display of the X11 window
+ * @param state The state to set noWalls to (turn walls on/off)
+ */
 void ToggleWallsOn(Display *display, int state)
-#else
-void ToggleWallsOn(display, state)
-	Display *display;
-	int state;
-#endif
 {
 	/* Set the noWalls flag to true or false */
 	noWalls = state;
@@ -194,12 +205,12 @@ void ToggleWallsOn(display, state)
 	}
 }
 
-#if NeedFunctionPrototypes
+/**
+ * @brief Draws graphical elements of specials
+ * 
+ * @param display The current display of the X11 window
+ */
 void DrawSpecials(Display *display)
-#else
-void DrawSpecials(display)
-	Display *display;
-#endif
 {
 	int y = 3;
 	int x = 5;
@@ -287,13 +298,12 @@ void DrawSpecials(display)
 			string, x, y, white);
 }
 
-
-#if NeedFunctionPrototypes
+/**
+ * @brief Randomizes the state of specials& changes score and level number
+ * 
+ * @param display The current display of the X11 window
+ */
 void RandomDrawSpecials(Display *display)
-#else
-void RandomDrawSpecials(display)
-	Display *display;
-#endif
 {
 	int n;
 	static u_long temp_score = 0;

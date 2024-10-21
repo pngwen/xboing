@@ -92,13 +92,8 @@
  *  Internal type declarations:
  */
 
-#if NeedFunctionPrototypes
 static void redrawCurrentInput(Display *display);
 static void handleDialogueEventLoop(Display *display);
-#else
-static void handleDialogueEventLoop();
-static void redrawCurrentInput();
-#endif
 
 /*
  *  Internal variable declarations:
@@ -111,8 +106,6 @@ char 	currentInput[1024];
 Pixmap 	question, questionM;
 Pixmap 	floppy, floppyM;
 Pixmap 	text, textM;
-
-#if NeedFunctionPrototypes 	// #Start Remove (Remove preprosser IF, keep the typed parameters)
 
 /**
  * @brief Sets the Pixmap files for the dialogue for xboing
@@ -127,12 +120,6 @@ Pixmap 	text, textM;
  */
 void InitialiseDialoguePixmaps(Display *display, Window window,
     Colormap colormap)
-#else
-void InitialiseDialoguePixmaps(display, window, colormap)
-    Display *display;
-    Window window;
-    Colormap colormap;
-#endif	//#End Remove
 {
     XpmAttributes   attributes;
     int         XpmErrorStatus;
@@ -158,7 +145,6 @@ void InitialiseDialoguePixmaps(display, window, colormap)
 		"InitialiseDialoguePixmaps(text)");
 }
 
-#if NeedFunctionPrototypes
 
 /**
  * @brief Frees memory used by dialogue pixmap files
@@ -169,10 +155,6 @@ void InitialiseDialoguePixmaps(display, window, colormap)
  *
  */
 void FreeDialoguePixmaps(Display *display)
-#else
-void FreeDialoguePixmaps(display)
-    Display *display;
-#endif
 {
     /* Free all the Dialogue Pixmaps */
     if (floppy)    		XFreePixmap(display, floppy);
@@ -183,7 +165,6 @@ void FreeDialoguePixmaps(display)
     if (textM)    		XFreePixmap(display, textM);
 }
 
-#if NeedFunctionPrototypes //#Start Remove (Remove preprosser IF, keep the typed parameters)
 
 /**
  * @brief Takes a user's input message for dialogue
@@ -198,13 +179,6 @@ void FreeDialoguePixmaps(display)
  */ 
 char *UserInputDialogueMessage(Display *display, char *message, int type,
 	int entryValidation)
-#else
-char *UserInputDialogueMessage(display, message, type, entryValidation)
-	Display *display;
-	char *message;
-	int type;
-	int entryValidation;
-#endif			//#end Remove
 {
 	/* Change the message for the dialogue */
 	strcpy(theMessage, message);
@@ -225,8 +199,6 @@ char *UserInputDialogueMessage(display, message, type, entryValidation)
 	return (currentInput);
 }
 
-#if NeedFunctionPrototypes //#Start Remove (Remove preprosser IF, keep the typed parameters)
-
 /**
  * @brief Draw the input dialogue for the user
  *
@@ -236,10 +208,6 @@ char *UserInputDialogueMessage(display, message, type, entryValidation)
  *
  */
 static void ShowUserInputDialogue(Display *display)
-#else
-static void ShowUserInputDialogue(display)
-	Display *display;
-#endif	//#End Remove
 {
 	int dw = DIALOGUE_WIDTH;
 
@@ -285,7 +253,6 @@ static void ShowUserInputDialogue(display)
 	DEBUG("ShowUserInputDialogue() mapping complete.");
 }
 
-#if NeedFunctionPrototypes //#Start Remove (Remove preprosser IF, keep the typed parameters)
 
 /**
  * @brief Removes user's input dialogue
@@ -296,10 +263,6 @@ static void ShowUserInputDialogue(display)
  *
  */
 static void RemoveUserInputDialogue(Display *display)
-#else
-static void RemoveUserInputDialogue(display)
-	Display *display;
-#endif  //#End Remove
 {
 	while (WindowFadeEffect(display, inputWindow, 
 		DIALOGUE_WIDTH, DIALOGUE_HEIGHT));
@@ -311,8 +274,6 @@ static void RemoveUserInputDialogue(display)
 	XFlush(display);
 }
 
-#if NeedFunctionPrototypes //#Start Remove (Remove preprosser IF, keep the typed parameters)
-
 /**
  * @brief Processes dialogue and carries out different functions in different situations
  *
@@ -322,10 +283,6 @@ static void RemoveUserInputDialogue(display)
  *
  */
 void ProcessDialogue(Display *display)
-#else
-void ProcessDialogue(display)
-	Display *display;
-#endif //#End Remove
 {
     /* The states within the dialogue mode */
     switch (dialogueState)
@@ -352,8 +309,6 @@ void ProcessDialogue(display)
 	}
 }
 
-#if NeedFunctionPrototypes //#Start Remove (Remove preprosser IF, keep the typed parameters)
-
 /**
  * @brief Redraws current input with new parameters
  *
@@ -363,10 +318,6 @@ void ProcessDialogue(display)
  *
  */
 static void redrawCurrentInput(Display *display)
-#else
-static void redrawCurrentInput(display)
-    Display *display;
-#endif //#End Remove
 {
 	/**
 	*
@@ -384,8 +335,6 @@ static void redrawCurrentInput(display)
 			32, 32, False);
 }
 
-#if NeedFunctionPrototypes //#Start Remove (Remove preprosser IF, keep the typed parameters)
-
 /**
  * @brief Checks what keys are bein entered such as spacebar. The function will play sound based on certain actions.
  *
@@ -398,12 +347,6 @@ static void redrawCurrentInput(display)
  *
  */
 static void validateDialogueKeys(Display *display, KeySym keysym, char *str)
-#else
-static void validateDialogueKeys(display, keysym, str)
-    Display *display;
-	KeySym keysym;
-	char *str;
-#endif //#End Remove
 {
 	/* Check the type of keyboard input needed */
 	switch (validation)
@@ -460,8 +403,6 @@ static void validateDialogueKeys(display, keysym, str)
 	}
 }
 
-#if NeedFunctionPrototypes //#Start Remove (Remove preprosser IF, keep the typed parameters)
-
 /**
  * @brief Checks what symbol is being pressed and carries out an action based on that
  *
@@ -472,11 +413,6 @@ static void validateDialogueKeys(display, keysym, str)
  *
  */
 void handleDialogueKeys(Display *display, XEvent event)
-#else
-void handleDialogueKeys(display, event)
-    Display *display;
-	XEvent event;
-#endif //End Remove
 {
 	char *str;
 	int len;
@@ -524,8 +460,6 @@ void handleDialogueKeys(display, event)
 	free(str);
 }
 
-#if NeedFunctionPrototypes //#Start Remove (Remove preprosser IF, keep the typed parameters)
-
 /**
  * @brief Manages the dialogue event loop. It deals with one event then moves on to another.
  *
@@ -535,10 +469,6 @@ void handleDialogueKeys(display, event)
  *
  */
 static void handleDialogueEventLoop(Display *display)
-#else
-static void handleDialogueEventLoop(display)
-    Display *display;
-#endif //#End Remove
 {
     XEvent event;
     int pending;

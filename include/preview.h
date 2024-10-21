@@ -86,7 +86,6 @@ enum PreviewStates
  *  Function prototypes:
  */
 
-//#if NeedFunctionPrototypes
 
 /**
  * @brief Calls ResetPreviewLevel function in order to set the view mode back to preview mode.
@@ -141,15 +140,6 @@ void FreePreviewLevel(Display *display);
  *
  */
 void ResetPreviewLevel(void);
-/*
-#else
-void SetUpPreviewLevel();
-void PreviewLevel();
-void RedrawPreviewLevel();
-void FreePreviewLevel();
-void ResetPreviewLevel();
-#endif
-*/
 extern 	enum PreviewStates PreviewState;
 
 
