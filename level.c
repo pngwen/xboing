@@ -52,10 +52,16 @@
 #include <stddef.h>
 #include <time.h>
 #include <assert.h>
-#include <X11/Xlib.h>
-#include <X11/Xutil.h>
-#include <X11/Xos.h>
+#include <X11/Xlib.h>	//Replace with RAyLib
+#include <X11/Xutil.h>	//Replace with RayLib
+#include <X11/Xos.h>	//Repalce with RayLib
 #include <xpm.h>
+
+/**
+*
+* @todo Replace the above X11 Libraries with RAyLib equivilents
+*
+*/
 
 #include "bitmaps/balls/life.xpm"
 
@@ -91,15 +97,19 @@
 
 #define MIN(S, T) ((S) > (T) ? (T) : (S))
 
+/**
+*
+* ∀ Fake Bools
+* @todo add C Bool Library
+*
+*/
+
+
 /*
  *  Internal type declarations:
  */
 
-#if NeedFunctionPrototypes
 static void DrawLevelTimeBonus(Display *display, Window window, int timebonus);
-#else
-static void DrawLevelTimeBonus();
-#endif
 
 /*
  *  Internal variable declarations:
@@ -112,18 +122,16 @@ u_long		startlevel;
 time_t		gameTime;
 int			bonus = 1;
 char 		levelTitle[BUF_SIZE];
-int 		bonusBlock = False;
+int 		bonusBlock = False;	//C Bool Lib
 static int 	bulletPos;
 static int 	timeBonus;
 
-#if NeedFunctionPrototypes
+/** 
+*
+* @todo: Replace below function prototype to remove the #if #else
+*
+*/
 void InitialiseLevelInfo(Display *display, Window window, Colormap colormap)
-#else
-void InitialiseLevelInfo(display, window, colormap)
-	Display *display;
-	Window window;
-	Colormap colormap;
-#endif
 {
 	XpmAttributes   attributes;
 	int 			XpmErrorStatus;
@@ -140,13 +148,12 @@ void InitialiseLevelInfo(display, window, colormap)
 	XpmFreeAttributes(&attributes);
 }
 
-#if NeedFunctionPrototypes
+/** 
+*
+* @todo: Replace below function prototype to remove the #if #else
+*
+*/
 void DecLevelTimeBonus(Display *display, Window window)
-#else
-void DecLevelTimeBonus(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	if (timeBonus > 0) 
 	{
@@ -160,42 +167,39 @@ void DecLevelTimeBonus(display, window)
 		if (timeBonus == 0)
 		{
 			/* Times up buzzer sound */
-			if (noSound == False) playSoundFile("buzzer", 70);
+			if (noSound == False) playSoundFile("buzzer", 70); //C Bool Lib
 		}
 	}
 }
 
-#if NeedFunctionPrototypes
+/** 
+*
+* @todo: This following function seems a bit daft and should be removed
+*
+*/
 int GetLevelTimeBonus(void)
-#else
-int GetLevelTimeBonus()
-#endif
 {
 	/* return the time bonus */
 	return timeBonus;	
 }
 
-#if NeedFunctionPrototypes
+/** 
+*
+* @todo: Replace below function prototype to remove the #if #else
+*
+*/
 void AddToLevelTimeBonus(Display *display, Window window, int seconds)
-#else
-void AddToLevelTimeBonus(display, window, seconds)
-	Display *display; 
-	Window window;
-	int seconds;
-#endif
 {
 	/* add to the time bonus */
 	SetLevelTimeBonus(display, window, timeBonus + seconds);
 }
 
-#if NeedFunctionPrototypes
+/** 
+*
+* @todo: Replace below function prototype to remove the #if #else
+*
+*/
 void SetLevelTimeBonus(Display *display, Window window, int seconds)
-#else
-void SetLevelTimeBonus(display, window, seconds)
-	Display *display;
-	Window window;
-	int seconds;
-#endif
 {
 	assert(timeBonus >= 0);
 
@@ -206,14 +210,13 @@ void SetLevelTimeBonus(display, window, seconds)
 	DrawLevelTimeBonus(display, window, timeBonus);
 }
 
-#if NeedFunctionPrototypes
+/** 
+*
+* @todo: Replace below function prototype to remove the #if #else
+*
+*/
+
 static void DrawLevelTimeBonus(Display *display, Window window, int timebonus)
-#else
-static void DrawLevelTimeBonus(display, window, timebonus)
-	Display *display;
-	Window window;
-	int timebonus;
-#endif
 {
 	int len, minutes, seconds;
 	char str[10];
@@ -239,42 +242,25 @@ static void DrawLevelTimeBonus(display, window, timebonus)
 		DrawText(display, window, 0, 5, titleFont, green, str, len);
 }
 
-#if NeedFunctionPrototypes
+/** 
+*
+* @todo: Replace below function prototype to remove the #if #else
+*
+*/
 void DrawLife(Display *display, Window window, int x, int y)
-#else
-void DrawLife(display, window, x, y)
-	Display *display;
-	Window window;
-	int x;
-	int y;
-#endif
 {
 	/* Draw the life pixmap */
 	RenderShape(display, window, lifePixmap, lifeMask, 
-		x-12, y-12, 25, 24, True);
+		x-12, y-12, 25, 24, True);     //C Bool Lib
 }
 
-#if NeedFunctionPrototypes
 void DisplayLevelNumber(Display *display, Window window, u_long level)
-#else
-void DisplayLevelNumber(display, window, level)
-	Display *display;
-	Window window;
-	u_long level;
-#endif
 {
 	/* Put the level number up */
 	DrawOutNumber(display, levelWindow, level, 260, 5);
 }
 
-#if NeedFunctionPrototypes
 void DisplayLevelInfo(Display *display, Window window, u_long level)
-#else
-void DisplayLevelInfo(display, window, level)
-	Display *display;
-	Window window;
-	u_long level;
-#endif
 {
 	int i;
 
@@ -296,32 +282,27 @@ void DisplayLevelInfo(display, window, level)
 	XFlush(display);
 }
 
-#if NeedFunctionPrototypes
 void SetLevelNumber(int levelNum)
-#else
-void SetLevelNumber(levelNum)
-	int levelNum;
-#endif
 {
 	level = (u_long) levelNum;
 }
 
-#if NeedFunctionPrototypes
+/** 
+*
+* @todo	This function can probably be expunged
+*
+*/
 void SetStartingLevel(int levelNum)
-#else
-void SetStartingLevel(levelNum)
-	int levelNum;
-#endif
 {
 	startlevel = (u_long) levelNum;
 }
+/** 
+*
+* @todo: Replace below function prototype to remove the #if #else
+*
+*/
 
-#if NeedFunctionPrototypes
 void ChangeStartingLevel(Display *display)
-#else
-void ChangeStartingLevel(display)
-	Display *display;
-#endif
 {
 	/*
 	 * This function will display the user input dialogue and ask the
@@ -333,7 +314,7 @@ void ChangeStartingLevel(display)
 
 
     sprintf(str, "Level range is [1-%d]", MAX_NUM_LEVELS);
-	SetCurrentMessage(display, messWindow, str, False);
+	SetCurrentMessage(display, messWindow, str, False); //C Bool Lib
 
 	str[0] = '\0';
 
@@ -351,54 +332,56 @@ void ChangeStartingLevel(display)
 		/* Ok now set the new starting level number */
     	SetStartingLevel(num);
 		sprintf(str, "Starting level set to %d", num);
-		SetCurrentMessage(display, messWindow, str, True);
+		SetCurrentMessage(display, messWindow, str, True);			//C Bool Lib
 	}
 	else
 	{
 		/* Value out of range so let them know the range. */
         sprintf(str, "Invalid - level range [1-%d]", MAX_NUM_LEVELS);
-		SetCurrentMessage(display, messWindow, str, True);
+		SetCurrentMessage(display, messWindow, str, True);			//C Bool Lib
 	}
 }
 
-#if NeedFunctionPrototypes
+/** 
+*
+* @todo	This function can probably be expunged
+*
+*/
 int GetStartingLevel(void)
-#else
-int GetStartingLevel()
-#endif
 {
 	return ((int) startlevel);
 }
 
-#if NeedFunctionPrototypes
+/** 
+*
+* @todo	This function can probably be expunged
+*
+*/
 void RedrawLevelInfo(Display *display, Window window)
-#else
-void RedrawLevelInfo(display, window)
-	Display *display;
-	Window	window;
-#endif
 {
 	DisplayLevelInfo(display, window, level);
 }
 
-#if NeedFunctionPrototypes
+/** 
+*
+* @todo: Replace below function prototype to remove the #if #else
+*
+*/
 void FreeLevelInfo(Display *display)
-#else
-void FreeLevelInfo(display)
-	Display *display;
-#endif
 {
 	/* Free the life pixmap  */
 	if (lifePixmap)		XFreePixmap(display, lifePixmap);
 	if (lifeMask)		XFreePixmap(display, lifeMask);
 }
 
-#if NeedFunctionPrototypes
+/** 
+*
+* @todo: Replace below function prototype to remove the #if #else
+*
+* @todo: Replace Ints with Consts (?)
+*
+*/
 void DeleteABullet(Display *display)
-#else
-void DeleteABullet(display)
-	Display *display;
-#endif
 {
 	bulletPos = 192 - (GetNumberBullets() * 9);
 
@@ -408,12 +391,7 @@ void DeleteABullet(display)
 	DecNumberBullets();
 }
 
-#if NeedFunctionPrototypes
 void AddABullet(Display *display)
-#else
-void AddABullet(display)
-	Display *display;
-#endif
 {
 	IncNumberBullets();
 
@@ -423,12 +401,14 @@ void AddABullet(display)
 	DrawTheBullet(display, levelWindow, bulletPos, 43);
 }
 
-#if NeedFunctionPrototypes
+/** 
+*
+* @todo: Replace below function prototype to remove the #if #else
+*
+* @todo: Replace Ints with Consts (?)
+*
+*/
 void ReDrawBulletsLeft(Display *display)
-#else
-void ReDrawBulletsLeft(display)
-	Display *display;
-#endif
 {
 	int x, i;
 
@@ -440,31 +420,32 @@ void ReDrawBulletsLeft(display)
 	} 
 }
 
-#if NeedFunctionPrototypes
+/** 
+*
+* @todo	This function can probably be expunged
+*
+*/
 int GetNumberLife(void)
-#else
-int GetNumberLife()
-#endif
 {
 	return livesLeft;
 }
 
-#if NeedFunctionPrototypes
+/** 
+*
+* @todo	This function can probably be expunged
+*
+*/
 void SetLivesLeft(int new)
-#else
-void SetLivesLeft(new)
-	int new;
-#endif
 {
 	livesLeft = new;
 }
 
-#if NeedFunctionPrototypes
+/** 
+*
+* @todo: Replace below function prototype to remove the #if #else
+*
+*/
 void DecExtraLife(Display *display)
-#else
-void DecExtraLife(display)
-	Display *display;
-#endif
 {
 	/* Take a life */
 	if (mode != MODE_EDIT)
@@ -477,29 +458,28 @@ void DecExtraLife(display)
 	DisplayLevelInfo(display, levelWindow, level);
 }
 
-#if NeedFunctionPrototypes
+/** 
+*
+* @todo: Replace below function prototype to remove the #if #else
+*
+*/
 void AddExtraLife(Display *display)
-#else
-void AddExtraLife(display)
-	Display *display;
-#endif
 {
 	/* Add a new life */
 	livesLeft++;
 
-	SetCurrentMessage(display, messWindow, "Extra ball", True);
+	SetCurrentMessage(display, messWindow, "Extra ball", True);		//C Bool Lib
 
 	/* redraw the level info */
 	DisplayLevelInfo(display, levelWindow, level);
 }
 
-#if NeedFunctionPrototypes
+/** 
+*
+* @todo: Replace below function prototype to remove the #if #else
+*
+*/
 void CheckAndAddExtraLife(Display *display, long score)
-#else
-void CheckAndAddExtraLife(display, score)
-	Display *display;
-	long score;
-#endif
 {
 	static int ballInc = 0;
 
@@ -514,13 +494,12 @@ void CheckAndAddExtraLife(display, score)
 	ballInc = score / NEW_LIVE_SCORE_INC;
 }
 
-#if NeedFunctionPrototypes
+/** 
+*
+* @todo: Replace below function prototype to remove the #if #else
+*
+*/
 void HandleGameTimer(Display *display, Window window)
-#else
-void HandleGameTimer(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	static time_t oldTime = 0;
 
@@ -533,14 +512,21 @@ void HandleGameTimer(display, window)
 	}
 }
 
-#if NeedFunctionPrototypes
+/** 
+*
+* @todo: Replace below function prototype to remove the #if #else
+*
+*/
 void CheckGameRules(Display *display, Window window)
-#else
-void CheckGameRules(display, window)
-	Display *display;
-	Window window;
-#endif
 {
+	/**
+	*
+	* @brief This function would benifit greatly from C Bool Lib
+	*
+	* @todo: Rewrite using C Bool Lib
+	*
+	*/
+
 	CheckAndAddExtraLife(display, score);
 
 	HandleGameTimer(display, window);
@@ -561,12 +547,14 @@ void CheckGameRules(display, window)
 	}
 }
 
-#if NeedFunctionPrototypes
+/** 
+*
+* @todo: Replace below function prototype to remove the #if #else
+*
+* @todo: Replace Ints with Consts (?)
+*
+*/
 void UpdateHighScores(Display *display)
-#else
-void UpdateHighScores(display)
-	Display *display;
-#endif
 {
 	time_t endTime;
 	u_long theLevel;
@@ -581,7 +569,7 @@ void UpdateHighScores(display)
 	/* If the user is the new boing master */
 	if (GetHighScoreRanking(score) == 1)
 	{
-		if (noSound == False) playSoundFile("youagod", 99);
+		if (noSound == False) playSoundFile("youagod", 99); //C Bool Lib
 
 		/* Ask them for some words of wisdom */
 		strcpy(message, UserInputDialogueMessage(display,
@@ -592,25 +580,26 @@ void UpdateHighScores(display)
 	(void) CheckAndAddScoreToHighScore(score, theLevel, endTime, PERSONAL,
 		message);
 	if (CheckAndAddScoreToHighScore(score, theLevel, endTime, GLOBAL, 
-	  message) == False)
+	  message) == False)						//C Bool Lib
 		ResetHighScore(PERSONAL);
 	else
 		ResetHighScore(GLOBAL);
 }
 
+/** 
+*
+* @todo: Replace below function prototype to remove the #if #else
+*
+* @todo: Replace Ints with Consts (?)
+*
+*/
 
-#if NeedFunctionPrototypes
 void EndTheGame(Display *display, Window window)
-#else
-void EndTheGame(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	/* Game over man! */
-	SetCurrentMessage(display, messWindow, "- Game Over - ", True);
+	SetCurrentMessage(display, messWindow, "- Game Over - ", True);		//C Bool Lib
 
-	if (noSound == False) playSoundFile("game_over", 99);
+	if (noSound == False) playSoundFile("game_over", 99);	//C Bool Lib
 
 	TurnSpecialsOff(display);
 
@@ -620,25 +609,26 @@ void EndTheGame(display, window)
 	DisplayLevelInfo(display, levelWindow, level);
 
 	/* Reset game and setup for high score table */
-	gameActive = False;
+	gameActive = False;								//C Bool Lib
 	SetLevelNumber(GetStartingLevel());
 	ResetIntroduction();
 	mode = MODE_HIGHSCORE;
 
 }
 
-#if NeedFunctionPrototypes
+/** 
+*
+* @todo: Replace below function prototype to remove the #if #else
+*
+* @todo: Replace Ints with Consts (?)
+*
+*/
 void DeadBall(Display *display, Window window)
-#else
-void DeadBall(display, window)
-	Display *display;
-	Window window;
-#endif
 {
-	if (noSound == False) playSoundFile("balllost", 99);
+	if (noSound == False) playSoundFile("balllost", 99);  //C Bool Lib
 
 	/* More than one ball on screen - 1 died */
-	SetCurrentMessage(display, messWindow, "Another one bites the dust!", True);
+	SetCurrentMessage(display, messWindow, "Another one bites the dust!", True);		//C Bool Lib
 
 	if (livesLeft <= 0 && GetAnActiveBall() == -1)
 		EndTheGame(display, window);
@@ -648,7 +638,7 @@ void DeadBall(display, window)
 		if (GetAnActiveBall() == -1 && livesLeft > 0)
 		{
 			/* Last ball on screen died so start a new one */
-			SetCurrentMessage(display, messWindow, "Balls Terminated!", True);
+			SetCurrentMessage(display, messWindow, "Balls Terminated!", True);			//C Bool Lib
 
 			SetReverseOff();
 			DrawSpecials(display);
@@ -665,11 +655,12 @@ void DeadBall(display, window)
 	}
 }
 
-#if NeedFunctionPrototypes
+/** 
+*
+* @todo	This function can probably be expunged
+*
+*/
 char *GetLevelName(void)
-#else
-char *GetLevelName()
-#endif
 {
 	/* Return the name of the current level */
 	return (levelTitle);

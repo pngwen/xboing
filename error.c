@@ -54,35 +54,33 @@
 #include "error.h"
 
 /*
- *  Internal macro definitions:
- */
-
-/*
- *  Internal type declarations:
- */
-
-/*
  *  Internal variable declarations:
  */
 
-#if NeedFunctionPrototypes
+/**
+ * @brief Prints a normal message to the standard output.
+ *
+ * This function takes a message string and prints it to the standard output
+ * with a prefix indicating the application name.
+ *
+ * @param message The message string to be printed.
+ */
 void NormalMessage(char *message)
-#else
-void NormalMessage(message)
-	char *message;
-#endif
 {
 	/* Print a message to standard out flush it */
 	fprintf(stdout, "XBoing - %s\n", message);
 	fflush(stdout);
 }
 
-#if NeedFunctionPrototypes
+/**
+ * @brief Prints an error message to the standard output.
+ *
+ * This function takes an error message string, prints it to the standard output,
+ * and suggests reading a specific README file for help.
+ *
+ * @param message The error message string to be printed.
+ */
 void ErrorMessage(char *message)
-#else
-void ErrorMessage(message)
-	char *message;
-#endif
 {
 
 #ifndef READMEP_FILE
@@ -97,26 +95,32 @@ void ErrorMessage(message)
 	fflush(stdout);
 }
 
-#if NeedFunctionPrototypes
+/**
+ * @brief Prints a warning message to the standard output.
+ *
+ * This function takes a warning message string and prints it to the standard output
+ * with a prefix indicating it is a warning.
+ *
+ * @param message The warning message string to be printed.
+ */
 void WarningMessage(char *message)
-#else
-void WarningMessage(message)
-	char *message;
-#endif
 {
 	/* Print a standard warning message to stdout and flush it */
 	fprintf(stdout, "XBoing - Warning: %s\n", message);
 	fflush(stdout);
 }
 
-#if NeedFunctionPrototypes
+/**
+ * @brief Handles errors returned by the XPM library.
+ *
+ * This function checks the error status from the XPM library and prints
+ * appropriate error or warning messages based on the type of error.
+ *
+ * @param display A pointer to the Display structure used for graphics.
+ * @param ErrorStatus The status code returned by the XPM library indicating the error type.
+ * @param tag A string tag to help identify the source of the error in the output.
+ */
 void HandleXPMError(Display *display, int ErrorStatus, char *tag)
-#else
-void HandleXPMError(display, ErrorStatus, tag)
-	Display *display;
-	int ErrorStatus;
-	char *tag;
-#endif
 {
     char *error = NULL;
 	char *warning = NULL;

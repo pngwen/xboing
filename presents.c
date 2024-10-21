@@ -92,15 +92,9 @@
  *  Internal type declarations:
  */
 
-#if NeedFunctionPrototypes
 void SetPresentWait(int newMode, int waitFrame);
 void DoPresentWait(void);
 static void DoSparkle(Display *display, Window window);
-#else
-static void DoSparkle();
-void SetPresentWait();
-void DoPresentWait();
-#endif
 
 /*
  *  Internal variable declarations:
@@ -116,14 +110,7 @@ static Pixmap titlePixmap[6], titlePixmapM[6];
 static Pixmap justin, justinM, kibell, kibellM, presents, presentsM;
 static int waitingFrame, waitMode;
 
-#if NeedFunctionPrototypes
 void SetUpPresents(Display *display, Window window, Colormap colormap)
-#else
-void SetUpPresents(display, window, colormap)
-	Display *display;
-	Window window;
-	Colormap colormap;
-#endif
 {
 	XpmAttributes   attributes;
 	int             XpmErrorStatus;
@@ -186,16 +173,8 @@ void SetUpPresents(display, window, colormap)
 	ResetPresents();
 }
 
-#if NeedFunctionPrototypes
 static void DrawLetter(Display *display, Window window, int letter, 
 	int x, int y)
-#else
-static void DrawLetter(display, window, letter, x, y)
-	Display *display;
-	Window window;
-	int letter;
-	int x, y;
-#endif
 {
 	switch(letter)
 	{
@@ -234,13 +213,7 @@ static void DrawLetter(display, window, letter, x, y)
 	}
 }
 
-#if NeedFunctionPrototypes
 void DoPresentFlag(Display *display, Window window)
-#else
-void DoPresentFlag(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	char string[80];
 	int y, x;
@@ -290,13 +263,7 @@ void DoPresentFlag(display, window)
 	SetPresentWait(PRESENT_TEXT1, frame + 800);
 }
 
-#if NeedFunctionPrototypes
 static void DoText1(Display *display, Window window)
-#else
-static void DoText1(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	int x, y;
 
@@ -312,13 +279,7 @@ static void DoText1(display, window)
 	SetPresentWait(PRESENT_TEXT2, frame + 300);
 }
 
-#if NeedFunctionPrototypes
 static void DoText2(Display *display, Window window)
-#else
-static void DoText2(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	int x, y;
 
@@ -334,13 +295,7 @@ static void DoText2(display, window)
 	SetPresentWait(PRESENT_TEXT3, frame + 500);
 }
 
-#if NeedFunctionPrototypes
 static void DoText3(Display *display, Window window)
-#else
-static void DoText3(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	int x, y;
 
@@ -358,13 +313,7 @@ static void DoText3(display, window)
 	SetPresentWait(PRESENT_TEXT_CLEAR, frame + 750);
 }
 
-#if NeedFunctionPrototypes
 static void DoTextClear(Display *display, Window window)
-#else
-static void DoTextClear(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	int x, y;
 
@@ -384,13 +333,7 @@ static int dists[] =
 	71, 73, 83, 41, 85, 88
 };
 
-#if NeedFunctionPrototypes
 static void DoLetters(Display *display, Window window)
-#else
-static void DoLetters(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	static int i = 0;
 	static int x = 40;
@@ -422,13 +365,7 @@ static void DoLetters(display, window)
 	i++;
 }
 
-#if NeedFunctionPrototypes
 static void DoSparkle(Display *display, Window window)
-#else
-static void DoSparkle(display, window)
-    Display *display;
-    Window window;
-#endif
 {
     static Pixmap store;
     static int in = 0;
@@ -469,13 +406,7 @@ static void DoSparkle(display, window)
 }
 
 
-#if NeedFunctionPrototypes
 static void DoSpecialText1(Display *display, Window window)
-#else
-static void DoSpecialText1(display, window)
-    Display *display;
-    Window window;
-#endif
 {
 	static int first = True;
 	static int i;
@@ -517,13 +448,7 @@ static void DoSpecialText1(display, window)
 }
 
 
-#if NeedFunctionPrototypes
 static void DoSpecialText2(Display *display, Window window)
-#else
-static void DoSpecialText2(display, window)
-    Display *display;
-    Window window;
-#endif
 {
 	static int first = True;
 	static int i;
@@ -559,13 +484,7 @@ static void DoSpecialText2(display, window)
 	}
 }
 
-#if NeedFunctionPrototypes
 static void DoSpecialText3(Display *display, Window window)
-#else
-static void DoSpecialText3(display, window)
-    Display *display;
-    Window window;
-#endif
 {
 	static int first = True;
 	static int i;
@@ -603,13 +522,7 @@ static void DoSpecialText3(display, window)
 
 
 
-#if NeedFunctionPrototypes
 static void DoClear(Display *display, Window window)
-#else
-static void DoClear(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	static int yt, yb, t;
 	static int first = True;
@@ -648,13 +561,7 @@ static void DoClear(display, window)
 	}
 }
 
-#if NeedFunctionPrototypes
 void QuickFinish(Display *display, Window window)
-#else
-void QuickFinish(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	DEBUG("finishing in presents mode.")
 
@@ -662,13 +569,7 @@ void QuickFinish(display, window)
 	SetPresentWait(PRESENT_FINISH, frame);
 }
 
-#if NeedFunctionPrototypes
 static void DoFinish(Display *display, Window window)
-#else
-static void DoFinish(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	/* Free all the pixmaps used in this intro */
 	FreeAllPresents(display);
@@ -686,13 +587,7 @@ static void DoFinish(display, window)
 	mode = MODE_INTRO;
 }
 
-#if NeedFunctionPrototypes
 void Presents(Display *display, Window window)
-#else
-void Presents(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	switch (PresentState)
 	{
@@ -753,34 +648,18 @@ void Presents(display, window)
 	}
 }
 
-#if NeedFunctionPrototypes
 void RedrawPresents(Display *display, Window window)
-#else
-void RedrawPresents(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 }
 
-#if NeedFunctionPrototypes
 void FreeSomePresents(Display *display)
-#else
-void FreeSomePresents(display)
-	Display *display;
-#endif
 {
 	/* Free the large earth pixmap and it's mask */
     if (earthPixmap)	XFreePixmap(display, earthPixmap);         
 	if (earthPixmapM)	XFreePixmap(display, earthPixmapM);
 }
 
-#if NeedFunctionPrototypes
 void FreeAllPresents(Display *display)
-#else
-void FreeAllPresents(display)
-	Display *display;
-#endif
 {
 	int i;
 
@@ -807,11 +686,7 @@ void FreeAllPresents(display)
 	}
 }
 
-#if NeedFunctionPrototypes
 void ResetPresents(void)
-#else
-void ResetPresents()
-#endif
 {
 	DEBUG("Reset presents mode.")
 
@@ -822,24 +697,14 @@ void ResetPresents()
 	SetGameSpeed(FAST_SPEED);
 }
 
-#if NeedFunctionPrototypes
 void SetPresentWait(int newMode, int waitFrame)
-#else
-void SetPresentWait(newMode, waitFrame)
-	int newMode;
-	int waitFrame;
-#endif
 {
 	waitingFrame = waitFrame;
 	waitMode = newMode;
 	PresentState = PRESENT_WAIT;
 }
 
-#if NeedFunctionPrototypes
 void DoPresentWait(void)
-#else
-void DoPresentWait()
-#endif
 {
 	if (frame == waitingFrame)
 		PresentState = waitMode;

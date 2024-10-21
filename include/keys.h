@@ -73,19 +73,11 @@ enum KeysStates
  *  Function prototypes:
  */
 
-#if NeedFunctionPrototypes
 void SetUpKeys(Display *display, Window window, Colormap colormap);
 void Keys(Display *display, Window window);
 void RedrawKeys(Display *display, Window window);
 void FreeKeyControl(Display *display);
 void ResetKeys(void);
-#else
-void SetUpKeys();
-void Keys();
-void RedrawKeys();
-void FreeKeyControl();
-void ResetKeys();
-#endif
 
 extern enum KeysStates KeysState;
 extern Pixmap mouse, leftarrow, rightarrow;

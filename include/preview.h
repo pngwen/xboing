@@ -1,6 +1,20 @@
 #ifndef _PREVIEW_H_
 #define _PREVIEW_H_
 
+/**
+ * @file preview.h
+ * @author Justin C. Kibell (jck@techrescue.org)
+ * @brief Manages the preview mode for xboing
+ * @version 1.1.1.1
+ * @date 16 Dec 1994
+ * 
+ * @copyright Copyright (c) 1993, 1994, 1995, Justin C. Kibell, All Rights Reserved 
+ * @copyright (see COPYRIGHT file for full text)
+ * 
+ * preview.h/c manage the preview mode for xboing. The files call functions to load a level and set up the preview.
+ *  
+ */
+
 /*
  * XBoing - An X11 blockout style computer game
  *
@@ -72,20 +86,60 @@ enum PreviewStates
  *  Function prototypes:
  */
 
-#if NeedFunctionPrototypes
-void SetUpPreviewLevel(Display *display, Window window, Colormap colormap);
-void PreviewLevel(Display *display, Window window);
-void RedrawPreviewLevel(Display *display, Window window);
-void FreePreviewLevel(Display *display);
-void ResetPreviewLevel(void);
-#else
-void SetUpPreviewLevel();
-void PreviewLevel();
-void RedrawPreviewLevel();
-void FreePreviewLevel();
-void ResetPreviewLevel();
-#endif
 
+/**
+ * @brief Calls ResetPreviewLevel function in order to set the view mode back to preview mode.
+ *
+ * @param Display *display X11 display
+ * @param Window window X11 window ID
+ * @param Colormap colormap X11 colormap
+ *
+ * @todo Remove reliance on X11
+ *
+ */
+void SetUpPreviewLevel(Display *display, Window window, Colormap colormap);
+
+/**
+ * @brief Creates the preview level by loading the level, setting up the display, and drawing the special blocks
+ *
+ * @param Display *display X11 display
+ * @param Window window X11 window ID
+ * @param Colormap colormap X11 colormap
+ *
+ * @todo Remove reliance on X11
+ * @todo Possibly split this function into smaller functions
+ *
+ */
+void PreviewLevel(Display *display, Window window);
+
+/**
+ * Calls DoLoadLevel and DoText in order to load the level and display the preview text
+ *
+ * @param Display *display X11 display
+ * @param Window window X11 window ID
+ *
+ * @todo Remove reliance on X11
+ *
+ */
+void RedrawPreviewLevel(Display *display, Window window);
+
+/**
+ * @brief Frees memory for preview level
+ *
+ * @param Display *display X11 display
+ * @param Window window X11 window ID
+ *
+ * @todo Remove reliance on X11
+ * @todo Consider deleting this function
+ *
+ */
+void FreePreviewLevel(Display *display);
+
+/**
+ * @brief Sets the preview state to preview mode
+ *
+ */
+void ResetPreviewLevel(void);
 extern 	enum PreviewStates PreviewState;
 
 

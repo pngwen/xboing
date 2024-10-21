@@ -183,13 +183,8 @@
  *  Internal type declarations:
  */
 
-#if NeedFunctionPrototypes
 static void CalculateBlockGeometry(int row, int col);
 static void SetBlockUpForExplosion(int row, int col, int frame);
-#else
-static void SetBlockUpForExplosion();
-static void CalculateBlockGeometry();
-#endif
 
 /*
  *  Internal variable declarations:
@@ -229,14 +224,7 @@ int					blocksExploding = 0;
 int					rowHeight;
 int					colWidth;
 
-#if NeedFunctionPrototypes
 void InitialiseBlocks(Display *display, Window window, Colormap colormap)
-#else
-void InitialiseBlocks(display, window, colormap)
-	Display *display;
-	Window window;
-	Colormap colormap;
-#endif
 {
 	XpmAttributes   attributes;
 	int 			XpmErrorStatus;
@@ -634,11 +622,7 @@ void InitialiseBlocks(display, window, colormap)
 	SetupBlockInfo();
 }
 
-#if NeedFunctionPrototypes
 void SetupBlockInfo(void)
-#else
-void SetupBlockInfo()
-#endif
 {
 	/* These static values must be updated to match those in blocks.h */
 
@@ -794,12 +778,7 @@ void SetupBlockInfo()
 	BlockInfo[29].slide 		= 0;
 }
 
-#if NeedFunctionPrototypes
 void PlaySoundForBlock(int type)
-#else
-void PlaySoundForBlock(type)
-	int type;
-#endif
 {
 	/* If no sound the no sound */
 	if (noSound == True) return;
@@ -899,20 +878,8 @@ void PlaySoundForBlock(type)
 	}
 }
 
-#if NeedFunctionPrototypes
 void ExplodeBlockType(Display *display, Window window, int x, int y, 
 	int row, int col, int type, int slide)
-#else
-void ExplodeBlockType(display, window, x, y, row, col, type, slide)
-	Display *display;
-	Window window;
-	int x;
-	int y; 
-	int row;
-	int col;
-	int type;
-	int slide;
-#endif
 {
     struct aBlock *blockP;
 	int y1, y2, h;
@@ -1027,14 +994,7 @@ void ExplodeBlockType(display, window, x, y, row, col, type, slide)
 	}
 }
 
-#if NeedFunctionPrototypes
 void ExplodeAllOfOneType(Display *display, Window window, int type)
-#else
-void ExplodeAllOfOneType(display, window, type)
-    Display 	*display;
-    Window 		window;
-	int 		type;
-#endif
 {
 	/*
 	 * Go through all blocks occupied and set all blocks of a the type
@@ -1063,14 +1023,7 @@ void ExplodeAllOfOneType(display, window, type)
 	}
 }
 
-#if NeedFunctionPrototypes
 void SetExplodeAllType(Display *display, Window window, int type)
-#else
-void SetExplodeAllType(display, window, type)
-    Display 	*display;
-    Window 		window;
-	int 		type;
-#endif
 {
 	/*
 	 * This function will search for a block that can have an explode all
@@ -1127,18 +1080,8 @@ void SetExplodeAllType(display, window, type)
 	}
 }
 
-#if NeedFunctionPrototypes
 void AddSpecialBlock(Display *display, Window window, int *row, int *col,
     int type, int kill_shots)
-#else
-void AddSpecialBlock(display, window, row, col, type, kill_shots)
-    Display *display;
-    Window window;
-    int *row;
-    int *col;
-    int type;
-    int kill_shots;
-#endif
 {
     int r, c;
     struct aBlock *blockP;
@@ -1171,17 +1114,8 @@ void AddSpecialBlock(display, window, row, col, type, kill_shots)
 }
 
 
-#if NeedFunctionPrototypes
 void AddBonusBlock(Display *display, Window window, int *row, int *col, 
 	int type)
-#else
-void AddBonusBlock(display, window, row, col, type)
-	Display *display;
-	Window window;
-	int *row;
-	int *col;
-	int type;
-#endif
 {
 	int r, c;
 	struct aBlock *blockP;
@@ -1212,12 +1146,7 @@ void AddBonusBlock(display, window, row, col, type)
 	}
 }
 
-#if NeedFunctionPrototypes
 int GetRandomType(int blankBlock)
-#else
-int GetRandomType(blankBlock)
-	int blankBlock;
-#endif
 {
 	/* This function will return a random new block block type */
 
@@ -1260,16 +1189,8 @@ int GetRandomType(blankBlock)
 	return YELLOW_BLK;
 }
 
-#if NeedFunctionPrototypes
 void HandlePendingSpecials(Display *display, Window window, int type,
     int r, int c)
-#else
-void HandlePendingSpecials(display, window, type, r, c)
-    Display *display;
-    Window window;
-    int type;
-    int r, c;
-#endif
 {
     struct aBlock *blockP;
 
@@ -1294,16 +1215,8 @@ void HandlePendingSpecials(display, window, type, r, c)
 }
 
 
-#if NeedFunctionPrototypes
 void HandlePendingBonuses(Display *display, Window window, int type, 
 	int r, int c)
-#else
-void HandlePendingBonuses(display, window, type, r, c)
-	Display *display;
-	Window window;
-	int type;
-	int r, c;
-#endif
 {
 	struct aBlock *blockP;
 
@@ -1340,15 +1253,7 @@ void HandlePendingBonuses(display, window, type, r, c)
 	}
 }
 
-#if NeedFunctionPrototypes
 static int CheckAdjacentBlocks(Display *display, Window window, int r, int c)
-#else
-static int CheckAdjacentBlocks(display, window, r, c)
-	Display *display;
-	Window window;
-	int r;
-	int c;
-#endif
 {
 	/* True - yes go ahead moved down one block - false no don't */
 	struct aBlock *blockP;
@@ -1383,13 +1288,7 @@ static int CheckAdjacentBlocks(display, window, r, c)
 }
 
 
-#if NeedFunctionPrototypes
 void HandlePendingAnimations(Display *display, Window window)
-#else
-void HandlePendingAnimations(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	int r, c, d, r1 = 0, c1 = 0;
 	struct aBlock *blockP;
@@ -1618,13 +1517,7 @@ void HandlePendingAnimations(display, window)
 	}
 }
 
-#if NeedFunctionPrototypes
 void ExplodeBlocksPending(Display *display, Window window)
-#else
-void ExplodeBlocksPending(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	int r, c, x, y, type, i;
 	struct aBlock *blockP;
@@ -1809,19 +1702,8 @@ void ExplodeBlocksPending(display, window)
 	}
 }
 
-#if NeedFunctionPrototypes
 void DrawTheBlock(Display *display, Window window, int x, int y, 
 	int blockType, int slide, int r, int c)
-#else
-void DrawTheBlock(display, window, x, y, blockType, slide, r, c)
-	Display *display;
-	Window window;
-	int x;
-	int y; 
-	int blockType;
-	int slide;
-	int r, c;
-#endif
 {
 	struct aBlock *blockP;
 	char tmp[10];
@@ -2006,14 +1888,7 @@ void DrawTheBlock(display, window, x, y, blockType, slide, r, c)
 	}
 }
 
-#if NeedFunctionPrototypes
 static void SetBlockUpForExplosion(int row, int col, int frame)
-#else
-static void SetBlockUpForExplosion(row, col, frame)
-	int row;
-	int col;
-	int frame;
-#endif
 {
     struct aBlock *blockP;
 
@@ -2047,16 +1922,7 @@ static void SetBlockUpForExplosion(row, col, frame)
 }
 
 
-#if NeedFunctionPrototypes
 void DrawBlock(Display *display, Window window, int row, int col, int blockType)
-#else
-void DrawBlock(display, window, row, col, blockType)
-	Display *display;
-	Window window;
-	int row;
-	int col;
-	int blockType;
-#endif
 {
 	struct aBlock *blockP;
 
@@ -2089,12 +1955,7 @@ void DrawBlock(display, window, row, col, blockType)
 	}
 }
 
-#if NeedFunctionPrototypes
 void FreeBlockPixmaps(Display *display)
-#else
-void FreeBlockPixmaps(display)
-	Display *display;
-#endif
 {
 	int i;
 
@@ -2234,12 +2095,7 @@ void FreeBlockPixmaps(display)
 	}
 }
 
-#if NeedFunctionPrototypes
 static void CalculateBlockGeometry(int row, int col)
-#else
-static void CalculateBlockGeometry(row, col)
-	int row, col;
-#endif
 {
 	struct aBlock *blockP;
 	XPoint points[4];
@@ -2415,15 +2271,7 @@ static void CalculateBlockGeometry(row, col)
     blockP->regionRight = XPolygonRegion(points, 4, EvenOddRule);
 }
 
-#if NeedFunctionPrototypes
 void EraseVisibleBlock(Display *display, Window window, int row, int col)
-#else
-void EraseVisibleBlock(display, window, row, col)
-	Display *display;
-	Window window;
-	int row;
-	int col;
-#endif
 {
 	/* Actually erase the block from the arena */
 	struct aBlock *blockP;
@@ -2439,19 +2287,8 @@ void EraseVisibleBlock(display, window, row, col)
 			blockP->height, False);
 }
 
-#if NeedFunctionPrototypes
 void AddNewBlock(Display *display, Window window, int row, int col,
 	int blockType, int counterSlide, int drawIt)
-#else
-void AddNewBlock(display, window, row, col, blockType, counterSlide, drawIt)
-	Display *display;
-	Window window;
-	int row;
-	int col;
-	int blockType;
-	int counterSlide;
-	int drawIt;
-#endif
 {
 	struct aBlock *blockP;
 
@@ -2569,13 +2406,7 @@ void AddNewBlock(display, window, row, col, blockType, counterSlide, drawIt)
 	if (drawIt) DrawBlock(display, window, row, col, blockType);
 }
 
-#if NeedFunctionPrototypes
 void SkipToNextLevel(Display *display, Window window)
-#else
-void SkipToNextLevel(display, window)
-	Display *display;
-	Window window;
-#endif
 {
     struct aBlock *blockP;
 	int r, c;
@@ -2630,13 +2461,7 @@ void SkipToNextLevel(display, window)
     changeSfxMode(SFX_SHAKE);
 }
 
-#if NeedFunctionPrototypes
 void RedrawAllBlocks(Display *display, Window window)
-#else
-void RedrawAllBlocks(display, window)
-	Display *display;
-	Window window;
-#endif
 {
     struct aBlock *blockP;
 	int r, c;
@@ -2654,11 +2479,7 @@ void RedrawAllBlocks(display, window)
 	}	
 }
 
-#if NeedFunctionPrototypes
 int StillActiveBlocks(void)
-#else
-int StillActiveBlocks()
-#endif
 {
 	/*
 	 * Returns False if level is finished. True otherwise.
@@ -2722,13 +2543,7 @@ int StillActiveBlocks()
 	return False;
 }
 
-#if NeedFunctionPrototypes
 void ClearBlock(int row, int col)
-#else
-void ClearBlock(row, col)
-	int row;
-	int col;
-#endif
 {
     struct aBlock *blockP;
 
@@ -2799,11 +2614,7 @@ void ClearBlock(row, col)
 }
 
 
-#if NeedFunctionPrototypes
 void ClearBlockArray(void)
-#else
-void ClearBlockArray()
-#endif
 {
 	int r, c;
 

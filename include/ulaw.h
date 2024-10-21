@@ -1,3 +1,13 @@
+/**
+ * @file ulaw.h
+ * @author Gerardo Gonzalez
+ * @date 2024-10-01
+ * @brief Header file containing u-law conversion definitions and sound header structure.
+ * 
+ * This file provides definitions for converting u-law encoded audio data to linear PCM format, as well as a structure to store sound file headers.
+ */
+
+
 #ifndef _ULAW_H
 #define _ULAW_H
 
@@ -18,8 +28,23 @@
  * =========================================================================
  */
 
+/**
+ * @brief Converts a u-law encoded value to linear PCM.
+ *
+ * This macro provides a quick conversion of an 8-bit u-law value to a 16-bit linear PCM value.
+ * It uses a lookup table to achieve the conversion.
+ *
+ * @param _x The 8-bit u-law value to be converted.
+ * @return short The corresponding 16-bit linear PCM value.
+ */
 #define UlToLin(_x) (ulawToLinearTable[(_x)])
 
+/**
+ * @brief Lookup table for converting u-law to linear PCM.
+ *
+ * This table is used to convert an 8-bit u-law value to a corresponding 16-bit linear PCM value.
+ * The table values are predefined and provide a fast lookup for audio decoding purposes.
+ */
 static short ulawToLinearTable[] =
 {
     0x8284, 0x8684, 0x8a84, 0x8e84, 0x9284, 0x9684, 0x9a84, 0x9e84,
@@ -56,7 +81,10 @@ static short ulawToLinearTable[] =
     0x0038, 0x0030, 0x0028, 0x0020, 0x0018, 0x0010, 0x0008, 0x0000,
 };
 
-
+/**
+ * @brief Low-level sound properties used for audio playback
+ * 
+ */
 typedef struct 
 {
     unsigned int  magic;

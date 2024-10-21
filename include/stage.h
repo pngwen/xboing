@@ -1,3 +1,13 @@
+/**
+ * @file stage.h
+ * @author Gerardo Gonzalez
+ * @date 2024-10-01
+ * @brief Handles the creation and management of various in-game xboing windows.
+ * 
+ * This file contains functions for initializing, creating, clearing, and mapping windows in the xboing, as well as managing pixmaps and window manager hints.
+ */
+
+
 #ifndef _STAGE_H_
 #define _STAGE_H_
 
@@ -97,27 +107,80 @@ extern Window timeWindow;
 extern Window inputWindow;
 extern Window blockWindow, typeWindow;
 
-#if NeedFunctionPrototypes
+/**
+ * Creates all the game windows (score, level, gameplay, etc)
+ *
+ * @param Display *display display connection to x server
+ * @param Colormap colormap map of colors used ingame
+ *
+ */
 void CreateAllWindows(Display *display, Colormap colormap, char **argv, 
 	int argc);
+
+/**
+ * Redraws play area
+ *
+ * @param Display *display Display connection to x server
+ * @param Window window The window itself
+ * 
+ */
 void RedrawPlayWindow(Display *display, Window window);
+
+/**
+ * Makes the windows visible
+ *
+ * @param Display *display Display connection to x server
+ * 
+ */
 void MapAllWindows(Display *display);
+
+/**
+ * Clears the main window and returns it to its blank form
+ *
+ * @param Display *display Display connection to x server
+ * @param Window window The window itself
+ * 
+ */
 void ClearMainWindow(Display *display, Window window);
+
+/**
+ * Actually draws the background to whatever specification
+ *
+ * @param Display *display Display connection to x server
+ * @param Window window The window itself
+ * @param int stageType What color/type of background (used in switch case)
+ * 
+ */
 void DrawStageBackground(Display *display, Window window, int stageType,
 	int clear);
+
+/**
+ * Sets/preps the backgrounds for the game
+ *
+ * @param Display *display Display connection to x server
+ * @param Colormap colormap Map of colors used for the game
+ * 
+ */
 void SetBackgrounds(Display *display, Colormap colormap);
+
+/**
+ * Makes the devil eyes blink
+ *
+ * @param Display *display Display connection to x server
+ * @param Window window The window itself
+ * 
+ */
 int BlinkDevilEyes(Display *display, Window window);
+
+/**
+ * Sets the window size
+ *
+ * @param Display *display Display connection to x server
+ * @param int w Window width
+ * @param int h Window height
+ * 
+ */
 void SetWindowSizeHints(Display *display, int w, int h);
-#else
-void SetWindowSizeHints();
-int BlinkDevilEyes();
-void CreateAllWindows();
-void RedrawPlayWindow();
-void MapAllWindows();
-void ClearMainWindow();
-void DrawStageBackground();
-void SetBackgrounds();
-#endif
 
 
 #endif

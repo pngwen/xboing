@@ -1,51 +1,18 @@
-/*
- * XBoing - An X11 blockout style computer game
- *
- * (c) Copyright 1993, 1994, 1995, Justin C. Kibell, All Rights Reserved
- *
- * The X Consortium, and any party obtaining a copy of these files from
- * the X Consortium, directly or indirectly, is granted, free of charge, a
- * full and unrestricted irrevocable, world-wide, paid up, royalty-free,
- * nonexclusive right and license to deal in this software and
- * documentation files (the "Software"), including without limitation the
- * rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons who receive
- * copies from any such party to do so.  This license includes without
- * limitation a license to do the foregoing actions under any patents of
- * the party supplying this software to the X Consortium.
- *
- * In no event shall the author be liable to any party for direct, indirect,
- * special, incidental, or consequential damages arising out of the use of
- * this software and its documentation, even if the author has been advised
- * of the possibility of such damage.
- *
- * The author specifically disclaims any warranties, including, but not limited
- * to, the implied warranties of merchantability and fitness for a particular
- * purpose.  The software provided hereunder is on an "AS IS" basis, and the
- * author has no obligation to provide maintenance, support, updates,
- * enhancements, or modifications.
+/**
+ * @file file.c
+ * @author Justin C. Kibell (jck@techrescue.org)
+ * @brief Controls file input/output for game states and initializes for game play
+ * @version 1.1.1.1
+ * @date 16 Dec 1994
+ * 
+ * @copyright Copyright (c) 1993, 1994, 1995, Justin C. Kibell, All Rights Reserved 
+ * @copyright (see COPYRIGHT file for full text)
+ * 
+ * file.h/.c ontrols file input and output of saved games state data as well as level template data. 
+ * When loading from a save, file.h/.c also initializes the game stage based on the data loaded.
+ *  
  */
 
-/* 
- * =========================================================================
- *
- * $Id: file.c,v 1.1.1.1 1994/12/16 01:36:43 jck Exp $
- * $Source: /usr5/legends/jck/xb/master/xboing/file.c,v $
- * $Revision: 1.1.1.1 $
- * $Date: 1994/12/16 01:36:43 $
- *
- * $Log: file.c,v $
- * Revision 1.1.1.1  1994/12/16  01:36:43  jck
- * The XBoing distribution requires configuration management. This is why the
- * cvs utility is being used. This is the initial import of all source etc..
- *
- *
- * =========================================================================
- */
-
-/*
- *  Include file dependencies:
- */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -75,31 +42,21 @@
 #include "blocks.h"
 #include "eyedude.h"
 
-#include "file.h"
+#include "include\file.h"
 
-/*
- *  Internal macro definitions:
+/**
+ * @def BUF_SIZE
+ * 
+ * @todo update #define to const uint32_t
+ * 
  */
 
 #define BUF_SIZE            1024
 
-/*
- *  Internal type declarations:
- */
-
-/*
- *  Internal variable declarations:
- */
 
 saveGameStruct saveGame;
 
-#if NeedFunctionPrototypes
 void SetupStage(Display *display, Window window)
-#else
-void SetupStage(display, window)
-    Display *display;
-    Window window;
-#endif
 {
     char levelPath[1024];
     char *str;
@@ -156,13 +113,7 @@ void SetupStage(display, window)
     XFlush(display);
 }
 
-#if NeedFunctionPrototypes
 int LoadSavedGame(Display *display, Window window)
-#else
-int LoadSavedGame(display, window)
-    Display *display;
-    Window window;
-#endif
 {
 	/*
 	 * This routine will load the last saved game. 
@@ -254,13 +205,7 @@ int LoadSavedGame(display, window)
 	return True;
 }
 
-#if NeedFunctionPrototypes
 int SaveCurrentGame(Display *display, Window window)
-#else
-int SaveCurrentGame(display, window)
-    Display *display;
-    Window window;
-#endif
 {
 	/*
 	 * This routine will save the current state of the game for loading
@@ -332,15 +277,7 @@ int SaveCurrentGame(display, window)
 }
 
 
-#if NeedFunctionPrototypes
 int ReadNextLevel(Display *display, Window window, char *levelName, int draw)
-#else
-int ReadNextLevel(display, window, levelName, draw)
-    Display *display;
-    Window window;
-    char *levelName;
-	int draw;
-#endif
 {
     FILE *levelFile;
     int row, col, type;
@@ -554,13 +491,7 @@ int ReadNextLevel(display, window, levelName, draw)
     return True;
 }
 
-#if NeedFunctionPrototypes
 int SaveLevelDataFile(Display *display, char *levelName)
-#else
-int SaveLevelDataFile(display, levelName)
-    Display *display;
-    char *levelName;
-#endif
 {
     FILE *levelFile;
     int row, col;

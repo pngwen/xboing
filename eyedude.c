@@ -94,11 +94,7 @@
  *  Internal type declarations:
  */
 
-#if NeedFunctionPrototypes
 static int CheckEyeDudeClearPath(Display *display, Window window);
-#else
-static int CheckEyeDudeClearPath();
-#endif
 
 /*
  *  Internal variable declarations:
@@ -110,14 +106,7 @@ static Pixmap eyesDead, eyesDeadM;
 static int	x, y, oldx, oldy, s, direction, inc, turn;
 static eyeDudeStates eyeDudeState;
 
-#if NeedFunctionPrototypes
 void InitialiseEyeDudes(Display *display, Window window, Colormap colormap)
-#else
-void InitialiseEyeDudes(display, window, colormap)
-	Display *display;
-	Window window;
-	Colormap colormap;
-#endif
 {
     XpmAttributes   attributes;
 	int		    XpmErrorStatus;
@@ -181,12 +170,7 @@ void InitialiseEyeDudes(display, window, colormap)
 	XpmFreeAttributes(&attributes);
 }
 
-#if NeedFunctionPrototypes
 void FreeEyeDudes(Display *display)
-#else
-void FreeEyeDudes(display)
-	Display *display;
-#endif
 {
 	int i;
 
@@ -203,18 +187,8 @@ void FreeEyeDudes(display)
 	if (eyesDeadM)	XFreePixmap(display, eyesDeadM);
 }
 
-#if NeedFunctionPrototypes
 static void DrawTheEyeDude(Display *display, Window window, int x, int y, 
 	int slide, int direction)
-#else
-static void DrawTheEyeDude(display, window, x, y, slide, direction)
-	Display *display;
-	Window window;
-	int x;
-	int y;
-	int slide;
-	int direction;
-#endif
 {
 	/* Draw the eyedude pixmap into the window */
 	switch (direction)
@@ -239,29 +213,14 @@ static void DrawTheEyeDude(display, window, x, y, slide, direction)
 	}
 }
 
-#if NeedFunctionPrototypes
 static void EraseTheEyeDude(Display *display, Window window, int x, int y)
-#else
-static void EraseTheEyeDude(display, window, x, y)
-	Display *display;
-	Window window;
-	int x;
-	int y;
-#endif
 {
 	/* Erase the eye dude pixmap from the window */
     XClearArea(display, window, x - EYEDUDE_WC, y - EYEDUDE_HC, 
 		EYEDUDE_WIDTH, EYEDUDE_HEIGHT, False);
 }
 
-#if NeedFunctionPrototypes
 int CheckBallEyeDudeCollision(Display *display, Window window, int j)
-#else
-int CheckBallEyeDudeCollision(display, window, j)
-    Display *display;
-    Window window;
-    int j;
-#endif
 {
     int ballX, ballY;
 
@@ -277,13 +236,7 @@ int CheckBallEyeDudeCollision(display, window, j)
         return False;
 }
 
-#if NeedFunctionPrototypes
 static void ResetEyeDude(Display *display, Window window)
-#else
-static void ResetEyeDude(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	s = 0;
 	turn = False;
@@ -324,13 +277,7 @@ static void ResetEyeDude(display, window)
 	if (noSound == False) playSoundFile("hithere", 100);
 }
 
-#if NeedFunctionPrototypes
 static int CheckEyeDudeClearPath(Display *display, Window window)
-#else
-static int CheckEyeDudeClearPath(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	int col;
 
@@ -346,25 +293,13 @@ static int CheckEyeDudeClearPath(display, window)
 	return True;
 }
 
-#if NeedFunctionPrototypes
 void GetEyeDudePosition(int *x, int *y)
-#else
-void GetEyeDudePosition(x, y)
-	int *x;
-	int *y;
-#endif
 {
 	*x = oldx;
 	*y = oldy;
 }
 
-#if NeedFunctionPrototypes
 static void HandleEyeDudeWalk(Display *display, Window window)
-#else
-static void HandleEyeDudeWalk(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	/* Update the eyedude that may be moving */
 	if ((frame % EYEDUDE_FRAME_RATE) == 0)
@@ -414,13 +349,7 @@ static void HandleEyeDudeWalk(display, window)
 	}
 }
 
-#if NeedFunctionPrototypes
 void HandleEyeDudeMode(Display *display, Window window)
-#else
-void HandleEyeDudeMode(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	switch (getEyeDudeMode())
 	{
@@ -453,22 +382,13 @@ void HandleEyeDudeMode(display, window)
 	}
 }
 
-#if NeedFunctionPrototypes
 void ChangeEyeDudeMode(eyeDudeStates state)
-#else
-void ChangeEyeDudeMode(state)
-	eyeDudeStates state;
-#endif
 {
 	/* Maybe start our little eyedude dude on his way! */
 	eyeDudeState = state;
 }
 
-#if NeedFunctionPrototypes
 eyeDudeStates getEyeDudeMode(void)
-#else
-eyeDudeStates getEyeDudeMode()
-#endif
 {
 	return eyeDudeState;
 }

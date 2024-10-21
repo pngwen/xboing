@@ -101,13 +101,8 @@
  *  Internal type declarations:
  */
 
-#if NeedFunctionPrototypes
 void SetIntroWait(enum IntroStates newMode, int waitFrame);
 void DoIntroWait(void);
-#else
-void SetIntroWait();
-void DoIntroWait();
-#endif
 
 /*
  *  Internal variable declarations:
@@ -122,14 +117,7 @@ Pixmap stars[12], starsM[12];
 static int waitingFrame;
 enum IntroStates waitMode;
 
-#if NeedFunctionPrototypes
 void SetUpIntroduction(Display *display, Window window, Colormap colormap)
-#else
-void SetUpIntroduction(display, window, colormap)
-	Display *display;
-	Window window;
-	Colormap colormap;
-#endif
 {
 	XpmAttributes   attributes;
 	int             XpmErrorStatus;
@@ -192,27 +180,13 @@ void SetUpIntroduction(display, window, colormap)
 	ResetIntroduction();
 }
 
-#if NeedFunctionPrototypes
 void DrawIntroTitle(Display *display, Window window, int x, int y)
-#else
-void DrawIntroTitle(display, window, x, y)
-	Display *display;
-	Window window;
-	int x;
-	int y;
-#endif
 {
 	RenderShape(display, window, bigtitlePixmap, bigtitlePixmapM,
 		x, y, 474, 74, True);
 }
 
-#if NeedFunctionPrototypes
 void DoIntroTitle(Display *display, Window window)
-#else
-void DoIntroTitle(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	/* Clear and draw background pattern */
     DrawStageBackground(display, window, BACKGROUND_0, True);
@@ -221,13 +195,7 @@ void DoIntroTitle(display, window)
 	DrawIntroTitle(display, window, 10, 10);
 }
 
-#if NeedFunctionPrototypes
 static void DoBlocks(Display *display, Window window)
-#else
-static void DoBlocks(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	int y = 120;
 	int x = 40;
@@ -351,13 +319,7 @@ static void DoBlocks(display, window)
 	y += 40;
 }
 
-#if NeedFunctionPrototypes
 static void DoText(Display *display, Window window)
-#else
-static void DoText(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	char string[80];
 	int y;
@@ -369,13 +331,7 @@ static void DoText(display, window)
 		string, y, tann, PLAY_WIDTH);
 }
 
-#if NeedFunctionPrototypes
 static void DoSparkle(Display *display, Window window)
-#else
-static void DoSparkle(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	static Pixmap store;
 	static int x = 100;
@@ -414,13 +370,7 @@ static void DoSparkle(display, window)
 	}
 }
 
-#if NeedFunctionPrototypes
 static void DoFinish(Display *display, Window window)
-#else
-static void DoFinish(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	ResetInstructions();
 	mode = MODE_INSTRUCT;
@@ -430,13 +380,7 @@ static void DoFinish(display, window)
 }
 
 
-#if NeedFunctionPrototypes
 void HandleBlink(Display *display, Window window)
-#else
-void HandleBlink(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	if (frame == nextBlink)
 	{
@@ -447,13 +391,7 @@ void HandleBlink(display, window)
 	}
 }
 
-#if NeedFunctionPrototypes
 void Introduction(Display *display, Window window)
-#else
-void Introduction(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	static int firstTime = True;
 
@@ -508,25 +446,14 @@ void Introduction(display, window)
 	}
 }
 
-#if NeedFunctionPrototypes
 void RedrawIntroduction(Display *display, Window window)
-#else
-void RedrawIntroduction(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	DoIntroTitle(display, window);
 	DoBlocks(display, window);
 	DoText(display, window);
 }
 
-#if NeedFunctionPrototypes
 void FreeIntroduction(Display *display)
-#else
-void FreeIntroduction(display)
-	Display *display;
-#endif
 {
 	int i;
 
@@ -540,11 +467,7 @@ void FreeIntroduction(display)
 	if (bigtitlePixmapM)	XFreePixmap(display, bigtitlePixmapM);
 }
 
-#if NeedFunctionPrototypes
 void ResetIntroduction(void)
-#else
-void ResetIntroduction()
-#endif
 {
 	IntroState = INTRO_TITLE;
 	startFrame = frame + 10;
@@ -554,24 +477,14 @@ void ResetIntroduction()
 	DEBUG("Reset Introduction mode.")
 }
 
-#if NeedFunctionPrototypes
 void SetIntroWait(enum IntroStates newMode, int waitFrame)
-#else
-void SetIntroWait(newMode, waitFrame)
-	enum IntroStates newMode;
-	int waitFrame;
-#endif
 {
 	waitingFrame = waitFrame;
 	waitMode = newMode;
 	IntroState = INTRO_WAIT;
 }
 
-#if NeedFunctionPrototypes
 void DoIntroWait(void)
-#else
-void DoIntroWait()
-#endif
 {
 	if (frame == waitingFrame)
 		IntroState = waitMode;

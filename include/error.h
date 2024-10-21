@@ -1,3 +1,13 @@
+/**
+ * @file error.h
+ * @author Gerardo Gonzalez
+ * @date 2024-09-30
+ * @brief deals with displaying error messages 
+ * 
+ * This is the header file for the funtions that are dealing with displaying messages in xboing 
+ */
+
+
 #ifndef _ERROR_H_
 #define _ERROR_H_
 
@@ -62,16 +72,36 @@
  *  Function prototypes:
  */
 
-#if NeedFunctionPrototypes
+/**
+ * Prints error/warning messages. Shuts down the program if an error is encountered.
+ *
+ * @param Display *display The display connection to the X server.
+ * @param int ErrorStatus The error status returned bt the XPM library.
+ * @param char *tag prefix the error or warning message.
+ *
+ */
 void HandleXPMError(Display *display, int ErrorStatus, char *tag);
+
+/**
+ * @brief Prints a message to the console in the "Error" format & refers the user to the readme file
+ *
+ * @param message The string to be printed in the message.
+ */
 void ErrorMessage(char *message);
+
+/**
+ * Prints a message to the console in the in the "warning" format.
+ *
+ * @param char *message The string to be printed in the message
+ *
+ */
 void WarningMessage(char *message);
+
+/**
+ * @brief Prints a message to the console in the "normal" format
+ *
+ * @param message The string to be printed in the message.
+ */
 void NormalMessage(char *message);
-#else
-void NormalMessage();
-void WarningMessage();
-void HandleXPMError();
-void ErrorMessage();
-#endif
 
 #endif

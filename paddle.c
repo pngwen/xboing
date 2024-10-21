@@ -85,16 +85,7 @@ static int	oldX;
 static int xpos_old;
 int reverseOn, stickyOn;
 
-#if NeedFunctionPrototypes
 void DrawPaddle(Display *display, Window window, int x, int y, int size)
-#else
-void DrawPaddle(display, window, x, y, size)
-	Display *display;
-	Window window;
-	int x;
-	int y;
-	int size;
-#endif
 {
 	/* Switch on the paddle size */
 	switch (size)
@@ -116,14 +107,7 @@ void DrawPaddle(display, window, x, y, size)
 	}
 }
 
-#if NeedFunctionPrototypes
 void InitialisePaddle(Display *display, Window window, Colormap colormap)
-#else
-void InitialisePaddle(display, window, colormap)
-	Display *display;
-	Window window;
-	Colormap colormap;
-#endif
 {
     XpmAttributes   attributes;
 	int		    XpmErrorStatus;
@@ -148,22 +132,13 @@ void InitialisePaddle(display, window, colormap)
 	XpmFreeAttributes(&attributes);
 }
 
-#if NeedFunctionPrototypes
 void SetReverseOff(void)
-#else
-void SetReverseOff()
-#endif
 {
 	/* Set the reverse state off */
 	reverseOn = False;
 }
 
-#if NeedFunctionPrototypes
 void ToggleReverse(Display *display)
-#else
-void ToggleReverse(display)
-	Display *display;
-#endif
 {
 	/* Set the reverse state */
 	if (reverseOn == True)
@@ -175,12 +150,7 @@ void ToggleReverse(display)
 	DrawSpecials(display);
 }
 
-#if NeedFunctionPrototypes
 void FreePaddle(Display *display)
-#else
-void FreePaddle(display)
-	Display *display;
-#endif
 {
 	/* Free the paddle pixmaps and masks */
 	if (paddleSmallPixmap)	XFreePixmap(display, paddleSmallPixmap);
@@ -192,17 +162,8 @@ void FreePaddle(display)
 	if (paddleHugeMask)		XFreePixmap(display, paddleHugeMask);
 }
 
-#if NeedFunctionPrototypes
 void MovePaddle(Display *display, Window window, int direction, int size, 
 	int xpos)
-#else
-void MovePaddle(display, window, direction, size, xpos)
-	Display *display;
-	Window window;
-	int direction;
-	int size;
-	int xpos;
-#endif
 {
 	static int	y = (PLAY_HEIGHT - DIST_BASE);
 
@@ -292,13 +253,7 @@ void MovePaddle(display, window, direction, size, xpos)
 	}
 }
 
-#if NeedFunctionPrototypes
 void FlushPaddleBackingStore(Display *display, Window window)
-#else
-void FlushPaddleBackingStore(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	static int y = (PLAY_HEIGHT - DIST_BASE);
 
@@ -306,11 +261,7 @@ void FlushPaddleBackingStore(display, window)
 	XClearArea(display, window, 0, y, PLAY_WIDTH, 15, False);
 }
 
-#if NeedFunctionPrototypes
 int GetPaddleSize(void)
-#else
-int GetPaddleSize()
-#endif
 {
 	/* Switch on the current paddle size */
 	switch (currentPaddleSize)
@@ -332,13 +283,7 @@ int GetPaddleSize()
 	return 0;
 }
 
-#if NeedFunctionPrototypes
 void ResetPaddleStart(Display *display, Window window)
-#else
-void ResetPaddleStart(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	paddlePos = PLAY_WIDTH / 2;
 	oldX = PLAY_WIDTH / 2;
@@ -349,25 +294,12 @@ void ResetPaddleStart(display, window)
 	MovePaddle(display, window, PADDLE_NONE, currentPaddleSize, 0);
 }
 
-#if NeedFunctionPrototypes
 void RedrawPaddle(Display *display, Window window)
-#else
-void RedrawPaddle(display, window)
-	Display *display;
-	Window window;
-#endif
 {
 	MovePaddle(display, window, PADDLE_NONE, currentPaddleSize, 0);
 }
 
-#if NeedFunctionPrototypes
 void ChangePaddleSize(Display *display, Window window, int type)
-#else
-void ChangePaddleSize(display, window, type)
-	Display *display;
-	Window window;
-	int type;
-#endif
 {
 	/* 
 	 * This function will erase the paddle and then change its size and
