@@ -1,6 +1,21 @@
 #ifndef _EDITOR_H_
 #define _EDITOR_H_
 
+/**
+ * @file editor.h
+ * @author Justin C. Kibell (jck@techrescue.org)
+ * @brief Controls functions for editor and deals with clicks and button presses
+ * @version 1.1.1.1
+ * @date 16 Dec 1994
+ *
+ * @copyright Copyright (c) 1993, 1994, 1995, Justin C. Kibell, All Rights Reserved
+ * @copyright (see COPYRIGHT file for full text)
+ *
+ * Editor.c/h handles the editor and manages functions for saving and loading levels, building the editor, and managing the
+ * clicks and button presses
+ *
+ */
+
 /*
  * XBoing - An X11 blockout style computer game
  *
@@ -75,13 +90,91 @@ enum EditStates
  *  Function prototypes:
  */
 
+/**
+ * @brief Calls ResetEditor in order to set up the editor for XBoing
+ *
+ * @param Display display X11 display
+ * @param Window window window X11 ID for window
+ * @param Colormap colormap Colormap for X11 system
+ *
+ * @todo remove reliance on X11
+ *
+ */
 void SetUpEditor(Display *display, Window window, Colormap colormap);
+
+/**
+ * @brief Handles the editor state
+ *
+ * @param Display display X11 display
+ * @param Window window X11 window ID
+ *
+ * @todo Remove reliance on X11
+ *
+ */
 void Editor(Display *display, Window window);
+
+
+/**
+ * @brief Redraws editor
+ *
+ * @param Display display X11 display
+ * @param Window window X11 window id
+ *
+ * @todo Remove reliance on X11
+ * @todo Possibly delete this function
+ *
+ */
 void RedrawEditor(Display *display, Window window);
+
+/**
+ * @brief Free editor action
+ *
+ * @param Display display X11 display
+ *
+ * @todo Remove reliance on X11
+ *
+ */
 void FreeEditor(Display *display);
+
+/**
+ * @brief Sets edit state back to editor mode
+ *
+ */
 void ResetEditor(void);
+
+/**
+ * @brief Calls the handleEditorkeys function to deal with all button presses in the editor
+ *
+ * @param Display display X11 display
+ * @param KeySym keysym The symbol pressed
+ *
+ * @todo remove reliance on x11
+ *
+ */
 void handleEditorKeys(Display *display, KeySym keysym);
+
+/**
+ * @brief Carries out actions based on mouse and button presses
+ *
+ * @param Display Display X11 Display
+ * @param XEvent event the button event
+ * @param int Down tells if the button is pressed or not
+ *
+ * @todo remove reliance on X11
+ *
+ */
 void HandleEditorMouseButtons(Display *display, XEvent event, int Down);
+
+/**
+ * @brief Deals with all mouse and button events
+ *
+ * @param Display display X11 display ID
+ * @param XEvent events The button or motion event
+ *
+ * @todo Remove Reliance on X11
+ * @todo Possibly split this function into smaller functions
+ *
+ */
 void HandleButtonMotion(Display *display, XEvent event);
 
 extern 	enum EditStates EditState;

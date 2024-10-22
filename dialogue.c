@@ -1,3 +1,15 @@
+/**
+ * @file dialogue.c
+ * @author Justin C. Kibell (jck@techrescue.org)
+ * @brief Manages the dialogue for XBoing including taking user input
+ * @version 1.1.1.1
+ * @date 16 Dec 1994
+ * 
+ * @copyright Copyright (c) 1993, 1994, 1995, Justin C. Kibell, All Rights Reserved
+ *  
+ * Manages the dialogue process and draws and redraws dialogue to the screen to match certain parameters
+ */
+
 /*
  * XBoing - An X11 blockout style computer game
  *
@@ -50,10 +62,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stddef.h>
-#include <X11/Xlib.h>
-#include <X11/Xutil.h>
-#include <X11/Xos.h>
-#include <X11/keysym.h>
+#include <X11/Xlib.h>	//Replace this with RayLib
+#include <X11/Xutil.h>	//Replace this with RayLib
+#include <X11/Xos.h>	//Replace this with RayLib
+#include <X11/keysym.h>	//Replace this with RayLib
 #include <xpm.h>
 
 #include "error.h"
@@ -95,6 +107,17 @@ Pixmap 	question, questionM;
 Pixmap 	floppy, floppyM;
 Pixmap 	text, textM;
 
+/**
+ * @brief Sets the Pixmap files for the dialogue for xboing
+ * 
+ * @param Display display X11 system display
+ * @param Window window X11 ID for window
+ * @pre Need to have X11 system
+ * @post The pixmap files for the dialogue have been initialized
+ * 
+ * @todo Need to rewrite code so that it no longer relies on X11 system
+ *
+ */
 void InitialiseDialoguePixmaps(Display *display, Window window,
     Colormap colormap)
 {
@@ -122,6 +145,15 @@ void InitialiseDialoguePixmaps(Display *display, Window window,
 		"InitialiseDialoguePixmaps(text)");
 }
 
+
+/**
+ * @brief Frees memory used by dialogue pixmap files
+ *
+ * @param Display display X11 display
+ *
+ * @todo Remove reliance on X11 system
+ *
+ */
 void FreeDialoguePixmaps(Display *display)
 {
     /* Free all the Dialogue Pixmaps */
@@ -133,6 +165,18 @@ void FreeDialoguePixmaps(Display *display)
     if (textM)    		XFreePixmap(display, textM);
 }
 
+
+/**
+ * @brief Takes a user's input message for dialogue
+ *
+ * @param Display display X11 display
+ * @param char message The user's input message
+ * @param int type The type of dialogue
+ * @param int entryValidation User's entry confirmation
+ * 
+ * @todo remove reliance on X11 systems
+ *
+ */ 
 char *UserInputDialogueMessage(Display *display, char *message, int type,
 	int entryValidation)
 {
@@ -155,6 +199,14 @@ char *UserInputDialogueMessage(Display *display, char *message, int type,
 	return (currentInput);
 }
 
+/**
+ * @brief Draw the input dialogue for the user
+ *
+ * @param Display display X11 display
+ *
+ * @todo remove reliance on X11 system
+ *
+ */
 static void ShowUserInputDialogue(Display *display)
 {
 	int dw = DIALOGUE_WIDTH;
@@ -171,6 +223,11 @@ static void ShowUserInputDialogue(Display *display)
 
 	DEBUG("ShowUserInputDialogue() setting icon for dialogue.");
 
+	/**
+	*
+	* @todo Impliment the C Boolean Library
+	*
+	*/
 	switch (dialogueType)
 	{
 		case DISK_ICON:
@@ -196,6 +253,15 @@ static void ShowUserInputDialogue(Display *display)
 	DEBUG("ShowUserInputDialogue() mapping complete.");
 }
 
+
+/**
+ * @brief Removes user's input dialogue
+ *
+ * @param Display display X11 display
+ *
+ * @todo remove reliance on X11 system
+ *
+ */
 static void RemoveUserInputDialogue(Display *display)
 {
 	while (WindowFadeEffect(display, inputWindow, 
@@ -208,6 +274,14 @@ static void RemoveUserInputDialogue(Display *display)
 	XFlush(display);
 }
 
+/**
+ * @brief Processes dialogue and carries out different functions in different situations
+ *
+ * @param Display display X11 display
+ *
+ * @todo Remove reliance on X11 system
+ *
+ */
 void ProcessDialogue(Display *display)
 {
     /* The states within the dialogue mode */
@@ -235,8 +309,22 @@ void ProcessDialogue(Display *display)
 	}
 }
 
+/**
+ * @brief Redraws current input with new parameters
+ *
+ * @param Display display X11 display
+ *
+ * @todo remove X11 system
+ *
+ */
 static void redrawCurrentInput(Display *display)
 {
+	/**
+	*
+	* @todo: Improve readability of this code
+	* @todo: Reference the constant ints, possibly make them const vars
+	*
+	*/
 	XClearArea(display, inputWindow, 0, 50, DIALOGUE_WIDTH, 50, False);
 	if (strlen(currentInput) > 0)
 		DrawShadowCentredText(display, inputWindow, textFont, currentInput, 
@@ -247,6 +335,17 @@ static void redrawCurrentInput(Display *display)
 			32, 32, False);
 }
 
+/**
+ * @brief Checks what keys are bein entered such as spacebar. The function will play sound based on certain actions.
+ *
+ * @param Display display X11 display
+ * @param KeySym keysym The key being entered
+ * @param char str The user input
+ *
+ * @todo Remove reliance on X11
+ * @todo Choose new sound libraries
+ *
+ */
 static void validateDialogueKeys(Display *display, KeySym keysym, char *str)
 {
 	/* Check the type of keyboard input needed */
@@ -304,6 +403,15 @@ static void validateDialogueKeys(Display *display, KeySym keysym, char *str)
 	}
 }
 
+/**
+ * @brief Checks what symbol is being pressed and carries out an action based on that
+ *
+ * @param Display display X11 display
+ * @param XEvent event The symbil that has been pressed
+ *
+ * @todo Remove reliance on X11 system
+ *
+ */
 void handleDialogueKeys(Display *display, XEvent event)
 {
 	char *str;
@@ -352,6 +460,14 @@ void handleDialogueKeys(Display *display, XEvent event)
 	free(str);
 }
 
+/**
+ * @brief Manages the dialogue event loop. It deals with one event then moves on to another.
+ *
+ * @param Display display X11 display
+ *
+ * @todo remove reliance on X11
+ *
+ */
 static void handleDialogueEventLoop(Display *display)
 {
     XEvent event;
