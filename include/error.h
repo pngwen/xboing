@@ -60,6 +60,8 @@
  *  Dependencies on other include files:
  */
 
+#include <raylib.h>
+
 /*
  *  Constants and macros:
  */
@@ -73,14 +75,13 @@
  */
 
 /**
- * Prints error/warning messages. Shuts down the program if an error is encountered.
+ * Checks if a texture has been loaded, shuts down program if texture is blank
  *
- * @param Display *display The display connection to the X server.
- * @param int ErrorStatus The error status returned bt the XPM library.
- * @param char *tag prefix the error or warning message.
+ * @param Texture2D texture The texture to check if empty
+ * @param char *texture_name The name of the texture (printed in error message)
  *
  */
-void HandleXPMError(Display *display, int ErrorStatus, char *tag);
+void HandleXPMError(Texture2D texture, char* texture_name);
 
 /**
  * @brief Prints a message to the console in the "Error" format & refers the user to the readme file

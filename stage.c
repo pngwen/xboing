@@ -53,22 +53,7 @@
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
 #include <X11/Xos.h>
-#include <xpm.h>
-
-#include "bitmaps/bgrnds/mnbgrnd.xpm"
-#include "bitmaps/bgrnds/space.xpm"
-#include "bitmaps/bgrnds/bgrnd.xpm"
-#include "bitmaps/bgrnds/bgrnd2.xpm"
-#include "bitmaps/bgrnds/bgrnd3.xpm"
-#include "bitmaps/bgrnds/bgrnd4.xpm"
-#include "bitmaps/bgrnds/bgrnd5.xpm"
-#include "bitmaps/icon.xpm"
-#include "bitmaps/eyes/deveyes.xpm"
-#include "bitmaps/eyes/deveyes1.xpm"
-#include "bitmaps/eyes/deveyes2.xpm"
-#include "bitmaps/eyes/deveyes3.xpm"
-#include "bitmaps/eyes/deveyes4.xpm"
-#include "bitmaps/eyes/deveyes5.xpm"
+#include <raylib.h>
 
 #include "error.h"
 #include "blocks.h"
@@ -119,103 +104,70 @@ Window 	specialWindow;
 Window 	timeWindow;
 Window 	blockWindow;
 Window 	typeWindow;
-Pixmap	mainBackPixmap, iconPixmap, spacePixmap;
-Pixmap  back1Pixmap, back2Pixmap, back3Pixmap, back4Pixmap, back5Pixmap;
-Pixmap  devilblink[6], devilblinkM[6];
+Texture2D mainBackPixmap, iconPixmap, spacePixmap;
+Texture2D back1Pixmap, back2Pixmap, back3Pixmap, back4Pixmap, back5Pixmap;
+Texture2D devilblink[6];
 int 	devilx, devily;
 int 	blinkslides[] = { 0, 1, 2, 3, 4, 5, 5, 4, 3, 2, 1, 0, 0, 0, 
 					      0, 1, 2, 3, 4, 5, 5, 4, 3, 2, 1, 0 };
 
 
 /**
- * @brief Initializes the main background pixmap and various other pixmaps.
+ * @brief Initializes the main background texture and various other textures.
  * 
- * Creates the main background pixmap along with several other background pixmaps,
+ * Creates the main background texture along with several other background textures,
  * including the devil blink animation frames.
- *
- * @param display The X11 display connection.
- * @param window The window in which the pixmap will be drawn.
- * @param colormap The colormap to use for the pixmaps.
  */
-void InitialiseMainBackPixmap(Display *display, Window window, 
-	Colormap colormap)
-{
-	XpmAttributes   attributes;
-	int		    XpmErrorStatus;
+void InitialiseMainBackPixmap(){
 
-	attributes.valuemask = XpmColormap;
-	attributes.colormap = colormap;
+	/* Create the playfield background textures */
 
-    /* Create the playfield background pixmaps */
+	mainBackPixmap = LoadTexture("bitmaps/bgrnds/mnbgrnd.png");
+	HandleXPMError(mainBackPixmap, "mainBackPixmap");
 
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, 
-		mainbackground_xpm, &mainBackPixmap, NULL, &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseMainBackPixmap()");
+	spacePixmap = LoadTexture("bitmaps/bgrnds/space.png");
+	HandleXPMError(spacePixmap, "spacePixmap");
+	
+	back1Pixmap = LoadTexture("bitmaps/bgrnds/bgrnd.png");
+	HandleXPMError(back1Pixmap, "back1Pixmap");
 
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, 
-		space_xpm, &spacePixmap, NULL, &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseMainBackPixmap(space)");
+	back2Pixmap = LoadTexture("bitmaps/bgrnds/bgrnd2.png");
+	HandleXPMError(back2Pixmap, "back2Pixmap");
 
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, background_xpm,
-		&back1Pixmap, NULL, &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseMainBackPixmap()");
+	back3Pixmap = LoadTexture("bitmaps/bgrnds/bgrnd3.png");
+	HandleXPMError(back3Pixmap, "back3Pixmap");
 
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, background2_xpm,
-		&back2Pixmap, NULL, &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseMainBackPixmap()");
+	back4Pixmap = LoadTexture("bitmaps/bgrnds/bgrnd4.png");
+	HandleXPMError(back4Pixmap, "back4Pixmap");
 
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, background3_xpm,
-		&back3Pixmap, NULL, &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseMainBackPixmap()");
-
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, background4_xpm,
-		&back4Pixmap, NULL, &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseMainBackPixmap()");
-
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, background5_xpm,
-		&back5Pixmap, NULL, &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseMainBackPixmap()");
+	back5Pixmap = LoadTexture("bitmaps/bgrnds/bgrnd5.png");
+	HandleXPMError(back5Pixmap, "back5Pixmap");
 
 	/* Devil blink animation */
 
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, devileyes_xpm,
-		&devilblink[0], &devilblinkM[0], &attributes);
-	HandleXPMError(display, XpmErrorStatus, 
-		"InitialiseMainBackPixmap(devilblink[0])");
+	devilblink[0] = LoadTexture("bitmaps/eyes/deveyes.png");
+	HandleXPMError(devilblink[0], "devilblink[0]");
 
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, devileyes1_xpm,
-		&devilblink[1], &devilblinkM[1], &attributes);
-	HandleXPMError(display, XpmErrorStatus, 
-		"InitialiseMainBackPixmap(devilblink[1])");
+	devilblink[1] = LoadTexture("bitmaps/eyes/deveyes1.png");
+	HandleXPMError(devilblink[1], "devilblink[1]");
 
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, devileyes2_xpm,
-		&devilblink[2], &devilblinkM[2], &attributes);
-	HandleXPMError(display, XpmErrorStatus, 
-		"InitialiseMainBackPixmap(devilblink[2])");
+	devilblink[2] = LoadTexture("bitmaps/eyes/deveyes2.png");
+	HandleXPMError(devilblink[2], "devilblink[2]");
 
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, devileyes3_xpm,
-		&devilblink[3], &devilblinkM[3], &attributes);
-	HandleXPMError(display, XpmErrorStatus, 
-		"InitialiseMainBackPixmap(devilblink[3])");
+	devilblink[3] = LoadTexture("bitmaps/eyes/deveyes3.png");
+	HandleXPMError(devilblink[3], "devilblink[3]");
 
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, devileyes4_xpm,
-		&devilblink[4], &devilblinkM[4], &attributes);
-	HandleXPMError(display, XpmErrorStatus, 
-		"InitialiseMainBackPixmap(devilblink[4])");
+	devilblink[4] = LoadTexture("bitmaps/eyes/deveyes4.png");
+	HandleXPMError(devilblink[4], "devilblink[4]");
 
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, devileyes5_xpm,
-		&devilblink[5], &devilblinkM[5], &attributes);
-	HandleXPMError(display, XpmErrorStatus, 
-		"InitialiseMainBackPixmap(devilblink[5])");
-
-	/* Free the xpm pixmap attributes */
-	XpmFreeAttributes(&attributes);
+	devilblink[5] = LoadTexture("bitmaps/eyes/deveyes5.png");
+	HandleXPMError(devilblink[5], "devilblink[5]");
 }
 
 /**
  * @brief Clears the main game window.
  * 
- * Sets the main window's background pixmap to `spacePixmap` and clears it.
+ * Sets the main window's background texture to `spacePixmap` and clears it.
  *
  * @param display The X11 display connection.
  * @param window The main game window.
@@ -523,12 +475,9 @@ void FreeBackgroundPixmaps(Display *display)
  * @param display The X11 display connection.
  * @return The created icon window.
  */
-static Window SetWMIcon(Display *display)
-{
-    XpmAttributes   attributes;
-	Window	   		win, root;
-	Colormap		iconcolormap;
-	int		    	XpmErrorStatus;
+static Window SetWMIcon(Display *display){
+
+	Window win, root;
 							
 	/* Suss out the root window */
 	root = RootWindow(display, DefaultScreen(display));
@@ -541,21 +490,10 @@ static Window SetWMIcon(Display *display)
 		return ((Window) NULL);
 	}
 
-	/* Create a new colourmap for the icon window */
-	iconcolormap = XDefaultColormap(display, XDefaultScreen(display));
+	/* Load icon texture */
 
-	/* Create all xpm pixmap blocks from the files */
-	attributes.colormap = iconcolormap;
-	attributes.valuemask = XpmColormap;
-	XpmErrorStatus = XpmCreatePixmapFromData(display, win, 
-		icon_xpm, &iconPixmap, NULL, &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseWMIcon()");
-
-	/* Make the new window have the new colourmap */
-	XSetWindowColormap(display, win, iconcolormap);
-
-	/* Free the background pixmap attributes */
-	XpmFreeAttributes(&attributes);
+	iconPixmap = LoadTexture("bitmaps/icon.xpm");
+	HandleXPMError(iconPixmap, "iconPixmap");
 
 	return win;
 }
