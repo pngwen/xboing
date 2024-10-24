@@ -47,31 +47,32 @@
  *  Include file dependencies:
  */
 
-#include <xpm.h>
+//#include <xpm.h>
 #include <stdio.h>
 #include <math.h>
 #include <assert.h>
-#include <X11/Xos.h>
+//#include <X11/Xos.h>
 
 #include "bitmaps/guns/bullet.xpm"
 #include "bitmaps/guns/tink.xpm"
 
-#include "error.h"
-#include "audio.h"
-#include "score.h"
-#include "init.h"
-#include "mess.h"
-#include "main.h"
-#include "stage.h"
-#include "blocks.h"
-#include "paddle.h"
-#include "misc.h"
-#include "level.h"
-#include "ball.h"
-#include "special.h"
-#include "eyedude.h"
+#include "include/faketypes.h"
+#include "include/error.h"
+#include "include/audio.h"
+#include "include/score.h"
+#include "include/init.h"
+#include "include/mess.h"
+#include "include/main.h"
+#include "include/stage.h"
+#include "include/blocks.h"
+#include "include/paddle.h"
+#include "include/misc.h"
+#include "include/level.h"
+#include "include/ball.h"
+#include "include/special.h"
+#include "include/eyedude.h"
 
-#include "gun.h"
+#include "include/gun.h"
 
 /*
  *  Internal macro definitions:
