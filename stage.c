@@ -50,9 +50,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stddef.h>
-#include <X11/Xlib.h>
-#include <X11/Xutil.h>
-#include <X11/Xos.h>
 #include <raylib.h>
 
 #include "error.h"
@@ -71,6 +68,8 @@
 /*
  *  Internal macro definitions:
  */
+// Unknown texture coordinates
+#define UKTC 0
 
 #define LEFT_OFFSET	    10
 #define RIGHT_OFFSET    10
@@ -172,8 +171,8 @@ void InitialiseMainBackPixmap(){
  * @param display The X11 display connection.
  * @param window The main game window.
  */
-void ClearMainWindow(Display *display, Window window)
-{
+void ClearMainWindow(Display *display, Window window){
+
 	/* Make sure that it is drawn */
 	XSetWindowBackgroundPixmap(display, mainWindow, spacePixmap);
 	XClearWindow(display, mainWindow);
@@ -214,9 +213,7 @@ void SetWindowSizeHints(Display *display, int w, int h)
  * @param argv The arguments used to run the program.
  * @param argc The number of arguments.
  */
-void CreateAllWindows(Display *display, Colormap colormap,
-	char **argv, int argc)
-{
+void CreateAllWindows(Display *display, Colormap colormap, char **argv, int argc){
     char 			title[80];
 	int 			offsetX, offsetY, scoreWidth;
 	XWMHints 		wmhints;
@@ -341,8 +338,10 @@ void CreateAllWindows(Display *display, Colormap colormap,
 	if (noicon == False)
 	{
 		/* Set the current icon as the window's background pixmap */
-		XSetWindowBackgroundPixmap(display, iconWindow, iconPixmap);
-		XClearWindow(display, iconWindow);
+		// XSetWindowBackgroundPixmap(display, iconWindow, iconPixmap); #Replaced with drawTexture
+		// XClearWindow(display, iconWindow); #Replaced with clearBackground() for now
+		ClearBackground(BLACK);
+		DrawTexture(iconPixmap, UKTC, UKTC, WHITE); // UKTC = Unknown Texture Coordinates
 	}
 
 	valuemask = CWColormap;
@@ -492,7 +491,7 @@ static Window SetWMIcon(Display *display){
 
 	/* Load icon texture */
 
-	iconPixmap = LoadTexture("bitmaps/icon.xpm");
+	iconPixmap = LoadTexture("bitmaps/icon.png");
 	HandleXPMError(iconPixmap, "iconPixmap");
 
 	return win;
@@ -591,19 +590,14 @@ void ClearDevilEyes(Display *display, Window window)
  * This function draws one frame of the devil eye animation at the given
  * coordinates, applying the specified frame (slide) of the animation.
  * 
- * @param display The display connection.
- * @param window The window where the devil eye will be drawn.
  * @param x The x-coordinate where the devil eye will be drawn.
  * @param y The y-coordinate where the devil eye will be drawn.
  * @param slide The animation frame index of the devil eye.
  */
-static void DrawTheDevilEye(Display *display, Window window, int x, int y,
-    int slide)
-{
+static void DrawTheDevilEye(int x, int y, int slide){
+	
 	/* Draw a frame of the devil eyes */
-    RenderShape(display, window, devilblink[slide], devilblinkM[slide],
-    	x - DEVILEYE_WC, y - DEVILEYE_HC, DEVILEYE_WIDTH, DEVILEYE_HEIGHT,
-        False);
+	DrawTexture(devilblink[slide], x - DEVILEYE_WC, y - DEVILEYE_HC, WHITE);
 }
 
 /**
@@ -616,8 +610,8 @@ static void DrawTheDevilEye(Display *display, Window window, int x, int y,
  * @param window The window where the devil eyes will be animated.
  * @return True if the animation should continue, False if it is finished.
  */
-int BlinkDevilEyes(Display *display, Window window)
-{
+int BlinkDevilEyes(Display *display, Window window){
+
 	static int slide = 0;
 	static int first = True;
 
@@ -631,7 +625,7 @@ int BlinkDevilEyes(Display *display, Window window)
 	}
 
 	/*ClearDevilEyes(display, playWindow);*/
-	DrawTheDevilEye(display, playWindow, devilx, devily, blinkslides[slide]);
+	DrawTheDevilEye(devilx, devily, blinkslides[slide]);
 
 	slide++;
 	if (slide == 26)
@@ -643,5 +637,3 @@ int BlinkDevilEyes(Display *display, Window window)
 
 	return True;
 }
-
-// TODO Find what Window is
