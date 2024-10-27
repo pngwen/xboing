@@ -11,6 +11,8 @@
 #ifndef _ERROR_H_
 #define _ERROR_H_
 
+//TODO: Remove the need for these typedefs
+
 /*
  * XBoing - An X11 blockout style computer game
  *

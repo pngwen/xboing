@@ -12,7 +12,7 @@ do
     echo "" >> COMPILER.OUT
     echo "" >> COMPILER.OUT
     echo "$x" >> COMPILER.OUT
-    if gcc $(pkg-config raylib --cflags) -c  $x 2>>  COMPILER.OUT 
+    if gcc $(pkg-config raylib --cflags) -I include -c  $x 2>>  COMPILER.OUT 
     then
       echo "PASS"
     else

@@ -72,7 +72,7 @@
  * @todo Remove this dependency with a new graphics system.
  *
  */ 
-#include <X11/Xlib.h>
+// TODO: Remove X11 #include <X11/Xlib.h>
 
 /*
  *  Constants and macros:
