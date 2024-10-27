@@ -50,7 +50,7 @@
  *  Dependencies on other includes files:
  */
 
-#include <X11/Xlib.h>
+// TODO: Remove X11 #include <X11/Xlib.h>
 
 /*
  *  Function prototypes:
