@@ -48,7 +48,9 @@
  */
 
 #include <stdio.h>
-#include <xpm.h>
+
+// TODO: Remove functional reliance on X11
+// #include <xpm.h>
 
 #include "init.h"
 #include "error.h"

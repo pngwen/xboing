@@ -62,6 +62,9 @@
  *  Dependencies on other include files:
  */
 
+// TODO: Remove instances of X11-associated data types
+#include "faketypes.h"
+
 /*
  *  Constants and macros:
  */
