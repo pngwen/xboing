@@ -48,7 +48,7 @@
  */
 
 #include <stdio.h>
-#include <xpm.h>
+#include <raylib.h>
 
 #include "init.h"
 #include "error.h"
@@ -111,65 +111,18 @@ void WarningMessage(char *message)
 }
 
 /**
- * @brief Handles errors returned by the XPM library.
+ * Checks if a texture has been loaded, shuts down program if texture is blank
  *
- * This function checks the error status from the XPM library and prints
- * appropriate error or warning messages based on the type of error.
+ * @param Texture2D texture The texture to check if empty
+ * @param char *texture_name The name of the texture (printed in error message)
  *
- * @param display A pointer to the Display structure used for graphics.
- * @param ErrorStatus The status code returned by the XPM library indicating the error type.
- * @param tag A string tag to help identify the source of the error in the output.
  */
-void HandleXPMError(Display *display, int ErrorStatus, char *tag)
+void HandleXPMError(Texture2D texture, char* texture_name)
 {
-    char *error = NULL;
-	char *warning = NULL;
-
-	/* Switch on the type of error returned by xpm library */
-	switch (ErrorStatus) 
-	{
-		case XpmSuccess:
-			return;
-
-		case XpmColorError:
-			/* The colour name passed was bung */
-			warning = "Could not parse or alloc requested colour";
-			break;
-
-		case XpmNoMemory:
-			/* Not enough memory for pixmap */
-			error = "Not enough memory for pixmap creation";
-			break;
-
-		case XpmColorFailed:
-			/* No more entries available in colourmap */
-			error = "Colourmap is full - cannot allocate a colour";
-			break;
-
-		case XpmOpenFailed:
-			/* Xpm could not open the pixmap file */
-			error = "Unable to open pixmap file";
-			break;
-
-		case XpmFileInvalid:
-			/* XPM file contains invalid or corrupt data */
-			error = "XPM file contains invalid or corrupt data";
-			break;
-
-		default:
-			/* Unexpected xpm error code */
-			error = "Unexpected xpm error code";
-			break;
-	}
-
-	/* If there is to be a warning then issue it */
-    if (warning)
-		fprintf(stdout, "%s - Warning: %s.\n", tag, warning);
-
-	if (error) 
-	{
+	/* If the texture has not been loaded */
+    if(!texture){
 		/* Argg. An error so tell everyone */
-		fprintf(stderr, "%s - Error: %s.\n", tag, error);
+		fprintf(stderr, "Error: failed to load texture '%s'.\n", texture_name);
 		ShutDown(display, 1, "Fatal error.");
 	}
 }
