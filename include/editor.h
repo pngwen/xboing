@@ -65,7 +65,7 @@
  *  Dependencies on other include files:
  */
 
-#include <X11/Xlib.h>
+// TODO: Remove X11 #include <X11/Xlib.h>
 
 /*
  *  Constants and macros:
