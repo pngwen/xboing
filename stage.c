@@ -50,25 +50,28 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stddef.h>
-#include <X11/Xlib.h>
-#include <X11/Xutil.h>
-#include <X11/Xos.h>
-#include <xpm.h>
 
-#include "bitmaps/bgrnds/mnbgrnd.xpm"
-#include "bitmaps/bgrnds/space.xpm"
-#include "bitmaps/bgrnds/bgrnd.xpm"
-#include "bitmaps/bgrnds/bgrnd2.xpm"
-#include "bitmaps/bgrnds/bgrnd3.xpm"
-#include "bitmaps/bgrnds/bgrnd4.xpm"
-#include "bitmaps/bgrnds/bgrnd5.xpm"
-#include "bitmaps/icon.xpm"
-#include "bitmaps/eyes/deveyes.xpm"
-#include "bitmaps/eyes/deveyes1.xpm"
-#include "bitmaps/eyes/deveyes2.xpm"
-#include "bitmaps/eyes/deveyes3.xpm"
-#include "bitmaps/eyes/deveyes4.xpm"
-#include "bitmaps/eyes/deveyes5.xpm"
+// TODO: Remove functional reliance on X11
+// #include <X11/Xlib.h>
+// #include <X11/Xutil.h>
+// #include <X11/Xos.h>
+// #include <xpm.h>
+
+//TODO: Replace references to bitmaps with png textures
+// #include "bitmaps/bgrnds/mnbgrnd.xpm"
+// #include "bitmaps/bgrnds/space.xpm"
+// #include "bitmaps/bgrnds/bgrnd.xpm"
+// #include "bitmaps/bgrnds/bgrnd2.xpm"
+// #include "bitmaps/bgrnds/bgrnd3.xpm"
+// #include "bitmaps/bgrnds/bgrnd4.xpm"
+// #include "bitmaps/bgrnds/bgrnd5.xpm"
+// #include "bitmaps/icon.xpm"
+// #include "bitmaps/eyes/deveyes.xpm"
+// #include "bitmaps/eyes/deveyes1.xpm"
+// #include "bitmaps/eyes/deveyes2.xpm"
+// #include "bitmaps/eyes/deveyes3.xpm"
+// #include "bitmaps/eyes/deveyes4.xpm"
+// #include "bitmaps/eyes/deveyes5.xpm"
 
 #include "error.h"
 #include "blocks.h"
