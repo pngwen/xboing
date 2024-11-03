@@ -50,6 +50,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stddef.h>
+#include <raylib.h>
 
 // TODO: Remove functional reliance on X11
 // #include <X11/Xlib.h>
@@ -89,6 +90,8 @@
 /*
  *  Internal macro definitions:
  */
+// Unknown texture coordinates
+#define UKTC 0
 
 #define LEFT_OFFSET	    10
 #define RIGHT_OFFSET    10
@@ -122,109 +125,76 @@ Window 	specialWindow;
 Window 	timeWindow;
 Window 	blockWindow;
 Window 	typeWindow;
-Pixmap	mainBackPixmap, iconPixmap, spacePixmap;
-Pixmap  back1Pixmap, back2Pixmap, back3Pixmap, back4Pixmap, back5Pixmap;
-Pixmap  devilblink[6], devilblinkM[6];
+Texture2D mainBackPixmap, iconPixmap, spacePixmap;
+Texture2D back1Pixmap, back2Pixmap, back3Pixmap, back4Pixmap, back5Pixmap;
+Texture2D devilblink[6];
 int 	devilx, devily;
 int 	blinkslides[] = { 0, 1, 2, 3, 4, 5, 5, 4, 3, 2, 1, 0, 0, 0, 
 					      0, 1, 2, 3, 4, 5, 5, 4, 3, 2, 1, 0 };
 
 
 /**
- * @brief Initializes the main background pixmap and various other pixmaps.
+ * @brief Initializes the main background texture and various other textures.
  * 
- * Creates the main background pixmap along with several other background pixmaps,
+ * Creates the main background texture along with several other background textures,
  * including the devil blink animation frames.
- *
- * @param display The X11 display connection.
- * @param window The window in which the pixmap will be drawn.
- * @param colormap The colormap to use for the pixmaps.
  */
-void InitialiseMainBackPixmap(Display *display, Window window, 
-	Colormap colormap)
-{
-	XpmAttributes   attributes;
-	int		    XpmErrorStatus;
+void InitialiseMainBackPixmap(){
 
-	attributes.valuemask = XpmColormap;
-	attributes.colormap = colormap;
+	/* Create the playfield background textures */
 
-    /* Create the playfield background pixmaps */
+	mainBackPixmap = LoadTexture("bitmaps/bgrnds/mnbgrnd.png");
+	HandleXPMError(mainBackPixmap, "mainBackPixmap");
 
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, 
-		mainbackground_xpm, &mainBackPixmap, NULL, &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseMainBackPixmap()");
+	spacePixmap = LoadTexture("bitmaps/bgrnds/space.png");
+	HandleXPMError(spacePixmap, "spacePixmap");
+	
+	back1Pixmap = LoadTexture("bitmaps/bgrnds/bgrnd.png");
+	HandleXPMError(back1Pixmap, "back1Pixmap");
 
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, 
-		space_xpm, &spacePixmap, NULL, &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseMainBackPixmap(space)");
+	back2Pixmap = LoadTexture("bitmaps/bgrnds/bgrnd2.png");
+	HandleXPMError(back2Pixmap, "back2Pixmap");
 
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, background_xpm,
-		&back1Pixmap, NULL, &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseMainBackPixmap()");
+	back3Pixmap = LoadTexture("bitmaps/bgrnds/bgrnd3.png");
+	HandleXPMError(back3Pixmap, "back3Pixmap");
 
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, background2_xpm,
-		&back2Pixmap, NULL, &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseMainBackPixmap()");
+	back4Pixmap = LoadTexture("bitmaps/bgrnds/bgrnd4.png");
+	HandleXPMError(back4Pixmap, "back4Pixmap");
 
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, background3_xpm,
-		&back3Pixmap, NULL, &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseMainBackPixmap()");
-
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, background4_xpm,
-		&back4Pixmap, NULL, &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseMainBackPixmap()");
-
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, background5_xpm,
-		&back5Pixmap, NULL, &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseMainBackPixmap()");
+	back5Pixmap = LoadTexture("bitmaps/bgrnds/bgrnd5.png");
+	HandleXPMError(back5Pixmap, "back5Pixmap");
 
 	/* Devil blink animation */
 
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, devileyes_xpm,
-		&devilblink[0], &devilblinkM[0], &attributes);
-	HandleXPMError(display, XpmErrorStatus, 
-		"InitialiseMainBackPixmap(devilblink[0])");
+	devilblink[0] = LoadTexture("bitmaps/eyes/deveyes.png");
+	HandleXPMError(devilblink[0], "devilblink[0]");
 
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, devileyes1_xpm,
-		&devilblink[1], &devilblinkM[1], &attributes);
-	HandleXPMError(display, XpmErrorStatus, 
-		"InitialiseMainBackPixmap(devilblink[1])");
+	devilblink[1] = LoadTexture("bitmaps/eyes/deveyes1.png");
+	HandleXPMError(devilblink[1], "devilblink[1]");
 
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, devileyes2_xpm,
-		&devilblink[2], &devilblinkM[2], &attributes);
-	HandleXPMError(display, XpmErrorStatus, 
-		"InitialiseMainBackPixmap(devilblink[2])");
+	devilblink[2] = LoadTexture("bitmaps/eyes/deveyes2.png");
+	HandleXPMError(devilblink[2], "devilblink[2]");
 
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, devileyes3_xpm,
-		&devilblink[3], &devilblinkM[3], &attributes);
-	HandleXPMError(display, XpmErrorStatus, 
-		"InitialiseMainBackPixmap(devilblink[3])");
+	devilblink[3] = LoadTexture("bitmaps/eyes/deveyes3.png");
+	HandleXPMError(devilblink[3], "devilblink[3]");
 
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, devileyes4_xpm,
-		&devilblink[4], &devilblinkM[4], &attributes);
-	HandleXPMError(display, XpmErrorStatus, 
-		"InitialiseMainBackPixmap(devilblink[4])");
+	devilblink[4] = LoadTexture("bitmaps/eyes/deveyes4.png");
+	HandleXPMError(devilblink[4], "devilblink[4]");
 
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, devileyes5_xpm,
-		&devilblink[5], &devilblinkM[5], &attributes);
-	HandleXPMError(display, XpmErrorStatus, 
-		"InitialiseMainBackPixmap(devilblink[5])");
-
-	/* Free the xpm pixmap attributes */
-	XpmFreeAttributes(&attributes);
+	devilblink[5] = LoadTexture("bitmaps/eyes/deveyes5.png");
+	HandleXPMError(devilblink[5], "devilblink[5]");
 }
 
 /**
  * @brief Clears the main game window.
  * 
- * Sets the main window's background pixmap to `spacePixmap` and clears it.
+ * Sets the main window's background texture to `spacePixmap` and clears it.
  *
  * @param display The X11 display connection.
  * @param window The main game window.
  */
-void ClearMainWindow(Display *display, Window window)
-{
+void ClearMainWindow(Display *display, Window window){
+
 	/* Make sure that it is drawn */
 	XSetWindowBackgroundPixmap(display, mainWindow, spacePixmap);
 	XClearWindow(display, mainWindow);
@@ -265,9 +235,7 @@ void SetWindowSizeHints(Display *display, int w, int h)
  * @param argv The arguments used to run the program.
  * @param argc The number of arguments.
  */
-void CreateAllWindows(Display *display, Colormap colormap,
-	char **argv, int argc)
-{
+void CreateAllWindows(Display *display, Colormap colormap, char **argv, int argc){
     char 			title[80];
 	int 			offsetX, offsetY, scoreWidth;
 	XWMHints 		wmhints;
@@ -392,8 +360,10 @@ void CreateAllWindows(Display *display, Colormap colormap,
 	if (noicon == False)
 	{
 		/* Set the current icon as the window's background pixmap */
-		XSetWindowBackgroundPixmap(display, iconWindow, iconPixmap);
-		XClearWindow(display, iconWindow);
+		// XSetWindowBackgroundPixmap(display, iconWindow, iconPixmap); #Replaced with drawTexture
+		// XClearWindow(display, iconWindow); #Replaced with clearBackground() for now
+		ClearBackground(BLACK);
+		DrawTexture(iconPixmap, UKTC, UKTC, WHITE); // UKTC = Unknown Texture Coordinates
 	}
 
 	valuemask = CWColormap;
@@ -526,12 +496,9 @@ void FreeBackgroundPixmaps(Display *display)
  * @param display The X11 display connection.
  * @return The created icon window.
  */
-static Window SetWMIcon(Display *display)
-{
-    XpmAttributes   attributes;
-	Window	   		win, root;
-	Colormap		iconcolormap;
-	int		    	XpmErrorStatus;
+static Window SetWMIcon(Display *display){
+
+	Window win, root;
 							
 	/* Suss out the root window */
 	root = RootWindow(display, DefaultScreen(display));
@@ -544,21 +511,10 @@ static Window SetWMIcon(Display *display)
 		return ((Window) NULL);
 	}
 
-	/* Create a new colourmap for the icon window */
-	iconcolormap = XDefaultColormap(display, XDefaultScreen(display));
+	/* Load icon texture */
 
-	/* Create all xpm pixmap blocks from the files */
-	attributes.colormap = iconcolormap;
-	attributes.valuemask = XpmColormap;
-	XpmErrorStatus = XpmCreatePixmapFromData(display, win, 
-		icon_xpm, &iconPixmap, NULL, &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseWMIcon()");
-
-	/* Make the new window have the new colourmap */
-	XSetWindowColormap(display, win, iconcolormap);
-
-	/* Free the background pixmap attributes */
-	XpmFreeAttributes(&attributes);
+	iconPixmap = LoadTexture("bitmaps/icon.png");
+	HandleXPMError(iconPixmap, "iconPixmap");
 
 	return win;
 }
@@ -656,19 +612,14 @@ void ClearDevilEyes(Display *display, Window window)
  * This function draws one frame of the devil eye animation at the given
  * coordinates, applying the specified frame (slide) of the animation.
  * 
- * @param display The display connection.
- * @param window The window where the devil eye will be drawn.
  * @param x The x-coordinate where the devil eye will be drawn.
  * @param y The y-coordinate where the devil eye will be drawn.
  * @param slide The animation frame index of the devil eye.
  */
-static void DrawTheDevilEye(Display *display, Window window, int x, int y,
-    int slide)
-{
+static void DrawTheDevilEye(int x, int y, int slide){
+	
 	/* Draw a frame of the devil eyes */
-    RenderShape(display, window, devilblink[slide], devilblinkM[slide],
-    	x - DEVILEYE_WC, y - DEVILEYE_HC, DEVILEYE_WIDTH, DEVILEYE_HEIGHT,
-        False);
+	DrawTexture(devilblink[slide], x - DEVILEYE_WC, y - DEVILEYE_HC, WHITE);
 }
 
 /**
@@ -681,8 +632,8 @@ static void DrawTheDevilEye(Display *display, Window window, int x, int y,
  * @param window The window where the devil eyes will be animated.
  * @return True if the animation should continue, False if it is finished.
  */
-int BlinkDevilEyes(Display *display, Window window)
-{
+int BlinkDevilEyes(Display *display, Window window){
+
 	static int slide = 0;
 	static int first = True;
 
@@ -696,7 +647,7 @@ int BlinkDevilEyes(Display *display, Window window)
 	}
 
 	/*ClearDevilEyes(display, playWindow);*/
-	DrawTheDevilEye(display, playWindow, devilx, devily, blinkslides[slide]);
+	DrawTheDevilEye(devilx, devily, blinkslides[slide]);
 
 	slide++;
 	if (slide == 26)
@@ -708,5 +659,3 @@ int BlinkDevilEyes(Display *display, Window window)
 
 	return True;
 }
-
-// TODO Find what Window is
