@@ -3,6 +3,9 @@
 #ifndef FAKETYPES_H
 #define FAKETYPES_H
 
+// Raylib Types
+typedef int Texture2D;
+
 // Boolean macros
 #define False 0
 #define True 1
