@@ -50,7 +50,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stddef.h>
-#include <raylib.h>
+// #include <raylib.h>
 
 // TODO: Remove functional reliance on X11
 // #include <X11/Xlib.h>
@@ -483,7 +483,7 @@ void FreeBackgroundPixmaps(Display *display)
 	{
 		/* Free all devil blink eyes */
 		if (devilblink[i])	XFreePixmap(display, devilblink[i]); 
-		if (devilblinkM[i])	XFreePixmap(display, devilblinkM[i]); 
+		//if (devilblinkM[i])	XFreePixmap(display, devilblinkM[i]); 
 	}
 }
 

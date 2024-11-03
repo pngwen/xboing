@@ -16,6 +16,27 @@ typedef int Texture2D;
 #define CWHeight (1<<3)
 #define CoordModeOrigin 0
 #define Always 1
+#define ParentRelative 0
+#define BLACK 0
+#define WHITE 0
+#define CopyFromParent 0
+
+//SizeHint macros
+#define PPosition (1L<<2)
+#define PSize (1L<<3)
+#define PMinSize (1L<<4)
+#define PMaxSize (1L<<5)
+#define NormalState 1
+
+//Wm_Hints macros
+#define StateHint (1L<<1)
+#define InputHint (1L<<0)
+#define IconPixmapHint (1L<<2)
+#define IconWindowHint (1L<<3)
+
+//Window Attributes
+#define CWColormap (1L<<13)
+#define CWBackingStore (1L<<6)
 
 // XPM error macros
 #define XpmColorError    1
@@ -77,5 +98,29 @@ typedef struct {
     int width;
     int height;
 } XWindowAttributes;
+typedef int KeySym;
+typedef struct{
+    int flags;
+    int min_width;
+    int min_height;
+    int max_width;
+    int max_height;
+} XSizeHints;
+typedef struct{
+    char *res_name;
+    char *res_class;
+} XClassHint;
+typedef int XTextProperty;
+typedef struct{
+    int initial_state;
+    int input;
+    int icon_pixmap;
+    int icon_window;
+    int flags;
+} XWMHints;
+typedef struct{
+    Colormap colormap;
+    int backing_store;
+} XSetWindowAttributes;
 
 #endif
