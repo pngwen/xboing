@@ -58,9 +58,9 @@
 #include <time.h>
 #include <file.h>
 #include <sys/param.h>
-#include <X11/Xlib.h>
-#include <X11/Xutil.h>
-#include <X11/Xos.h>
+//#include <X11/Xlib.h>
+//#include <X11/Xutil.h>
+//#include <X11/Xos.h>
 #include <netinet/in.h>
 #include <xpm.h>
 
