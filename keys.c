@@ -50,35 +50,38 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stddef.h>
-#include <X11/Xlib.h>
+/*#include <X11/Xlib.h>
 #include <X11/Xutil.h>
 #include <X11/Xos.h>
 #include <xpm.h>
+*/
 
-#include "bitmaps/mouse.xpm"
-#include "bitmaps/larrow.xpm"
-#include "bitmaps/rarrow.xpm"
+#include "bitmaps/mouse.png"
+#include "bitmaps/larrow.png"
+#include "bitmaps/rarrow.png"
 
-#include "error.h"
-#include "highscore.h"
-#include "special.h"
-#include "misc.h"
-#include "sfx.h"
-#include "main.h"
-#include "init.h"
-#include "stage.h"
-#include "blocks.h"
-#include "ball.h"
-#include "score.h"
-#include "paddle.h"
-#include "level.h"
-#include "mess.h"
-#include "version.h"
-#include "audio.h"
-#include "intro.h"
-#include "keysedit.h"
+#include "include/error.h"
+#include "include/highscore.h"
+#include "include/special.h"
+#include "include/misc.h"
+#include "include/sfx.h"
+#include "include/main.h"
+#include "include/init.h"
+#include "include/stage.h"
+#include "include/blocks.h"
+#include "include/ball.h"
+#include "include/score.h"
+#include "include/paddle.h"
+#include "include/level.h"
+#include "include/mess.h"
+#include "include/version.h"
+#include "include/audio.h"
+#include "include/intro.h"
+#include "include/keysedit.h"
 
-#include "keys.h"
+#include "include/keys.h"
+
+#include "include/faketypes.h"
 
 /*
  *  Internal macro definitions:
@@ -125,7 +128,7 @@ void SetUpKeys(Display *display, Window window, Colormap colormap)
         &rightarrow, &rightarrowM, &attributes);
     HandleXPMError(display, XpmErrorStatus, "InitialiseKeys(rightarrow)");
 
-    /* Free the xpm pixmap attributes */
+    // Free the xpm pixmap attributes
 	XpmFreeAttributes(&attributes);
 
 	ResetKeys();
