@@ -69,7 +69,7 @@
 // TODO: REMOVE X11 #include <X11/Xutil.h>
 // TODO: REMOVE X11 #include <X11/Xos.h>
 // TODO: REMOVE X11 #include <X11/keysym.h>
-#include <xpm.h>
+//#include <xpm.h>
 
 #include "include/error.h"
 #include "include/misc.h"

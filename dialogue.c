@@ -66,7 +66,7 @@
 //#include <X11/Xutil.h>	//Replace this with RayLib
 //#include <X11/Xos.h>	//Replace this with RayLib
 //#include <X11/keysym.h>	//Replace this with RayLib
-#include <xpm.h>
+//#include <xpm.h>
 
 #include "error.h"
 #include "level.h"

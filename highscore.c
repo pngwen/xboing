@@ -62,7 +62,7 @@
 //#include <X11/Xutil.h>
 //#include <X11/Xos.h>
 #include <netinet/in.h>
-#include <xpm.h>
+//#include <xpm.h>
 
 #include "error.h"
 #include "misc.h"
