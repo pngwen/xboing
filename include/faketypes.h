@@ -8,4 +8,5 @@ typedef int Colormap;
 typedef unsigned long int u_long;
 typedef int KeySym;
 typedef int XEvent;
+typedef int uid_t;
 #endif
