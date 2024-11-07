@@ -73,6 +73,7 @@
  *
  */ 
 //#include <X11/Xlib.h>
+#include "faketypes.h"
 
 /*
  *  Constants and macros:
