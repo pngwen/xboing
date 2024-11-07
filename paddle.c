@@ -48,11 +48,6 @@
  */
 
 #include <stdio.h>
-#include <xpm.h>
-
-#include "bitmaps/paddle/padsml.xpm"
-#include "bitmaps/paddle/padmed.xpm"
-#include "bitmaps/paddle/padhuge.xpm"
 
 #include "error.h"
 #include "init.h"
@@ -61,7 +56,7 @@
 #include "misc.h"
 #include "main.h"
 #include "special.h"
-
+#include "faketypes.h"
 #include "paddle.h"
 
 /*

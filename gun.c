@@ -53,8 +53,8 @@
 #include <assert.h>
 //#include <X11/Xos.h>
 
-#include "bitmaps/guns/bullet.xpm"
-#include "bitmaps/guns/tink.xpm"
+//#include "bitmaps/guns/bullet.xpm"
+//#include "bitmaps/guns/tink.xpm"
 
 #include "include/faketypes.h"
 #include "include/error.h"

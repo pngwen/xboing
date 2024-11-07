@@ -50,37 +50,39 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stddef.h>
-#include <X11/Xlib.h>
+/*#include <X11/Xlib.h>
 #include <X11/Xutil.h>
 #include <X11/Xos.h>
-#include <xpm.h>
+#include <xpm.h>*/
 
-#include "error.h"
-#include "misc.h"
-#include "main.h"
-#include "init.h"
-#include "intro.h"
-#include "highscore.h"
-#include "audio.h"
-#include "stage.h"
-#include "mess.h"
-#include "sfx.h"
-#include "version.h"
+#include "include/error.h"
+#include "include/misc.h"
+#include "include/main.h"
+#include "include/init.h"
+#include "include/intro.h"
+#include "include/highscore.h"
+#include "include/audio.h"
+#include "include/stage.h"
+#include "include/mess.h"
+#include "include/sfx.h"
+#include "include/version.h"
 #include "../patchlevel.h"
 
-#include "bitmaps/presents/flag.xpm"
-#include "bitmaps/presents/earth.xpm"
-#include "bitmaps/presents/titleX.xpm"
-#include "bitmaps/presents/titleB.xpm"
-#include "bitmaps/presents/titleO.xpm"
-#include "bitmaps/presents/titleI.xpm"
-#include "bitmaps/presents/titleN.xpm"
-#include "bitmaps/presents/titleG.xpm"
-#include "bitmaps/presents/justin.xpm"
-#include "bitmaps/presents/kibell.xpm"
-#include "bitmaps/presents/presents.xpm"
+#include "bitmaps/presents/flag.png"
+#include "bitmaps/presents/earth.png"
+#include "bitmaps/presents/titleX.png"
+#include "bitmaps/presents/titleB.png"
+#include "bitmaps/presents/titleO.png"
+#include "bitmaps/presents/titleI.png"
+#include "bitmaps/presents/titleN.png"
+#include "bitmaps/presents/titleG.png"
+#include "bitmaps/presents/justin.png"
+#include "bitmaps/presents/kibell.png"
+#include "bitmaps/presents/presents.png"
 
-#include "presents.h"
+#include "include/presents.h"
+
+#include "include/faketypes.h"
 
 /*
  *  Internal macro definitions:
