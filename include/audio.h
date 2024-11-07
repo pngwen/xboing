@@ -60,7 +60,10 @@
  *  Dependencies on other include files:
  */
 
-#include <X11/Xlib.h>
+// TODO: Remove instances of X11-associated data types
+#include "faketypes.h"
+
+// #include <X11/Xlib.h>
 
 /*
  *  Constants and macros:
@@ -117,7 +120,7 @@ void audioDeviceEvents(void);
  * @param int Volume The maximum volume level to set.
  * 
  */
-Void SetMaximumVolume(int Volume);
+void SetMaximumVolume(int Volume);
 
 
 /**

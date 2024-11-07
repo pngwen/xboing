@@ -1,5 +1,5 @@
 /*
- * XBoing - An X11 blockout style computer game
+ * Xboing - An X11 blockout style computer game
  *
  * (c) Copyright 1993, 1994, 1995, Justin C. Kibell, All Rights Reserved
  *
@@ -50,13 +50,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stddef.h>
-#include <X11/Xlib.h>
-#include <X11/Xutil.h>
-#include <X11/Xos.h>
-#include <xpm.h>
-
-#include "bitmaps/presents/titleSml.xpm"
-
 #include "error.h"
 #include "audio.h"
 #include "highscore.h"
@@ -76,8 +69,38 @@
 #include "level.h"
 #include "mess.h"
 #include "intro.h"
-
+#include "faketypes.h"
 #include "bonus.h"
+=======
+//#include <X11/Xlib.h>
+//#include <X11/Xutil.h>
+//#include <X11/Xos.h>
+//#include <xpm.h>
+
+//#include "bitmaps/presents/titleSml.xpm"
+
+//#include "error.h"
+//#include "audio.h"
+//#include "highscore.h"
+//#include "misc.h"
+//#include "special.h"
+//#include "main.h"
+//#include "gun.h"
+//#include "init.h"
+//#include "file.h"
+//#include "dialogue.h"
+//#include "stage.h"
+//#include "blocks.h"
+//#include "sfx.h"
+//#include "ball.h"
+//#include "score.h"
+//#include "paddle.h"
+//#include "level.h"
+//#include "mess.h"
+//#include "intro.h"
+
+//#include "bonus.h"
+>>>>>>> Jose-compile
 
 /*
  *  Internal macro definitions:
@@ -95,13 +118,38 @@
 #define TIME_BONUS			100
 
 #define BORDER_LEFT			55
-#define BORDER_RIGHT		((PLAY_WIDTH + MAIN_WIDTH) - 50)
+#define BORDER_RIGHT		1//((PLAY_WIDTH + MAIN_WIDTH) - 50) DUMMY HERE
 #define BORDER_TOP			73
-#define BORDER_BOTTOM		((PLAY_HEIGHT + MAIN_HEIGHT) - 85)
+#define BORDER_BOTTOM		2//((PLAY_HEIGHT + MAIN_HEIGHT) - 85) DUMMY HERE
 
 /*
  *  Internal type declarations:
  */
+//dummy types and variables
+typedef int Display;
+typedef int Window;
+typedef int Pixmap;
+typedef int u_long;
+typedef int Colormap;
+typedef int XpmAttributes;
+typedef int BonusStates;
+#define true 1
+#define True 2
+#define XpmColormap 3
+#define BALL_SLIDES 4
+#define False 5
+#define MAX_BONUS 6
+#define PLAY_WIDTH 7
+#define MAIN_WIDTH 8
+#define nosound 9
+#define noSound 10
+#define level 11
+#define BONUS_TEXT 12
+#define MODE_Game 13
+#define frame 14
+#define BONUS_SCORE 15
+#define BONUS_BONUS 16
+#define BONUS_LEVEL 17
 
 static void DoBullets(Display *display, Window window);
 static void DoTimeBonus(Display *display, Window window);
@@ -111,11 +159,11 @@ static void DoTimeBonus(Display *display, Window window);
  */
 
 static int 		numBonus;
-enum BonusStates 	BonusState;
+/*enum*/ BonusStates 	BonusState;
 static Pixmap 	titlePixmap, titlePixmapM;
 static int 		ypos;
 static int 		waitingFrame;
-enum BonusStates		waitMode;
+/*enum*/ BonusStates		waitMode;
 static char 	string[80];
 static u_long 	bonusScore;
 static int 		firstTime = True;
@@ -126,16 +174,16 @@ void SetUpBonus(Display *display, Window window, Colormap colormap)
 	XpmAttributes   attributes;
 	int             XpmErrorStatus;
 
-	attributes.valuemask = XpmColormap;
-	attributes.colormap = colormap;
+	//attributes.valuemask = XpmColormap;
+	//attributes.colormap = colormap;
 
 	/* Create the small title pixmap */
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, titleSmall_xpm,
-		&titlePixmap, &titlePixmapM, &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseBonus()");
+	//XpmErrorStatus = XpmCreatePixmapFromData(display, window, titleSmall_xpm,
+		//&titlePixmap, &titlePixmapM, &attributes);
+	//HandleXPMError(display, XpmErrorStatus, "InitialiseBonus()");
 
     /* Free the xpm pixmap attributes */
-	XpmFreeAttributes(&attributes);
+	//XpmFreeAttributes(&attributes);
 }
 
 void DecNumberBonus(void)
@@ -167,13 +215,13 @@ void DrawBallBorder(Display *display, Window window)
 	int x, y;
 	static int slide = 0;
 
-	DEBUG("Drawing ball borders.")
+	//DEBUG("Drawing ball borders.");
 
 	/* Draw a row of balls along the top and bottom of screen */
 	for (x = BORDER_LEFT; x < BORDER_RIGHT; x += 22)
 	{
-		DrawTheBall(display, window, x, BORDER_TOP, slide);
-		DrawTheBall(display, window, x, BORDER_BOTTOM, slide);
+		//DrawTheBall(display, window, x, BORDER_TOP, slide);
+		//DrawTheBall(display, window, x, BORDER_BOTTOM, slide);
 
 		/* Next frame of ball animation */
 		slide++;
@@ -185,8 +233,8 @@ void DrawBallBorder(Display *display, Window window)
 	/* Draw a row of balls along both sides of the screen */
 	for (y = BORDER_TOP; y < BORDER_BOTTOM; y += 22)
 	{
-		DrawTheBall(display, window, BORDER_LEFT, y, slide);
-		DrawTheBall(display, window, BORDER_RIGHT, y, slide);
+		//DrawTheBall(display, window, BORDER_LEFT, y, slide);
+		//DrawTheBall(display, window, BORDER_RIGHT, y, slide);
 
 		/* Next frame of ball animation */
 		slide++;
@@ -199,85 +247,85 @@ void DrawBallBorder(Display *display, Window window)
 
 void DrawSmallIntroTitle(Display *display, Window window, int x, int y)
 {
-	DEBUG("Drawing small intro title.")
+	//DEBUG("Drawing small intro title.")
 
 	/* Draw the small title pixmap */
-	RenderShape(display, window, titlePixmap, titlePixmapM,
+	/*RenderShape(display, window, titlePixmap, titlePixmapM,
 		x - SMALL_TITLE_WC, y - SMALL_TITLE_HC, 
-		SMALL_TITLE_WIDTH, SMALL_TITLE_HEIGHT, False);
-}
+		SMALLstatic void DoTimeBonus(Display *display, Window window)
+*/}
 
 void SetupBonusScreen(Display *display, Window window)
 {
 	/* Clear the background again */
-	ClearMainWindow(display, window);
+	//ClearMainWindow(display, window);
 
 	/* Draw the rectangular border of balls */
-	DrawBallBorder(display, window);
+	//DrawBallBorder(display, window);
 
 	/* Draw the main title pixmap */
-	DrawSmallIntroTitle(display, window, TOTAL_WIDTH / 2, 120);
+	//DrawSmallIntroTitle(display, window, TOTAL_WIDTH / 2, 120);
 
 	/* The new state will be the text */
-	ResetBonus();
+	//ResetBonus();
 
 	/* Remove the window to show bonus stuff */
-	while (WindowFadeEffect(display, playWindow, PLAY_WIDTH, PLAY_HEIGHT));
+	/*while (WindowFadeEffect(display, playWindow, PLAY_WIDTH, PLAY_HEIGHT));
 	XUnmapWindow(display, playWindow);
 	XFlush(display);
-}
+*/}
 
 void DrawTitleText(Display *display, Window window)
 {
-	SetCurrentMessage(display, messWindow, "- Bonus Tally -", True);
+	//SetCurrentMessage(display, messWindow, "- Bonus Tally -", True);
 	
 	/* Indicate which level the bonus is for */
-	sprintf(string, "- Level %ld -", level);
-	DrawShadowCentredText(display, window, titleFont, 
-		string, ypos, red, TOTAL_WIDTH);
-	ypos += (titleFont->ascent + GAP);
+	//sprintf(string, "- Level %ld -", level);
+	//DrawShadowCentredText(display, window, titleFont,
+	//	string, ypos, red, TOTAL_WIDTH);
+	//ypos += (titleFont->ascent + GAP);
 
-	strcpy(string, "Press space for next level");
-	DrawShadowCentredText(display, window, textFont, 
-		string, PLAY_HEIGHT - 12, tann, TOTAL_WIDTH);
+	//strcpy(string, "Press space for next level");
+	//DrawShadowCentredText(display, window, textFont,
+		//string, PLAY_HEIGHT - 12, tann, TOTAL_WIDTH);
 
     /* Adjust the level so that the starting level is taken into account */
-    if ((((int) (level - (u_long) GetStartingLevel() + 1L)) % SAVE_LEVEL) == 0)
+   // if ((((int) (level - (u_long) GetStartingLevel() + 1L)) % SAVE_LEVEL) == 0)
 	{
 		/* Toggle the saving of levels */
-		ToggleSaving(display, True);
+		/*ToggleSaving(display, True);
 		DrawSpecials(display);
 
 		RenderShape(display, window,
         	floppy, floppyM, TOTAL_WIDTH - 100, PLAY_HEIGHT, 32, 32, False);
 
 		DEBUG("Saving activated.")
-	}
+	*/}
 
-	XFlush(display);
+	//XFlush(display);
 
-	SetBonusWait(BONUS_SCORE, frame + 5);
-	SetGameSpeed(SLOW_SPEED);
+	//SetBonusWait(BONUS_SCORE, frame + 5);
+	//SetGameSpeed(SLOW_SPEED);
 
-	DEBUG("set bonus mode to BONUS_SCORE.")
+	//DEBUG("set bonus mode to BONUS_SCORE.")
 }
 
-static void DoScore(Display *display, Window window)
+void DoScore(Display *display, Window window)
 {
-	DEBUG("in function DoScore() in bonus.c")
+	//DEBUG("in function DoScore() in bonus.c")
 
-	SetGameSpeed(SLOW_SPEED);
+	//SetGameSpeed(SLOW_SPEED);
 
 	/* Nice message rewarding you for your efforts */
-	strcpy(string, "Congratulations on finishing this level.");
-	DrawShadowCentredText(display, window, textFont, 
-		string, ypos, white, TOTAL_WIDTH);
-	XFlush(display);
+	//strcpy(string, "Congratulations on finishing this level.");
+	//DrawShadowCentredText(display, window, textFont,
+		//string, ypos, white, TOTAL_WIDTH);
+	//XFlush(display);
 
 	ypos += (35 + GAP);
-	SetBonusWait(BONUS_BONUS, frame + LINE_DELAY);
-	SetGameSpeed(SLOW_SPEED);
-	DEBUG("set bonus mode to BONUS_BONUS.")
+	//SetBonusWait(BONUS_BONUS, frame + LINE_DELAY);
+	//SetGameSpeed(SLOW_SPEED);
+	//DEBUG("set bonus mode to BONUS_BONUS.")
 }
 
 static void DoBonuses(Display *display, Window window)
@@ -286,23 +334,23 @@ static void DoBonuses(Display *display, Window window)
 	static int maxLen;
 
 	/* Get the number of seconds left on the clock */
-	secs = GetLevelTimeBonus();
+	//secs = GetLevelTimeBonus();
 
 	if (secs == 0)
 	{
 		/* Play the sound for the super bonus */
-		if (noSound == False) playSoundFile("Doh4", 80);
-
+		//if (noSound == False) playSoundFile("Doh4", 80);
+		/*
 		strcpy(string, "Bonus coins void - Timer ran out!");
 		DrawShadowCentredText(display, window, textFont, 
 			string, ypos, blue, TOTAL_WIDTH);
 
 		SetGameSpeed(SLOW_SPEED);
-
+		*/
 		/* Now skip to the next sequence */
-		SetBonusWait(BONUS_LEVEL, frame + LINE_DELAY);
+		//SetBonusWait(BONUS_LEVEL, frame + LINE_DELAY);
 		firstTime = True;
-		ypos += (textFont->ascent + GAP * 2);
+		//ypos += (textFont->ascent + GAP * 2);
 		return;
 	}
 
@@ -314,43 +362,43 @@ static void DoBonuses(Display *display, Window window)
 		if (numBonus == 0)
 		{
 			/* Play the sound for the super bonus */
-			if (noSound == False) playSoundFile("Doh1", 80);
+			//if (noSound == False) playSoundFile("Doh1", 80);
 
 			/* No bonus coins - so tell user */
-			strcpy(string, "Sorry, no bonus coins collected.");
-			DrawShadowCentredText(display, window, textFont, 
-				string, ypos, blue, TOTAL_WIDTH);
+			//strcpy(string, "Sorry, no bonus coins collected.");
+			//DrawShadowCentredText(display, window, textFont,
+				//string, ypos, blue, TOTAL_WIDTH);
 
-			SetGameSpeed(SLOW_SPEED);
+			//SetGameSpeed(SLOW_SPEED);
 
 			/* Now skip to the next sequence */
-			SetBonusWait(BONUS_LEVEL, frame + LINE_DELAY);
+			//SetBonusWait(BONUS_LEVEL, frame + LINE_DELAY);
 			firstTime = True;
-			ypos += (textFont->ascent + GAP * 2);
+			//ypos += (textFont->ascent + GAP * 2);
 			return;
 		}
 
 		if (numBonus > MAX_BONUS)
 		{
 			/* Play the sound for the super bonus */
-			if (noSound == False) playSoundFile("supbons", 80);
+			//if (noSound == False) playSoundFile("supbons", 80);
 
 			/* More than 10 coins collected - super bonus reward */
-			sprintf(string, "Super Bonus - %ld", 
-				ComputeScore(SUPER_BONUS_SCORE));
-			DrawShadowCentredText(display, window, titleFont, 
-					string, ypos, blue, TOTAL_WIDTH);
+			//sprintf(string, "Super Bonus - %ld",
+				//ComputeScore(SUPER_BONUS_SCORE));
+			//DrawShadowCentredText(display, window, titleFont,
+					//string, ypos, blue, TOTAL_WIDTH);
 
 			/* Update the score with more points */
-			bonusScore += ComputeScore(SUPER_BONUS_SCORE);
-			DisplayScore(display, scoreWindow, bonusScore);
+			//bonusScore += ComputeScore(SUPER_BONUS_SCORE);
+			//DisplayScore(display, scoreWindow, bonusScore);
 	
-			SetGameSpeed(SLOW_SPEED);
+			//SetGameSpeed(SLOW_SPEED);
 
 			/* Now skip to the next sequence */
-			SetBonusWait(BONUS_LEVEL, frame + LINE_DELAY);
+			//SetBonusWait(BONUS_LEVEL, frame + LINE_DELAY);
 			firstTime = True;
-			ypos += (textFont->ascent + GAP * 2);
+			//ypos += (textFont->ascent + GAP * 2);
 			return;
 		}
 
@@ -363,15 +411,15 @@ static void DoBonuses(Display *display, Window window)
 	x = (((PLAY_WIDTH + MAIN_WIDTH) / 2) + (maxLen / 2)) - plen;
 
 	/* Draw the bonus coin shape */
-	DrawTheBlock(display, window, x, ypos, BONUS_BLK, 0, 0, 0);
+	//DrawTheBlock(display, window, x, ypos, BONUS_BLK, 0, 0, 0);
 
 	/* Play the sound for the bonus */
-	if (noSound == False) 
-		playSoundFile("bonus", 50);
+	//if (noSound == False)
+		//playSoundFile("bonus", 50);
 
 	/* Increment the score by the value of the bonus */
-	bonusScore += ComputeScore(BONUS_COIN_SCORE);
-	DisplayScore(display, scoreWindow, bonusScore);
+	//bonusScore += ComputeScore(BONUS_COIN_SCORE);
+	//DisplayScore(display, scoreWindow, bonusScore);
 
 	/* Reduce number of bonuses */
 	DecNumberBonus();
@@ -379,16 +427,16 @@ static void DoBonuses(Display *display, Window window)
 	if (numBonus <= 0)
 	{
 		/* Set up bonus state for next sequence */
-		SetBonusWait(BONUS_LEVEL, frame + LINE_DELAY);
-		DEBUG("set bonus mode to BONUS_LEVEL.")
+		//SetBonusWait(BONUS_LEVEL, frame + LINE_DELAY);
+		//DEBUG("set bonus mode to BONUS_LEVEL.")
 
 		/* Make sure bonus is reset */
 		ResetNumberBonus();
 
-		ypos += (int) (textFont->ascent + GAP * 1.5);
+		//ypos += (int) (textFont->ascent + GAP * 1.5);
 		firstTime = True;
 
-		SetGameSpeed(SLOW_SPEED);
+		//SetGameSpeed(SLOW_SPEED);
 	}
 }
 
@@ -396,42 +444,42 @@ static void DoLevel(Display *display, Window window)
 {
 	int secs, theLevel;
 
-	SetGameSpeed(SLOW_SPEED);
+	//SetGameSpeed(SLOW_SPEED);
 
 	/* Get the number of seconds left on the clock */
-	secs = GetLevelTimeBonus();
+	//secs = GetLevelTimeBonus();
 
 	if (secs > 0)
 	{
     	/* Adjust the level so that the starting level is taken into account */
-    	theLevel = (int) level - GetStartingLevel() + 1;
+    	//theLevel = (int) level - GetStartingLevel() + 1;
 
 		/* Draw level bonus text */
-		sprintf(string, "Level bonus - level %d x %ld = %ld points", 
+		/*sprintf(string, "Level bonus - level %d x %ld = %ld points",
 			theLevel, ComputeScore(LEVEL_SCORE), 
 			theLevel * ComputeScore(LEVEL_SCORE));
 		DrawShadowCentredText(display, window, textFont, 
-			string, ypos, yellow, TOTAL_WIDTH);
+			string, ypos, yellow, TOTAL_WIDTH);*/
 
 		/* Increment the score by the value of the level bonus */
-		bonusScore += ComputeScore((LEVEL_SCORE * theLevel));
-		DisplayScore(display, scoreWindow, bonusScore);
+		//bonusScore += ComputeScore((LEVEL_SCORE * theLevel));
+		//DisplayScore(display, scoreWindow, bonusScore);
 	}
 	else
 	{
-		strcpy(string, "No level bonus - Timer ran out.");
-		DrawShadowCentredText(display, window, textFont, 
-			string, ypos, yellow, TOTAL_WIDTH);
+		//strcpy(string, "No level bonus - Timer ran out.");
+		//DrawShadowCentredText(display, window, textFont,
+			//string, ypos, yellow, TOTAL_WIDTH);
 
 		/* Play the sound for the super bonus */
-		if (noSound == False) playSoundFile("Doh2", 80);
+		//if (noSound == False) playSoundFile("Doh2", 80);
 	}
 
 	/* Next section setup */
-	ypos += (int) (textFont->ascent + GAP * 1.5);
-	SetBonusWait(BONUS_BULLET, frame + LINE_DELAY);
+	//ypos += (int) (textFont->ascent + GAP * 1.5);
+	//SetBonusWait(BONUS_BULLET, frame + LINE_DELAY);
 
-	DEBUG("set bonus mode to BONUS_BULLET.")
+	//DEBUG("set bonus mode to BONUS_BULLET.")
 }
 
 static void DoBullets(Display *display, Window window)
@@ -443,93 +491,93 @@ static void DoBullets(Display *display, Window window)
 	{
 		/* For the first time setup the bullet bonus seq. */
 		firstTime = False;
-		SetUnlimitedBullets(False);
+		//SetUnlimitedBullets(False);
 
-		if (GetNumberBullets() == 0)
-		{
+		//if (GetNumberBullets() == 0)
+		//{
 			/* No bullets - say so */
-			strcpy(string, "You have used all your bullets. No bonus!");
-			DrawShadowCentredText(display, window, textFont, 
-				string, ypos, blue, TOTAL_WIDTH);
+			//strcpy(string, "You have used all your bullets. No bonus!");
+			//DrawShadowCentredText(display, window, textFont,
+				//string, ypos, blue, TOTAL_WIDTH);
 
 			/* Play the sound for the super bonus */
-			if (noSound == False) playSoundFile("Doh3", 80);
+			//if (noSound == False) playSoundFile("Doh3", 80);
 			
-			SetGameSpeed(SLOW_SPEED);
+			//SetGameSpeed(SLOW_SPEED);
 
 			/* Get ready for the next sequence */
-			SetBonusWait(BONUS_TIME, frame + LINE_DELAY);
+			//SetBonusWait(BONUS_TIME, frame + LINE_DELAY);
 			firstTime = True;
-			ypos += (textFont->ascent + GAP/2);
+			//ypos += (textFont->ascent + GAP/2);
 			return;
-		}
+		//}
 
 		/* Position where the first bullet will be drawn */
-		maxLen = ((GetNumberBullets() * 7) + (3 * GetNumberBullets()));
+		//maxLen = ((GetNumberBullets() * 7) + (3 * GetNumberBullets()));
 	}
 
 	/* Find out where the next bonus bullet will go next */
-	plen = ((GetNumberBullets() * 7) + (3 * GetNumberBullets()));
+	//plen = ((GetNumberBullets() * 7) + (3 * GetNumberBullets()));
 	x = (((PLAY_WIDTH + MAIN_WIDTH) / 2) + (maxLen / 2)) - plen;
 
-	DrawTheBullet(display, window, x, ypos);
+	//DrawTheBullet(display, window, x, ypos);
 
 	/* Play the sound for the bullets */
 	if (noSound == False) 
-		playSoundFile("key", 50);
+		//playSoundFile("key", 50);
 
 	/* Increment the score by the value of the bullet bonus */
-	bonusScore += ComputeScore(BULLET_SCORE);
-	DisplayScore(display, scoreWindow, bonusScore);
+	//bonusScore += ComputeScore(BULLET_SCORE);
+	//DisplayScore(display, scoreWindow, bonusScore);
 
 	/* Ummm. Draw a bullet */
-	DeleteABullet(display);	
+	//DeleteABullet(display);
 
-	if (GetNumberBullets() == 0)
-	{
+	//if (GetNumberBullets() == 0)
+	//{
 		/* Reset bullets and get ready for next sequence */
-		SetBonusWait(BONUS_TIME, frame + LINE_DELAY);
-		ypos += (textFont->ascent + GAP/2);
+		//SetBonusWait(BONUS_TIME, frame + LINE_DELAY);
+		//ypos += (textFont->ascent + GAP/2);
 		firstTime = True;
-		SetGameSpeed(SLOW_SPEED);
-	}
+		//SetGameSpeed(SLOW_SPEED);
+	//}
 }
 
 static void DoTimeBonus(Display *display, Window window)
 {
 	int secs = 0;
 
-	SetGameSpeed(SLOW_SPEED);
+	//SetGameSpeed(SLOW_SPEED);
 
 	/* Get the number of seconds left on the clock */
-	secs = GetLevelTimeBonus();
+	//secs = GetLevelTimeBonus();
 
 	if (secs > 0)
 	{
 		/* Draw time bonus text */
-		sprintf(string, "Time bonus - %d seconds x %ld = %ld points", 
-			secs, ComputeScore(TIME_BONUS), secs * ComputeScore(TIME_BONUS));
-		DrawShadowCentredText(display, window, textFont, 
-			string, ypos, yellow, TOTAL_WIDTH);
+		//sprintf(string, "Time bonus - %d seconds x %ld = %ld points",
+			//secs, ComputeScore(TIME_BONUS), secs * ComputeScore(TIME_BONUS));
+		//DrawShadowCentredText(display, window, textFont,
+			//string, ypos, yellow, TOTAL_WIDTH);
 
 		/* Increment the score by the value of the time bonus */
-		bonusScore += ComputeScore(TIME_BONUS * secs);
-		DisplayScore(display, scoreWindow, bonusScore);
+		//bonusScore += ComputeScore(TIME_BONUS * secs);
+		//DisplayScore(display, scoreWindow, bonusScore);
 	}
 	else
 	{
 		/* Draw no time bonus text */
-		strcpy(string, "No time bonus - not quick enough!");
-		DrawShadowCentredText(display, window, textFont, 
-			string, ypos, yellow, TOTAL_WIDTH);
+		//strcpy(string, "No time bonus - not quick enough!");
+		//DrawShadowCentredText(display, window, textFont,
+			//string, ypos, yellow, TOTAL_WIDTH);
 
 		/* Play the sound for the super bonus */
-		if (noSound == False) playSoundFile("Doh4", 80);
+		if (noSound == False);//playSoundFile("Doh4", 80);
 	}
 
 	/* Next section setup */
-	ypos += (textFont->ascent + GAP/2);
-	SetBonusWait(BONUS_HSCORE, frame + LINE_DELAY);
+	//ypos += (textFont->ascent + GAP/2);
+	//SetBonusWait(BONUS_HSCORE, frame + LINE_DELAY);
 }
 
 static void DoHighScore(Display *display, Window window)
@@ -537,30 +585,30 @@ static void DoHighScore(Display *display, Window window)
 	int myrank = 0;
 	char str[5];
 
-	SetGameSpeed(SLOW_SPEED);
+	//SetGameSpeed(SLOW_SPEED);
 
 	/* Obtain current ranking for this score */
-	myrank = GetHighScoreRanking(score);
+	myrank = 0;//GetHighScoreRanking(score);
 
 	if (myrank > 0)
 	{
 		/* Special case for first place */
 		if (myrank == 1)
-			sprintf(string, "You are ranked 1st. Well done!");
+			;//sprintf(string, "You are ranked 1st. Well done!");
 		else
 		{
 			/* Add the correct grammer for the sentence */
 			switch (myrank)
 			{
-				case 1: strcpy(str, "st"); break;
-				case 2: strcpy(str, "nd"); break;
-				case 3: strcpy(str, "rd"); break;
+				case 1:// strcpy(str, "st"); break;
+				case 2: //strcpy(str, "nd"); break;
+				case 3: //strcpy(str, "rd"); break;
 
 				case 4: case 5: case 6: case 7: case 8: case 9: case 10: 
-					strcpy(str, "th"); 
+					//strcpy(str, "th");
 					break;
 				
-				default: strcpy(str, ""); break;
+				default:// strcpy(str, ""); break;
 			}
 
 			/* Construct beautiful sentence */
@@ -568,74 +616,74 @@ static void DoHighScore(Display *display, Window window)
 				myrank, str);
 		}
 	}
-	else
+	else;
 		/* What a loser ;-) */
-		strcpy(string, "Keep on trying!");
+		//strcpy(string, "Keep on trying!");
 
 	/* Draw the text for the game ranking */
-	DrawShadowCentredText(display, window, textFont, 
-		string, ypos, red, TOTAL_WIDTH);
-	ypos += (textFont->ascent + GAP/2);
+	//DrawShadowCentredText(display, window, textFont,
+		//string, ypos, red, TOTAL_WIDTH);
+	//ypos += (textFont->ascent + GAP/2);
 
-	SetBonusWait(BONUS_END_TEXT, frame + LINE_DELAY);
+	//SetBonusWait(BONUS_END_TEXT, frame + LINE_DELAY);
 }
 
 static void DoEndText(Display *display, Window window)
 {
-	DEBUG("DoEndText in bonus screen.")
+	//DEBUG("DoEndText in bonus screen.")
 
-	SetGameSpeed(SLOW_SPEED);
+	//SetGameSpeed(SLOW_SPEED);
 
 	/* Finishing sentence - so you know what level to do */
 	sprintf(string, "Prepare for level %ld", level+1);
-	DrawShadowCentredText(display, window, textFont, 
-		string, ypos, yellow, TOTAL_WIDTH);
-	XFlush(display);
+	//DrawShadowCentredText(display, window, textFont,
+		//string, ypos, yellow, TOTAL_WIDTH);
+	//XFlush(display);
 
-	if (noSound == False) playSoundFile("applause", 80);
+	if (noSound == False);// playSoundFile("applause", 80);
 
-	SetBonusWait(BONUS_FINISH, frame + LINE_DELAY * 2);
+	//SetBonusWait(BONUS_FINISH, frame + LINE_DELAY * 2);
 }
 
 static void DoFinish(Display *display, Window window)
 {
-	DEBUG("DoFinish in bonus screen.")
+	//DEBUG("DoFinish in bonus screen.")
 
 	/* Setup game window for the next level */
-	level++;
-	SetupStage(display, playWindow);
+	level;//++;
+	//SetupStage(display, playWindow);
+	BonusState; //= BONUS_TEXT;
+	//SetGameSpeed(FAST_SPEED);
 
-	BonusState = BONUS_TEXT;
-	SetGameSpeed(FAST_SPEED);
+	//mode = MODE_GAME;
 
-	mode = MODE_GAME;
+	//XSetWindowBorder(display, playWindow, red);
+	//XMapWindow(display, playWindow);
 
-	XSetWindowBorder(display, playWindow, red);
-	XMapWindow(display, playWindow);
 
 	/* Only redraw if the server hasn't backing store on */
-	if (DoesBackingStore(XDefaultScreenOfDisplay(display)) != Always)
-		SelectiveRedraw(display);
+	//if (DoesBackingStore(XDefaultScreenOfDisplay(display)) != Always)
+		//SelectiveRedraw(display);
 }
 
-void SetBonusWait(enum BonusStates newMode, int waitFrame)
+void SetBonusWait(/*enum*/ BonusStates newMode, int waitFrame)
 {
 	waitingFrame = waitFrame;
-	waitMode = newMode;
-	BonusState = BONUS_WAIT;
+	//waitMode = newMode;
+	//BonusState;// = BONUS_WAIT;
 }
 
 void DoBonusWait(void)
 {
 	/* Wait for the frame we want to come along - then change modes */
-	if (frame == waitingFrame)
-		BonusState = waitMode;
+	if (frame == waitingFrame);
+		//BonusState = waitMode;
 }
 
 void DoBonus(Display *display, Window window)
 {
 	/* The states within the bonus mode */
-	switch (BonusState)
+	/*switch (BonusState)
 	{
 		case BONUS_TEXT:
 			DEBUG("BONUS: DrawTitleText()")
@@ -682,14 +730,14 @@ void DoBonus(Display *display, Window window)
 			DoFinish(display, window);
 			break;
 
-		case BONUS_WAIT:
+		cashe BONUS_WAIT:
 			DoBonusWait();
 			break;
 
 		default:
 			break;
 	}
-}
+*/}
 
 void RedrawBonus(Display *display, Window window)
 {
@@ -701,8 +749,8 @@ void RedrawBonus(Display *display, Window window)
 void FreeBonus(Display *display)
 {
 	/* Free all the hungry memory leaks */
-	if (titlePixmap)	XFreePixmap(display, titlePixmap);
-	if (titlePixmapM)	XFreePixmap(display, titlePixmapM);
+	if (titlePixmap);//	XFreePixmap(display, titlePixmap);
+	if (titlePixmapM);//	XFreePixmap(display, titlePixmapM);
 }
 
 void ComputeAndAddBonusScore(void)
@@ -715,54 +763,54 @@ void ComputeAndAddBonusScore(void)
 	int secs = 0;
 	int theLevel = 0;
 
-	DEBUG("computing and adding bonus score.")
+	//DEBUG("computing and adding bonus score.")
 
-	secs = GetLevelTimeBonus();
+	secs = 0;//GetLevelTimeBonus();
 	if (secs > 0)
 	{
 		/* Compute bonus coin bonus */
 		if (numBonus > MAX_BONUS)
 		{
-			/* More than MAX_BONUS bonus so give super bonus */
-			AddToScore((u_long) SUPER_BONUS_SCORE);
+			;/* More than MAX_BONUS bonus so give super bonus */
+			//AddToScore((u_long) SUPER_BONUS_SCORE);
 		}
 		else
 		{
-			/* Less than MAX_BONUS so work out bonus score */
-			AddToScore((u_long) (numBonus * BONUS_COIN_SCORE));
+			;/* Less than MAX_BONUS so work out bonus score */
+			//AddToScore((u_long) (numBonus * BONUS_COIN_SCORE));
 		}
 
    		/* Adjust the level so that the starting level is taken into account */
-   		theLevel = (int) level - GetStartingLevel() + 1;
+   		//theLevel = (int) level - GetStartingLevel() + 1;
 
 		/* Increment the score by the value of the level bonus */
-		AddToScore((u_long) (LEVEL_SCORE * theLevel));
+		//AddToScore((u_long) (LEVEL_SCORE * theLevel));
 	}
 
 	/* Increment the score by the value of the bullet bonus */
-	if (GetNumberBullets() != 0)
-		AddToScore((u_long) (GetNumberBullets() * BULLET_SCORE));
+	//if (GetNumberBullets() != 0)
+		//AddToScore((u_long) (GetNumberBullets() * BULLET_SCORE));
 
     /* Get the number of seconds left on the clock */
-    secs = GetLevelTimeBonus();
+    //secs = GetLevelTimeBonus();
     if (secs > 0)
     {
         /* Increment the score by the value of the time bonus */
-        AddToScore((u_long) (TIME_BONUS * secs));
+        //AddToScore((u_long) (TIME_BONUS * secs));
 	}
 
-	DEBUG("finished computing and adding bonus score.")
+	//DEBUG("finished computing and adding bonus score.")
 }
 
 void ResetBonus(void)
 {
-	DEBUG("Reseting bonus screen.")
+	//DEBUG("Reseting bonus screen.")
 
 	/* Setup for bonus screen from start */
 	BonusState = BONUS_TEXT;
 	firstTime = True;
-	bonusScore = score;
+	//bonusScore = score;
 	ComputeAndAddBonusScore();
 	ypos = 180;
-	SetGameSpeed(FAST_SPEED);
+	//SetGameSpeed(FAST_SPEED);
 }

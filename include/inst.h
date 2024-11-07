@@ -2,7 +2,7 @@
  * @file inst.h
  * @author Gerardo Gonzalez
  * @date 2024-10-01
- * @brief Thos file deals with the instructions
+ * @brief This file deals with the instructions
  * 
  * This is the header file for displaying the instructions of the game to the player
  */
@@ -60,7 +60,8 @@
  *  Dependencies on other include files:
  */
 
-#include <X11/Xlib.h>
+// TODO: Remove instances of X11-associated data types
+#include "faketypes.h"
 
 /*
  *  Type declarations:

@@ -50,6 +50,9 @@
  *  Dependencies on other include files:
  */
 
+// TODO: Remove instances of X11-associated data types
+#include "faketypes.h"
+
 //#include <X11/Xlib.h>
 #include <sys/time.h>
 #include <sys/types.h>
