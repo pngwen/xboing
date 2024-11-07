@@ -48,12 +48,16 @@
  */
 
 #include <stdio.h>
+
+// TODO: Remove instances of X11-associated data types
+/*
 #include <xpm.h>
 
+//TODO: Replace references to bitmaps with png textures
 #include "bitmaps/paddle/padsml.xpm"
 #include "bitmaps/paddle/padmed.xpm"
 #include "bitmaps/paddle/padhuge.xpm"
-
+*/
 #include "error.h"
 #include "init.h"
 #include "stage.h"
@@ -61,7 +65,7 @@
 #include "misc.h"
 #include "main.h"
 #include "special.h"
-
+#include "faketypes.h"
 #include "paddle.h"
 
 /*
