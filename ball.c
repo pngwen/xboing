@@ -51,9 +51,13 @@
 #include <stdlib.h>
 #include <math.h>
 #include <values.h>
-/*#include <xpm.h>
-#include <X11/Xos.h>*/
 
+/*
+// TODO: Remove instances of X11-associated data types
+#include <xpm.h>
+#include <X11/Xos.h>
+
+//TODO: Replace references to bitmaps with png textures
 #include "bitmaps/balls/ball1.png"
 #include "bitmaps/balls/ball2.png"
 #include "bitmaps/balls/ball3.png"
@@ -80,6 +84,8 @@
 #include "bitmaps/balls/bbirth6.png"
 #include "bitmaps/balls/bbirth7.png"
 #include "bitmaps/balls/bbirth8.png"
+*/
+
 
 #include "include/audio.h"
 #include "include/error.h"
@@ -95,9 +101,7 @@
 #include "include/level.h"
 #include "include/mess.h"
 #include "include/special.h"
-
 #include "include/ball.h"
-
 #include "include/faketypes.h"
 
 /*

@@ -50,11 +50,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stddef.h>
-/*#include <X11/Xlib.h>
+
+/*
+// TODO: Remove instances of X11-associated data types
+#include <X11/Xlib.h>
 #include <X11/Xutil.h>
 #include <X11/Xos.h>
-#include <xpm.h>*/
+#include <xpm.h>
 
+//TODO: Replace references to bitmaps with png textures
 #include "bitmaps/blocks/blueblk.png"
 #include "bitmaps/blockex/exblue1.png"
 #include "bitmaps/blockex/exblue2.png"
@@ -152,6 +156,7 @@
 #include "bitmaps/blockex/exdeath2.png"
 #include "bitmaps/blockex/exdeath3.png"
 #include "bitmaps/blockex/exdeath4.png"
+*/
 
 #include "include/audio.h"
 #include "include/misc.h"
@@ -169,9 +174,7 @@
 #include "include/level.h"
 #include "include/sfx.h"
 #include "include/file.h"
-
 #include "include/blocks.h"
-
 #include "include/faketypes.h"
 
 /*

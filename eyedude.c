@@ -47,12 +47,15 @@
  *  Include file dependencies:
  */
 
-//#include <xpm.h>
+/*
+// TODO: Remove instances of X11-associated data types
+#include <xpm.h>
 #include <stdio.h>
 #include <math.h>
 #include <assert.h>
-//#include <X11/Xos.h>
+#include <X11/Xos.h>
 
+//TODO: Replace references to bitmaps with png textures
 #include "bitmaps/eyes/guyl1.png"
 #include "bitmaps/eyes/guyl2.png"
 #include "bitmaps/eyes/guyl3.png"
@@ -66,6 +69,7 @@
 #include "bitmaps/eyes/guyr5.png"
 #include "bitmaps/eyes/guyr6.png"
 #include "bitmaps/eyes/guydead.png"
+*/
 
 #include "include/error.h"
 #include "include/audio.h"
@@ -80,9 +84,7 @@
 #include "include/level.h"
 #include "include/ball.h"
 #include "include/special.h"
-
 #include "include/eyedude.h"
-
 #include "include/faketypes.h"
 
 /*
