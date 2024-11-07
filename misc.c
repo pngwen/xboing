@@ -54,10 +54,14 @@
 #include <unistd.h>
 #include <sys/param.h>
 #include <pwd.h>
-#include <X11/Xlib.h>
-#include <X11/Xutil.h>
-#include <X11/Xos.h>
+
+// TODO: Remove functional reliance on X11
+// #include <X11/Xlib.h>
+// #include <X11/Xutil.h>
+// #include <X11/Xos.h>
+
 #include <netinet/in.h>
+#include <string.h> // Added for implementation of strcpy()
 
 #include "init.h"
 #include "error.h"

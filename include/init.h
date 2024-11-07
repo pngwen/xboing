@@ -50,8 +50,10 @@
  *  Dependencies on other include files:
  */
 
-// TODO: Remove x11 #include <X11/Xlib.h>
-#include <faketypes.h>
+// TODO: Remove instances of X11-associated data types
+#include "faketypes.h"
+
+// #include <X11/Xlib.h>
 
 /*
  *  Constants and macros:

@@ -48,7 +48,9 @@
  */
 
 #include <stdio.h>
-#include <raylib.h>
+
+// TODO: Remove functional reliance on X11
+// #include <xpm.h>
 
 #include "init.h"
 #include "error.h"
@@ -119,6 +121,8 @@ void WarningMessage(char *message)
  */
 void HandleXPMError(Texture2D texture, char* texture_name)
 {
+	Display* display;// Fake variable needed to compile to object code
+
 	/* If the texture has not been loaded */
     if(!texture){
 		/* Argg. An error so tell everyone */

@@ -62,8 +62,8 @@
  *  Dependencies on other include files:
  */
 
-//#include <raylib.h>
-#include <faketypes.h>
+// TODO: Remove instances of X11-associated data types
+#include "faketypes.h"
 
 /*
  *  Constants and macros:
