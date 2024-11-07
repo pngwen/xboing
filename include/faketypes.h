@@ -9,4 +9,5 @@ typedef unsigned long int u_long;
 typedef int KeySym;
 typedef int XEvent;
 typedef int uid_t;
+typedef int Pixmap;
 #endif
