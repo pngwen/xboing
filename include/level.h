@@ -51,6 +51,8 @@
  */
 
 //#include <X11/Xlib.h>
+#include <time.h>
+#include "faketypes.h"
 
 /*
  *  Constants and macros:
