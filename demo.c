@@ -50,10 +50,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stddef.h>
+
+/*
+// TODO: Remove instances of X11-associated data types
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
 #include <X11/Xos.h>
 #include <xpm.h>
+*/
+
 
 #include "error.h"
 #include "misc.h"
@@ -75,7 +80,7 @@
 #include "intro.h"
 #include "keys.h"
 #include "version.h"
-
+#include "faketypes.h"
 #include "demo.h"
 
 /*

@@ -50,12 +50,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stddef.h>
+
+/*
+// TODO: Remove instances of X11-associated data types
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
 #include <X11/Xos.h>
 #include <xpm.h>
 
+//TODO: Replace references to bitmaps with png textures
 #include "bitmaps/presents/titleSml.xpm"
+*/
 
 #include "error.h"
 #include "audio.h"
@@ -76,7 +81,7 @@
 #include "level.h"
 #include "mess.h"
 #include "intro.h"
-
+#include "faketypes.h"
 #include "bonus.h"
 
 /*
