@@ -51,14 +51,6 @@
 #include <stdlib.h>
 #include <stddef.h>
 
-/*
-// TODO: Remove instances of X11-associated data types
-#include <X11/Xlib.h>
-#include <X11/Xutil.h>
-#include <X11/Xos.h>
-#include <xpm.h>
-*/
-
 
 #include "error.h"
 #include "misc.h"
@@ -96,8 +88,8 @@
  *  Internal type declarations:
  */
 
-void SetDemoWait(enum DemoStates newMode, int waitFrame);
-void DoDemoWait(void);
+//void SetDemoWait(enum DemoStates newMode, int waitFrame);
+//void DoDemoWait(void);
 
 /*
  *  Internal variable declarations:
@@ -105,25 +97,25 @@ void DoDemoWait(void);
 
 static int endFrame = 0;
 static int startFrame = 0;
-enum DemoStates DemoState;
+/*/enum DemoStates*/int DemoState;
 static int waitingFrame;
-enum DemoStates waitMode;
+/*/enum DemoStates*/int waitMode;
 
-void SetUpDemonstration(Display *display, Window window, Colormap colormap)
+void SetUpDemonstration(/*Display*/int  *display, /*Window*/int  window, /*Colormap*/int colormap)
 {
-	ResetDemonstration();
+	//ResetDemonstration();
 }
 
-void DoDemoTitle(Display *display, Window window)
+void DoDemoTitle(/*/Display*/int *display,/*/ Window*/int window)
 {
 	/* Clear and draw background pattern */
-    DrawStageBackground(display, window, BACKGROUND_0, True);
+    //DrawStageBackground(display, window, BACKGROUND_0, True);
 
 	/* Draw the title bitmap XBOING */
-	DrawIntroTitle(display, window, 10, 10);
+	//DrawIntroTitle(display, window, 10, 10);
 }
 
-static void DoBlocks(Display *display, Window window)
+static void DoBlocks(/*/Display*/ int *display, /*/Window*/int window)
 {
 	int y = 120;
 	int x = 40;
@@ -131,127 +123,127 @@ static void DoBlocks(Display *display, Window window)
     char *str;
 
 	/* Be very friendly */
-	SetCurrentMessage(display, messWindow, "Demonstration", False);
+	//SetCurrentMessage(display, messWindow, "Demonstration", False);
 
     /* Construct the demo level filename */
     if ((str = getenv("XBOING_LEVELS_DIR")) != NULL)
       snprintf(levelPath, sizeof(levelPath), "%s/demo.data", str); 
     else
-      snprintf(levelPath, sizeof(levelPath), "%s/demo.data", LEVEL_INSTALL_DIR);
+     // snprintf(levelPath, sizeof(levelPath), "%s/demo.data", //LEVEL_INSTALL_DIR);
 
 	/* Read in a demo level */
-    if (ReadNextLevel(display, window, levelPath, True) == False)
-        ShutDown(display, 1, "Sorry, invalid level specified.");
+    //if (ReadNextLevel(display, window, levelPath, True) == False)
+        //ShutDown(display, 1, "Sorry, invalid level specified.");
 
 	/* Draw the ball anim animation slides */
-	x = PLAY_WIDTH - (PLAY_WIDTH / 3) ; y = PLAY_HEIGHT - (PLAY_HEIGHT / 3);
-	DrawTheBall(display, window, x, y, 0); 	x -= 18; y += 18;
+	//x = PLAY_WIDTH - (PLAY_WIDTH / 3) ; y = PLAY_HEIGHT - (PLAY_HEIGHT / 3);
+	/*/DrawTheBall(display, window, x, y, 0); 	x -= 18; y += 18;
 	DrawTheBall(display, window, x, y, 1); 	x -= 18; y += 18;
 	DrawTheBall(display, window, x, y, 2); 	x -= 18; y += 18;
 	DrawTheBall(display, window, x, y, 3); 	x -= 18; y += 18;
 	DrawTheBall(display, window, x, y, 0); 	x -= 18; y += 18;
 	DrawTheBall(display, window, x, y, 1); 	
-
+*/
 	x -= 25; y -= 18;
-	DrawTheBall(display, window, x, y, 0); 	x -= 18; y -= 18;
+	/*/DrawTheBall(display, window, x, y, 0); 	x -= 18; y -= 18;
 	DrawTheBall(display, window, x, y, 1); 	x -= 18; y -= 18;
 	DrawTheBall(display, window, x, y, 2);	x -= 18; y -= 18;
 	DrawTheBall(display, window, x, y, 3); 	x -= 18; y -= 18;
-
+*/
 	/* Draw a half distintegrated block */
-	COL2X(x, 2); ROW2Y(y, 12);
-    RenderShape(display, window, exyellowblock[1], exyellowblockM[1],
+	//COL2X(x, 2); ROW2Y(y, 12);
+    /*/RenderShape(display, window, exyellowblock[1], exyellowblockM[1],
 		x, y, 40, 20, False);
-
+*/
 	/* Draw the paddle with some arrows */
-	x = PLAY_WIDTH / 2;
-	y = PLAY_HEIGHT - 90;
-	RenderShape(display, window, leftarrow, leftarrowM,
-        x - 75, y - 1, 35, 19, True);
-	DrawPaddle(display, window, x, y, PADDLE_HUGE);
+	//x = PLAY_WIDTH / 2;
+	//y = PLAY_HEIGHT - 90;
+	//RenderShape(display, window, leftarrow, leftarrowM,
+       // x - 75, y - 1, 35, 19, True);
+	//DrawPaddle(display, window, x, y, PADDLE_HUGE);
 
 	/* Now draw some descriptive text */
-    DrawShadowText(display, window, dataFont,
-		"Ball hits the paddle", 300, PLAY_HEIGHT - 140, yellow);
-    DrawShadowText(display, window, dataFont,
+   /*/ DrawShadowText(display, window, dataFont,
+		"Ball hits the paddle", 300, PLAY_HEIGHT - 140, yellow);*/
+    /*/DrawShadowText(display, window, dataFont,
 		"and bounces back.", 300, PLAY_HEIGHT - 120, yellow);
-
-    DrawShadowText(display, window, dataFont,
+*/
+   /*/ DrawShadowText(display, window, dataFont,
 		"Ball hits block", 30, PLAY_HEIGHT - 170, yellow);
     DrawShadowText(display, window, dataFont,
 		"and rebounds.", 30, PLAY_HEIGHT - 150, yellow);
-
-    DrawShadowText(display, window, dataFont,
+*/
+   /*/ DrawShadowText(display, window, dataFont,
 		"Paddle moves left to intercept ball.", 160, PLAY_HEIGHT - 60, yellow);
-}
+*/}
 
-static void DoSparkle(Display *display, Window window)
+static void DoSparkle(/*/Display*/int *display, /*/Window*/int window)
 {
-    static Pixmap store;
+    static /*/Pixmap*/int store;
     static int x = 100;
     static int y = 20;
     static int in = 0;
 
     if (!store)
     {
-        store = XCreatePixmap(display, window, 20, 20,
+        /*/store = XCreatePixmap(display, window, 20, 20,
             DefaultDepth(display, XDefaultScreen(display)));
-    }
+    */}
 
     if (in == 0)
-        XCopyArea(display, window, store, gc, x, y, 20, 20, 0, 0);
+       // XCopyArea(display, window, store, gc, x, y, 20, 20, 0, 0);
 
-    if (frame == endFrame)
-        DemoState = DEMO_FINISH;
+   // if (/*/frame == endFrame*/)
+        //DemoState = DEMO_FINISH;
 
-    if (frame == startFrame)
+   // if (/*/frame == startFrame*/)
     {
-        XCopyArea(display, store, window, gc, 0, 0, 20, 20, x, y);
-        RenderShape(display, window, stars[in], starsM[in],
+        //XCopyArea(display, store, window, gc, 0, 0, 20, 20, x, y);
+        /*/RenderShape(display, window, stars[in], starsM[in],
             x, y, 20, 20, False);
-
+*/
         in++;
-        startFrame = frame + 15;
+       // startFrame = frame + 15;
 
         if (in == 11)
         {
-            XCopyArea(display, store, window, gc, 0, 0, 20, 20, x, y);
+         //   XCopyArea(display, store, window, gc, 0, 0, 20, 20, x, y);
             in = 0;
-            startFrame = frame + 500;
+           // startFrame = frame + 500;
             x = (rand() % 474) + 5;
             y = (rand() % 74) + 5;
         }
     }
 }
 
-static void DoText(Display *display, Window window)
+static void DoText(/*/Display*/int *display, /*/Window*/int  window)
 {
 	char string[80];
 	int y;
 
-	y = PLAY_HEIGHT - 27;
+//	y = PLAY_HEIGHT - 27;
 
-	strcpy(string, "Insert coin to start the game");
-	DrawShadowCentredText(display, window, textFont, 
+//	strcpy(string, "Insert coin to start the game");
+/*/	DrawShadowCentredText(display, window, textFont,
 		string, y, tann, PLAY_WIDTH);
-
-	startFrame = frame + 10;
-	endFrame = frame + 5000;
-	DemoState = DEMO_SPARKLE;
+*/
+	//startFrame = frame + 10;
+	//endFrame = frame + 5000;
+	//DemoState = DEMO_SPARKLE;
 }
 
-static void DoFinish(Display *display, Window window)
+static void DoFinish(/*Display*/int *display, /*/Window*/int  window)
 {
-    ResetKeys();
-    mode = MODE_KEYS;
+   // ResetKeys();
+   // mode = MODE_KEYS;
 
-	if (noSound == False)
+	/*/if (noSound == False)
 		playSoundFile("whizzo", 50);
-}
+*/}
 
-void Demonstration(Display *display, Window window)
+void Demonstration(/*/Display*/int *display,/*/ Window*/int window)
 {
-	switch (DemoState)
+/*/	switch (DemoState)
 	{
 		case DEMO_TITLE:
 			if (getSpecialEffects(display) == True)
@@ -297,37 +289,37 @@ void Demonstration(Display *display, Window window)
 		default:
 			break;
 	}
-}
+*/}
 
-void RedrawDemonstration(Display *display, Window window)
+void RedrawDemonstration(/*/Display*/int  *display, /*/Window*/ int  window)
 {
 	DoDemoTitle(display, window);
 	DoBlocks(display, window);
 	DoText(display, window);
 }
 
-void FreeDemonstration(Display *display)
+void FreeDemonstration(/*/Display*/int  *display)
 {
 }
 
 void ResetDemonstration(void)
 {
-	DemoState = DEMO_TITLE;
-	startFrame = frame + 10;
-	endFrame = frame + 3000;
+	//DemoState = DEMO_TITLE;
+	//startFrame = frame + 10;
+	//endFrame = frame + 3000;
 
-	DEBUG("Reset Demonstration mode.")
+	//DEBUG("Reset Demonstration mode.")
 }
 
-void SetDemoWait(enum DemoStates newMode, int waitFrame)
+void SetDemoWait(/*/enum DemoStates*/int  newMode, int waitFrame)
 {
 	waitingFrame = waitFrame;
 	waitMode = newMode;
-	DemoState = DEMO_WAIT;
+//DemoState = DEMO_WAIT;
 }
 
 void DoDemoWait(void)
 {
-	if (frame == waitingFrame)
-		DemoState = waitMode;
+	//if (frame == waitingFrame)
+	//	DemoState = waitMode;
 }
