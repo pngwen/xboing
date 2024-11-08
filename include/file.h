@@ -20,6 +20,7 @@
 
 #include <stdio.h>
 #include <time.h>
+#include "faketypes.h"
 
 
 /**

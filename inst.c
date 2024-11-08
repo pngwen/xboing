@@ -51,10 +51,13 @@
 #include <stdlib.h>
 #include <stddef.h>
 #include <math.h>
-#include <X11/Xlib.h>
-#include <X11/Xutil.h>
-#include <X11/Xos.h>
-#include <xpm.h>
+#include <string.h> // Added for implementation of strcpy()
+
+// TODO: Remove functional reliance on X11
+// #include <X11/Xlib.h>
+// #include <X11/Xutil.h>
+// #include <X11/Xos.h>
+// #include <xpm.h>
 
 #include "error.h"
 #include "highscore.h"

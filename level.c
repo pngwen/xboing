@@ -52,10 +52,10 @@
 #include <stddef.h>
 #include <time.h>
 #include <assert.h>
-#include <X11/Xlib.h>	//Replace with RAyLib
-#include <X11/Xutil.h>	//Replace with RayLib
-#include <X11/Xos.h>	//Repalce with RayLib
-#include <xpm.h>
+//#include <X11/Xlib.h>	//Replace with RAyLib
+//#include <X11/Xutil.h>	//Replace with RayLib
+//#include <X11/Xos.h>	//Repalce with RayLib
+//#include <xpm.h>
 
 /**
 *

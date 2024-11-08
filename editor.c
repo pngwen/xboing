@@ -65,37 +65,37 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stddef.h>
-#include <X11/Xlib.h>
-#include <X11/Xutil.h>
-#include <X11/Xos.h>
-#include <X11/keysym.h>
-#include <xpm.h>
+// TODO: REMOVE X11 #include <X11/Xlib.h>
+// TODO: REMOVE X11 #include <X11/Xutil.h>
+// TODO: REMOVE X11 #include <X11/Xos.h>
+// TODO: REMOVE X11 #include <X11/keysym.h>
+//#include <xpm.h>
 
-#include "error.h"
-#include "misc.h"
-#include "gun.h"
-#include "main.h"
-#include "eyedude.h"
-#include "bonus.h"
-#include "init.h"
-#include "dialogue.h"
-#include "file.h"
-#include "inst.h"
-#include "stage.h"
-#include "blocks.h"
-#include "sfx.h"
-#include "special.h"
-#include "ball.h"
-#include "score.h"
-#include "paddle.h"
-#include "level.h"
-#include "mess.h"
-#include "audio.h"
-#include "intro.h"
-#include "keys.h"
-#include "version.h"
+#include "include/error.h"
+#include "include/misc.h"
+#include "include/gun.h"
+#include "include/main.h"
+#include "include/eyedude.h"
+#include "include/bonus.h"
+#include "include/init.h"
+#include "include/dialogue.h"
+#include "include/file.h"
+#include "include/inst.h"
+#include "include/stage.h"
+#include "include/blocks.h"
+#include "include/sfx.h"
+#include "include/special.h"
+#include "include/ball.h"
+#include "include/score.h"
+#include "include/paddle.h"
+#include "include/level.h"
+#include "include/mess.h"
+#include "include/audio.h"
+#include "include/intro.h"
+#include "include/keys.h"
+#include "include/version.h"
 
-#include "editor.h"
+#include "include/editor.h"
 
 /*
  *  Internal macro definitions:

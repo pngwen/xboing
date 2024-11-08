@@ -50,10 +50,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stddef.h>
-#include <X11/Xlib.h>
-#include <X11/Xutil.h>
-#include <X11/Xos.h>
-#include <xpm.h>
+//#include <X11/Xlib.h>
+//#include <X11/Xutil.h>
+//#include <X11/Xos.h>
+//#include <xpm.h>
 
 #include "error.h"
 #include "highscore.h"

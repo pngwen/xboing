@@ -72,7 +72,8 @@
  * @todo Remove this dependency with a new graphics system.
  *
  */ 
-// TODO: Remove X11 #include <X11/Xlib.h>
+//#include <X11/Xlib.h>
+#include "faketypes.h"
 
 /*
  *  Constants and macros:

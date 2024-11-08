@@ -62,11 +62,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stddef.h>
-#include <X11/Xlib.h>	//Replace this with RayLib
-#include <X11/Xutil.h>	//Replace this with RayLib
-#include <X11/Xos.h>	//Replace this with RayLib
-#include <X11/keysym.h>	//Replace this with RayLib
-#include <xpm.h>
+//#include <X11/Xlib.h>	//Replace this with RayLib
+//#include <X11/Xutil.h>	//Replace this with RayLib
+//#include <X11/Xos.h>	//Replace this with RayLib
+//#include <X11/keysym.h>	//Replace this with RayLib
+//#include <xpm.h>
 
 #include "error.h"
 #include "level.h"
