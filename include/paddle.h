@@ -46,50 +46,115 @@
  * =========================================================================
  */
 
-/*
- *  Dependencies on other include files:
- */
-
-// TODO: Remove X11 #include <X11/Xlib.h>
-//#include "faketypes.h"
-
-/*
- *  Constants and macros:
- */
-
-#define PADDLE_LEFT		1
-#define PADDLE_SHOOT	2
-#define PADDLE_RIGHT	3
 #define PADDLE_NONE		0
-
-// value must match parallel array indexes, 
-// and ordered smallest to largest
-#define PADDLE_SMALL	0
-#define PADDLE_MEDIUM	1
-#define PADDLE_HUGE		2
+#define PADDLE_LEFT		1
+#define PADDLE_RIGHT	2
 
 #define DIST_BASE   	30
-#define PADDLE_VEL  	10
-
-#define PADDLE_HC  		4
-#define PADDLE_HEIGHT 	9
 
 #define SIZE_UP         1
 #define SIZE_DOWN       2
 
+
+/**
+ * @brief Loads paddle images into memory as Raylib Texture2D
+ * @note If an image fails to load, Raylib close window flag is set to true
+ * 
+ */
 void InitialisePaddle(void);
+
+
+/**
+ * @brief Unloads paddle images loaded with InitialisePaddle()
+ * 
+ */
 void FreePaddle(void);
-void DrawPaddle();
+
+
+/**
+ * @brief Draws the current paddle image at the current paddle position
+ * 
+ */
+void DrawPaddle(void);
+
+
+/**
+ * @brief Moves the paddle horizontally.
+ * 
+ * The paddle will move horizontally a fixed amount based on the direction passed. 
+ * The direction moved takes into account the current value of the Reverse flag.
+ * 
+ * @param direction PADDLE_LEFT or PADDLE_RIGHT to move
+ */
 void MovePaddle(int direction);
-void ResetPaddleStart();
+
+
+/**
+ * @brief Sets the paddle to the default size, turns off Reverse, and centers the paddle on the screen
+ * 
+ */
+void ResetPaddleStart(void);
+
+
+/**
+ * @brief Returns the paddle size in pixels
+ * 
+ * @return int 
+ */
 int GetPaddleSize(void);
+
+
+/**
+ * @brief Returns the paddle size as a description
+ * 
+ * @return char* c-string description of size
+ */
+char *GetPaddleDescription(void);
+
+
+/**
+ * @brief Returns the paddle position based on upper left corner
+ * 
+ * @return int upper left paddle pixel
+ */
 int GetPaddlePosition(void);
+
+
+/**
+ * @brief Returns the Reverse flag value
+ * 
+ * @return int 1 for reverse on, 0 for reverse off
+ */
+int GetPaddleReverse(void);
+
+
+/**
+ * @brief Flips the value of the reverse flag
+ * 
+ */
 void ToggleReverse(void);
+
+
+/**
+ * @brief Turns reverse flag off
+ * 
+ */
 void SetReverseOff(void);
+
+
+/**
+ * @brief Changes the size of the paddle
+ * 
+ * Increases or decreases the size of the paddle by one increment.
+ * Does nothing if paddle is at the maximum or minimum size
+ * 
+ * @param changeDirection SIZE_UP or SIZE_DOWN
+ */
 void ChangePaddleSize(int changeDirection);
 
-// these are defined in paddle.c and therefore not extern
-// TODO: determine if any need to be marked extern
-// extern int currentPaddleSize, paddlePos, reverseOn, stickyOn;
+
+// not used in program ??
+// #define PADDLE_HC  		4
+// #define PADDLE_HEIGHT 	9
 
 #endif

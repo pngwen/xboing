@@ -8,8 +8,8 @@
 const int SCREEN_WIDTH = 582;
 const int SCREEN_HEIGHT = 720;
 
-
-void ShowPaddleSize(void);
+void DrawStatusText(void);
+void DrawTextLine(int ypos, char *text);
 
 int main(void) {
 
@@ -38,8 +38,10 @@ int main(void) {
 
         BeginDrawing();
         ClearBackground(BLACK);
-        ShowPaddleSize();
+
+        DrawStatusText();        
         DrawPaddle();
+
         EndDrawing();
 
     }
@@ -54,16 +56,36 @@ int main(void) {
 
 }
 
-void ShowPaddleSize(void) {
+void DrawStatusText() {
 
-    const int FONTSIZE = 20;
-
+    
     char text[40];
-    snprintf(text, sizeof(text), "Paddle Size: %d   Position: %d", GetPaddleSize(), GetPaddlePosition());
+    int size = sizeof(text);
+    int ypos = 20;
+    const int yoffset = 25;
 
-    int xPos = (GetScreenWidth() - MeasureText(text, FONTSIZE)) / 2;
-    int yPos = 20;
+    DrawTextLine(ypos, "Paddle Information");
+    ypos += yoffset * 2;
+    
+    snprintf(text, size, "Position:  %d", GetPaddlePosition());
+    DrawTextLine(ypos, text);
+    ypos += yoffset;
 
-    DrawText(text, xPos, yPos, FONTSIZE, WHITE); 
+    snprintf(text, size, "Size:  %s", GetPaddleDescription());
+    DrawTextLine(ypos, text);
+    ypos += yoffset;
 
+    snprintf(text, size, "Pixels:  %d", GetPaddleSize());
+    DrawTextLine(ypos, text);
+    ypos += yoffset;
+
+    snprintf(text, size, "Reverse:  %s", GetPaddleReverse() == True ? "True" : "False");
+    DrawTextLine(ypos, text);
+
+}
+
+void DrawTextLine(int ypos, char *text) {
+    const int FONTSIZE = 20;
+    int xpos = (GetScreenWidth() - MeasureText(text, FONTSIZE)) / 2;
+    DrawText(text, xpos, ypos, FONTSIZE, WHITE);
 }

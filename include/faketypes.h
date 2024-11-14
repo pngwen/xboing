@@ -10,7 +10,7 @@ typedef int Window;
 typedef int Colormap;
 typedef unsigned long int u_long;
 typedef int KeySym;
-typedef int XEvent;
+// typedef int XEvent; // replaced with struct below
 typedef int uid_t;
 typedef int Pixmap;
 
@@ -97,14 +97,74 @@ typedef enum{
     JoinBevel
 } join_style;
 
+// Key Masks
+
+#define KeyPressMask           0
+#define KeyReleaseMask         0
+#define ButtonPressMask        0
+#define ButtonReleaseMask      0 
+#define ButtonMotionMask       0
+#define ExposureMask           0
+#define StructureNotifyMask    0
+#define PointerMotionHintMask  0
+
+#define XK_C      0
+#define XK_c      0
+#define XK_H      0
+#define XK_h      0
+#define XK_J      0
+#define XK_j      0
+#define XK_K      0
+#define XK_k      0
+#define XK_L      0
+#define XK_l      0
+#define XK_N      0
+#define XK_n      0
+#define XK_P      0
+#define XK_p      0
+#define XK_Q      0
+#define XK_q      0
+#define XK_R      0
+#define XK_r      0
+#define XK_S      0
+#define XK_s      0
+#define XK_T      0
+#define XK_t      0
+#define XK_V      0
+#define XK_v      0
+
+#define XK_Left   0
+#define XK_Right  0
+
+
+
+// Mouse Events
+
+#define Button1  0
+#define Button2  0
+#define Button3  0
+
+#define CURSOR_PLUS   0
+#define CURSOR_POINT  0
+
+typedef struct {
+    int button;
+    int subwindow;
+} XButton;
+
+typedef struct {
+    XButton xbutton;
+} XEvent;
+
 // Uncategorized
 
 typedef unsigned long int u_long;
 
-typedef int XEvent;
+#define EvenOddRule  0
 
 typedef struct {
     int ascent;
+    int descent;
     int fid;
 } XFontStruct;
 

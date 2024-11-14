@@ -52,39 +52,39 @@
 #include "faketypes.h"
 #include "paddle.h"
 
-#define PADDLE_COUNT 3
+#define PADDLE_COUNT  3
+
+const int PADDLE_INITIAL_INDEX = 2;
+const int PADDLE_VEL = 10;
 
 typedef struct {
 	Texture2D img;
+	char *description;
 	int size;
+	char *filepath;
 } Paddle;
-
-const int PIXEL_SMALL  = 40;
-const int PIXEL_MEDIUM = 50;
-const int PIXEL_HUGE   = 70;
 
 Paddle paddles[PADDLE_COUNT];
 
 int reverseOn;
-int stickyOn;
 int paddleIndex;
 int	paddlePosition;
 
-void DrawPaddle() { 
+void DrawPaddle(void) { 
 	DrawTexture(paddles[paddleIndex].img, paddlePosition, GetScreenHeight() - DIST_BASE, WHITE);
  }
 
 void InitialisePaddle(void) { 
 
-	//define parallel arrays for paddle sizes
+	// do not load images if program is closing
+	if (WindowShouldClose()) return;
 
-	const char *images[PADDLE_COUNT] = {
-		"./bitmaps/paddle/padsml.png", 
-		"./bitmaps/paddle/padmed.png", 
-		"./bitmaps/paddle/padhuge.png"
-	};
+	Texture2D emptyTexture = {0};
 
-	const int sizes[PADDLE_COUNT] = {PIXEL_SMALL, PIXEL_MEDIUM, PIXEL_HUGE};
+	// textures must be loaded from smallest to largest
+	paddles[0] = (Paddle){emptyTexture, "Small",  40, "./bitmaps/paddle/padsml.png"};
+	paddles[1] = (Paddle){emptyTexture, "Medium", 50, "./bitmaps/paddle/padmed.png"};
+	paddles[2] = (Paddle){emptyTexture, "Huge",   70, "./bitmaps/paddle/padhuge.png"};
 
 	// initialize variables before loop
 	int errorFlag = False;
@@ -92,14 +92,13 @@ void InitialisePaddle(void) {
 	// create textures for each paddle size
 	for (int i = 0; i < PADDLE_COUNT; i++) {
 
-		// load texture and set pixel size
-		Image img = LoadImage(images[i]);
+		// load paddle texture 
+		Image img = LoadImage(paddles[i].filepath);
 		paddles[i].img = LoadTextureFromImage(img);
-		paddles[i].size = sizes[i];
 
 		// check if texture loaded successfully
 		if (paddles[i].img.id == 0) {
-			//fprintf(stderr, "Error: failed to load texture InitialisePaddle() file: %s.\n", images[i]);
+			fprintf(stderr, "Error: failed to load texture InitialisePaddle() file: %s.\n", paddles[i].filepath);
 			errorFlag = True;
 		}
 
@@ -131,8 +130,10 @@ void FreePaddle(void) {
 
 void MovePaddle(int direction) {
 
+	// calculate the movement distance, adjusted for reverse flag
 	int distance = PADDLE_VEL * (reverseOn == True ? -1 : 1);
 
+	// apply the move based on direction
 	switch(direction) {
 		case PADDLE_LEFT:
 			paddlePosition -= distance;
@@ -142,6 +143,7 @@ void MovePaddle(int direction) {
 			break;
 	}
 
+	// keep position within window boundries
 	if (paddlePosition < 0) paddlePosition = 0;
 
 	int maxHPosition = GetScreenWidth() - paddles[paddleIndex].size;
@@ -157,9 +159,18 @@ int GetPaddlePosition(void) {
 	return paddlePosition;
 }
 
-void ResetPaddleStart() {
+int GetPaddleReverse(void) {
+	return reverseOn;
+}
 
-	paddleIndex = PADDLE_HUGE;
+char *GetPaddleDescription(void) {
+	return paddles[paddleIndex].description;
+}
+
+void ResetPaddleStart(void) {
+
+	// set size and center paddle
+	paddleIndex = PADDLE_INITIAL_INDEX;
 	paddlePosition = (GetScreenWidth() - paddles[paddleIndex].size) / 2;
 	reverseOn = False;
 
@@ -167,8 +178,10 @@ void ResetPaddleStart() {
 
 void ChangePaddleSize(int changeDirection) {
 
+	// capture the old pixel size
 	int oldSize = paddles[paddleIndex].size;
 	
+	// adjust paddle index based on change in size
 	switch (changeDirection) {
 		case SIZE_UP:
 			if (paddleIndex < PADDLE_COUNT -1) paddleIndex++;
@@ -179,8 +192,10 @@ void ChangePaddleSize(int changeDirection) {
 			break;
 	}
 
+	// adjust position to center the change in size
 	paddlePosition -= (paddles[paddleIndex].size - oldSize) / 2;
 
+	// move to ensure resize remains inside window
 	MovePaddle(PADDLE_NONE);
 
 }
