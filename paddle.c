@@ -48,287 +48,139 @@
  */
 
 #include <stdio.h>
-
-#include "error.h"
-#include "init.h"
-#include "stage.h"
-#include "blocks.h"
-#include "misc.h"
-#include "main.h"
-#include "special.h"
+#include <raylib.h>
 #include "faketypes.h"
 #include "paddle.h"
 
-/*
- *  Internal macro definitions:
- */
+#define PADDLE_COUNT 3
 
-/*
- *  Internal type declarations:
- */
+typedef struct {
+	Texture2D img;
+	int size;
+} Paddle;
 
-/*
- *  Internal variable declarations:
- */
+const int PIXEL_SMALL  = 40;
+const int PIXEL_MEDIUM = 50;
+const int PIXEL_HUGE   = 70;
 
-static Pixmap paddleSmallPixmap, paddleMediumPixmap, paddleHugePixmap;
-static Pixmap paddleSmallMask, paddleMediumMask, paddleHugeMask;
+Paddle paddles[PADDLE_COUNT];
 
-int	paddlePos;
-int	currentPaddleSize;
-static int	oldX;
-static int xpos_old;
-int reverseOn, stickyOn;
+int reverseOn;
+int stickyOn;
+int paddleIndex;
+int	paddlePosition;
 
-void DrawPaddle(Display *display, Window window, int x, int y, int size)
-{
-	/* Switch on the paddle size */
-	switch (size)
-	{
-		case PADDLE_SMALL:
-			RenderShape(display, window, paddleSmallPixmap, paddleSmallMask,
-				x - 20, y, 40, 15, True);
-			break;
+void DrawPaddle() { 
+	DrawTexture(paddles[paddleIndex].img, paddlePosition, GetScreenHeight() - DIST_BASE, WHITE);
+ }
 
-		case PADDLE_MEDIUM:
-			RenderShape(display, window, paddleMediumPixmap, paddleMediumMask,
-				x - 25, y, 50, 15, True);
-			break;
+void InitialisePaddle(void) { 
 
-		case PADDLE_HUGE:
-			RenderShape(display, window, paddleHugePixmap, paddleHugeMask,
-				x - 35, y, 70, 15, True);
-			break;
+	//define parallel arrays for paddle sizes
+
+	const char *images[PADDLE_COUNT] = {
+		"./bitmaps/paddle/padsml.png", 
+		"./bitmaps/paddle/padmed.png", 
+		"./bitmaps/paddle/padhuge.png"
+	};
+
+	const int sizes[PADDLE_COUNT] = {PIXEL_SMALL, PIXEL_MEDIUM, PIXEL_HUGE};
+
+	// initialize variables before loop
+	int errorFlag = False;
+
+	// create textures for each paddle size
+	for (int i = 0; i < PADDLE_COUNT; i++) {
+
+		// load texture and set pixel size
+		Image img = LoadImage(images[i]);
+		paddles[i].img = LoadTextureFromImage(img);
+		paddles[i].size = sizes[i];
+
+		// check if texture loaded successfully
+		if (paddles[i].img.id == 0) {
+			//fprintf(stderr, "Error: failed to load texture InitialisePaddle() file: %s.\n", images[i]);
+			errorFlag = True;
+		}
+
+		UnloadImage(img);
 	}
+
+	// stop program if textures failed to load
+	if (errorFlag == True) CloseWindow();
+
 }
 
-void InitialisePaddle(Display *display, Window window, Colormap colormap)
-{
-    XpmAttributes   attributes;
-	int		    XpmErrorStatus;
-
-    attributes.valuemask = XpmColormap;
-	attributes.colormap = colormap;
-
-	/* Create the xpm pixmap paddles */
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, paddlesmall_xpm,
-		&paddleSmallPixmap, &paddleSmallMask, &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialisePaddle()");
-
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, paddlemedium_xpm,
-		&paddleMediumPixmap, &paddleMediumMask, &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialisePaddle()");
-
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, paddlehuge_xpm,
-		&paddleHugePixmap, &paddleHugeMask, &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialisePaddle()");
-
-	/* Free the xpm pixmap attributes */
-	XpmFreeAttributes(&attributes);
-}
-
-void SetReverseOff(void)
-{
-	/* Set the reverse state off */
+void SetReverseOff(void) {
 	reverseOn = False;
 }
 
-void ToggleReverse(Display *display)
-{
-	/* Set the reverse state */
-	if (reverseOn == True)
-		reverseOn = False;
-	else
-		reverseOn = True;
+void ToggleReverse(void) {
 
-	/* Update the display */
-	DrawSpecials(display);
+    reverseOn = (reverseOn == True) ? False : True;
+
+	// TODO: add display text when implemented
+	// DrawSpecials(display);
 }
 
-void FreePaddle(Display *display)
-{
-	/* Free the paddle pixmaps and masks */
-	if (paddleSmallPixmap)	XFreePixmap(display, paddleSmallPixmap);
-	if (paddleMediumPixmap)	XFreePixmap(display, paddleMediumPixmap);
-	if (paddleHugePixmap)	XFreePixmap(display, paddleHugePixmap);
-
-	if (paddleSmallMask)	XFreePixmap(display, paddleSmallMask);
-	if (paddleMediumMask)	XFreePixmap(display, paddleMediumMask);
-	if (paddleHugeMask)		XFreePixmap(display, paddleHugeMask);
+void FreePaddle(void) {
+	for (int i = 0; i < PADDLE_COUNT; i++) {
+		UnloadTexture(paddles[i].img);
+	}
 }
 
-void MovePaddle(Display *display, Window window, int direction, int size, 
-	int xpos)
-{
-	static int	y = (PLAY_HEIGHT - DIST_BASE);
+void MovePaddle(int direction) {
 
-	/* Handle the paddle moving either left or right */
-	switch (direction)
-	{
+	int distance = PADDLE_VEL * (reverseOn == True ? -1 : 1);
+
+	switch(direction) {
 		case PADDLE_LEFT:
-			/* Move to the left or if reverse to right*/
-			if (reverseOn)
-				paddlePos += PADDLE_VEL;
-			else
-				paddlePos -= PADDLE_VEL;
+			paddlePosition -= distance;
 			break;
-
 		case PADDLE_RIGHT:
-			/* Move to the right or if reverse to left*/
-			if (reverseOn)
-				paddlePos -= PADDLE_VEL;
-			else
-				paddlePos += PADDLE_VEL;
-			break;
-
-		case PADDLE_NONE:
-			if (reverseOn)
-			{
-				xpos = PLAY_WIDTH - xpos;
-			}
+			paddlePosition += distance;
 			break;
 	}
 
-	/* Switch on the size of the paddle */
-	switch (size)
-	{
-		case PADDLE_SMALL:
-			/* Handle the small paddle */
-			if (xpos > 0)
-				paddlePos = xpos - (MAIN_WIDTH / 2) + 20;
+	if (paddlePosition < 0) paddlePosition = 0;
 
-			/* Stop the paddle from going past the walls */
-			if (paddlePos < 20) paddlePos = 20;
-			if (paddlePos > (PLAY_WIDTH - 20)) 
-				paddlePos = (PLAY_WIDTH - 20);
+	int maxHPosition = GetScreenWidth() - paddles[paddleIndex].size;
+	if (paddlePosition > maxHPosition) paddlePosition = maxHPosition;
+	
+}
 
-			/* Clear the old position */
-			XClearArea(display, window, oldX, y, 40, 15, False);
-			oldX = paddlePos - 20; 
+int GetPaddleSize(void) {
+	return paddles[paddleIndex].size;
+}
 
-			DrawPaddle(display, window, paddlePos, PLAY_HEIGHT - DIST_BASE, 
-				PADDLE_SMALL);
+int GetPaddlePosition(void) {
+	return paddlePosition;
+}
+
+void ResetPaddleStart() {
+
+	paddleIndex = PADDLE_HUGE;
+	paddlePosition = (GetScreenWidth() - paddles[paddleIndex].size) / 2;
+	reverseOn = False;
+
+ }
+
+void ChangePaddleSize(int changeDirection) {
+
+	int oldSize = paddles[paddleIndex].size;
+	
+	switch (changeDirection) {
+		case SIZE_UP:
+			if (paddleIndex < PADDLE_COUNT -1) paddleIndex++;
 			break;
 
-		case PADDLE_MEDIUM:
-			/* Handle the medium paddle */
-			if (xpos > 0)
-				paddlePos = xpos - (MAIN_WIDTH / 2) + 25;
-
-			/* Stop the paddle from going past the walls */
-			if (paddlePos < 25) paddlePos = 25;
-			if (paddlePos > (PLAY_WIDTH - 25)) 
-				paddlePos = (PLAY_WIDTH - 25);
-
-			/* Clear the old position */
-			XClearArea(display, window, oldX, y, 50, 15, False);
-			oldX = paddlePos - 25; 
-
-			DrawPaddle(display, window, paddlePos, 
-				PLAY_HEIGHT - DIST_BASE, PADDLE_MEDIUM);
-			break;
-
-		case PADDLE_HUGE:
-			/* Handle the large paddle */
-			if (xpos > 0)
-				paddlePos = xpos - (MAIN_WIDTH / 2) + 35;
-
-			/* Stop the paddle from going past the walls */
-			if (paddlePos < 35) paddlePos = 35;
-			if (paddlePos > (PLAY_WIDTH - 35)) 
-				paddlePos = (PLAY_WIDTH - 35);
-
-			/* Clear the old position */
-			XClearArea(display, window, oldX, y, 70, 15, False);
-			oldX = paddlePos - 35; 
-
-			DrawPaddle(display, window, paddlePos, 
-				PLAY_HEIGHT - DIST_BASE, PADDLE_HUGE);
+		case SIZE_DOWN:
+			if (paddleIndex > 0) paddleIndex--;
 			break;
 	}
-}
 
-void FlushPaddleBackingStore(Display *display, Window window)
-{
-	static int y = (PLAY_HEIGHT - DIST_BASE);
+	paddlePosition -= (paddles[paddleIndex].size - oldSize) / 2;
 
-	/* Clear the entire paddle area */
-	XClearArea(display, window, 0, y, PLAY_WIDTH, 15, False);
-}
+	MovePaddle(PADDLE_NONE);
 
-int GetPaddleSize(void)
-{
-	/* Switch on the current paddle size */
-	switch (currentPaddleSize)
-	{
-		case PADDLE_SMALL:
-			/* Return the size of the small paddle in pixels */
-			return 40;
-
-		case PADDLE_MEDIUM:
-			/* Return the size of the medium paddle in pixels */
-			return 50;
-
-		case PADDLE_HUGE:
-			/* Return the size of the huge paddle in pixels */
-			return 70;
-	}
-
-	/* Bug if this happens */
-	return 0;
-}
-
-void ResetPaddleStart(Display *display, Window window)
-{
-	paddlePos = PLAY_WIDTH / 2;
-	oldX = PLAY_WIDTH / 2;
-	xpos_old = oldX;
-
-	/* Get rid of old paddle image and start new one */
-	FlushPaddleBackingStore(display, window);
-	MovePaddle(display, window, PADDLE_NONE, currentPaddleSize, 0);
-}
-
-void RedrawPaddle(Display *display, Window window)
-{
-	MovePaddle(display, window, PADDLE_NONE, currentPaddleSize, 0);
-}
-
-void ChangePaddleSize(Display *display, Window window, int type)
-{
-	/* 
-	 * This function will erase the paddle and then change its size and
-	 * redraw it. If the paddle cannot grow as it is at the biggest state
-	 * then it will stay the same. Likewise for the smallest paddle.
-	 */
-
-	FlushPaddleBackingStore(display, window);
-
-	if (type == PAD_SHRINK_BLK)
-	{
-		if (currentPaddleSize == PADDLE_MEDIUM)
-		{
-			/* Shrink the paddle */
-        	currentPaddleSize = PADDLE_SMALL;
-		} else if (currentPaddleSize == PADDLE_HUGE)
-		{
-			/* Shrink the paddle */
-        	currentPaddleSize = PADDLE_MEDIUM;
-		}
-	}
-	else
-	{
-		if (currentPaddleSize == PADDLE_SMALL)
-		{
-			/* Grow the paddle */
-        	currentPaddleSize = PADDLE_MEDIUM;
-		} else if (currentPaddleSize == PADDLE_MEDIUM)
-		{
-			/* Grow the paddle */
-        	currentPaddleSize = PADDLE_HUGE;
-		}
-	}
-
-	/* Draw the new paddle in its new size */
-	RedrawPaddle(display, window);
 }

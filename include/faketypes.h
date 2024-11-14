@@ -2,6 +2,9 @@
 //       indicate things we need to change
 #ifndef FAKETYPES_H
 #define FAKETYPES_H
+
+//#include <raylib.h>
+
 typedef int Display;
 typedef int Window;
 typedef int Colormap;
@@ -12,7 +15,7 @@ typedef int uid_t;
 typedef int Pixmap;
 
 // Raylib Types
-typedef int Texture2D;
+//typedef int Texture2D;
 
 // Boolean macros
 #define False 0
@@ -25,9 +28,10 @@ typedef int Texture2D;
 #define CoordModeOrigin 0
 #define Always 1
 #define ParentRelative 0
-#define BLACK 0
-#define WHITE 0
+#define XBLACK 0
+#define XWHITE 0
 #define CopyFromParent 0
+
 
 //SizeHint macros
 #define PPosition (1L<<2)
@@ -63,25 +67,30 @@ typedef int GC; // graphics context
 typedef int Colormap;
 typedef int Pixmap;
 typedef int Region; // A region of pixels
+
 typedef struct{
     short x, y;
 } XPoint;
+
 typedef struct {
     int pixel;
 } XColor;
 
 // GC Values (from X11)
+
 typedef enum {
     LineSolid,
     LineOnOffDash,
     LineDoubleDash
 } line_style;
+
 typedef enum {
     CapNotLast,
     CapButt,
     CapRound,
     CapProjecting
 } cap_style;
+
 typedef enum{
     JoinMiter,
     JoinRound,
@@ -89,12 +98,16 @@ typedef enum{
 } join_style;
 
 // Uncategorized
+
 typedef unsigned long int u_long;
+
 typedef int XEvent;
+
 typedef struct {
     int ascent;
     int fid;
 } XFontStruct;
+
 typedef struct {
     int x, y;
     int width, height;
@@ -102,11 +115,14 @@ typedef struct {
     int sibling;
     int stack_mode;
 } XWindowChanges;
+
 typedef struct {
     int width;
     int height;
 } XWindowAttributes;
+
 typedef int KeySym;
+
 typedef struct{
     int flags;
     int min_width;
@@ -114,11 +130,14 @@ typedef struct{
     int max_width;
     int max_height;
 } XSizeHints;
+
 typedef struct{
     char *res_name;
     char *res_class;
 } XClassHint;
+
 typedef int XTextProperty;
+
 typedef struct{
     int initial_state;
     int input;
@@ -126,9 +145,11 @@ typedef struct{
     int icon_window;
     int flags;
 } XWMHints;
+
 typedef struct{
     Colormap colormap;
     int backing_store;
 } XSetWindowAttributes;
+
 
 #endif

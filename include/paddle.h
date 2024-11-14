@@ -51,7 +51,7 @@
  */
 
 // TODO: Remove X11 #include <X11/Xlib.h>
-#include <faketypes.h>
+//#include "faketypes.h"
 
 /*
  *  Constants and macros:
@@ -62,9 +62,11 @@
 #define PADDLE_RIGHT	3
 #define PADDLE_NONE		0
 
-#define PADDLE_SMALL	4
-#define PADDLE_MEDIUM	5
-#define PADDLE_HUGE		6
+// value must match parallel array indexes, 
+// and ordered smallest to largest
+#define PADDLE_SMALL	0
+#define PADDLE_MEDIUM	1
+#define PADDLE_HUGE		2
 
 #define DIST_BASE   	30
 #define PADDLE_VEL  	10
@@ -72,27 +74,22 @@
 #define PADDLE_HC  		4
 #define PADDLE_HEIGHT 	9
 
-/*
- *  Type declarations:
- */
+#define SIZE_UP         1
+#define SIZE_DOWN       2
 
-/*
- *  Function prototypes:
- */
-
-void InitialisePaddle(Display *display, Window window, Colormap colormap);
-void FreePaddle(Display *display);
-void DrawPaddle(Display *display, Window window, int x, int y, int size);
-void MovePaddle(Display *display, Window window, int direction, 
-	int size, int xpos);
-void ResetPaddleStart(Display *display, Window window);
+void InitialisePaddle(void);
+void FreePaddle(void);
+void DrawPaddle();
+void MovePaddle(int direction);
+void ResetPaddleStart();
 int GetPaddleSize(void);
-void RedrawPaddle(Display *display, Window window);
-void FlushPaddleBackingStore(Display *display, Window window);
-void ToggleReverse(Display *display);
+int GetPaddlePosition(void);
+void ToggleReverse(void);
 void SetReverseOff(void);
-void ChangePaddleSize(Display *display, Window window, int type);
+void ChangePaddleSize(int changeDirection);
 
-extern int currentPaddleSize, paddlePos, reverseOn, stickyOn;
+// these are defined in paddle.c and therefore not extern
+// TODO: determine if any need to be marked extern
+// extern int currentPaddleSize, paddlePos, reverseOn, stickyOn;
 
 #endif
