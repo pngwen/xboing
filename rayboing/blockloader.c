@@ -14,11 +14,13 @@
 
 #define COL_MAX 9
 #define ROW_MAX 15
+#define PADDLE_ROWS 3
 
 typedef struct Block{
 
 	int blockOffsetX;
 	int blockOffsetY;
+    Texture2D texture;
 } Block;
 
 Texture2D HYPERSPACE_BLK, BULLET_BLK, MAXAMMO_BLK, RED_BLK, GREEN_BLK,
@@ -33,10 +35,14 @@ Texture2D COUNTER_BLK[6];
 const int screenWidth = 575;
 const int screenHeight = 720;
 
+// spaces for block placement
+const int colWidth = PLAY_WIDTH / COL_MAX;
+const int rowHeight = PLAY_HEIGHT / (ROW_MAX + PADDLE_ROWS);
+
 // Level Data
-char gameBlocks[15][9];
-char levelName[256];
-int timeBonus;
+Block game_blocks[15][9];
+char levelName[256]; // LOADED BUT NOT USED
+int timeBonus; // LOADED BUT NOT USED
 
 // Read in all level data from a file.
 // Fills gameBlocks, levelName, and timeBonus
@@ -45,10 +51,9 @@ void loadBlocks(char* filename);
 // Draw all blocks represented in gameBlocks
 void drawBlocks();
 
-// Sets all characters in the gameBlocks array to '.'
-void clearBlocks();
-
 void loadTextures();
+
+void addBlock(int row, int col, char ch);
 
 // Program main entry point
 int main(){
@@ -59,9 +64,8 @@ int main(){
 
 	char filename[] = "levels/level25.data";
 
-	loadBlocks(filename);// Load data from file
-
     loadTextures();// Load required block textures
+	loadBlocks(filename);// Load data from file
 
     // Main game loop
     while (!WindowShouldClose()) // Detect window close button or ESC key
@@ -83,8 +87,6 @@ int main(){
 
 void loadBlocks(char* filename){
 
-	clearBlocks();
-
 	FILE* fp = fopen(filename, "r");
 	if(fp == NULL){
 		printf("File '%s' could not be opened.", filename);
@@ -104,7 +106,7 @@ void loadBlocks(char* filename){
 	while(ch != EOF){
 
 		if(ch != '\n'){
-			gameBlocks[row][column] = ch;
+			addBlock(row, column, ch);
 			column++;
 			row += column / COL_MAX;
 			column %= COL_MAX;
@@ -116,195 +118,183 @@ void loadBlocks(char* filename){
 
 void drawBlocks(){
 
-    /* Setup the new level data */
-    int colWidth    = PLAY_WIDTH / COL_MAX;
-    int rowHeight   = PLAY_HEIGHT / ROW_MAX;
-	Texture2D blockTexture;
-	Block blockP;
-
 	/* Loop through all blocks */
     for (int row = 0; row < 15; row++){
 
         for (int col = 0; col < 9; col++){
 
-			blockP.blockOffsetX	= (colWidth - BLOCK_WIDTH) / 2;
-			blockP.blockOffsetY 	= (rowHeight - BLOCK_HEIGHT) / 2;
-
-            int empty = 0;
-
-            switch (gameBlocks[row][col]){
-
-                case 'H' :  /* hyperspace block - walls are now gone */
-                    blockP.blockOffsetX	= (colWidth - 31) / 2;
-					blockP.blockOffsetY 	= (rowHeight - 31) / 2;
-					blockTexture = HYPERSPACE_BLK;
-					break;
-
-                case 'B' :  /* bullet block - ammo */
-					blockTexture = BULLET_BLK;
-					break;
-
-                case 'c' :  /* maximum ammo bullet block  */
-                    blockTexture = MAXAMMO_BLK;
-                    break;
-
-                case 'r' :  /* A red block */
-                    blockTexture = RED_BLK;
-                    break;
-
-                case 'g' :  /* A green block */
-                    blockTexture = GREEN_BLK;
-                    break;
-
-                case 'b' :  /* A blue block */
-                    blockTexture = BLUE_BLK;
-                    break;
-
-                case 't' :  /* A tan block */
-                    blockTexture = TAN_BLK;
-                    break;
-
-                case 'p' :  /* A purple block */
-                    blockTexture = PURPLE_BLK;
-                    break;
-
-                case 'y' :  /* A yellow block */
-                    blockTexture = YELLOW_BLK;
-                    break;
-
-                case 'w' :  /* A solid wall block */
-                    blockP.blockOffsetX	= (colWidth - 50) / 2;
-					blockP.blockOffsetY 	= (rowHeight - 30) / 2;
-					blockTexture = BLACK_BLK;
-                    break;
-
-                case '0' :  /* A counter block - no number */
-                    blockTexture = COUNTER_BLK[0];
-                    break;
-
-                case '1' :  /* A counter block level 1 */
-                    blockTexture = COUNTER_BLK[1];
-                    break;
-
-                case '2' : /* A counter block level 2 */
-                    blockTexture = COUNTER_BLK[2];
-                    break;
-
-                case '3' : /* A counter block level 3 */
-                    blockTexture = COUNTER_BLK[3];
-                    break;
-
-                case '4' : /* A counter block level 4 */
-                    blockTexture = COUNTER_BLK[4];
-                    break;
-
-                case '5' : /* A counter block level 5  - highest */
-                    blockTexture = COUNTER_BLK[5];
-                    break;
-
-                case '+' : /* A roamer block */
-                    blockP.blockOffsetX	= (colWidth - 25) / 2;
-					blockP.blockOffsetY 	= (rowHeight - 27) / 2;
-					blockTexture = ROAMER_BLK;
-                    break;
-
-                case 'X' : /* A bomb */
-                    blockP.blockOffsetX	= (colWidth - 30) / 2;
-					blockP.blockOffsetY 	= (rowHeight - 30) / 2;
-					blockTexture = BOMB_BLK;
-                    break;
-
-                case 'D' : /* A death block */
-                    blockP.blockOffsetX	= (colWidth - 30) / 2;
-					blockP.blockOffsetY 	= (rowHeight - 30) / 2;
-					blockTexture = DEATH_BLK;
-                    break;
-
-                case 'L' : /* An extra ball block */
-					blockP.blockOffsetX	= (colWidth - 30) / 2;
-					blockP.blockOffsetY 	= (rowHeight - 19) / 2;
-                    blockTexture = EXTRABALL_BLK;
-                    break;
-
-                case 'M' : /* A machine gun block */
-					blockP.blockOffsetX	= (colWidth - 35) / 2;
-					blockP.blockOffsetY 	= (rowHeight - 15) / 2;
-                    blockTexture = MGUN_BLK;
-                    break;
-
-                case 'W' : /* A wall off block */
-					blockP.blockOffsetX	= (colWidth - 27) / 2;
-					blockP.blockOffsetY 	= (rowHeight - 23) / 2;
-                    blockTexture = WALLOFF_BLK;
-                    break;
-
-                case '?' : /* A random changing block */
-                    blockTexture = RANDOM_BLK;
-					break;
-
-                case 'd' : /* A dropping block */
-                    blockTexture = DROP_BLK;
-                    break;
-
-                case 'T' : /* A extra time block */
-					blockP.blockOffsetX	= (colWidth - 21) / 2;
-					blockP.blockOffsetY 	= (rowHeight - 21) / 2;
-                    blockTexture = TIMER_BLK;
-                    break;
-
-                case 'm' : /* A multiple ball block */
-                    blockTexture = MULTIBALL_BLK;
-                    break;
-
-                case 's' : /* A sticky block */
-					blockP.blockOffsetX	= (colWidth - 32) / 2;
-					blockP.blockOffsetY 	= (rowHeight - 27) / 2;
-                    blockTexture = STICKY_BLK;
-                    break;
-
-                case 'R' :  /* reverse block - switch paddle control */
-					blockP.blockOffsetX	= (colWidth - 33) / 2;
-					blockP.blockOffsetY 	= (rowHeight - 16) / 2;
-                    blockTexture = REVERSE_BLK;
-                    break;
-
-                case '<' :  /* shrink paddle block - make paddle smaller */
-					blockP.blockOffsetX	= (colWidth - 40) / 2;
-					blockP.blockOffsetY 	= (rowHeight - 15) / 2;
-                    blockTexture = PAD_SHRINK_BLK;
-                    break;
-
-                case '>' :  /* expand paddle block - make paddle bigger */
-                    blockP.blockOffsetX	= (colWidth - 40) / 2;
-					blockP.blockOffsetY 	= (rowHeight - 15) / 2;
-                    blockTexture = PAD_EXPAND_BLK;
-                    break;
-
-                default:
-                    empty = 1;
-                    break;
-            }
-
-    		if(!empty){
-                DrawTexture(blockTexture,
-                    (col * colWidth) + blockP.blockOffsetX + PLAY_X_OFFSET,
-					(row * rowHeight) + blockP.blockOffsetY + PLAY_Y_OFFSET,
+            /* If there is a block, draw it */
+    		if(game_blocks[row][col].blockOffsetX > -1){
+                DrawTexture(game_blocks[row][col].texture,
+                    (col * colWidth) + game_blocks[row][col].blockOffsetX + PLAY_X_OFFSET,
+					(row * rowHeight) + game_blocks[row][col].blockOffsetY + PLAY_Y_OFFSET,
                     WHITE);
             }
         }
     }
 
-    DrawRectangleLinesEx((Rectangle){PLAY_X_OFFSET, PLAY_Y_OFFSET, PLAY_WIDTH, PLAY_HEIGHT},
+    /* The the red gamne outline */
+    DrawRectangleLinesEx((Rectangle){PLAY_X_OFFSET - 1, PLAY_Y_OFFSET - 1, PLAY_WIDTH + 1, PLAY_HEIGHT + 1},
                         PLAY_BORDER_WIDTH, RED);
 }
 
-void clearBlocks(){
+void addBlock(int row, int col, char ch){
 
-	for(int i = 0; i < 15; i++){
-		for(int j = 0; j < 9; j++){
-			gameBlocks[i][j] = '.';
-		}
-	}
+    game_blocks[row][col].blockOffsetX	= (colWidth - BLOCK_WIDTH) / 2;
+	game_blocks[row][col].blockOffsetY 	= (rowHeight - BLOCK_HEIGHT) / 2;
+
+    switch(ch){
+
+        case 'H' :  /* hyperspace block - walls are now gone */
+            game_blocks[row][col].blockOffsetX	= (colWidth - 31) / 2;
+			game_blocks[row][col].blockOffsetY = (rowHeight - 31) / 2;
+			game_blocks[row][col].texture = HYPERSPACE_BLK;
+		break;
+
+        case 'B' :  /* bullet block - ammo */
+			game_blocks[row][col].texture = BULLET_BLK;
+		break;
+
+        case 'c' :  /* maximum ammo bullet block  */
+            game_blocks[row][col].texture = MAXAMMO_BLK;
+        break;
+
+        case 'r' :  /* A red block */
+            game_blocks[row][col].texture = RED_BLK;
+        break;
+
+        case 'g' :  /* A green block */
+            game_blocks[row][col].texture = GREEN_BLK;
+        break;
+
+        case 'b' :  /* A blue block */
+            game_blocks[row][col].texture = BLUE_BLK;
+        break;
+
+        case 't' :  /* A tan block */
+            game_blocks[row][col].texture = TAN_BLK;
+        break;
+
+        case 'p' :  /* A purple block */
+            game_blocks[row][col].texture = PURPLE_BLK;
+        break;
+
+        case 'y' :  /* A yellow block */
+            game_blocks[row][col].texture = YELLOW_BLK;
+        break;
+
+        case 'w' :  /* A solid wall block */
+            game_blocks[row][col].blockOffsetX	= (colWidth - 50) / 2;
+			game_blocks[row][col].blockOffsetY 	= (rowHeight - 30) / 2;
+			game_blocks[row][col].texture = BLACK_BLK;
+        break;
+
+        case '0' :  /* A counter block - no number */
+            game_blocks[row][col].texture = COUNTER_BLK[0];
+        break;
+
+        case '1' :  /* A counter block level 1 */
+            game_blocks[row][col].texture = COUNTER_BLK[1];
+        break;
+
+        case '2' : /* A counter block level 2 */
+            game_blocks[row][col].texture = COUNTER_BLK[2];
+        break;
+
+        case '3' : /* A counter block level 3 */
+            game_blocks[row][col].texture = COUNTER_BLK[3];
+        break;
+
+        case '4' : /* A counter block level 4 */
+            game_blocks[row][col].texture = COUNTER_BLK[4];
+        break;
+
+        case '5' : /* A counter block level 5  - highest */
+            game_blocks[row][col].texture = COUNTER_BLK[5];
+        break;
+
+        case '+' : /* A roamer block */
+            game_blocks[row][col].blockOffsetX	= (colWidth - 25) / 2;
+			game_blocks[row][col].blockOffsetY 	= (rowHeight - 27) / 2;
+			game_blocks[row][col].texture = ROAMER_BLK;
+        break;
+
+        case 'X' : /* A bomb */
+            game_blocks[row][col].blockOffsetX	= (colWidth - 30) / 2;
+			game_blocks[row][col].blockOffsetY 	= (rowHeight - 30) / 2;
+			game_blocks[row][col].texture = BOMB_BLK;
+        break;
+
+        case 'D' : /* A death block */
+            game_blocks[row][col].blockOffsetX	= (colWidth - 30) / 2;
+			game_blocks[row][col].blockOffsetY 	= (rowHeight - 30) / 2;
+			game_blocks[row][col].texture = DEATH_BLK;
+        break;
+
+        case 'L' : /* An extra ball block */
+			game_blocks[row][col].blockOffsetX	= (colWidth - 30) / 2;
+			game_blocks[row][col].blockOffsetY 	= (rowHeight - 19) / 2;
+            game_blocks[row][col].texture = EXTRABALL_BLK;
+        break;
+
+        case 'M' : /* A machine gun block */
+			game_blocks[row][col].blockOffsetX	= (colWidth - 35) / 2;
+			game_blocks[row][col].blockOffsetY 	= (rowHeight - 15) / 2;
+            game_blocks[row][col].texture = MGUN_BLK;
+        break;
+
+        case 'W' : /* A wall off block */
+			game_blocks[row][col].blockOffsetX	= (colWidth - 27) / 2;
+			game_blocks[row][col].blockOffsetY 	= (rowHeight - 23) / 2;
+            game_blocks[row][col].texture = WALLOFF_BLK;
+        break;
+
+        case '?' : /* A random changing block */
+            game_blocks[row][col].texture = RANDOM_BLK;
+		break;
+
+        case 'd' : /* A dropping block */
+            game_blocks[row][col].texture = DROP_BLK;
+        break;
+
+        case 'T' : /* A extra time block */
+			game_blocks[row][col].blockOffsetX	= (colWidth - 21) / 2;
+			game_blocks[row][col].blockOffsetY 	= (rowHeight - 21) / 2;
+            game_blocks[row][col].texture = TIMER_BLK;
+        break;
+
+        case 'm' : /* A multiple ball block */
+            game_blocks[row][col].texture = MULTIBALL_BLK;
+        break;
+
+        case 's' : /* A sticky block */
+			game_blocks[row][col].blockOffsetX	= (colWidth - 32) / 2;
+			game_blocks[row][col].blockOffsetY 	= (rowHeight - 27) / 2;
+            game_blocks[row][col].texture = STICKY_BLK;
+        break;
+
+        case 'R' :  /* reverse block - switch paddle control */
+			game_blocks[row][col].blockOffsetX	= (colWidth - 33) / 2;
+			game_blocks[row][col].blockOffsetY 	= (rowHeight - 16) / 2;
+            game_blocks[row][col].texture = REVERSE_BLK;
+        break;
+
+        case '<' :  /* shrink paddle block - make paddle smaller */
+			game_blocks[row][col].blockOffsetX	= (colWidth - 40) / 2;
+			game_blocks[row][col].blockOffsetY 	= (rowHeight - 15) / 2;
+            game_blocks[row][col].texture = PAD_SHRINK_BLK;
+        break;
+
+        case '>' :  /* expand paddle block - make paddle bigger */
+            game_blocks[row][col].blockOffsetX	= (colWidth - 40) / 2;
+			game_blocks[row][col].blockOffsetY 	= (rowHeight - 15) / 2;
+            game_blocks[row][col].texture = PAD_EXPAND_BLK;
+        break;
+
+        default:
+            game_blocks[row][col].blockOffsetX = -1;
+        break;
+    }
 }
 
 void loadTextures(){
