@@ -2,17 +2,20 @@
 //       indicate things we need to change
 #ifndef FAKETYPES_H
 #define FAKETYPES_H
+
+//#include <raylib.h>
+
 typedef int Display;
 typedef int Window;
 typedef int Colormap;
 typedef unsigned long int u_long;
 typedef int KeySym;
-typedef int XEvent;
+// typedef int XEvent; // replaced with struct below
 typedef int uid_t;
 typedef int Pixmap;
 
 // Raylib Types
-typedef int Texture2D;
+//typedef int Texture2D;
 
 // Boolean macros
 #define False 0
@@ -25,9 +28,10 @@ typedef int Texture2D;
 #define CoordModeOrigin 0
 #define Always 1
 #define ParentRelative 0
-#define BLACK 0
-#define WHITE 0
+#define XBLACK 0
+#define XWHITE 0
 #define CopyFromParent 0
+
 
 //SizeHint macros
 #define PPosition (1L<<2)
@@ -63,38 +67,107 @@ typedef int GC; // graphics context
 typedef int Colormap;
 typedef int Pixmap;
 typedef int Region; // A region of pixels
+
 typedef struct{
     short x, y;
 } XPoint;
+
 typedef struct {
     int pixel;
 } XColor;
 
 // GC Values (from X11)
+
 typedef enum {
     LineSolid,
     LineOnOffDash,
     LineDoubleDash
 } line_style;
+
 typedef enum {
     CapNotLast,
     CapButt,
     CapRound,
     CapProjecting
 } cap_style;
+
 typedef enum{
     JoinMiter,
     JoinRound,
     JoinBevel
 } join_style;
 
+// Key Masks
+
+#define KeyPressMask           0
+#define KeyReleaseMask         0
+#define ButtonPressMask        0
+#define ButtonReleaseMask      0 
+#define ButtonMotionMask       0
+#define ExposureMask           0
+#define StructureNotifyMask    0
+#define PointerMotionHintMask  0
+
+#define XK_C      0
+#define XK_c      0
+#define XK_H      0
+#define XK_h      0
+#define XK_J      0
+#define XK_j      0
+#define XK_K      0
+#define XK_k      0
+#define XK_L      0
+#define XK_l      0
+#define XK_N      0
+#define XK_n      0
+#define XK_P      0
+#define XK_p      0
+#define XK_Q      0
+#define XK_q      0
+#define XK_R      0
+#define XK_r      0
+#define XK_S      0
+#define XK_s      0
+#define XK_T      0
+#define XK_t      0
+#define XK_V      0
+#define XK_v      0
+
+#define XK_Left   0
+#define XK_Right  0
+
+
+
+// Mouse Events
+
+#define Button1  0
+#define Button2  0
+#define Button3  0
+
+#define CURSOR_PLUS   0
+#define CURSOR_POINT  0
+
+typedef struct {
+    int button;
+    int subwindow;
+} XButton;
+
+typedef struct {
+    XButton xbutton;
+} XEvent;
+
 // Uncategorized
+
 typedef unsigned long int u_long;
-typedef int XEvent;
+
+#define EvenOddRule  0
+
 typedef struct {
     int ascent;
+    int descent;
     int fid;
 } XFontStruct;
+
 typedef struct {
     int x, y;
     int width, height;
@@ -102,11 +175,14 @@ typedef struct {
     int sibling;
     int stack_mode;
 } XWindowChanges;
+
 typedef struct {
     int width;
     int height;
 } XWindowAttributes;
+
 typedef int KeySym;
+
 typedef struct{
     int flags;
     int min_width;
@@ -114,11 +190,14 @@ typedef struct{
     int max_width;
     int max_height;
 } XSizeHints;
+
 typedef struct{
     char *res_name;
     char *res_class;
 } XClassHint;
+
 typedef int XTextProperty;
+
 typedef struct{
     int initial_state;
     int input;
@@ -126,9 +205,11 @@ typedef struct{
     int icon_window;
     int flags;
 } XWMHints;
+
 typedef struct{
     Colormap colormap;
     int backing_store;
 } XSetWindowAttributes;
+
 
 #endif

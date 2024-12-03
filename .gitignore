@@ -55,3 +55,9 @@ Mkfile.old
 dkms.conf
 
 COMPILER.OUT
+
+#IDE Configuration Files
+c_cpp_properties.json
+settings.json
+tasks.json
+launch.json
