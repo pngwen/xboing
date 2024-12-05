@@ -152,9 +152,10 @@ void MovePaddle(int direction) {
 	}
 
 	// keep position within window boundries
-	if (paddlePosition < 0) paddlePosition = 0;
+	int x = getPlayWall(WALL_LEFT).width;
+	if (paddlePosition < x) paddlePosition = x;
 
-	int maxHPosition = GetScreenWidth() - paddles[paddleIndex].size;
+	int maxHPosition = getPlayWall(WALL_RIGHT).x - paddles[paddleIndex].size;
 	if (paddlePosition > maxHPosition) paddlePosition = maxHPosition;
 	
 }

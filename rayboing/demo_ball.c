@@ -182,34 +182,12 @@ void MoveBall(void) {
 
     if (CheckCollisionRecs(GetBallCollisionRec(), getPlayWall(WALL_LEFT))) {
         flipx = true;
-        ball.position.x *= -1;
+        int x = getPlayWall(WALL_LEFT).width;
+        ball.position.x = 2* x - ball.position.x;
     } else if (CheckCollisionRecs(GetBallCollisionRec(), getPlayWall(WALL_RIGHT))) {
         flipx = true;
         ball.position.x = (getPlayWall(WALL_RIGHT).x - ball.img[ball.imgIndex].width) * 2 - ball.position.x;
     }
-    
-
-    /*
-    if (ball.position.y > GetScreenHeight()) {
-        SetGameMode(MODE_LOSE);
-        return;
-    }
-
-    
-    if (ball.position.x <= 0) {
-        flipx = true;
-        ball.position.x *= -1;
-    } else if (ball.position.x >= GetScreenWidth() - ball.img[ball.imgIndex].width) {
-        flipx = true;
-        ball.position.x = (GetScreenWidth() - ball.img[ball.imgIndex].width) * 2 - ball.position.x;
-    }
-    
-
-    if (ball.position.y <= 0) {
-        flipy = true;
-        ball.position.y *= -1;
-    }
-    */
 
     // check for paddle collisions
 
