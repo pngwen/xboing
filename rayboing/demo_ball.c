@@ -12,7 +12,7 @@ const int INITIAL_BALL_SPEED = 400;  // pixels per second
 const int MAX_BALL_IMG_COUNT = 4;
 const int GUIDE_LENGTH = 100;
 
-const float bouncVariance = 5.0f;
+const float bouncVariance = 10.0f;
 
 typedef struct {
     Texture2D img[4];
@@ -205,6 +205,7 @@ void MoveBall(void) {
     bool flipy = false;
 
     if (CheckCollisionRecs(GetBallCollisionRec(), getPlayWall(WALL_BOTTOM))) {
+        ball.position.y = GetScreenHeight(); // cheesy way to hide ball after loss
         SetGameMode(MODE_LOSE);
         return;
     } else if (CheckCollisionRecs(GetBallCollisionRec(), getPlayWall(WALL_TOP))) {
