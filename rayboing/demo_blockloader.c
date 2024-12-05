@@ -64,6 +64,7 @@ Block game_blocks[15][9];
 
 Vector2 getPlayCorner(CORNERS corner);
 bool isBlockTypeInteractive(char ch);
+void deactivateBlock(int row, int col);
 
 
 void initializePlayArea(void) {
@@ -320,7 +321,7 @@ bool loadBlockTextures(void){
     HYPERSPACE_BLK = LoadTexture("./rayboing/blocks/hypspc.png");
     if (HYPERSPACE_BLK.id == 0) return false;
 
-    BULLET_BLK = LoadTexture("./rayboing/blocks/grnblk.png");// Green block drawn without bullet texture
+    BULLET_BLK = LoadTexture("./rayboing/blocks/speed.png");// Green block drawn without bullet texture
     if (BULLET_BLK.id == 0) return false;
 
     MAXAMMO_BLK = LoadTexture("./rayboing/blocks/lotsammo.png");
@@ -465,31 +466,33 @@ bool isBlockActive(int row, int col) {
 void activateBlock(int row, int col) {
 
     if(!isBlockTypeInteractive(game_blocks[row][col].type)) return; // do nothing for wall blocks
-    
-    game_blocks[row][col].active = false;
-    blocksRemaining--;
 
-    if (blocksRemaining == 0) {
-        SetGameMode(MODE_WIN);
-        return;
-    }
 
     switch(game_blocks[row][col].type) {
         
         case 's': // sticky
             SetBallSticky();
+            deactivateBlock(row, col);
             break;
         
         case 'R': //reverse paddle
             ToggleReverse();
+            deactivateBlock(row, col);
+            break;
+
+        case 'B': // ball speed increased
+            IncreaseBallSpeed();
+            deactivateBlock(row, col);
             break;
 
         case '<': //shrink paddle
             ChangePaddleSize(SIZE_DOWN);
+            deactivateBlock(row, col);
             break;
         
         case '>': //grow paddle
             ChangePaddleSize(SIZE_UP);
+            deactivateBlock(row, col);
             break;
 
         case 'X': // bomb
@@ -500,11 +503,51 @@ void activateBlock(int row, int col) {
                 for (int j = 0; j < 3; j++) {
                     int colOffset = col - 1 + j;
                     if (colOffset < 0 || colOffset >= COL_MAX) continue;
-                    if (isBlockTypeInteractive(game_blocks[rowOffset][colOffset].type)) game_blocks[rowOffset][colOffset].active = false;
+                    deactivateBlock(rowOffset, colOffset);
                 }
             }
             break;
+
+        case '1': // number block 1
+            game_blocks[row][col].texture = COUNTER_BLK[0];
+            game_blocks[row][col].type = '0';
+            game_blocks[row][col].active = true;
+            break;
+
+        case '2': // number block 2
+            game_blocks[row][col].texture = COUNTER_BLK[1];
+            game_blocks[row][col].type = '1';
+            game_blocks[row][col].active = true;
+            break;
+
+        case '3': // number block 3
+            game_blocks[row][col].texture = COUNTER_BLK[2];
+            game_blocks[row][col].type = '2';
+            game_blocks[row][col].active = true;
+            break;
+
+        case '4': // number block 4
+            game_blocks[row][col].texture = COUNTER_BLK[3];
+            game_blocks[row][col].type = '3';
+            game_blocks[row][col].active = true;
+            break;
+
+        case '5': // number block 5
+            game_blocks[row][col].texture = COUNTER_BLK[4];
+            game_blocks[row][col].type = '4';
+            game_blocks[row][col].active = true;
+            break;            
+
+        default:
+            deactivateBlock(row, col);
+            break;
     }
+
+    if (blocksRemaining == 0) {
+        SetGameMode(MODE_WIN);
+        return;
+    }
+
 
 }
 
@@ -574,4 +617,10 @@ bool isBlockTypeInteractive(char ch) {
 
     return !(ch == 'w');
 
+}
+
+void deactivateBlock(int row, int col) {
+    if (!isBlockTypeInteractive(game_blocks[row][col].type)) return;
+    game_blocks[row][col].active = false;
+    blocksRemaining--;
 }

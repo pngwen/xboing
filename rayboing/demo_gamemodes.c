@@ -59,6 +59,7 @@ void RunPlayMode(void) {
     RenderGameScreen();
 
     if (IsInputQuitGame()) {
+        livesRemaining = 0;
         SetGameMode(MODE_CANCEL);
     }
 

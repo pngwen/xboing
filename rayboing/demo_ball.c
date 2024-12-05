@@ -8,7 +8,7 @@
 #include "demo_gamemodes.h"
 #include "demo_blockloader.h"
 
-const int INITIAL_BALL_SPEED = 500;  // pixels per second
+const int INITIAL_BALL_SPEED = 400;  // pixels per second
 const int MAX_BALL_IMG_COUNT = 4;
 const int GUIDE_LENGTH = 100;
 
@@ -35,7 +35,6 @@ Vector2 GetSpawnPoint(void);
 void AnimateBall(void);
 Rectangle GetBallCollisionRec(void);
 void DrawGuide(void);
-void MoveBallBack(void);
 
 
 bool InitializeBall(void) {
@@ -163,6 +162,7 @@ void AnimateBall(void) {
 void MoveBall(void) {
 
     ball.oldPosition = ball.position;
+    bool stepBack = false;
     
     // keep spawned ball on paddle center
     if (ball.spawned) {
@@ -175,6 +175,21 @@ void MoveBall(void) {
             GetPaddlePositionX() - ball.anchor.x,
             GetPaddlePositionY() - ball.anchor.y
         };
+        
+        // check is the ball is hanging off the edge of the paddle
+        // when the paddle is moved against the wall
+        int boundry = getPlayWall(WALL_LEFT).width;
+        if (ball.position.x < boundry) {  
+            ball.position.x = boundry;
+            ball.anchor.x = GetPaddlePositionX() - ball.position.x;
+        }
+
+        boundry = getPlayWall(WALL_RIGHT).x - ball.img->width;
+        if (ball.position.x > boundry) {
+            ball.position.x = boundry;
+            ball.anchor.x = GetPaddlePositionX() - ball.position.x;
+        }
+
         return;
     }
 
@@ -190,20 +205,19 @@ void MoveBall(void) {
     bool flipy = false;
 
     if (CheckCollisionRecs(GetBallCollisionRec(), getPlayWall(WALL_BOTTOM))) {
-        MoveBallBack();
         SetGameMode(MODE_LOSE);
         return;
+    } else if (CheckCollisionRecs(GetBallCollisionRec(), getPlayWall(WALL_TOP))) {
+        stepBack = true;
+        flipy = true;
     }
 
     if (CheckCollisionRecs(GetBallCollisionRec(), getPlayWall(WALL_LEFT))) {
-        MoveBallBack();
+        stepBack = true;
         flipx = true;
-        int x = getPlayWall(WALL_LEFT).width;
-        ball.position.x = 2* x - ball.position.x;
     } else if (CheckCollisionRecs(GetBallCollisionRec(), getPlayWall(WALL_RIGHT))) {
-        MoveBallBack();
+        stepBack = true;
         flipx = true;
-        ball.position.x = (getPlayWall(WALL_RIGHT).x - ball.img[ball.imgIndex].width) * 2 - ball.position.x;
     }
 
     // check for paddle collisions
@@ -226,7 +240,7 @@ void MoveBall(void) {
             Rectangle block = getBlockCollisionRec(row, col);
             if (CheckCollisionRecs(GetBallCollisionRec(), block)) { 
                 
-                MoveBallBack();
+                stepBack = true;
                 activateBlock(row, col);
 
                 float dX = (ball.position.x + ball.img->width / 2) - (block.x + block.width / 2);
@@ -246,6 +260,7 @@ void MoveBall(void) {
     }
 
     // change directions if needed
+    if (stepBack) ball.position = ball.oldPosition;
     if (flipx) ball.velocity.x *= -1;
     if (flipy) ball.velocity.y *= -1;
 
@@ -260,10 +275,6 @@ void MoveBall(void) {
         
 }
 
-void MoveBallBack(void) {
-    ball.position = ball.oldPosition;
-}
-
 
 Rectangle GetBallCollisionRec() {
     return (Rectangle) {ball.position.x, ball.position.y, ball.img[ball.imgIndex].width, ball.img[ball.imgIndex].height};
@@ -272,4 +283,9 @@ Rectangle GetBallCollisionRec() {
 
 void SetBallSticky(void) {
     ball.sticky = true;
+}
+
+
+void IncreaseBallSpeed(void) {
+    ball.speed *= 1.25;
 }
