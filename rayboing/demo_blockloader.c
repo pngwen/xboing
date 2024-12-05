@@ -64,6 +64,7 @@ Block game_blocks[15][9];
 
 Vector2 getPlayCorner(CORNERS corner);
 
+
 void initializePlayArea(void) {
 
     playArea.playWidth = GetScreenWidth() - (PLAY_X_PADDING * 2);
@@ -512,15 +513,15 @@ Vector2 getPlayCorner(CORNERS corner) {
             break;
 
         case UPPER_RIGHT:
-            return (Vector2){playArea.playWidth + 1, PLAY_Y_OFFSET - 1};
+            return (Vector2){PLAY_X_OFFSET + playArea.playWidth, PLAY_Y_OFFSET - 1};
             break;
 
         case LOWER_LEFT:
-            return (Vector2){PLAY_X_OFFSET - 1, playArea.playHeight + 1};
+            return (Vector2){PLAY_X_OFFSET - 1, PLAY_Y_OFFSET + playArea.playHeight};
             break;
 
         case LOWER_RIGHT:
-            return (Vector2){playArea.playWidth + 1, playArea.playHeight + 1};
+            return (Vector2){playArea.playWidth + 1, PLAY_Y_OFFSET + playArea.playHeight};
             break;
     }
 
@@ -528,6 +529,7 @@ Vector2 getPlayCorner(CORNERS corner) {
     return (Vector2){0};
 
 }
+
 
 Rectangle getPlayWall(WALLS wall) {
     
@@ -537,7 +539,7 @@ Rectangle getPlayWall(WALLS wall) {
             break;
 
         case WALL_RIGHT:
-            return (Rectangle){getPlayCorner(UPPER_RIGHT).x + getPlayCorner(UPPER_LEFT).x, 0, GetScreenWidth() - getPlayCorner(UPPER_RIGHT).x, GetScreenHeight()};
+            return (Rectangle){getPlayCorner(UPPER_RIGHT).x, 0, GetScreenWidth() - getPlayCorner(UPPER_RIGHT).x, GetScreenHeight()};
             break;
 
         case WALL_TOP:
@@ -553,6 +555,7 @@ Rectangle getPlayWall(WALLS wall) {
     return (Rectangle){0};
     
 }
+
 
 void drawWalls(void) {
     DrawRectangleRec(getPlayWall(WALL_LEFT),GRAY);
