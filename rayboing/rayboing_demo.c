@@ -88,8 +88,6 @@ int main(int argumentCount, char *arguments[]) {
 
 bool ValidateParamFilename(int argumentCount, char *arguments[]) {
 
-    // expect: gamefilename.exe mapfilename.data
-    
     // ensure only one argument
     if (argumentCount != 2) {
         fprintf(stderr, "Usage: %s <filename>\n", arguments[0]);

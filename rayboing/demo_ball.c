@@ -110,13 +110,24 @@ void DrawBall(void) {
 
 void DrawGuide(void) {
     
-    const float centerAngle = PI / 2.0f;
-    const float angleSway = PI / 4.0f;
+    const int ROTATING_LEFT = 1;
+    const int ROTATING_RIGHT = -1;
+
+    const float centerAngle = PI / 2.0f;  // 90 degrees straight up
+    const float angleSway = PI / 4.0f;    // +/- 45 degrees
 
     static float rotateSpeed = PI / 2.0f; // degrees per second
+    static int direction = 1;
 
+    // rotate the guide between 45 and 135 degrees
     releaseAngle += rotateSpeed * GetFrameTime();
-    if (releaseAngle > centerAngle + angleSway || releaseAngle < centerAngle - angleSway) rotateSpeed *= -1;
+    if (releaseAngle > centerAngle + angleSway && direction == ROTATING_LEFT) {
+        direction = ROTATING_RIGHT; 
+        rotateSpeed *= -1;
+    } else if (releaseAngle < centerAngle - angleSway && direction == ROTATING_RIGHT) {
+        direction = ROTATING_LEFT;
+        rotateSpeed *= -1;
+    }
 
     Vector2 startPoint = {
         ball.position.x + ball.img->width / 2,
