@@ -63,6 +63,7 @@ const int ROW_MAX = 15;
 Block game_blocks[15][9];
 
 Vector2 getPlayCorner(CORNERS corner);
+bool isBlockTypeInteractive(char ch);
 
 
 void initializePlayArea(void) {
@@ -306,7 +307,7 @@ void addBlock(int row, int col, char ch){
 
     if (game_blocks[row][col].blockOffsetX != -1) {
         game_blocks[row][col].active = true;
-        blocksRemaining++;
+        if (ch != 'w') blocksRemaining++;  //solid wall blocks cannot be destroyed and should not count 
     } else {
         game_blocks[row][col].active = false;
     }
@@ -462,6 +463,8 @@ bool isBlockActive(int row, int col) {
 
 
 void activateBlock(int row, int col) {
+
+    if(!isBlockTypeInteractive(game_blocks[row][col].type)) return; // do nothing for wall blocks
     
     game_blocks[row][col].active = false;
     blocksRemaining--;
@@ -492,10 +495,12 @@ void activateBlock(int row, int col) {
         case 'X': // bomb
             // destroy the surrounding 8 blocks without triggering them
             for (int i = 0; i < 3; i++ ) {
-                if (i < 0 || i >= ROW_MAX) continue;
+                int rowOffset = row - 1 + i;
+                if (rowOffset < 0 || rowOffset >= ROW_MAX) continue;
                 for (int j = 0; j < 3; j++) {
-                    if (j < 0 || j >= COL_MAX) continue;
-                    game_blocks[row - 1 + i][col - 1 + j].active = false;
+                    int colOffset = col - 1 + j;
+                    if (colOffset < 0 || colOffset >= COL_MAX) continue;
+                    if (isBlockTypeInteractive(game_blocks[rowOffset][colOffset].type)) game_blocks[rowOffset][colOffset].active = false;
                 }
             }
             break;
@@ -565,3 +570,8 @@ void drawWalls(void) {
 }
 
 
+bool isBlockTypeInteractive(char ch) {
+
+    return !(ch == 'w');
+
+}

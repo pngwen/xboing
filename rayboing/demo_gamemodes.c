@@ -126,8 +126,14 @@ void RenderGameScreen(void) {
 void DrawStatusText(const char *displayText) {
 
     const int FONTSIZE = 40;
-    const int xpos = (GetScreenWidth() - MeasureText(displayText, FONTSIZE)) / 2;
+    const int PADDING = 20;
+
+    const int width = MeasureText(displayText, FONTSIZE);
+    const int xpos = (GetScreenWidth() - width) / 2;
     const int ypos = GetScreenHeight() / 3;
+
+    DrawRectangle(xpos - PADDING, ypos - PADDING, width + 2 * PADDING, FONTSIZE + 2 * PADDING, BLACK);
+
     DrawText(displayText, xpos - 1, ypos - 1, FONTSIZE, RED);
     DrawText(displayText, xpos, ypos, FONTSIZE, GREEN);
 

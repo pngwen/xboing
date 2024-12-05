@@ -12,12 +12,13 @@ const int INITIAL_BALL_SPEED = 500;  // pixels per second
 const int MAX_BALL_IMG_COUNT = 4;
 const int GUIDE_LENGTH = 100;
 
-const float bouncVariance = 10.0f;
+const float bouncVariance = 5.0f;
 
 typedef struct {
     Texture2D img[4];
     int imgIndex;
     Vector2 position;
+    Vector2 oldPosition;
     Vector2 velocity; // directional velocity    
     int speed;        // pixels per second
     bool sticky;      // it will stick to paddle next collision
@@ -34,6 +35,7 @@ Vector2 GetSpawnPoint(void);
 void AnimateBall(void);
 Rectangle GetBallCollisionRec(void);
 void DrawGuide(void);
+void MoveBallBack(void);
 
 
 bool InitializeBall(void) {
@@ -159,6 +161,8 @@ void AnimateBall(void) {
 
 
 void MoveBall(void) {
+
+    ball.oldPosition = ball.position;
     
     // keep spawned ball on paddle center
     if (ball.spawned) {
@@ -185,17 +189,19 @@ void MoveBall(void) {
     bool flipx = false;
     bool flipy = false;
 
-    
     if (CheckCollisionRecs(GetBallCollisionRec(), getPlayWall(WALL_BOTTOM))) {
+        MoveBallBack();
         SetGameMode(MODE_LOSE);
         return;
     }
 
     if (CheckCollisionRecs(GetBallCollisionRec(), getPlayWall(WALL_LEFT))) {
+        MoveBallBack();
         flipx = true;
         int x = getPlayWall(WALL_LEFT).width;
         ball.position.x = 2* x - ball.position.x;
     } else if (CheckCollisionRecs(GetBallCollisionRec(), getPlayWall(WALL_RIGHT))) {
+        MoveBallBack();
         flipx = true;
         ball.position.x = (getPlayWall(WALL_RIGHT).x - ball.img[ball.imgIndex].width) * 2 - ball.position.x;
     }
@@ -220,6 +226,7 @@ void MoveBall(void) {
             Rectangle block = getBlockCollisionRec(row, col);
             if (CheckCollisionRecs(GetBallCollisionRec(), block)) { 
                 
+                MoveBallBack();
                 activateBlock(row, col);
 
                 float dX = (ball.position.x + ball.img->width / 2) - (block.x + block.width / 2);
@@ -238,14 +245,11 @@ void MoveBall(void) {
         }
     }
 
-
     // change directions if needed
-
     if (flipx) ball.velocity.x *= -1;
     if (flipy) ball.velocity.y *= -1;
 
     // add variance to the angle on bounce
-
     if (flipx || flipy) {
 
         float angle = atan2(ball.velocity.y, ball.velocity.x) + ((rand() % 11) - bouncVariance) * (PI / 180.0f);
@@ -254,6 +258,10 @@ void MoveBall(void) {
 
     }
         
+}
+
+void MoveBallBack(void) {
+    ball.position = ball.oldPosition;
 }
 
 
