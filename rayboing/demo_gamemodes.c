@@ -117,8 +117,14 @@ void RenderGameScreen(void) {
 
     const char *lives = TextFormat("Balls Remaining: %d", livesRemaining);
     DrawText(lives, 10, 10, 20, WHITE);
-    
 
+    const char *blocks = TextFormat("Blocks Remaining: %d", getBlockCount());
+    DrawText(blocks, GetScreenWidth() - MeasureText(blocks, 20)- 10, 10, 20, WHITE);
+
+    if (GetPaddleReverse()) {
+        const char *reversed = "REVERSED!";
+        DrawText(reversed, (GetScreenWidth() - MeasureText(reversed, 25))/ 2, 35, 25, YELLOW);
+    }
 
     EndDrawing();
 

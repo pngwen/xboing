@@ -465,11 +465,11 @@ bool isBlockActive(int row, int col) {
 
 void activateBlock(int row, int col) {
 
-    if(!isBlockTypeInteractive(game_blocks[row][col].type)) return; // do nothing for wall blocks
-
-
     switch(game_blocks[row][col].type) {
         
+        case 'w': // wall, do nothing
+            break;
+
         case 's': // sticky
             SetBallSticky();
             deactivateBlock(row, col);
@@ -511,31 +511,26 @@ void activateBlock(int row, int col) {
         case '1': // number block 1
             game_blocks[row][col].texture = COUNTER_BLK[0];
             game_blocks[row][col].type = '0';
-            game_blocks[row][col].active = true;
             break;
 
         case '2': // number block 2
             game_blocks[row][col].texture = COUNTER_BLK[1];
             game_blocks[row][col].type = '1';
-            game_blocks[row][col].active = true;
             break;
 
         case '3': // number block 3
             game_blocks[row][col].texture = COUNTER_BLK[2];
             game_blocks[row][col].type = '2';
-            game_blocks[row][col].active = true;
             break;
 
         case '4': // number block 4
             game_blocks[row][col].texture = COUNTER_BLK[3];
             game_blocks[row][col].type = '3';
-            game_blocks[row][col].active = true;
             break;
 
         case '5': // number block 5
             game_blocks[row][col].texture = COUNTER_BLK[4];
             game_blocks[row][col].type = '4';
-            game_blocks[row][col].active = true;
             break;            
 
         default:
@@ -620,7 +615,12 @@ bool isBlockTypeInteractive(char ch) {
 }
 
 void deactivateBlock(int row, int col) {
-    if (!isBlockTypeInteractive(game_blocks[row][col].type)) return;
+    if (!game_blocks[row][col].active || !isBlockTypeInteractive(game_blocks[row][col].type)) return;
     game_blocks[row][col].active = false;
     blocksRemaining--;
+}
+
+
+int getBlockCount(void) {
+    return blocksRemaining;
 }

@@ -41,5 +41,6 @@ bool isBlockActive(int row, int col);
 void activateBlock(int row, int col);
 Rectangle getPlayWall(WALLS wall);
 void drawWalls(void);
+int getBlockCount(void);
 
 #endif // _DEMO_BLOCKLOADER_H
