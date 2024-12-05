@@ -51,11 +51,12 @@
 #include <raylib.h>
 #include "faketypes.h"
 #include "paddle.h"
+#include "demo_blockloader.h"
 
 #define PADDLE_COUNT  3
 
-const int PADDLE_INITIAL_INDEX = 2;
-const int PADDLE_VEL = 10;
+const int PADDLE_INITIAL_INDEX = 1;
+const int PADDLE_VEL = 600;  // pixels per second
 
 typedef struct {
 	Texture2D img;
@@ -70,14 +71,21 @@ int reverseOn;
 int paddleIndex;
 int	paddlePosition;
 
+int GetPaddlePositionY(void);
+
 void DrawPaddle(void) { 
-	DrawTexture(paddles[paddleIndex].img, paddlePosition, GetScreenHeight() - DIST_BASE, WHITE);
+	DrawTexture(paddles[paddleIndex].img, paddlePosition, GetPaddlePositionY(), WHITE);
  }
 
-void InitialisePaddle(void) { 
+ int GetPaddlePositionY(void) {
+	//return GetScreenHeight() - DIST_BASE;
+	return getPlayWall(WALL_BOTTOM).y - DIST_BASE;
+ }
+
+bool InitialisePaddle(void) { 
 
 	// do not load images if program is closing
-	if (WindowShouldClose()) return;
+	if (WindowShouldClose()) return false;
 
 	Texture2D emptyTexture = {0};
 
@@ -106,7 +114,7 @@ void InitialisePaddle(void) {
 	}
 
 	// stop program if textures failed to load
-	if (errorFlag == True) CloseWindow();
+	return !errorFlag;
 
 }
 
@@ -131,7 +139,7 @@ void FreePaddle(void) {
 void MovePaddle(int direction) {
 
 	// calculate the movement distance, adjusted for reverse flag
-	int distance = PADDLE_VEL * (reverseOn == True ? -1 : 1);
+	int distance = PADDLE_VEL * (reverseOn == True ? -1 : 1) * GetFrameTime();
 
 	// apply the move based on direction
 	switch(direction) {
@@ -144,9 +152,10 @@ void MovePaddle(int direction) {
 	}
 
 	// keep position within window boundries
-	if (paddlePosition < 0) paddlePosition = 0;
+	int x = getPlayWall(WALL_LEFT).width;
+	if (paddlePosition < x) paddlePosition = x;
 
-	int maxHPosition = GetScreenWidth() - paddles[paddleIndex].size;
+	int maxHPosition = getPlayWall(WALL_RIGHT).x - paddles[paddleIndex].size;
 	if (paddlePosition > maxHPosition) paddlePosition = maxHPosition;
 	
 }
@@ -155,8 +164,17 @@ int GetPaddleSize(void) {
 	return paddles[paddleIndex].size;
 }
 
-int GetPaddlePosition(void) {
+int GetPaddlePositionX(void) {
 	return paddlePosition;
+}
+
+Rectangle GetPaddleCollisionRec(void) {
+	return (Rectangle){
+		paddlePosition,
+		GetPaddlePositionY(),
+		paddles[paddleIndex].img.width,
+		paddles[paddleIndex].img.height
+	};
 }
 
 int GetPaddleReverse(void) {
@@ -198,4 +216,12 @@ void ChangePaddleSize(int changeDirection) {
 	// move to ensure resize remains inside window
 	MovePaddle(PADDLE_NONE);
 
+}
+
+
+Vector2 GetBallSpawnPointOnPaddle() {
+	return (Vector2){
+		paddlePosition + paddles[paddleIndex].size / 2,
+		GetPaddlePositionY()
+	};
 }

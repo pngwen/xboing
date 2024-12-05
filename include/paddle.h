@@ -61,7 +61,7 @@
  * @note If an image fails to load, Raylib close window flag is set to true
  * 
  */
-void InitialisePaddle(void);
+bool InitialisePaddle(void);
 
 
 /**
@@ -117,7 +117,11 @@ char *GetPaddleDescription(void);
  * 
  * @return int upper left paddle pixel
  */
-int GetPaddlePosition(void);
+int GetPaddlePositionX(void);
+
+int GetPaddlePositionY(void);
+
+Rectangle GetPaddleCollisionRec(void);
 
 
 /**
@@ -151,6 +155,8 @@ void SetReverseOff(void);
  * @param changeDirection SIZE_UP or SIZE_DOWN
  */
 void ChangePaddleSize(int changeDirection);
+
+Vector2 GetBallSpawnPointOnPaddle();
 
 
 // not used in program ??
