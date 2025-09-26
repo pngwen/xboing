@@ -67,7 +67,7 @@ compile_flags.txt
 
 # Premake
 premake5
-Makefile
+**/Makefile
 *.make
 /bin
 /obj
