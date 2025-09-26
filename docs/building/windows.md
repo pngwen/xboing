@@ -8,9 +8,9 @@
 | --- | --- | -- |
 | **Build tools:** | Visual Studio, MSBuild | [MinGW-W64]
 
-[Visual Studio Platform]:(#generate_project_for_visual_studio)
-[GMake]:(#generate-project-for-mingw-w64)
-[MinGW-W64]:(#building-project-with-mingw-w64)
+[Visual Studio Platform]:#generate_project_for_visual_studio
+[GMake]:#generate-project-for-mingw-w64
+[MinGW-W64]:#building-project-with-mingw-w64
 
 ## Getting source code
 Clone the repository with the `--recursive` option.
@@ -66,8 +66,8 @@ ACTIONS
 ## Installing MinGW-W64 via W64Devkit
 
 > [!NOTE]
-> **[raylib/wiki/Working-on-Windows](https://github.com/raysan5/raylib/wiki/Working-on-Windows):** \
-> The best way to get MinGW-W64 and GCC is via the W64Devkit \
+> ### [raylib/wiki/Working-on-Windows](https://github.com/raysan5/raylib/wiki/Working-on-Windows)
+> The best way to get MinGW-W64 and GCC is via the W64Devkit.
 > We do not recommend using MSYS2 to get GCC, even though several tutorials suggest it. It can be difficult to configure properly and does not always include all the things needed for a complete development system. The W64-Devkit is a much better way to get the needed toolchain for building games with raylib.
 
 * Download W64Devkit archive from [here](https://github.com/skeeto/w64devkit/releases).
@@ -140,6 +140,9 @@ bin/
 ```
 
 ## Examples
+
+> [!WARNING]
+> Unfinished
 
 * Build and run the **rayboing** target using make.
 
