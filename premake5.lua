@@ -26,7 +26,7 @@ function links_raylib()
     filter "system:windows"
         defines{"_WIN32"}
         links {"winmm", "gdi32", "opengl32"}
-        libdirs {"../bin/%{cfg.buildcfg}"}
+        libdirs {"bin/%{cfg.buildcfg}"}
     filter "system:linux"
         links {"pthread", "m", "dl", "rt", "X11"}
     filter {}
@@ -83,7 +83,7 @@ workspace "xboing"
     startproject "rayboing"
 
     project "rayboing"
-        kind "WindowedApp"
+        kind "ConsoleApp"
         language "C"
         location "build_files"
         targetdir "bin/%{cfg.buildcfg}"
