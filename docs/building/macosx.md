@@ -1,4 +1,5 @@
 # Building on MacOS
+This guide assumes you are using clang on macos.
 
 ## Getting source code
 Clone the repository using the `--recursive` option to also clone all submodules.
@@ -32,18 +33,22 @@ xboing
 ```
 
 ## Premake usage
-Use **premake5** with the `--help` option to verify installation and list project arguments.
+Use **premake5** with the `--help` to list project arguments.
 ```sh
 ./premake5 --help
 ```
 ```
-Premake 5.0.0-dev, a build script generator
-Copyright (C) 2002-2025 Jess Perkins and the Premake Project
-Lua 5.3 Lua 5.3.5  Copyright (C) 1994-2018 Lua.org, PUC-Rio
+Premake 5.0.0, a build script generator
+...
 
 Usage: premake5 [options] action [arguments]
-
 ...
+
+ACTIONS
+  clean
+  gmake
+  vs2022
+  ...
 ```
 
 ## Generate project for GNU Make
@@ -91,7 +96,7 @@ Configurations can be selected with **make [config=name]**.
 make rayboing config=release
 ```
 
-Completed compilation units are outputted to `bin/`.
+Completed compilation units are saved to `bin/`
 ```
 bin/
 ├── Debug
