@@ -1,4 +1,4 @@
-# Building on macos
+# Building on MacOS
 
 ## Getting source code
 Clone the repository using the `--recursive` option to also clone all submodules.
@@ -18,6 +18,9 @@ xboing
 * Download premake5 binaries for your platform [here.](https://premake.github.io/download)
 
 * Extract the downloaded archive place the contents within the root of the xboing project.
+
+The `premake5` executable should be in the same directory as the `premake5.lua` file:
+
 ```
 xboing
 ├── include
@@ -27,7 +30,6 @@ xboing
 ├── premake5
 └── premake5.lua
 ```
-> The `premake5` executable should be in the same directory as the `premake5.lua` file.
 
 ## Premake usage
 Use **premake5** with the `--help` option to verify installation and list project arguments.
@@ -98,4 +100,24 @@ bin/
 └── Release
     ├── libraylib.a
     └── rayboing
+```
+
+## Examples
+
+* Build and run the **rayboing** target using make.
+
+```sh
+# Generate make configuration.
+./premake5 gmake
+
+# Build rayboing target with make.
+make rayboing
+
+# Run rayboing [level]
+./bin/Debug/rayboing src/rayboing/levels/level01.data
+```
+---
+* Clean make outputs.
+```sh
+make clean
 ```
