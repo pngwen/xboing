@@ -15,11 +15,9 @@ xboing
 ```
 
 ## Installing premake5
-Download premake5 binaries for your platform [here.](https://premake.github.io/download)
+* Download premake5 binaries for your platform [here.](https://premake.github.io/download)
 
-Extract the downloaded archive to the root of the xboing project.
-
-The `premake5` executable should be in the same directory as the `premake5.lua` file.
+* Extract the downloaded archive place the contents within the root of the xboing project.
 ```
 xboing
 ├── include
@@ -29,10 +27,12 @@ xboing
 ├── premake5
 └── premake5.lua
 ```
+> The `premake5` executable should be in the same directory as the `premake5.lua` file.
 
-Use **premake5** with the `--help` option to verify installation.
+## Premake usage
+Use **premake5** with the `--help` option to verify installation and list project arguments.
 ```sh
-./premake --help
+./premake5 --help
 ```
 ```
 Premake 5.0.0-dev, a build script generator
@@ -48,7 +48,7 @@ Usage: premake5 [options] action [arguments]
 To generate a project for GNU Make, use **premake gmake**.
 ```sh
 # premake5 [action]
-./premake gmake
+./premake5 gmake
 ```
 Premake will generate a Makefile in the project directory with all project targets configured.
 
