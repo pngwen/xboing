@@ -20,7 +20,7 @@ int main(void) {
     ResetPaddleStart();
 
     while (!WindowShouldClose()) {
-    
+
         // adjust for paddle movement
 
         if (IsKeyPressed(KEY_SPACE)) ResetPaddleStart();
@@ -39,7 +39,7 @@ int main(void) {
         BeginDrawing();
         ClearBackground(BLACK);
 
-        DrawStatusText();        
+        DrawStatusText();
         DrawPaddle();
 
         EndDrawing();
@@ -58,7 +58,7 @@ int main(void) {
 
 void DrawStatusText() {
 
-    
+
     char text[40];
     int size = sizeof(text);
     int ypos = 20;
@@ -66,8 +66,8 @@ void DrawStatusText() {
 
     DrawTextLine(ypos, "Paddle Information");
     ypos += yoffset * 2;
-    
-    snprintf(text, size, "Position:  %d", GetPaddlePosition());
+
+    snprintf(text, size, "Position:  %d", GetPaddlePositionX());
     DrawTextLine(ypos, text);
     ypos += yoffset;
 
