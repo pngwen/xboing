@@ -61,7 +61,7 @@ ACTIONS
 ## Installing Visual Studio
 https://visualstudio.microsoft.com/vs/community/
 
-## Generate Project for Visual Studio
+## Generate project for Visual Studio
 To generate a project for Visual Studio or MSBuild, use **premake vs2022**.
 ```powershell
 # premake5 [action]
@@ -75,9 +75,9 @@ Requires [installing Visual Studio](#installing-visual-studio).
 2. Select `Build > Build Solution` in the editor.
 
 ## Building project with MSBuild
-1. Install Visual Studio Build Tools from the Visual Studio Installer
+1. Install Visual Studio Build Tools from the Visual Studio Installer.
 2. Add `msbuild` to path.
-3. Run **msbuild [solution]**
+3. Run **msbuild [solution]**.
 ```powershell
 MSBuild.exe .\xboing.sln
 ```
@@ -102,7 +102,7 @@ To generate a project for MinGW-W64, use **premake gmake**.
 ```
 Premake will generate a Makefile in the project directory with all configured project targets.
 
----
+### MinGW-W64 usage
 
 Open `w64devkit.exe` to use **make**. Use **make help** to list configuration options and build targets.
 ```sh
@@ -126,7 +126,7 @@ TARGETS:
 ## Building project with MinGW-W64
 Requires [installing MinGW-W64 via W64Devkit](#installing-mingw-w64-via-w64devkit).
 
-Open `w64devkit.exe` to use **make**. Targets can be built inside of the terminal with the command **make [target]**
+Open `w64devkit.exe` to use **make**. Targets can be built inside of the terminal with the command **make [target]**.
 ```sh
 # Default to all targets
 make
@@ -138,12 +138,12 @@ make rayboing
 make raylib
 ```
 
-Configurations can be selected with **make [config=name]**
+Configurations can be selected with **make [config=name]**.
 ```sh
 make rayboing config=release
 ```
 
-Completed compilation units are saved to `bin/`
+Completed compilation units are saved to `bin/`.
 ```
 bin/
 ├── Debug
