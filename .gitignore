@@ -56,8 +56,18 @@ dkms.conf
 
 COMPILER.OUT
 
-#IDE Configuration Files
+# IDE Configuration Files
 c_cpp_properties.json
 settings.json
 tasks.json
 launch.json
+.luarc.json
+.clangd
+compile_flags.txt
+
+# Premake
+premake5
+Makefile
+*.make
+/bin
+/obj
