@@ -18,9 +18,9 @@ xboing
 ## Installing premake5
 * Download premake5 binaries for your platform [here](https://premake.github.io/download).
 
-* Extract the downloaded archive place the contents within the root of the xboing project.
+* Extract the downloaded archive and place the contents within the root of the xboing project.
 
-The `premake5` executable should be in the same directory as the `premake5.lua` file:
+The `premake5` executable should be in the same directory as the `premake5.lua` file included in the repository:
 
 ```
 xboing
@@ -52,7 +52,7 @@ ACTIONS
 ```
 
 ## Choose toolset
-| **Build Platform** | **Guides** |
+| **Toolchain** | **Guides** |
 | --- | --- |
 | Visual Studio | [(install)](#installing-visual-studio) [(generate)](#generate-project-for-visual-studio) [(build)](#building-project-with-visual-studio-ide) |
 | MSBuild (standalone) | [(install)](#installing-msbuild) [(generate)](#generate-project-for-visual-studio) [(build)](#building-project-with-msbuild) |
@@ -62,9 +62,9 @@ ACTIONS
 https://visualstudio.microsoft.com/vs/community/
 
 ## Generate project for Visual Studio
-To generate a project for Visual Studio or MSBuild, use **premake vs2022**.
+To generate a project for Visual Studio or MSBuild, use **premake vs\*** (vs2022, vs2019)
 ```powershell
-# premake5 [action]
+# Generate files for Visual Studio 2022
 .\premake5 vs2022
 ```
 Premake will generate a Visual Studio solution file in the project directory with all configured project targets.
@@ -75,8 +75,9 @@ Requires [installing Visual Studio](#installing-visual-studio).
 2. Select `Build > Build Solution` in the editor.
 
 ## Building project with MSBuild
-1. Install Visual Studio Build Tools from the Visual Studio Installer.
-2. Add `msbuild` to path.
+1. Install [Build Tools for Visual Studio](https://visualstudio.microsoft.com/downloads/?q=build+tools#build-tools-for-visual-studio-2022) from the Visual Studio Installer.
+    * `MSBuild` will be installed to  `%ProgramFiles%\Microsoft Visual Studio\(version)\BuildTools\MSBuild`.
+    * `MSBuild.exe` can be found in `MSBuild\Current\Bin\`
 3. Run **msbuild [solution]**.
 ```powershell
 MSBuild.exe .\xboing.sln
@@ -97,7 +98,9 @@ Requires [installing MinGW-W64 via W64Devkit](#installing-mingw-w64-via-w64devki
 
 To generate a project for MinGW-W64, use **premake gmake**.
 ```powershell
-# premake5 [action]
+# In powershell
+
+# Generate files for GMake
 .\premake5 gmake
 ```
 Premake will generate a Makefile in the project directory with all configured project targets.
@@ -106,6 +109,8 @@ Premake will generate a Makefile in the project directory with all configured pr
 
 Open `w64devkit.exe` to use **make**. Use **make help** to list configuration options and build targets.
 ```sh
+# In w64devkit.exe terminal
+
 make help
 ```
 ```
@@ -128,6 +133,8 @@ Requires [installing MinGW-W64 via W64Devkit](#installing-mingw-w64-via-w64devki
 
 Open `w64devkit.exe` to use **make**. Targets can be built inside of the terminal with the command **make [target]**.
 ```sh
+# In w64devkit.exe terminal
+
 # Default to all targets
 make
 
@@ -159,20 +166,11 @@ bin/
 > [!WARNING]
 > Unfinished
 
-* Build and run the **rayboing** target using make.
-
-```sh
-# Generate make configuration.
-./premake5 gmake
-
-# Build rayboing target with make.
-make rayboing
-
-# Run rayboing [level]
-./bin/Debug/rayboing src/rayboing/levels/level01.data
-```
+* Build and run the **rayboing** target using make/mingw-w64.
 ---
 * Clean make outputs.
 ```sh
+# In w64devkit.exe terminal
+
 make clean
 ```
