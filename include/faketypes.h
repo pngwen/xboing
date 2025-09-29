@@ -219,10 +219,10 @@ typedef struct{
 //    int flags;
 //} XWMHints;
 
-typedef struct{
-    Colormap colormap;
-    int backing_store;
-} XSetWindowAttributes;
+// typedef struct{
+//     Colormap colormap;
+//     int backing_store;
+// } XSetWindowAttributes;
 
 
 #endif
