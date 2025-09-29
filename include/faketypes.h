@@ -5,14 +5,23 @@
 
 //#include <raylib.h>
 
+// Only define these types if X11 is not present
+#ifndef X11_TYPES_DEFINED
+#ifndef _X11_XLIB_H_
 typedef int Display;
 typedef int Window;
 typedef int Colormap;
-typedef unsigned long int u_long;
 typedef int KeySym;
-// typedef int XEvent; // replaced with struct below
-typedef int uid_t;
 typedef int Pixmap;
+typedef int GC;
+typedef int Region;
+#endif
+typedef unsigned long int u_long;
+// Only define uid_t if not already defined
+#ifndef _SYS_TYPES_H
+typedef int uid_t;
+#endif
+#endif
 
 // Raylib Types
 //typedef int Texture2D;
@@ -58,16 +67,10 @@ typedef int Pixmap;
 #define XpmNoMemory     -3
 #define XpmColorFailed  -4
 
-// Relating to the X11 graphical context
-typedef int Display;
-typedef int Window;
-typedef int GC; // graphics context
+// ...existing code...
 
-// Drawing / graphical manipulations
-typedef int Colormap;
-typedef int Pixmap;
-typedef int Region; // A region of pixels
-
+// Only define XPoint and XColor if not already defined by X11
+#ifndef _X11_XLIB_H_
 typedef struct{
     short x, y;
 } XPoint;
@@ -75,9 +78,12 @@ typedef struct{
 typedef struct {
     int pixel;
 } XColor;
+#endif
 
 // GC Values (from X11)
 
+// Only define these enums if not already defined by X11
+#ifndef _X11_XLIB_H_
 typedef enum {
     LineSolid,
     LineOnOffDash,
@@ -96,6 +102,7 @@ typedef enum{
     JoinRound,
     JoinBevel
 } join_style;
+#endif
 
 // Key Masks
 
@@ -147,6 +154,8 @@ typedef enum{
 #define CURSOR_PLUS   0
 #define CURSOR_POINT  0
 
+// Only define XButton and XEvent if not already defined by X11
+#ifndef _X11_XLIB_H_
 typedef struct {
     int button;
     int subwindow;
@@ -155,13 +164,9 @@ typedef struct {
 typedef struct {
     XButton xbutton;
 } XEvent;
-
-// Uncategorized
-
-typedef unsigned long int u_long;
-
-#define EvenOddRule  0
-
+#endif
+// Only define these X11-related structs if not already defined by X11
+#ifndef _X11_XLIB_H_
 typedef struct {
     int ascent;
     int descent;
@@ -203,6 +208,14 @@ typedef struct{
     int input;
     int icon_pixmap;
     int icon_window;
+    int flags;
+} XWMHints;
+
+typedef struct{
+    Colormap colormap;
+    int backing_store;
+} XSetWindowAttributes;
+#endif
     int flags;
 } XWMHints;
 
