@@ -5,6 +5,8 @@
 #include "demo_gamemodes.h"
 #include "demo_ball.h"
 
+#define BLOCK_TEXTURES "resource/textures/blocks/"
+
 const int PLAY_X_OFFSET = 35;
 const int PLAY_Y_OFFSET = 60;
 
@@ -30,28 +32,28 @@ char levelName[256];
 int timeBonus = 0;
 int blocksRemaining = 0;
 
-Texture2D HYPERSPACE_BLK, 
-          BULLET_BLK, 
-          MAXAMMO_BLK, 
-          RED_BLK, 
+Texture2D HYPERSPACE_BLK,
+          BULLET_BLK,
+          MAXAMMO_BLK,
+          RED_BLK,
           GREEN_BLK,
-		  BLUE_BLK, 
-          TAN_BLK, 
-          PURPLE_BLK, 
+		  BLUE_BLK,
+          TAN_BLK,
+          PURPLE_BLK,
           YELLOW_BLK,
-		  BLACK_BLK, 
-          ROAMER_BLK, 
-          BOMB_BLK, 
-          DEATH_BLK, 
+		  BLACK_BLK,
+          ROAMER_BLK,
+          BOMB_BLK,
+          DEATH_BLK,
           EXTRABALL_BLK,
-		  MGUN_BLK, 
-          WALLOFF_BLK, 
-          RANDOM_BLK, 
-          DROP_BLK, 
+		  MGUN_BLK,
+          WALLOFF_BLK,
+          RANDOM_BLK,
+          DROP_BLK,
           TIMER_BLK,
-		  MULTIBALL_BLK, 
-          STICKY_BLK, 
-          REVERSE_BLK, 
+		  MULTIBALL_BLK,
+          STICKY_BLK,
+          REVERSE_BLK,
           PAD_SHRINK_BLK,
 		  PAD_EXPAND_BLK;
 
@@ -308,7 +310,7 @@ void addBlock(int row, int col, char ch){
 
     if (game_blocks[row][col].blockOffsetX != -1) {
         game_blocks[row][col].active = true;
-        if (ch != 'w') blocksRemaining++;  //solid wall blocks cannot be destroyed and should not count 
+        if (ch != 'w') blocksRemaining++;  //solid wall blocks cannot be destroyed and should not count
     } else {
         game_blocks[row][col].active = false;
     }
@@ -317,85 +319,85 @@ void addBlock(int row, int col, char ch){
 
 
 bool loadBlockTextures(void){
-    HYPERSPACE_BLK = LoadTexture("./src/rayboing/blocks/hypspc.png");
+    HYPERSPACE_BLK = LoadTexture(BLOCK_TEXTURES "hypspc.png");
     if (HYPERSPACE_BLK.id == 0) return false;
 
-    BULLET_BLK = LoadTexture("./src/rayboing/blocks/speed.png");// Green block drawn without bullet texture
+    BULLET_BLK = LoadTexture(BLOCK_TEXTURES "speed.png");// Green block drawn without bullet texture
     if (BULLET_BLK.id == 0) return false;
 
-    MAXAMMO_BLK = LoadTexture("./src/rayboing/blocks/lotsammo.png");
+    MAXAMMO_BLK = LoadTexture(BLOCK_TEXTURES "lotsammo.png");
     if (MAXAMMO_BLK.id == 0) return false;
 
-    RED_BLK = LoadTexture("./src/rayboing/blocks/redblk.png");
+    RED_BLK = LoadTexture(BLOCK_TEXTURES "redblk.png");
     if (RED_BLK.id == 0) return false;
 
-    GREEN_BLK = LoadTexture("./src/rayboing/blocks/grnblk.png");
+    GREEN_BLK = LoadTexture(BLOCK_TEXTURES "grnblk.png");
     if (GREEN_BLK.id == 0) return false;
 
-	BLUE_BLK = LoadTexture("./src/rayboing/blocks/blueblk.png");
+	BLUE_BLK = LoadTexture(BLOCK_TEXTURES "blueblk.png");
     if (BLUE_BLK.id == 0) return false;
 
-    TAN_BLK = LoadTexture("./src/rayboing/blocks/tanblk.png");
+    TAN_BLK = LoadTexture(BLOCK_TEXTURES "tanblk.png");
     if (TAN_BLK.id == 0) return false;
 
-    PURPLE_BLK = LoadTexture("./src/rayboing/blocks/purpblk.png");
+    PURPLE_BLK = LoadTexture(BLOCK_TEXTURES "purpblk.png");
     if (PURPLE_BLK.id == 0) return false;
 
-    YELLOW_BLK = LoadTexture("./src/rayboing/blocks/yellblk.png");
+    YELLOW_BLK = LoadTexture(BLOCK_TEXTURES "yellblk.png");
     if (YELLOW_BLK.id == 0) return false;
 
-	BLACK_BLK = LoadTexture("./src/rayboing/blocks/blakblk.png");
+	BLACK_BLK = LoadTexture(BLOCK_TEXTURES "blakblk.png");
     if (BLACK_BLK.id == 0) return false;
 
-    ROAMER_BLK = LoadTexture("./src/rayboing/blocks/roamer.png");
+    ROAMER_BLK = LoadTexture(BLOCK_TEXTURES "roamer.png");
     if (ROAMER_BLK.id == 0) return false;
 
-    BOMB_BLK = LoadTexture("./src/rayboing/blocks/bombblk.png");
+    BOMB_BLK = LoadTexture(BLOCK_TEXTURES "bombblk.png");
     if (BOMB_BLK.id == 0) return false;
 
-    DEATH_BLK = LoadTexture("./src/rayboing/blocks/death1.png");
+    DEATH_BLK = LoadTexture(BLOCK_TEXTURES "death1.png");
     if (DEATH_BLK.id == 0) return false;
 
-    EXTRABALL_BLK = LoadTexture("./src/rayboing/blocks/xtrabal.png");
+    EXTRABALL_BLK = LoadTexture(BLOCK_TEXTURES "xtrabal.png");
     if (EXTRABALL_BLK.id == 0) return false;
 
-	MGUN_BLK = LoadTexture("./src/rayboing/blocks/machgun.png");
+	MGUN_BLK = LoadTexture(BLOCK_TEXTURES "machgun.png");
     if (MGUN_BLK.id == 0) return false;
 
-    WALLOFF_BLK = LoadTexture("./src/rayboing/blocks/walloff.png");
+    WALLOFF_BLK = LoadTexture(BLOCK_TEXTURES "walloff.png");
     if (WALLOFF_BLK.id == 0) return false;
 
-    RANDOM_BLK = LoadTexture("./src/rayboing/blocks/redblk.png");// Red block loaded instead of random block selection
+    RANDOM_BLK = LoadTexture(BLOCK_TEXTURES "redblk.png");// Red block loaded instead of random block selection
     if (RANDOM_BLK.id == 0) return false;
 
-    DROP_BLK = LoadTexture("./src/rayboing/blocks/grnblk.png");// Green block drawn without hit points (text)
+    DROP_BLK = LoadTexture(BLOCK_TEXTURES "grnblk.png");// Green block drawn without hit points (text)
     if (DROP_BLK.id == 0) return false;
 
-    TIMER_BLK = LoadTexture("./src/rayboing/blocks/clock.png");
+    TIMER_BLK = LoadTexture(BLOCK_TEXTURES "clock.png");
     if (TIMER_BLK.id == 0) return false;
 
-	MULTIBALL_BLK = LoadTexture("./src/rayboing/blocks/multibal.png");
+	MULTIBALL_BLK = LoadTexture(BLOCK_TEXTURES "multibal.png");
     if (MULTIBALL_BLK.id == 0) return false;
 
-    STICKY_BLK = LoadTexture("./src/rayboing/blocks/stkyblk.png");
+    STICKY_BLK = LoadTexture(BLOCK_TEXTURES "stkyblk.png");
     if (STICKY_BLK.id == 0) return false;
 
-    REVERSE_BLK = LoadTexture("./src/rayboing/blocks/reverse.png");
+    REVERSE_BLK = LoadTexture(BLOCK_TEXTURES "reverse.png");
     if (REVERSE_BLK.id == 0) return false;
 
-    PAD_SHRINK_BLK = LoadTexture("./src/rayboing/blocks/padshrk.png");
+    PAD_SHRINK_BLK = LoadTexture(BLOCK_TEXTURES "padshrk.png");
     if (PAD_SHRINK_BLK.id == 0) return false;
 
-	PAD_EXPAND_BLK = LoadTexture("./src/rayboing/blocks/padexpn.png");
+	PAD_EXPAND_BLK = LoadTexture(BLOCK_TEXTURES "padexpn.png");
     if (PAD_EXPAND_BLK.id == 0) return false;
 
 
-    COUNTER_BLK[0] = LoadTexture("./src/rayboing/blocks/cntblk.png");
-    COUNTER_BLK[1] = LoadTexture("./src/rayboing/blocks/cntblk1.png");
-    COUNTER_BLK[2] = LoadTexture("./src/rayboing/blocks/cntblk2.png");
-    COUNTER_BLK[3] = LoadTexture("./src/rayboing/blocks/cntblk3.png");
-    COUNTER_BLK[4] = LoadTexture("./src/rayboing/blocks/cntblk4.png");
-    COUNTER_BLK[5] = LoadTexture("./src/rayboing/blocks/cntblk5.png");
+    COUNTER_BLK[0] = LoadTexture(BLOCK_TEXTURES "cntblk.png");
+    COUNTER_BLK[1] = LoadTexture(BLOCK_TEXTURES "cntblk1.png");
+    COUNTER_BLK[2] = LoadTexture(BLOCK_TEXTURES "cntblk2.png");
+    COUNTER_BLK[3] = LoadTexture(BLOCK_TEXTURES "cntblk3.png");
+    COUNTER_BLK[4] = LoadTexture(BLOCK_TEXTURES "cntblk4.png");
+    COUNTER_BLK[5] = LoadTexture(BLOCK_TEXTURES "cntblk5.png");
 
     for (int i = 0; i < 6; i++) {
         if (COUNTER_BLK[i].id == 0) return false;

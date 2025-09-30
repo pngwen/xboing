@@ -26,7 +26,7 @@
  * enhancements, or modifications.
  */
 
-/* 
+/*
  * =========================================================================
  *
  * $Id: paddle.c,v 1.1.1.1 1994/12/16 01:36:45 jck Exp $
@@ -55,6 +55,8 @@
 
 #define PADDLE_COUNT  3
 
+#define PADDLE_TEXTURES "resource/textures/paddle/"
+
 const int PADDLE_INITIAL_INDEX = 1;
 const int PADDLE_VEL = 600;  // pixels per second
 
@@ -73,7 +75,7 @@ int	paddlePosition;
 
 int GetPaddlePositionY(void);
 
-void DrawPaddle(void) { 
+void DrawPaddle(void) {
 	DrawTexture(paddles[paddleIndex].img, paddlePosition, GetPaddlePositionY(), WHITE);
  }
 
@@ -82,7 +84,7 @@ void DrawPaddle(void) {
 	return getPlayWall(WALL_BOTTOM).y - DIST_BASE;
  }
 
-bool InitialisePaddle(void) { 
+bool InitialisePaddle(void) {
 
 	// do not load images if program is closing
 	if (WindowShouldClose()) return false;
@@ -90,9 +92,9 @@ bool InitialisePaddle(void) {
 	Texture2D emptyTexture = {0};
 
 	// textures must be loaded from smallest to largest
-	paddles[0] = (Paddle){emptyTexture, "Small",  40, "./bitmaps/paddle/padsml.png"};
-	paddles[1] = (Paddle){emptyTexture, "Medium", 50, "./bitmaps/paddle/padmed.png"};
-	paddles[2] = (Paddle){emptyTexture, "Huge",   70, "./bitmaps/paddle/padhuge.png"};
+	paddles[0] = (Paddle){emptyTexture, "Small",  40, PADDLE_TEXTURES "padsml.png"};
+	paddles[1] = (Paddle){emptyTexture, "Medium", 50, PADDLE_TEXTURES "padmed.png"};
+	paddles[2] = (Paddle){emptyTexture, "Huge",   70, PADDLE_TEXTURES "padhuge.png"};
 
 	// initialize variables before loop
 	int errorFlag = False;
@@ -100,7 +102,7 @@ bool InitialisePaddle(void) {
 	// create textures for each paddle size
 	for (int i = 0; i < PADDLE_COUNT; i++) {
 
-		// load paddle texture 
+		// load paddle texture
 		Image img = LoadImage(paddles[i].filepath);
 		paddles[i].img = LoadTextureFromImage(img);
 
@@ -157,7 +159,7 @@ void MovePaddle(int direction) {
 
 	int maxHPosition = getPlayWall(WALL_RIGHT).x - paddles[paddleIndex].size;
 	if (paddlePosition > maxHPosition) paddlePosition = maxHPosition;
-	
+
 }
 
 int GetPaddleSize(void) {
@@ -198,7 +200,7 @@ void ChangePaddleSize(int changeDirection) {
 
 	// capture the old pixel size
 	int oldSize = paddles[paddleIndex].size;
-	
+
 	// adjust paddle index based on change in size
 	switch (changeDirection) {
 		case SIZE_UP:

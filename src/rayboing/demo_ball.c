@@ -8,6 +8,8 @@
 #include "demo_gamemodes.h"
 #include "demo_blockloader.h"
 
+#define BALL_TEXTURES "resource/textures/balls/"
+
 const int INITIAL_BALL_SPEED = 400;  // pixels per second
 const int MAX_BALL_IMG_COUNT = 4;
 const int GUIDE_LENGTH = 100;
@@ -19,7 +21,7 @@ typedef struct {
     int imgIndex;
     Vector2 position;
     Vector2 oldPosition;
-    Vector2 velocity; // directional velocity    
+    Vector2 velocity; // directional velocity
     int speed;        // pixels per second
     bool sticky;      // it will stick to paddle next collision
     bool attached;    // it is attached to the paddle
@@ -42,7 +44,7 @@ bool InitializeBall(void) {
     for (int i = 0; i < MAX_BALL_IMG_COUNT; i++) {
 
         char fileName[64];
-        snprintf(fileName, sizeof(fileName), "./bitmaps/balls/ball%d.png", i + 1);
+        snprintf(fileName, sizeof(fileName), BALL_TEXTURES "ball%d.png", i + 1);
 
         ball.img[i] = LoadTexture(fileName);
         if (ball.img->id == 0)  return false;
@@ -83,7 +85,7 @@ void ReleaseBall(void) {
 
         ball.spawned = false;
         ball.speed = INITIAL_BALL_SPEED;
-        
+
         ball.velocity.x = cos(releaseAngle) * ball.speed;
         ball.velocity.y = sin(releaseAngle) * ball.speed;
     }
@@ -110,7 +112,7 @@ void DrawBall(void) {
 
 
 void DrawGuide(void) {
-    
+
     const int ROTATING_LEFT = 1;
     const int ROTATING_RIGHT = -1;
 
@@ -123,7 +125,7 @@ void DrawGuide(void) {
     // rotate the guide between 45 and 135 degrees
     releaseAngle += rotateSpeed * GetFrameTime();
     if (releaseAngle > centerAngle + angleSway && direction == ROTATING_LEFT) {
-        direction = ROTATING_RIGHT; 
+        direction = ROTATING_RIGHT;
         rotateSpeed *= -1;
     } else if (releaseAngle < centerAngle - angleSway && direction == ROTATING_RIGHT) {
         direction = ROTATING_LEFT;
@@ -163,23 +165,23 @@ void MoveBall(void) {
 
     ball.oldPosition = ball.position;
     bool stepBack = false;
-    
+
     // keep spawned ball on paddle center
     if (ball.spawned) {
         ball.position = GetSpawnPoint();
         return;
-    } 
+    }
 
     if (ball.attached) {
         ball.position = (Vector2){
             GetPaddlePositionX() - ball.anchor.x,
             GetPaddlePositionY() - ball.anchor.y
         };
-        
+
         // check is the ball is hanging off the edge of the paddle
         // when the paddle is moved against the wall
         int boundry = getPlayWall(WALL_LEFT).width;
-        if (ball.position.x < boundry) {  
+        if (ball.position.x < boundry) {
             ball.position.x = boundry;
             ball.anchor.x = GetPaddlePositionX() - ball.position.x;
         }
@@ -239,13 +241,13 @@ void MoveBall(void) {
             if (!isBlockActive(row,col)) continue;
 
             Rectangle block = getBlockCollisionRec(row, col);
-            if (CheckCollisionRecs(GetBallCollisionRec(), block)) { 
-                
+            if (CheckCollisionRecs(GetBallCollisionRec(), block)) {
+
                 stepBack = true;
                 activateBlock(row, col);
 
                 float dX = (ball.position.x + ball.img->width / 2) - (block.x + block.width / 2);
-                float dY = (ball.position.y + ball.img->height / 2) - (block.y + block.height / 2);                
+                float dY = (ball.position.y + ball.img->height / 2) - (block.y + block.height / 2);
 
                 float overlapX = (ball.img->width + block.width) / 2 - fabs(dX);
                 float overlapY = (ball.img->height + block.height) / 2 - fabs(dY);
@@ -273,7 +275,7 @@ void MoveBall(void) {
         ball.velocity.y = sin(angle) * ball.speed;
 
     }
-        
+
 }
 
 
