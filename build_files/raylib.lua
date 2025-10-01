@@ -101,7 +101,6 @@ function raylib.static_lib_target()
             compileas "Objective-C"
         filter {"system:linux"}
             defines {"_GLFW_X11"}
-            defines {"_GNU_SOURCE"}
         filter {}
 end
 
