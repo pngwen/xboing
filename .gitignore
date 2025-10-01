@@ -56,6 +56,9 @@ dkms.conf
 
 COMPILER.OUT
 
+# Macos system files
+.DS_Store
+
 # IDE Configuration Files
 c_cpp_properties.json
 settings.json
