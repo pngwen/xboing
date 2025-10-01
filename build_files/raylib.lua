@@ -71,9 +71,6 @@ function raylib.setup_project()
         debugdir "$(SolutionDir)"
     filter {"system:macosx"}
         disablewarnings {"deprecated-declarations"}
-    filter {"system:linux"}
-        defines {"_GLFW_X11"}
-        defines {"_GNU_SOURCE"}
     filter {}
 end
 
@@ -102,6 +99,9 @@ function raylib.static_lib_target()
             buildoptions { "/Zc:__cplusplus" }
         filter { "system:macosx", "files:" .. raylib.submodule .. "/src/rglfw.c" }
             compileas "Objective-C"
+        filter {"system:linux"}
+            defines {"_GLFW_X11"}
+            defines {"_GNU_SOURCE"}
         filter {}
 end
 
