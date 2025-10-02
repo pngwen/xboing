@@ -6,11 +6,6 @@ obtaining points for each block destroyed and each level completed. The person
 with the highest score wins.
 
 ## Building Xboing
-Build files and project configurations can be generated with [Premake 5](https://premake.github.io).
+Build files and project configurations can be generated with [Premake 5](https://premake.github.io). To get source code and configure a build enviroment, see the [Getting Started] page.
 
-> Premake is a command line utility which reads a scripted definition of a software project and, most commonly, uses it to generate project files for toolsets like Visual Studio, Xcode, or GNU Make.
-
-See documentation for generating projects:
-  - [Windows](docs/building/windows.md)
-  - [Linux](docs/building/linux.md)
-  - [Macos](docs/building/macosx.md)
+[Getting Started]: docs/setup/getting-started.md

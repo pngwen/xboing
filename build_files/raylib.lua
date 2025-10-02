@@ -2,9 +2,10 @@ local raylib = {}
 
 raylib.submodule = "raylib"
 raylib.platform = {
-    "GRAPHICS_API_OPENGL_33", -- Graphics API: opengl33
-    "PLATFORM_DESKTOP" -- Backend: GLFW
+    "PLATFORM_DESKTOP",
+    "GRAPHICS_API_OPENGL_33",
 }
+
 -- Link with raylib.
 function raylib.links()
     links { "raylib" }
@@ -44,7 +45,7 @@ function raylib.include()
     flags { "ShadowedVariables" }
 end
 
-function raylib.link_homebrew() -- Link with homebrew installation. Not currently supported.
+function raylib.link_homebrew() -- Link with homebrew installation. TODO: make into option
     print("Configuring for homebrew installation...")
 
     links {}
