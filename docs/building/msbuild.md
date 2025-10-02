@@ -1,17 +1,17 @@
 # Building with MSBuild
 ## Dependencies
-Windows users who have previously installed most recent versions of Visual Studio already have MSBuild installed. MSBuild is most usually installed under the Visual Studio installation folder within *MSBuild/Current/Bin*.
+Windows users who have previously installed most recent versions of Visual Studio already have MSBuild installed. MSBuild can usually be found under the Visual Studio installation folder within *MSBuild/Current/Bin*.
 ##### Example location:
 ```
 C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\MSBuild\Current\Bin\MSBuild.exe
 ```
-MSBuild may be installed in the system path. For users who have not installed Visual Studio, MSBuild can be installed [here](https://visualstudio.microsoft.com/downloads/#build-tools-for-visual-studio-2022).
+MSBuild can be added to the system path for easier access. For users who have not installed Visual Studio, MSBuild can be installed [here](https://visualstudio.microsoft.com/downloads/#build-tools-for-visual-studio-2022).
 
 ## Generate project for Visual Studio
 To generate a project for Visual Studio, use **premake vs2022**.
 ```sh
 # premake5 [action]
-premake5.exe vs2022
+.\premake5.exe vs2022
 ```
 Premake will generate a solution file in the project directory with all project targets configured.
 

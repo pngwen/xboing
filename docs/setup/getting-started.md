@@ -34,7 +34,7 @@ xboing
 └── premake5.lua
 ```
 ## Generate project files
-This project currently supports generating files for the GNU and Visual Studio toolchains. See these guides for configuring and using generated files for your system:
+This project currently supports generating files for the GNU and Visual Studio toolchains. Try these guides for configuring and using generated files for your system:
 | Platform | Guide |
 | --- | --- |
 | Windows | [Visual Studio], [MSBuild (Standalone)][MSBuild], [Make (W64Devkit)][W64Devkit]
