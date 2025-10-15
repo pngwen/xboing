@@ -7,6 +7,7 @@
 #include "demo_ball.h"
 #include "demo_gamemodes.h"
 #include "demo_blockloader.h"
+#include "audio.h"
 
 #define BALL_TEXTURES "resource/textures/balls/"
 
@@ -91,7 +92,7 @@ void ReleaseBall(void) {
     }
 
     if (ball.attached) ball.attached = false;
-
+    PlaySound(audio.ballShot);
 }
 
 
