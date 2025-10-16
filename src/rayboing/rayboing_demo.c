@@ -6,7 +6,7 @@
 #include "demo_blockloader.h"
 #include "demo_ball.h"
 #include "paddle.h"
-
+#include "audio.h"
 
 const int SCREEN_WIDTH = 575;
 const int SCREEN_HEIGHT = 720;
@@ -25,6 +25,7 @@ int main(int argumentCount, char *arguments[]) {
     // must InitWindow before loading textures
 
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Rayboing Demo");
+    InitAudioDevice(); // audio
     SetTargetFPS(60);
     windowInitialized = true;
 
@@ -36,6 +37,8 @@ int main(int argumentCount, char *arguments[]) {
         fprintf(stderr, "Program halt on initialize paddle");
     } else if (!InitializeBall()) {
         fprintf(stderr, "Program halt on initialize ball");
+    } else if (!initAudioFiles()) {
+        fprintf(stderr, "Program halt on initialize sounds");
     } else {
 
         initializePlayArea();
@@ -112,4 +115,5 @@ void ReleaseResources(void) {
     FreePaddle();
     FreeBall();
     freeBlockTextures();
+    FreeAudioSystem();
 }
