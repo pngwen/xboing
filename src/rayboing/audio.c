@@ -7,7 +7,6 @@
 #include <stdio.h>
 #include "audio.h"
 
-
 AudioSystem audio;
 
 static const char *soundFiles[SOUND_COUNT] = {
@@ -81,29 +80,7 @@ bool initAudioFiles(void) {
     audio.masterVolume = 100.0f;
     return success;
 }
-/*
-bool initAudioFiles(){
-    audio.ballShot = LoadSound("resource/sounds/ballshot.mp3");
-    
-    
-    if (audio.ballShot.frameCount == 0) {
-        // Failed to load
-        fprintf(stderr, "didnt load it"); // print
-        return false;
-        
-    }
-        
-    fprintf(stderr, "loaded it"); // print
-    audio.masterVolume = 100;
 
-    return true;
-}
-*/
-/*
-void FreeAudioSystem(void){
-    FreeAudioSystemHelper(&audio);
-}*/
-/* Free audio system resources */
 void FreeAudioSystem(void) {
     for (int i = 0; i < SOUND_COUNT; i++) {
         if (audio.sounds[i].frameCount > 0) {
@@ -120,22 +97,3 @@ void startSound(SoundID id) {
         PlaySound(audio.sounds[id]);
     }
 }
-
-
-/*
- Process audio device events 
-void audioDeviceEvents(void) {
-    TODO: implement audio event processing 
-}
-
-Set maximum volume 
-void SetMaximumVolume(int Volume) {
-    TODO: implement volume adjustment 
-}
-
-Get current maximum volume 
-int GetMaximumVolume(void) {
-     TODO: implement volume retrieval 
-    return 0;
-}
-*/
