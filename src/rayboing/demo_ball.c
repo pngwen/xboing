@@ -7,6 +7,7 @@
 #include "demo_ball.h"
 #include "demo_gamemodes.h"
 #include "demo_blockloader.h"
+#include "audio.h"
 
 #define BALL_TEXTURES "resource/textures/balls/"
 
@@ -88,10 +89,13 @@ void ReleaseBall(void) {
 
         ball.velocity.x = cos(releaseAngle) * ball.speed;
         ball.velocity.y = sin(releaseAngle) * ball.speed;
+        startSound(SND_BALLSHOT);   
     }
 
-    if (ball.attached) ball.attached = false;
-
+    if (ball.attached){
+        ball.attached = false;
+        startSound(SND_BALLSHOT);   
+    }
 }
 
 
@@ -208,17 +212,21 @@ void MoveBall(void) {
 
     if (CheckCollisionRecs(GetBallCollisionRec(), getPlayWall(WALL_BOTTOM))) {
         ball.position.y = GetScreenHeight(); // cheesy way to hide ball after loss
+        startSound(SND_BALLLOST);  
         SetGameMode(MODE_LOSE);
         return;
     } else if (CheckCollisionRecs(GetBallCollisionRec(), getPlayWall(WALL_TOP))) {
+        startSound(SND_BOING);       // test to play sound bouncing off wall
         stepBack = true;
         flipy = true;
     }
 
     if (CheckCollisionRecs(GetBallCollisionRec(), getPlayWall(WALL_LEFT))) {
+        startSound(SND_BOING);                                                                                   // test to play sound bouncing off wall
         stepBack = true;
         flipx = true;
     } else if (CheckCollisionRecs(GetBallCollisionRec(), getPlayWall(WALL_RIGHT))) {
+        startSound(SND_BOING);                                                                                  // test to play sound bouncing off wall
         stepBack = true;
         flipx = true;
     }
@@ -228,6 +236,7 @@ void MoveBall(void) {
     if (CheckCollisionRecs(GetBallCollisionRec(),GetPaddleCollisionRec())) {
         flipy = true;
         ball.position.y = GetPaddlePositionY() - ball.img[ball.imgIndex].height;
+        startSound(SND_PADDLE);
         if (ball.sticky) {
             ball.sticky = false;
             ball.attached = true;

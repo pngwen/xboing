@@ -4,7 +4,7 @@
 #include "demo_blockloader.h"
 #include "demo_gamemodes.h"
 #include "demo_ball.h"
-
+#include "audio.h"
 #define BLOCK_TEXTURES "resource/textures/blocks/"
 
 const int PLAY_X_OFFSET = 35;
@@ -473,31 +473,37 @@ void activateBlock(int row, int col) {
 
         case 's': // sticky
             SetBallSticky();
+            startSound(SND_STICKY);
             deactivateBlock(row, col);
             break;
 
         case 'R': //reverse paddle
             ToggleReverse();
+            startSound(SND_WARP);
             deactivateBlock(row, col);
             break;
 
         case 'B': // ball speed increased
             IncreaseBallSpeed();
+            startSound(SND_BOING);
             deactivateBlock(row, col);
             break;
 
         case '<': //shrink paddle
             ChangePaddleSize(SIZE_DOWN);
+            startSound(SND_WZZZ2);
             deactivateBlock(row, col);
             break;
 
         case '>': //grow paddle
             ChangePaddleSize(SIZE_UP);
+            startSound(SND_WZZZ);
             deactivateBlock(row, col);
             break;
 
         case 'X': // bomb
             // destroy the surrounding 8 blocks without triggering them
+            startSound(SND_BOMB);
             for (int i = 0; i < 3; i++ ) {
                 int rowOffset = row - 1 + i;
                 if (rowOffset < 0 || rowOffset >= ROW_MAX) continue;
@@ -510,36 +516,43 @@ void activateBlock(int row, int col) {
             break;
 
         case '1': // number block 1
+            startSound(SND_TOUCH);
             game_blocks[row][col].texture = COUNTER_BLK[0];
             game_blocks[row][col].type = '0';
             break;
 
         case '2': // number block 2
+            startSound(SND_TOUCH);
             game_blocks[row][col].texture = COUNTER_BLK[1];
             game_blocks[row][col].type = '1';
             break;
 
         case '3': // number block 3
+            startSound(SND_TOUCH);
             game_blocks[row][col].texture = COUNTER_BLK[2];
             game_blocks[row][col].type = '2';
             break;
 
         case '4': // number block 4
+            startSound(SND_TOUCH);
             game_blocks[row][col].texture = COUNTER_BLK[3];
             game_blocks[row][col].type = '3';
             break;
 
         case '5': // number block 5
+            startSound(SND_TOUCH);
             game_blocks[row][col].texture = COUNTER_BLK[4];
             game_blocks[row][col].type = '4';
             break;
 
         default:
+            startSound(SND_TOUCH);
             deactivateBlock(row, col);
             break;
     }
 
     if (blocksRemaining == 0) {
+        startSound(SND_APPLAUSE);
         SetGameMode(MODE_WIN);
         return;
     }

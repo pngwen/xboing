@@ -11,3 +11,33 @@ change the define value in blocks.h MAX_LEVEL_NUM to include your new levels.
 
 You can also use the built in level editor that is found in XBoing V2.0 and
 above.
+
+BLOCK INDEX
+| Character   | Block Name       | Description                                                 |
+| ----------- | ---------------- | ----------------------------------------------------------- |
+| **H**       | `HYPERSPACE_BLK` | Hyperspace block — temporarily removes walls.               |
+| **B**       | `BULLET_BLK`     | Bullet block — provides ammo.                               |
+| **c**       | `MAXAMMO_BLK`    | Maximum ammo block — gives full ammunition.                 |
+| **r**       | `RED_BLK`        | Red-colored block.                                          |
+| **g**       | `GREEN_BLK`      | Green-colored block.                                        |
+| **b**       | `BLUE_BLK`       | Blue-colored block.                                         |
+| **t**       | `TAN_BLK`        | Tan-colored block.                                          |
+| **p**       | `PURPLE_BLK`     | Purple-colored block.                                       |
+| **y**       | `YELLOW_BLK`     | Yellow-colored block.                                       |
+| **w**       | `BLACK_BLK`      | Solid wall block — acts as an immovable barrier.            |
+| **0–5**     | `COUNTER_BLK[n]` | Counter blocks showing levels 0–5 (higher = stronger).      |
+| **+**       | `ROAMER_BLK`     | Roamer block — moves around the playfield.                  |
+| **X**       | `BOMB_BLK`       | Bomb block — explodes when hit.                             |
+| **D**       | `DEATH_BLK`      | Death block — destroys the ball instantly.                  |
+| **L**       | `EXTRABALL_BLK`  | Extra ball block — grants an additional life.               |
+| **M**       | `MGUN_BLK`       | Machine gun block — enables rapid fire.                     |
+| **W**       | `WALLOFF_BLK`    | Wall-off block — toggles wall collisions.                   |
+| **?**       | `RANDOM_BLK`     | Random block — changes to a random block type periodically. |
+| **d**       | `DROP_BLK`       | Dropping block — falls downward when hit.                   |
+| **T**       | `TIMER_BLK`      | Extra time block — adds time to the level timer.            |
+| **m**       | `MULTIBALL_BLK`  | Multi-ball block — spawns additional balls.                 |
+| **s**       | `STICKY_BLK`     | Sticky block — makes the paddle sticky temporarily.         |
+| **R**       | `REVERSE_BLK`    | Reverse control block — inverts paddle movement.            |
+| **<**       | `PAD_SHRINK_BLK` | Shrinks the paddle size.                                    |
+| **>**       | `PAD_EXPAND_BLK` | Expands the paddle size.                                    |
+| *(default)* | *(none)*         | Empty or invalid space — no block rendered.                 |

@@ -26,7 +26,7 @@ workspace "xboing"
             ["Source Files/*"] = { "src/**.c" }
         }
 
-        files { "src/rayboing/*.c", "src/paddle.c", "include/**.h" }
+        files { "src/rayboing/*.c", "src/paddle.c", "include/**.h", "src/rayboing/audio.c" }
         removefiles { "src/rayboing/blockloader.c", "src/rayboing/paddle_demo.c", "src/main.c" }
 
     project "raylib"
