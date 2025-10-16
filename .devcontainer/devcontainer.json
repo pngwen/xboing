@@ -1,7 +1,7 @@
 {
   "waitFor" : "onCreateCommand",
   "updateContentCommand": "",
-  "postCreateCommand": "", 
+  "postCreateCommand": "sudo apt update && sudo apt upgrade -y && sudo apt install -y libasound2-dev libx11-dev libxrandr-dev libxi-dev libgl1-mesa-dev libglu1-mesa-dev libxcursor-dev libxinerama-dev libwayland-dev libxkbcommon-dev", 
   "features": {
     "ghcr.io/devcontainers/features/desktop-lite:1": {}
   },
