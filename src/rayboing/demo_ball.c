@@ -89,10 +89,13 @@ void ReleaseBall(void) {
 
         ball.velocity.x = cos(releaseAngle) * ball.speed;
         ball.velocity.y = sin(releaseAngle) * ball.speed;
+        startSound(SND_BALLSHOT);   
     }
 
-    if (ball.attached) ball.attached = false;
-    PlaySound(audio.ballShot);
+    if (ball.attached){
+        ball.attached = false;
+        startSound(SND_BALLSHOT);   
+    }
 }
 
 
@@ -209,17 +212,21 @@ void MoveBall(void) {
 
     if (CheckCollisionRecs(GetBallCollisionRec(), getPlayWall(WALL_BOTTOM))) {
         ball.position.y = GetScreenHeight(); // cheesy way to hide ball after loss
+        startSound(SND_BALLLOST);  
         SetGameMode(MODE_LOSE);
         return;
     } else if (CheckCollisionRecs(GetBallCollisionRec(), getPlayWall(WALL_TOP))) {
+        startSound(SND_BOING);       // test to play sound bouncing off wall
         stepBack = true;
         flipy = true;
     }
 
     if (CheckCollisionRecs(GetBallCollisionRec(), getPlayWall(WALL_LEFT))) {
+        startSound(SND_BOING);                                                                                   // test to play sound bouncing off wall
         stepBack = true;
         flipx = true;
     } else if (CheckCollisionRecs(GetBallCollisionRec(), getPlayWall(WALL_RIGHT))) {
+        startSound(SND_BOING);                                                                                  // test to play sound bouncing off wall
         stepBack = true;
         flipx = true;
     }
