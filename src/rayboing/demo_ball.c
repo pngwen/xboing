@@ -236,6 +236,7 @@ void MoveBall(void) {
     if (CheckCollisionRecs(GetBallCollisionRec(),GetPaddleCollisionRec())) {
         flipy = true;
         ball.position.y = GetPaddlePositionY() - ball.img[ball.imgIndex].height;
+        startSound(SND_PADDLE);
         if (ball.sticky) {
             ball.sticky = false;
             ball.attached = true;

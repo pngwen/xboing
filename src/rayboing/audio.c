@@ -74,7 +74,7 @@ bool initAudioFiles(void) {
             fprintf(stderr, "Failed to load sound: %s\n", soundFiles[i]);
             success = false;
         } else {
-            fprintf(stderr, "Loaded: %s\n", soundFiles[i]);
+            //fprintf(stderr, "Loaded: %s\n", soundFiles[i]);
         }
     }
 
