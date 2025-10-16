@@ -7,6 +7,8 @@ C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\MSBuild\Current\B
 ```
 MSBuild can be added to the system path for easier access. For users who have not installed Visual Studio, MSBuild can be installed [here](https://visualstudio.microsoft.com/downloads/#build-tools-for-visual-studio-2022).
 
+Users may also need to install the "Desktop development with C++" workload from Visual Studio Installer.
+
 ## Generate project for Visual Studio
 To generate a project for Visual Studio, use **premake vs2022**.
 ```sh
