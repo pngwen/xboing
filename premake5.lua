@@ -26,8 +26,7 @@ workspace "xboing"
             ["Source Files/*"] = { "src/**.c" }
         }
 
-        files { "src/rayboing/*.c", "src/paddle.c", "include/**.h", "src/rayboing/audio.c" }
-        removefiles { "src/rayboing/blockloader.c", "src/rayboing/paddle_demo.c", "src/main.c" }
+        files { "src/**.c", "include/**.h"}
 
     project "raylib"
         raylib.static_lib_target()
