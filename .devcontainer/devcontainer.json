@@ -1,0 +1,30 @@
+{
+  "waitFor" : "onCreateCommand",
+  "updateContentCommand": "",
+  "postCreateCommand": "sudo apt update && sudo apt upgrade -y && sudo apt install -y libasound2-dev libx11-dev libxrandr-dev libxi-dev libgl1-mesa-dev libglu1-mesa-dev libxcursor-dev libxinerama-dev libwayland-dev libxkbcommon-dev", 
+  "features": {
+    "ghcr.io/devcontainers/features/desktop-lite:1": {}
+  },
+  "forwardPorts": [6080],
+  "portsAttributes": {
+    "6080": {
+      "label": "desktop"
+    }
+  },
+  "customizations": {
+      "codespaces": {
+        "openFiles": []
+      },
+      "vscode": {
+        "extensions": [
+          "ms-vcode.cmake-tools",
+          "ms-vscode.cpptools",
+          "ms-vscode.cpptools-extension-pack",
+          "ms-vscode.cpptools-themes",
+          "ms-vscode.makefile-tools",
+          "twxs.cmake",
+          "cschlosser.doxdocgen"
+        ]
+      }
+    }
+}
