@@ -6,33 +6,33 @@
 #include "demo_controls.h"
 #include "demo_blockloader.h"
 #include "demo_ball.h"
-
+#include <stdio.h>
 const int INITIAL_LIVES = 3;
 int livesRemaining = 0;
 
 GAME_MODES gameState = MODE_EXIT;
 
-
 void RenderGameScreen(void);
 void DrawStatusText(const char *displayText);
 
-
-GAME_MODES GetGameMode(void) {
+GAME_MODES GetGameMode(void)
+{
     return gameState;
 }
 
-void SetGameMode(GAME_MODES mode) {
+void SetGameMode(GAME_MODES mode)
+{
     gameState = mode;
 }
 
+void RunInitGameMode(const char *fileName)
+{
 
-void RunInitGameMode(const char *fileName) {
-
-
-    if (livesRemaining <= 0) {
+    if (livesRemaining <= 0)
+    {
         loadBlocks(fileName);
-        livesRemaining = INITIAL_LIVES;        
-    } 
+        livesRemaining = INITIAL_LIVES;
+    }
 
     livesRemaining--;
 
@@ -42,47 +42,57 @@ void RunInitGameMode(const char *fileName) {
     RenderGameScreen();
 
     SetGameMode(MODE_PLAY);
-
 }
 
+void RunPlayMode(void)
+{
+    // --- Keyboard controls ---
+    if (IsInputPaddleLeft())
+        MovePaddle(PADDLE_LEFT);
+    if (IsInputPaddleRight())
+        MovePaddle(PADDLE_RIGHT);
 
-void RunPlayMode(void) {
+    // --- Mouse controls ---
+    Vector2 mousePosition = GetMousePosition();
+    SetPaddlePosition(mousePosition.x);
 
+    // --- Ball release ---
+    if (IsInputReleaseBall())
+        ReleaseBall();
 
-    if (IsInputPaddleLeft()) MovePaddle(PADDLE_LEFT);
-    if (IsInputPaddleRight()) MovePaddle(PADDLE_RIGHT);
-
-    if (IsInputReleaseBall()) ReleaseBall();
-
+    // --- Update ball ---
     MoveBall();
 
+    // --- Render everything ---
     RenderGameScreen();
 
-    if (IsInputQuitGame()) {
+    // --- Quit handling ---
+    if (IsInputQuitGame())
+    {
         livesRemaining = 0;
         SetGameMode(MODE_CANCEL);
     }
-
 }
 
+void RunEndMode(void)
+{
 
-void RunEndMode(void) {
-    
     RenderGameScreen();
 
-    if (IsInputQuitGame()) {
+    if (IsInputQuitGame())
+    {
         SetGameMode(MODE_EXIT);
-
-    } else if (IsInputRestartAfterEnd()) {
+    }
+    else if (IsInputRestartAfterEnd())
+    {
         SetGameMode(MODE_INITGAME);
     }
-    
 }
 
+void RenderGameScreen(void)
+{
 
-void RenderGameScreen(void) {
-
-    BeginDrawing(); 
+    BeginDrawing();
 
     ClearBackground(BLACK);
 
@@ -92,45 +102,49 @@ void RenderGameScreen(void) {
     DrawPaddle();
     drawBorder();
 
-    switch (GetGameMode()) {
+    switch (GetGameMode())
+    {
 
-        case MODE_WIN: 
-            DrawStatusText("You Won! Congrats!!!");
-            break;
+    case MODE_WIN:
+        DrawStatusText("You Won! Congrats!!!");
+        break;
 
-        case MODE_LOSE:
-            if (livesRemaining > 0) {
-                const char *txt = TextFormat("Remaining attempts: %d", livesRemaining);
-                DrawStatusText(txt);
-            } else {
-                DrawStatusText("You Lost! Sadface...");
-            }
-            break;  
-        
-        case MODE_CANCEL:
-            DrawStatusText("Game canceled");
+    case MODE_LOSE:
+        if (livesRemaining > 0)
+        {
+            const char *txt = TextFormat("Remaining attempts: %d", livesRemaining);
+            DrawStatusText(txt);
+        }
+        else
+        {
+            DrawStatusText("You Lost! Sadface...");
+        }
+        break;
 
-        default:
-            break;
+    case MODE_CANCEL:
+        DrawStatusText("Game canceled");
 
+    default:
+        break;
     }
 
     const char *lives = TextFormat("Balls Remaining: %d", livesRemaining);
     DrawText(lives, 10, 10, 20, WHITE);
 
     const char *blocks = TextFormat("Blocks Remaining: %d", getBlockCount());
-    DrawText(blocks, GetScreenWidth() - MeasureText(blocks, 20)- 10, 10, 20, WHITE);
+    DrawText(blocks, GetScreenWidth() - MeasureText(blocks, 20) - 10, 10, 20, WHITE);
 
-    if (GetPaddleReverse()) {
+    if (GetPaddleReverse())
+    {
         const char *reversed = "REVERSED!";
-        DrawText(reversed, (GetScreenWidth() - MeasureText(reversed, 25))/ 2, 35, 25, YELLOW);
+        DrawText(reversed, (GetScreenWidth() - MeasureText(reversed, 25)) / 2, 35, 25, YELLOW);
     }
 
     EndDrawing();
-
 }
 
-void DrawStatusText(const char *displayText) {
+void DrawStatusText(const char *displayText)
+{
 
     const int FONTSIZE = 40;
     const int PADDING = 20;
@@ -143,5 +157,4 @@ void DrawStatusText(const char *displayText) {
 
     DrawText(displayText, xpos - 1, ypos - 1, FONTSIZE, RED);
     DrawText(displayText, xpos, ypos, FONTSIZE, GREEN);
-
 }

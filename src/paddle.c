@@ -52,15 +52,17 @@
 #include "faketypes.h"
 #include "paddle.h"
 #include "demo_blockloader.h"
+#include <stdio.h>
 
-#define PADDLE_COUNT  3
+#define PADDLE_COUNT 3
 
 #define PADDLE_TEXTURES "resource/textures/paddle/"
 
 const int PADDLE_INITIAL_INDEX = 1;
-const int PADDLE_VEL = 600;  // pixels per second
+const int PADDLE_VEL = 600; // pixels per second
 
-typedef struct {
+typedef struct
+{
 	Texture2D img;
 	char *description;
 	int size;
@@ -71,43 +73,49 @@ Paddle paddles[PADDLE_COUNT];
 
 int reverseOn;
 int paddleIndex;
-int	paddlePosition;
+int paddlePosition;
 
 int GetPaddlePositionY(void);
 
-void DrawPaddle(void) {
+void DrawPaddle(void)
+{
 	DrawTexture(paddles[paddleIndex].img, paddlePosition, GetPaddlePositionY(), WHITE);
- }
+}
 
- int GetPaddlePositionY(void) {
-	//return GetScreenHeight() - DIST_BASE;
+int GetPaddlePositionY(void)
+{
+	// return GetScreenHeight() - DIST_BASE;
 	return getPlayWall(WALL_BOTTOM).y - DIST_BASE;
- }
+}
 
-bool InitialisePaddle(void) {
+bool InitialisePaddle(void)
+{
 
 	// do not load images if program is closing
-	if (WindowShouldClose()) return false;
+	if (WindowShouldClose())
+		return false;
 
 	Texture2D emptyTexture = {0};
 
 	// textures must be loaded from smallest to largest
-	paddles[0] = (Paddle){emptyTexture, "Small",  40, PADDLE_TEXTURES "padsml.png"};
+	paddles[0] = (Paddle){emptyTexture, "Small", 40, PADDLE_TEXTURES "padsml.png"};
 	paddles[1] = (Paddle){emptyTexture, "Medium", 50, PADDLE_TEXTURES "padmed.png"};
-	paddles[2] = (Paddle){emptyTexture, "Huge",   70, PADDLE_TEXTURES "padhuge.png"};
+	paddles[2] = (Paddle){emptyTexture, "Huge", 70, PADDLE_TEXTURES "padhuge.png"};
 
 	// initialize variables before loop
 	int errorFlag = False;
 
 	// create textures for each paddle size
-	for (int i = 0; i < PADDLE_COUNT; i++) {
+	for (int i = 0; i < PADDLE_COUNT; i++)
+	{
 
 		// load paddle texture
 		Image img = LoadImage(paddles[i].filepath);
 		paddles[i].img = LoadTextureFromImage(img);
 
 		// check if texture loaded successfully
-		if (paddles[i].img.id == 0) {
+		if (paddles[i].img.id == 0)
+		{
 			fprintf(stderr, "Error: failed to load texture InitialisePaddle() file: %s.\n", paddles[i].filepath);
 			errorFlag = True;
 		}
@@ -117,99 +125,113 @@ bool InitialisePaddle(void) {
 
 	// stop program if textures failed to load
 	return !errorFlag;
-
 }
 
-void SetReverseOff(void) {
+void SetReverseOff(void)
+{
 	reverseOn = False;
 }
 
-void ToggleReverse(void) {
+void ToggleReverse(void)
+{
 
-    reverseOn = (reverseOn == True) ? False : True;
+	reverseOn = (reverseOn == True) ? False : True;
 
 	// TODO: add display text when implemented
 	// DrawSpecials(display);
 }
 
-void FreePaddle(void) {
-	for (int i = 0; i < PADDLE_COUNT; i++) {
+void FreePaddle(void)
+{
+	for (int i = 0; i < PADDLE_COUNT; i++)
+	{
 		UnloadTexture(paddles[i].img);
 	}
 }
 
-void MovePaddle(int direction) {
+void MovePaddle(int direction)
+{
 
 	// calculate the movement distance, adjusted for reverse flag
 	int distance = PADDLE_VEL * (reverseOn == True ? -1 : 1) * GetFrameTime();
 
 	// apply the move based on direction
-	switch(direction) {
-		case PADDLE_LEFT:
-			paddlePosition -= distance;
-			break;
-		case PADDLE_RIGHT:
-			paddlePosition += distance;
-			break;
+	switch (direction)
+	{
+	case PADDLE_LEFT:
+		paddlePosition -= distance;
+		break;
+	case PADDLE_RIGHT:
+		paddlePosition += distance;
+		break;
 	}
 
 	// keep position within window boundries
 	int x = getPlayWall(WALL_LEFT).width;
-	if (paddlePosition < x) paddlePosition = x;
+	if (paddlePosition < x)
+		paddlePosition = x;
 
 	int maxHPosition = getPlayWall(WALL_RIGHT).x - paddles[paddleIndex].size;
-	if (paddlePosition > maxHPosition) paddlePosition = maxHPosition;
-
+	if (paddlePosition > maxHPosition)
+		paddlePosition = maxHPosition;
 }
 
-int GetPaddleSize(void) {
+int GetPaddleSize(void)
+{
 	return paddles[paddleIndex].size;
 }
 
-int GetPaddlePositionX(void) {
+int GetPaddlePositionX(void)
+{
 	return paddlePosition;
 }
 
-Rectangle GetPaddleCollisionRec(void) {
+Rectangle GetPaddleCollisionRec(void)
+{
 	return (Rectangle){
 		paddlePosition,
 		GetPaddlePositionY(),
 		paddles[paddleIndex].img.width,
-		paddles[paddleIndex].img.height
-	};
+		paddles[paddleIndex].img.height};
 }
 
-int GetPaddleReverse(void) {
+int GetPaddleReverse(void)
+{
 	return reverseOn;
 }
 
-char *GetPaddleDescription(void) {
+char *GetPaddleDescription(void)
+{
 	return paddles[paddleIndex].description;
 }
 
-void ResetPaddleStart(void) {
+void ResetPaddleStart(void)
+{
 
 	// set size and center paddle
 	paddleIndex = PADDLE_INITIAL_INDEX;
 	paddlePosition = (GetScreenWidth() - paddles[paddleIndex].size) / 2;
 	reverseOn = False;
+}
 
- }
-
-void ChangePaddleSize(int changeDirection) {
+void ChangePaddleSize(int changeDirection)
+{
 
 	// capture the old pixel size
 	int oldSize = paddles[paddleIndex].size;
 
 	// adjust paddle index based on change in size
-	switch (changeDirection) {
-		case SIZE_UP:
-			if (paddleIndex < PADDLE_COUNT -1) paddleIndex++;
-			break;
+	switch (changeDirection)
+	{
+	case SIZE_UP:
+		if (paddleIndex < PADDLE_COUNT - 1)
+			paddleIndex++;
+		break;
 
-		case SIZE_DOWN:
-			if (paddleIndex > 0) paddleIndex--;
-			break;
+	case SIZE_DOWN:
+		if (paddleIndex > 0)
+			paddleIndex--;
+		break;
 	}
 
 	// adjust position to center the change in size
@@ -217,13 +239,32 @@ void ChangePaddleSize(int changeDirection) {
 
 	// move to ensure resize remains inside window
 	MovePaddle(PADDLE_NONE);
-
 }
 
-
-Vector2 GetBallSpawnPointOnPaddle() {
+Vector2 GetBallSpawnPointOnPaddle()
+{
 	return (Vector2){
 		paddlePosition + paddles[paddleIndex].size / 2,
-		GetPaddlePositionY()
-	};
+		GetPaddlePositionY()};
+}
+
+Rectangle paddleRect = {200, 550, 100, 20}; // example starting position
+
+void SetPaddlePosition(float x)
+{
+	// Clamp x to play area bounds
+	int minX = getPlayWall(WALL_LEFT).width;
+	int maxX = getPlayWall(WALL_RIGHT).x - paddles[paddleIndex].size;
+
+	if (x < minX)
+		x = minX;
+	if (x > maxX)
+		x = maxX;
+
+	paddlePosition = (int)x;
+}
+
+float GetPaddleWidth(void)
+{
+	return paddleRect.width;
 }
