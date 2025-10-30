@@ -294,7 +294,7 @@ void SelectiveRedraw(Display *display)
 			break;
 			
 		case MODE_EDIT:
-			RedrawEditor(display, playWindow);
+			RedrawEditorArea(display, playWindow);
 			break;
 			
 		case MODE_INTRO:
