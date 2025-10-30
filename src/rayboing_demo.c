@@ -87,12 +87,12 @@ while (currentMode != MODE_EXIT) {
     switch (currentMode) {
 
         case MODE_INITGAME:
-                if (argumentCount == 2) {
-                    RunInitGameMode(arguments[1]);
-                } else {
-                    RunInitGameMode(defaultLevel);
-                }
-                break;
+            if (argumentCount == 2) {
+                RunInitGameMode(arguments[1]);
+            } else {
+                RunInitGameMode(defaultLevel);
+            }
+            break;
 
         case MODE_PLAY:
             RunPlayMode();
