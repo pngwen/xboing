@@ -96,49 +96,22 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\include\audio.h" />
-    <ClInclude Include="..\include\ball.h" />
-    <ClInclude Include="..\include\blocks.h" />
-    <ClInclude Include="..\include\bonus.h" />
     <ClInclude Include="..\include\copyright.h" />
-    <ClInclude Include="..\include\demo.h" />
     <ClInclude Include="..\include\demo_ball.h" />
     <ClInclude Include="..\include\demo_blockloader.h" />
     <ClInclude Include="..\include\demo_controls.h" />
     <ClInclude Include="..\include\demo_gamemodes.h" />
-    <ClInclude Include="..\include\dialogue.h" />
-    <ClInclude Include="..\include\editor.h" />
-    <ClInclude Include="..\include\error.h" />
-    <ClInclude Include="..\include\eyedude.h" />
     <ClInclude Include="..\include\faketypes.h" />
-    <ClInclude Include="..\include\file.h" />
-    <ClInclude Include="..\include\gun.h" />
-    <ClInclude Include="..\include\highscore.h" />
-    <ClInclude Include="..\include\init.h" />
-    <ClInclude Include="..\include\inst.h" />
-    <ClInclude Include="..\include\intro.h" />
-    <ClInclude Include="..\include\keys.h" />
-    <ClInclude Include="..\include\keysedit.h" />
-    <ClInclude Include="..\include\level.h" />
-    <ClInclude Include="..\include\main.h" />
-    <ClInclude Include="..\include\mess.h" />
-    <ClInclude Include="..\include\misc.h" />
     <ClInclude Include="..\include\paddle.h" />
-    <ClInclude Include="..\include\presents.h" />
-    <ClInclude Include="..\include\preview.h" />
-    <ClInclude Include="..\include\score.h" />
-    <ClInclude Include="..\include\sfx.h" />
-    <ClInclude Include="..\include\special.h" />
-    <ClInclude Include="..\include\stage.h" />
-    <ClInclude Include="..\include\ulaw.h" />
-    <ClInclude Include="..\include\version.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\audio.c" />
+    <ClCompile Include="..\src\demo_ball.c" />
+    <ClCompile Include="..\src\demo_blockloader.c" />
+    <ClCompile Include="..\src\demo_controls.c" />
+    <ClCompile Include="..\src\demo_gamemodes.c" />
     <ClCompile Include="..\src\paddle.c" />
-    <ClCompile Include="..\src\rayboing\demo_ball.c" />
-    <ClCompile Include="..\src\rayboing\demo_blockloader.c" />
-    <ClCompile Include="..\src\rayboing\demo_controls.c" />
-    <ClCompile Include="..\src\rayboing\demo_gamemodes.c" />
-    <ClCompile Include="..\src\rayboing\rayboing_demo.c" />
+    <ClCompile Include="..\src\rayboing_demo.c" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="raylib.vcxproj">

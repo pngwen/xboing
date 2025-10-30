@@ -3,7 +3,7 @@
 ## Getting source code
 Clone the repository using the `--recurse-submodules` option to also checkout all submodules.
 ```sh
-git clone https://github.com/zahcwa/preboing.git --recursive
+git clone https://github.com/zahcwa/preboing.git --recurse-submodules
 ```
 Your project directory should look something like this:
 ```
