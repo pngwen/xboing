@@ -68,12 +68,25 @@ int main(int argumentCount, char *arguments[]) {
     const char *defaultLevel = "resource/levels/level01.data";
 
     // main game loop
-    GAME_MODES currentMode = GetGameMode();
-    while (currentMode != MODE_EXIT) {
+    // main game loop
+GAME_MODES currentMode = GetGameMode();
+while (currentMode != MODE_EXIT) {
 
-        switch (currentMode) {
+    // Update input before game logic
+    if (GetGameMode() == MODE_PLAY) {
+        // Get mouse position
+        Vector2 mousePos = GetMousePosition();
+        SetPaddlePosition(mousePos.x); // update paddle X
 
-            case MODE_INITGAME:
+        // Optional: keyboard fallback
+        if (IsKeyDown(KEY_LEFT))  MovePaddle(PADDLE_LEFT);
+        if (IsKeyDown(KEY_RIGHT)) MovePaddle(PADDLE_RIGHT);
+    }
+
+    // Handle game modes
+    switch (currentMode) {
+
+        case MODE_INITGAME:
                 if (argumentCount == 2) {
                     RunInitGameMode(arguments[1]);
                 } else {
@@ -81,26 +94,25 @@ int main(int argumentCount, char *arguments[]) {
                 }
                 break;
 
-            case MODE_PLAY:
-                RunPlayMode();
-                break;
+        case MODE_PLAY:
+            RunPlayMode();
+            break;
 
-            case MODE_WIN:
-            case MODE_LOSE:
-            case MODE_CANCEL:
-                RunEndMode();
-                break;
-            
-            default:
-                SetGameMode(MODE_CANCEL);
-                break;
+        case MODE_WIN:
+        case MODE_LOSE:
+        case MODE_CANCEL:
+            RunEndMode();
+            break;
 
-        } // switch 
+        default:
+            SetGameMode(MODE_CANCEL);
+            break;
+    }
 
-        if (WindowShouldClose()) SetGameMode(MODE_EXIT);
-        currentMode = GetGameMode();
+    if (WindowShouldClose()) SetGameMode(MODE_EXIT);
+    currentMode = GetGameMode();
+}
 
-    } // while
 
 
     if (windowInitialized) CloseWindow();
