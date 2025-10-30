@@ -49,35 +49,47 @@ int main(int argumentCount, char *arguments[]) {
 
 
     // main game loop
-    GAME_MODES currentMode = GetGameMode();
-    while (currentMode != MODE_EXIT) {
+    // main game loop
+GAME_MODES currentMode = GetGameMode();
+while (currentMode != MODE_EXIT) {
 
-        switch (currentMode) {
+    // Update input before game logic
+    if (GetGameMode() == MODE_PLAY) {
+        // Get mouse position
+        Vector2 mousePos = GetMousePosition();
+        SetPaddlePosition(mousePos.x); // update paddle X
 
-            case MODE_INITGAME:
-                RunInitGameMode(arguments[1]);
-                break;
+        // Optional: keyboard fallback
+        if (IsKeyDown(KEY_LEFT))  MovePaddle(PADDLE_LEFT);
+        if (IsKeyDown(KEY_RIGHT)) MovePaddle(PADDLE_RIGHT);
+    }
 
-            case MODE_PLAY:
-                RunPlayMode();
-                break;
+    // Handle game modes
+    switch (currentMode) {
 
-            case MODE_WIN:
-            case MODE_LOSE:
-            case MODE_CANCEL:
-                RunEndMode();
-                break;
-            
-            default:
-                SetGameMode(MODE_CANCEL);
-                break;
+        case MODE_INITGAME:
+            RunInitGameMode(arguments[1]);
+            break;
 
-        } // switch 
+        case MODE_PLAY:
+            RunPlayMode();
+            break;
 
-        if (WindowShouldClose()) SetGameMode(MODE_EXIT);
-        currentMode = GetGameMode();
+        case MODE_WIN:
+        case MODE_LOSE:
+        case MODE_CANCEL:
+            RunEndMode();
+            break;
 
-    } // while
+        default:
+            SetGameMode(MODE_CANCEL);
+            break;
+    }
+
+    if (WindowShouldClose()) SetGameMode(MODE_EXIT);
+    currentMode = GetGameMode();
+}
+
 
 
     if (windowInitialized) CloseWindow();
