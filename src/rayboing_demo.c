@@ -7,6 +7,7 @@
 #include "demo_ball.h"
 #include "paddle.h"
 #include "audio.h"
+#include "intro.h"
 
 const int SCREEN_WIDTH = 575;
 const int SCREEN_HEIGHT = 720;
@@ -29,7 +30,22 @@ int main(int argumentCount, char *arguments[]) {
     SetTargetFPS(60);
     windowInitialized = true;
 
+    // If no filename was provided on the command line, show the intro/start menu
+    // and wait for the player to press Enter/Space. After the intro returns,
+    // continue with normal initialization (textures/audio/etc.).
+    if (argumentCount == 1) {
+        ShowIntroScreen();
+        // If the window was closed while on the intro screen, exit now.
+        if (WindowShouldClose()) {
+            if (windowInitialized) CloseWindow();
+            ReleaseResources();
+            return rtnCode;
+        }
+    }
+
     if (!ValidateParamFilename(argumentCount, arguments)) {
+        // Validation only fails for incorrect command-line usage or bad file
+        // when an argument was supplied. If it fails here, halt.
         fprintf(stderr, "Program halt on map validation");
     } else if (!loadBlockTextures()) {
         fprintf(stderr, "Program halt on iniitalize block texture");
@@ -48,36 +64,55 @@ int main(int argumentCount, char *arguments[]) {
     }
 
 
+    // If no filename was provided, supply the default level path
+    const char *defaultLevel = "resource/levels/level01.data";
+
     // main game loop
-    GAME_MODES currentMode = GetGameMode();
-    while (currentMode != MODE_EXIT) {
+    // main game loop
+GAME_MODES currentMode = GetGameMode();
+while (currentMode != MODE_EXIT) {
 
-        switch (currentMode) {
+    // Update input before game logic
+    if (GetGameMode() == MODE_PLAY) {
+        // Get mouse position
+        Vector2 mousePos = GetMousePosition();
+        SetPaddlePosition(mousePos.x); // update paddle X
 
-            case MODE_INITGAME:
-                RunInitGameMode(arguments[1]);
+        // Optional: keyboard fallback
+        if (IsKeyDown(KEY_LEFT))  MovePaddle(PADDLE_LEFT);
+        if (IsKeyDown(KEY_RIGHT)) MovePaddle(PADDLE_RIGHT);
+    }
+
+    // Handle game modes
+    switch (currentMode) {
+
+        case MODE_INITGAME:
+                if (argumentCount == 2) {
+                    RunInitGameMode(arguments[1]);
+                } else {
+                    RunInitGameMode(defaultLevel);
+                }
                 break;
 
-            case MODE_PLAY:
-                RunPlayMode();
-                break;
+        case MODE_PLAY:
+            RunPlayMode();
+            break;
 
-            case MODE_WIN:
-            case MODE_LOSE:
-            case MODE_CANCEL:
-                RunEndMode();
-                break;
-            
-            default:
-                SetGameMode(MODE_CANCEL);
-                break;
+        case MODE_WIN:
+        case MODE_LOSE:
+        case MODE_CANCEL:
+            RunEndMode();
+            break;
 
-        } // switch 
+        default:
+            SetGameMode(MODE_CANCEL);
+            break;
+    }
 
-        if (WindowShouldClose()) SetGameMode(MODE_EXIT);
-        currentMode = GetGameMode();
+    if (WindowShouldClose()) SetGameMode(MODE_EXIT);
+    currentMode = GetGameMode();
+}
 
-    } // while
 
 
     if (windowInitialized) CloseWindow();
@@ -91,24 +126,26 @@ int main(int argumentCount, char *arguments[]) {
 
 bool ValidateParamFilename(int argumentCount, char *arguments[]) {
 
-    // ensure only one argument
-    if (argumentCount != 2) {
-        fprintf(stderr, "Usage: %s <filename>\n", arguments[0]);
-        return false;
+    // If no filename provided, that's OK (we'll show the intro and use default level).
+    if (argumentCount == 1) return true;
+
+    // If a filename is provided, ensure it exists and can be opened.
+    if (argumentCount == 2) {
+        const char *fileName = arguments[1];
+        FILE *file = fopen(fileName, "r");
+        if (!file) {
+            fprintf(stderr, "File '%s' does not exist or cannot be opened.\n", fileName);
+            return false;
+        } else {
+            fprintf(stdout, "Running Rayboing with map '%s'\n", fileName);
+            fclose(file);
+            return true;
+        }
     }
 
-    // check if file exists
-    const char *fileName = arguments[1];
-    FILE *file = fopen(fileName, "r");
-    if (!file) {
-        fprintf(stderr, "File '%s' does not exist or cannot be opened.\n", fileName);
-        return false;
-    } else {
-        fprintf(stdout, "Running Rayboing with map '%s'\n", fileName);
-        fclose(file);
-    }
-
-    return true;
+    // Any other argument usage is invalid.
+    fprintf(stderr, "Usage: %s <filename>\n", arguments[0]);
+    return false;
 }
 
 void ReleaseResources(void) {
