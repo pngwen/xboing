@@ -42,7 +42,7 @@
 #include "blocks.h"
 #include "eyedude.h"
 
-#include "include\file.h"
+#include "file.h"
 
 /**
  * @def BUF_SIZE
@@ -211,7 +211,7 @@ int LoadSavedGame(Display *display, Window window)
 	return true;
 }
 
-int SaveCurrentGame(Display *display, Window window)
+Boolean SaveCurrentGame(Display *display, Window window)
 {
 	/*
 	 * This routine will save the current state of the game for loading
