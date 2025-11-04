@@ -12,9 +12,11 @@
 const int SCREEN_WIDTH = 575;
 const int SCREEN_HEIGHT = 720;
 
+bool mouseControls = true;
+
 bool ValidateParamFilename(int argumentCount, char*arguments[]);
 void ReleaseResources(void);
-
+void UpdatePaddleInput(void);
 
 int main(int argumentCount, char *arguments[]) {
 
@@ -34,7 +36,7 @@ int main(int argumentCount, char *arguments[]) {
     // and wait for the player to press Enter/Space. After the intro returns,
     // continue with normal initialization (textures/audio/etc.).
     if (argumentCount == 1) {
-        ShowIntroScreen();
+        // ShowIntroScreen();
         // If the window was closed while on the intro screen, exit now.
         if (WindowShouldClose()) {
             if (windowInitialized) CloseWindow();
@@ -71,17 +73,17 @@ int main(int argumentCount, char *arguments[]) {
     // main game loop
 GAME_MODES currentMode = GetGameMode();
 while (currentMode != MODE_EXIT) {
+    UpdatePaddleInput();
+    // // Update input before game logic
+    // if (GetGameMode() == MODE_PLAY) {
+    //     // Get mouse position
+    //     Vector2 mousePos = GetMousePosition();
+    //     SetPaddlePosition(mousePos.x); // update paddle X
 
-    // Update input before game logic
-    if (GetGameMode() == MODE_PLAY) {
-        // Get mouse position
-        Vector2 mousePos = GetMousePosition();
-        SetPaddlePosition(mousePos.x); // update paddle X
-
-        // Optional: keyboard fallback
-        if (IsKeyDown(KEY_LEFT))  MovePaddle(PADDLE_LEFT);
-        if (IsKeyDown(KEY_RIGHT)) MovePaddle(PADDLE_RIGHT);
-    }
+    //     // Optional: keyboard fallback
+    //     if (IsKeyDown(KEY_LEFT))  MovePaddle(PADDLE_LEFT);
+    //     if (IsKeyDown(KEY_RIGHT)) MovePaddle(PADDLE_RIGHT);
+    // }
 
     // Handle game modes
     switch (currentMode) {
@@ -154,3 +156,34 @@ void ReleaseResources(void) {
     freeBlockTextures();
     FreeAudioSystem();
 }
+
+void UpdatePaddleInput(void)
+{
+    if (IsKeyPressed(KEY_M))
+    {
+        mouseControls = !mouseControls;
+        printf("M pressed, mouseControls = %d\n", mouseControls);
+    }
+
+    if (mouseControls)
+    {
+        Vector2 mousePos = GetMousePosition();
+        SetPaddlePosition(mousePos.x);
+    }
+    else
+    {
+        if (IsKeyDown(KEY_LEFT))
+            MovePaddle(PADDLE_LEFT);
+        if (IsKeyDown(KEY_RIGHT))
+            MovePaddle(PADDLE_RIGHT);
+    }
+
+    // Optional toggles
+    if (IsKeyPressed(KEY_R))
+        ToggleReverse();
+    if (IsKeyPressed(KEY_Z))
+        ChangePaddleSize(SIZE_DOWN);
+    if (IsKeyPressed(KEY_X))
+        ChangePaddleSize(SIZE_UP);
+}
+
