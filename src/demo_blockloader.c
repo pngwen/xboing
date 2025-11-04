@@ -433,7 +433,7 @@ void freeBlockTextures(void) {
     UnloadTexture(PAD_SHRINK_BLK);
     UnloadTexture(PAD_EXPAND_BLK);
 
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < 6; i++) {
         UnloadTexture(COUNTER_BLK[i]);
     }
 }
