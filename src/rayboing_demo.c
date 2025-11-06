@@ -182,16 +182,15 @@ void UpdatePaddleInput(void)
     {
         Vector2 mousePos = GetMousePosition();
 
-        // Optional: clamp Y to window, if needed
+        // clamp Y to window, if needed
         if (mousePos.y < 0)
             mousePos.y = 0;
         if (mousePos.y > SCREEN_HEIGHT)
             mousePos.y = SCREEN_HEIGHT;
 
-        // Set the paddle — this automatically clamps to wall bounds
         SetPaddlePosition(mousePos.x);
 
-        // Move the system cursor to match paddle
+        // updates mouse position 
         SetMousePosition(GetPaddlePositionX(), mousePos.y);
     }
     else
