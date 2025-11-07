@@ -229,6 +229,31 @@ int					blocksExploding = 0;
 int					rowHeight;
 int					colWidth;
 
+/* Helper function to initialize explosion frames */
+typedef struct {
+	const char *name;
+	const char **frames[3];
+	Pixmap *pixmaps;
+	Pixmap *masks;
+} BlockExplosion;
+
+void InitExplosionFrames(Display *display, Window window, XpmAttributes *attributes,
+                         BlockExplosion *explosions, int explosionCount)
+{
+	for (int i = 0; i < explosionCount; i++) {
+		for (int f = 0; f < 3; f++) {
+			int status = XpmCreatePixmapFromData(
+				display, window, explosions[i].frames[f],
+				&explosions[i].pixmaps[f], &explosions[i].masks[f], attributes
+			);
+			char errorMsg[128];
+			snprintf(errorMsg, sizeof(errorMsg),
+				"InitialiseBlocks(explosion:%s)", explosions[i].name);
+			HandleXPMError(display, status, errorMsg);
+		}
+	}
+}
+
 void InitialiseBlocks(Display *display, Window window, Colormap colormap)
 {
 	XpmAttributes   attributes;
@@ -290,127 +315,22 @@ void InitialiseBlocks(Display *display, Window window, Colormap colormap)
 		&walloffblock, &walloffblockM, &attributes);
 	HandleXPMError(display, XpmErrorStatus, "InitialiseBlocks(walloff)");
 
-	/* Explosion for yellow block */
+	/* Modular explosion initialization to replace hardcoded blocks */
+	BlockExplosion explosions[] = {
+		{ "yellow", { exyellowblock1_xpm, exyellowblock2_xpm, exyellowblock3_xpm }, exyellowblock, exyellowblockM },
+		{ "red",    { exredblock1_xpm, exredblock2_xpm, exredblock3_xpm }, exredblock, exredblockM },
+		{ "green",  { exgreenblock1_xpm, exgreenblock2_xpm, exgreenblock3_xpm }, exgreenblock, exgreenblockM },
+		{ "blue",   { exblueblock1_xpm, exblueblock2_xpm, exblueblock3_xpm }, exblueblock, exblueblockM },
+		{ "tan",    { extanblock1_xpm, extanblock2_xpm, extanblock3_xpm }, extanblock, extanblockM },
+		{ "purple", { expurpleblock1_xpm, expurpleblock2_xpm, expurpleblock3_xpm }, expurpleblock, expurpleblockM },
+		{ "bomb",   { exbombblock1_xpm, exbombblock2_xpm, exbombblock3_xpm }, exbombblock, exbombblockM },
+		{ "counter",{ excounterblock1_xpm, excounterblock2_xpm, excounterblock3_xpm }, excounterblock, excounterblockM },
+	};
 
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, 
-		exyellowblock1_xpm, &exyellowblock[0], &exyellowblockM[0], 
-		&attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseBlocks(exyellow)");
+	int explosionCount = sizeof(explosions) / sizeof(BlockExplosion);
+	InitExplosionFrames(display, window, &attributes, explosions, explosionCount);
 
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, 
-		exyellowblock2_xpm, &exyellowblock[1], &exyellowblockM[1], 
-		&attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseBlocks(exyellow)");
-
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, 
-		exyellowblock3_xpm, &exyellowblock[2], &exyellowblockM[2], 
-		&attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseBlocks(exyellow)");
-
-	/* Explosion for red block */
-
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, exredblock1_xpm, 
-		&exredblock[0], &exredblockM[0], &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseBlocks(exred)");
-
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, exredblock2_xpm, 
-		&exredblock[1], &exredblockM[1], &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseBlocks(exred)");
-
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, exredblock3_xpm, 
-		&exredblock[2], &exredblockM[2], &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseBlocks(exred)");
-
-	/* Explosion for green block */
-
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, 
-		exgreenblock1_xpm, &exgreenblock[0], &exgreenblockM[0], &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseBlocks(exgreen)");
-
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, 
-		exgreenblock2_xpm, &exgreenblock[1], &exgreenblockM[1], &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseBlocks(exgreen)");
-
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, 
-		exgreenblock3_xpm, &exgreenblock[2], &exgreenblockM[2], &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseBlocks(exgreen)");
-
-	/* Explosion for blue block */
-
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, 
-		exblueblock1_xpm, &exblueblock[0], &exblueblockM[0], &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseBlocks(exblue)");
-
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, 
-		exblueblock2_xpm, &exblueblock[1], &exblueblockM[1], &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseBlocks(exblue)");
-
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, 
-		exblueblock3_xpm, &exblueblock[2], &exblueblockM[2], &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseBlocks(exblue)");
-
-	/* Explosion for tan block */
-
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, 
-		extanblock1_xpm, &extanblock[0], &extanblockM[0], &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseBlocks(extan)");
-
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, 
-		extanblock2_xpm, &extanblock[1], &extanblockM[1], &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseBlocks(extan)");
-
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, 
-		extanblock3_xpm, &extanblock[2], &extanblockM[2], &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseBlocks(extan)");
-
-	/* Explosion for purple block */
-
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, 
-		expurpleblock1_xpm, &expurpleblock[0], &expurpleblockM[0], 
-		&attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseBlocks(expurple)");
-
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, 
-		expurpleblock2_xpm, &expurpleblock[1], &expurpleblockM[1], 
-		&attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseBlocks(expurple)");
-
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, 
-		expurpleblock3_xpm, &expurpleblock[2], &expurpleblockM[2], 
-		&attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseBlocks(expurple)");
-
-	/* Explosion for bomb block */
-
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, 
-		exbombblock1_xpm, &exbombblock[0], &exbombblockM[0], &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseBlocks(exbomb)");
-
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, 
-		exbombblock2_xpm, &exbombblock[1], &exbombblockM[1], &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseBlocks(exbomb)");
-
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, 
-		exbombblock3_xpm, &exbombblock[2], &exbombblockM[2], &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseBlocks(exbomb)");
-
-	/* Explosion for counter block */
-
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, 
-		excounterblock1_xpm, &excounterblock[0], &excounterblockM[0], 
-		&attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseBlocks(excounter)");
-
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, 
-		excounterblock2_xpm, &excounterblock[1], &excounterblockM[1], 
-		&attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseBlocks(excounter)");
-
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, 
-		excounterblock3_xpm, &excounterblock[2], &excounterblockM[2], 
-		&attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseBlocks(excounter)");
-
+	
 	/* countdown for counter block */
 
 	XpmErrorStatus = XpmCreatePixmapFromData(display, window, 
@@ -548,7 +468,7 @@ void InitialiseBlocks(Display *display, Window window, Colormap colormap)
 		exdeath4_xpm, &exdeath[3], &exdeathM[3], &attributes);
 	HandleXPMError(display, XpmErrorStatus, "InitialiseBlocks(exdeath)");
 
-	/* Extra balll pixmaps */
+	/* Extra ball pixmaps */
 
 	XpmErrorStatus = XpmCreatePixmapFromData(display, window, 
 		xtraball_xpm, &extraball[0], &extraballM[0], &attributes);
