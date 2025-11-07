@@ -18,6 +18,7 @@
 #include <stdlib.h>
 #include <stddef.h>
 #include <time.h>
+#include <stdbool.h>
 
 //#include <X11/Xlib.h>
 //#include <X11/Xutil.h>
@@ -211,7 +212,7 @@ int LoadSavedGame(Display *display, Window window)
 	return true;
 }
 
-int SaveCurrentGame(Display *display, Window window)
+bool SaveCurrentGame(Display *display, Window window)
 {
 	/*
 	 * This routine will save the current state of the game for loading

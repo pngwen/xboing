@@ -20,6 +20,7 @@
 
 #include <stdio.h>
 #include <time.h>
+#include <stdbool.h>
 #include "faketypes.h"
 
 
@@ -99,7 +100,7 @@ int SaveLevelDataFile(Display *display, char *levelName);
  
  * 
  */
-int SaveCurrentGame(Display *display, Window window);
+bool SaveCurrentGame(Display *display, Window window);
 
 
 /**
