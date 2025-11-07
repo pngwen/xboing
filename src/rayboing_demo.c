@@ -23,8 +23,9 @@ int main(int argumentCount, char *arguments[]) {
     bool windowInitialized = false;
 
     // must InitWindow before loading textures
-
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Rayboing Demo");
+    SetMouseMode(MOUSE_MODE_CONFINED);
+    SetMouseMode(MOUSE_MODE_CONFINED);
     InitAudioDevice(); // audio
     SetTargetFPS(60);
     windowInitialized = true;
