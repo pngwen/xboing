@@ -469,9 +469,14 @@ static void MoveGuides(Display *display, Window window, int i, int remove)
 		if (guidePos == 0) inc = 1;
 	}
 	else
+		/*Resets the guide position to frame 6*/
 		guidePos = 6;
 }
 
+
+/* Set the ball's movement to a new random velocity and direction.
+   It makes sure that both X and Y speeds are non zero and applies a short delay
+   before the paddle can affect the ball again. */
 void RandomiseBallVelocity(int i)
 {
 	balls[i].dx = balls[i].dy = 0;
@@ -1008,6 +1013,9 @@ static int HandleTheBlocks(Display *display, Window window, int row, int col,
 	return False;
 }
 
+
+
+
 static void UpdateABall(Display *display, Window window, int i)
 {
 	/*
@@ -1149,11 +1157,12 @@ static void UpdateABall(Display *display, Window window, int i)
 			if (balls[i].lastPaddleHitFrame <= frame)
 				DoBoardTilt(display, i);
 		}
-
+		/*Converts the velocities to float for it to be calculated*/
        	Vx = (float) balls[i].dx;
        	Vy = (float) balls[i].dy;
        	Vs = sqrt(Vx * Vx + Vy * Vy);
 
+		/*This calculates the ball velocity based on speed level and maximum possible velocity*/
        	alpha = sqrt((float)MAX_X_VEL*(float)MAX_X_VEL + (float)MAX_Y_VEL*
 			(float)MAX_Y_VEL );
        	alpha /= 9.0; /* number of speed level */
@@ -1164,6 +1173,7 @@ static void UpdateABall(Display *display, Window window, int i)
        	Vx *= beta;
        	Vy *= beta;
 
+		/*Rounds the current velocity to the nearest integers*/
        	if (Vx > 0.0)
          	balls[i].dx = (int) (Vx + 0.5);
        	else
@@ -1174,6 +1184,7 @@ static void UpdateABall(Display *display, Window window, int i)
        	else
          	balls[i].dy = (int) (Vy - 0.5);
 
+		/*This makes sure that dx and dy are never zero so ball doesnt get stuck*/
        	if (balls[i].dy == 0) 
 			balls[i].dy = MIN_DY_BALL;
 
@@ -1198,9 +1209,16 @@ static void UpdateABall(Display *display, Window window, int i)
 	x = balls[i].oldx;
 	y = balls[i].oldy;
 
+	/* Determines the movement of the ball on x and y*/
 	cx = balls[i].dx > 0 ? 1 : -1;
 	cy = balls[i].dy > 0 ? 1 : -1;
 
+
+	/* 
+ 	* Calculate the incremental steps to move the ball smoothly along its path.
+ 	* This handles diagonal movement and ensures collisions are checked at
+ 	* each small step along the dominant axis.
+ 	*/
 	if (abs(balls[i].dx) == abs(balls[i].dy))
 	{
 		incx = (float) cx;
@@ -1711,6 +1729,7 @@ int ActivateWaitingBall(Display *display, Window window)
 			ChangeBallMode(BALL_ACTIVE, i);
 			balls[i].lastPaddleHitFrame = frame + PADDLE_BALL_FRAME_TILT;
 
+			/*Changes the ball's direction to the player's guide. MoveGuide*/
 			ChangeBallDirectionToGuide(i);
 			MoveGuides(display, window, i, True);
 
@@ -1807,6 +1826,7 @@ static void AnimateBallCreate(Display *display, Window window, int i)
 	{
 		/* Next slide thanks */
 		slide++;
+
 
 		/* Frame that will trigger the new slide */
 		balls[i].nextFrame += BIRTH_FRAME_RATE;
