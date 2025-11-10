@@ -20,6 +20,7 @@
 
 #include <stdio.h>
 #include <time.h>
+#include <stdbool.h>
 #include "faketypes.h"
 
 
@@ -110,6 +111,6 @@ int SaveCurrentGame(Display *display, Window window);
  * @return int returns TRUE on sucecss, FALSE otherwise
  * 
  */
-int LoadSavedGame(Display *display, Window window);
+bool LoadSavedGame(Display *display, Window window);
 
 #endif

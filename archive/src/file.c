@@ -18,6 +18,7 @@
 #include <stdlib.h>
 #include <stddef.h>
 #include <time.h>
+#include <stdbool.h>
 
 //#include <X11/Xlib.h>
 //#include <X11/Xutil.h>
@@ -113,7 +114,7 @@ void SetupStage(Display *display, Window window)
     XFlush(display);
 }
 
-int LoadSavedGame(Display *display, Window window)
+bool LoadSavedGame(Display *display, Window window)
 {
 	/*
 	 * This routine will load the last saved game. 
