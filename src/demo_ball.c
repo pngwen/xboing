@@ -96,6 +96,9 @@ void ReleaseBall(void) {
         ball.attached = false;
         startSound(SND_BALLSHOT);   
     }
+
+    // Start the countdown timer on the first ball release
+    setTimerActive(true);
 }
 
 
