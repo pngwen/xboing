@@ -110,69 +110,45 @@ static Pixmap eyesDead, eyesDeadM;
 static int	x, y, oldx, oldy, s, direction, inc, turn;
 static eyeDudeStates eyeDudeState;
 
-void InitialiseEyeDudes(Display *display, Window window, Colormap colormap)
+void InitialiseSingleEye(Display *display, Window window, Colormap colormap,
+                         char **xpmData, Pixmap *pixmap, Pixmap *mask, const char *name)
 {
-    XpmAttributes   attributes;
-	int		    XpmErrorStatus;
+    XpmAttributes attributes;
+    int XpmErrorStatus;
 
     attributes.valuemask = XpmColormap;
-	attributes.colormap = colormap;
+    attributes.colormap = colormap;
 
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, eyeguy_l1_xpm,
-		&eyesLeft[0], &eyesLeftM[0], &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseBullet(eye L1)");
+    XpmErrorStatus = XpmCreatePixmapFromData(display, window, xpmData, pixmap, mask, &attributes);
+    HandleXPMError(display, XpmErrorStatus, name);
 
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, eyeguy_l2_xpm,
-		&eyesLeft[1], &eyesLeftM[1], &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseBullet(eye L2)");
-
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, eyeguy_l3_xpm,
-		&eyesLeft[2], &eyesLeftM[2], &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseBullet(eye L3)");
-
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, eyeguy_l4_xpm,
-		&eyesLeft[3], &eyesLeftM[3], &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseBullet(eye L4)");
-
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, eyeguy_l5_xpm,
-		&eyesLeft[4], &eyesLeftM[4], &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseBullet(eye L5)");
-
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, eyeguy_l6_xpm,
-		&eyesLeft[5], &eyesLeftM[5], &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseBullet(eye L6)");
-
-
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, eyeguy_r1_xpm,
-		&eyesRight[0], &eyesRightM[0], &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseBullet(eye R1)");
-
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, eyeguy_r2_xpm,
-		&eyesRight[1], &eyesRightM[1], &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseBullet(eye R2)");
-
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, eyeguy_r3_xpm,
-		&eyesRight[2], &eyesRightM[2], &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseBullet(eye R3)");
-
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, eyeguy_r4_xpm,
-		&eyesRight[3], &eyesRightM[3], &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseBullet(eye R4)");
-
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, eyeguy_r5_xpm,
-		&eyesRight[4], &eyesRightM[4], &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseBullet(eye R5)");
-
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, eyeguy_r6_xpm,
-		&eyesRight[5], &eyesRightM[5], &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseBullet(eye R6)");
-
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, eyeguy_dead_xpm,
-		&eyesDead, &eyesDeadM, &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseBullet(eye dead)");
-
-	XpmFreeAttributes(&attributes);
+    XpmFreeAttributes(&attributes);
 }
+
+void InitialiseEyeDudes(Display *display, Window window, Colormap colormap)
+{
+    // Left eyes
+    char *leftXPMs[] = { eyeguy_l1_xpm, eyeguy_l2_xpm, eyeguy_l3_xpm,
+                         eyeguy_l4_xpm, eyeguy_l5_xpm, eyeguy_l6_xpm };
+    for (int i = 0; i < 6; i++) {
+        char buf[32];
+        snprintf(buf, sizeof(buf), "InitialiseBullet(eye L%d)", i+1);
+        InitialiseSingleEye(display, window, colormap, leftXPMs[i], &eyesLeft[i], &eyesLeftM[i], buf);
+    }
+
+    // Right eyes
+    char *rightXPMs[] = { eyeguy_r1_xpm, eyeguy_r2_xpm, eyeguy_r3_xpm,
+                          eyeguy_r4_xpm, eyeguy_r5_xpm, eyeguy_r6_xpm };
+    for (int i = 0; i < 6; i++) {
+        char buf[32];
+        snprintf(buf, sizeof(buf), "InitialiseBullet(eye R%d)", i+1);
+        InitialiseSingleEye(display, window, colormap, rightXPMs[i], &eyesRight[i], &eyesRightM[i], buf);
+    }
+
+    // Dead eye
+    InitialiseSingleEye(display, window, colormap, eyeguy_dead_xpm, &eyesDead, &eyesDeadM, "InitialiseBullet(eye dead)");
+}
+
 
 void FreeEyeDudes(Display *display)
 {
