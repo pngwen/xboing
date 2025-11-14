@@ -80,4 +80,7 @@ void HandleBulletMode(Display *display, Window window);
 void ClearBullets(void);
 void SetUnlimitedBullets(int state);
 
+/* Return True if a spike/tink is active at the given x coordinate */
+int IsSpikeAt(int x);
+
 #endif

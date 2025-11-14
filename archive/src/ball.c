@@ -103,6 +103,7 @@
 #include "include/special.h"
 #include "include/ball.h"
 #include "include/faketypes.h"
+#include "include/gun.h"
 
 /*
  *  Internal macro definitions:
@@ -1063,11 +1064,20 @@ static void UpdateABall(Display *display, Window window, int i)
 		return;
 	}
 
-	/* Check if ball has hit top wall and bounce off */		
-	if (balls[i].bally < BALL_HC) 
+	/* Check if ball has hit top wall and either bounce or hit spike */
+	if (balls[i].bally < BALL_HC)
 	{
-		balls[i].dy = abs(balls[i].dy);
-		if (noSound == False) playSoundFile("boing", 10);
+		/* If a spike exists at this x position, kill the ball */
+		if (IsSpikeAt(balls[i].ballx) == True)
+		{
+			ChangeBallMode(BALL_DIE, i);
+			if (noSound == False) playSoundFile("ballshot", 80);
+		}
+		else
+		{
+			balls[i].dy = abs(balls[i].dy);
+			if (noSound == False) playSoundFile("boing", 10);
+		}
 	}
 
 	if (balls[i].ballState != BALL_DIE)
