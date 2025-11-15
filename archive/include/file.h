@@ -32,6 +32,15 @@
 
 #define SAVE_VERSION 	2
 
+/**
+ * @brief Global file buffer size (compile-time constant)
+ *
+ * Use for fixed-size buffers when reading/writing level and save files.
+ * Defined as an enum constant so it can be used in array bounds
+ * across C compilers that don't support VLAs.
+ */
+enum { FILE_BUF_SIZE = 1024 };
+
 
 /**
  * @brief Saved game structure
