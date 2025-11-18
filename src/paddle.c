@@ -48,8 +48,8 @@
  */
 
 #include <stdio.h>
+#include <stdbool.h>
 #include <raylib.h>
-#include "faketypes.h"
 #include "paddle.h"
 #include "demo_blockloader.h"
 #include <stdio.h>
@@ -103,7 +103,7 @@ bool InitialisePaddle(void)
 	paddles[2] = (Paddle){emptyTexture, "Huge", 70, PADDLE_TEXTURES "padhuge.png"};
 
 	// initialize variables before loop
-	int errorFlag = False;
+	bool errorFlag = false;
 
 	// create textures for each paddle size
 	for (int i = 0; i < PADDLE_COUNT; i++)
@@ -117,7 +117,7 @@ bool InitialisePaddle(void)
 		if (paddles[i].img.id == 0)
 		{
 			fprintf(stderr, "Error: failed to load texture InitialisePaddle() file: %s.\n", paddles[i].filepath);
-			errorFlag = True;
+			errorFlag = true;
 		}
 
 		UnloadImage(img);
@@ -129,13 +129,13 @@ bool InitialisePaddle(void)
 
 void SetReverseOff(void)
 {
-	reverseOn = False;
+	reverseOn = false;
 }
 
 void ToggleReverse(void)
 {
 
-	reverseOn = (reverseOn == True) ? False : True;
+	reverseOn = (reverseOn == true) ? false : true;
 
 	// TODO: add display text when implemented
 	// DrawSpecials(display);
@@ -153,7 +153,7 @@ void MovePaddle(int direction)
 {
 
 	// calculate the movement distance, adjusted for reverse flag
-	int distance = PADDLE_VEL * (reverseOn == True ? -1 : 1) * GetFrameTime();
+	int distance = PADDLE_VEL * (reverseOn == true ? -1 : 1) * GetFrameTime();
 
 	// apply the move based on direction
 	switch (direction)
@@ -211,7 +211,7 @@ void ResetPaddleStart(void)
 	// set size and center paddle
 	paddleIndex = PADDLE_INITIAL_INDEX;
 	paddlePosition = (GetScreenWidth() - paddles[paddleIndex].size) / 2;
-	reverseOn = False;
+	reverseOn = false;
 }
 
 void ChangePaddleSize(int changeDirection)
