@@ -29,7 +29,8 @@ typedef struct {
 PLAY_AREA playArea = {0};
 
 char levelName[256];
-int timeBonus = 0;
+int timeRemaining = 0;
+static bool timerActive = false;
 int blocksRemaining = 0;
 
 Texture2D HYPERSPACE_BLK,
@@ -92,7 +93,7 @@ bool loadBlocks(const char* filename) {
 
 	// Get file data
 	fgets(levelName, 256, fp);
-	fscanf(fp, "%d", &timeBonus);
+	fscanf(fp, "%d", &timeRemaining);
 	getc(fp);
 
 	int row = 0;
@@ -634,7 +635,36 @@ void deactivateBlock(int row, int col) {
     blocksRemaining--;
 }
 
+// decrement time remaining by 1 second if timer is active
+void timeDecrement(void) {
+    if (!timerActive) return;
+
+    static float elapsedTime = 0.0f;
+
+    elapsedTime += GetFrameTime();
+
+    if ( elapsedTime > 1.0f) {
+        elapsedTime = 0.0f;
+        timeRemaining--;
+    }
+}
+
+// set whether timer is active
+void setTimerActive(bool active) {
+    timerActive = active;
+}
+
+// return whether timer is active
+bool isTimerActive(void) {
+    return timerActive;
+}
+
 
 int getBlockCount(void) {
     return blocksRemaining;
+}
+
+// return remaining time
+int getTime(void) {
+    return timeRemaining;
 }
