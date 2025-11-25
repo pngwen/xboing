@@ -26,7 +26,6 @@ int main(int argumentCount, char *arguments[]) {
     // must InitWindow before loading textures
 
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Rayboing Demo");
-    InitAudioDevice(); // audio
     SetTargetFPS(60);
     windowInitialized = true;
 
