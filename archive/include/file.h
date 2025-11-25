@@ -19,6 +19,7 @@
 #define _FILE_H_
 
 #include <stdio.h>
+#include <stdbool.h>
 #include <time.h>
 #include <stdbool.h>
 #include "faketypes.h"
@@ -95,7 +96,7 @@ void SetupStage(Display *display, Window window);
  * @return int returns TRUE if successful, FALSE otherwise
  *  
  */
-int SaveLevelDataFile(Display *display, char *levelName);
+bool SaveLevelDataFile(Display *display, const char *levelName);
 
 
 /**

@@ -258,7 +258,7 @@ bool SaveCurrentGame(Display *display, Window window)
 	/* Save the file in home directory - construct path */
 	snprintf(levelPath, "%s/.xboing-savelevel", GetHomeDir());
 
-	if (SaveLevelDataFile(display, levelPath) == true)
+	if (SaveLevelDataFile(display, levelPath))
 	{
 		/* The level did save successfully */
     	SetCurrentMessage(display, messWindow, 
@@ -498,7 +498,7 @@ int ReadNextLevel(Display *display, Window window, char *levelName, int draw)
 }
 
 char *levelName;
-int SaveLevelDataFile(Display *display, levelName)//////
+bool SaveLevelDataFile(Display *display, const char *levelName)//////
 {
     FILE *levelFile;
     int row, col;
@@ -613,9 +613,12 @@ int SaveLevelDataFile(Display *display, levelName)//////
     if (fclose(levelFile) < 0){
         WarningMessage("Cannot close level data file.");
 
-	/* Success */
-    return true;
+	/* Failure */
+    return false;
 
     }
+    /* Success */
+
+    return true;
 }
 

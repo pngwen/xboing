@@ -718,7 +718,7 @@ static void SetupPlayTest(Display *display)
 	EditState = EDIT_TEST;
 
 	strcpy(tempName, tempnam("/tmp", "xboing-"));
-  	if (SaveLevelDataFile(display, tempName) == False)
+  	if (!SaveLevelDataFile(display, tempName))
    		ShutDown(display, 1, "Sorry, cannot save test play level.");
 
 	/* Read in the save play test level */
@@ -1111,7 +1111,7 @@ static void SaveALevel(Display *display)
         	sprintf(levelPath, "%s/level%02ld.data", 
 				LEVEL_INSTALL_DIR, (u_long) num);
 
-    	if (SaveLevelDataFile(display, levelPath) == False)
+    	if (!SaveLevelDataFile(display, levelPath))
         	ShutDown(display, 1, "Sorry, unable to save level.");
 
         /* Ok now load level number */
