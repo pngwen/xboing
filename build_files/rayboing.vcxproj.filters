@@ -30,6 +30,9 @@
     <ClInclude Include="..\include\faketypes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\intro.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="..\include\paddle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -48,6 +51,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\src\demo_gamemodes.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\intro.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\src\paddle.c">

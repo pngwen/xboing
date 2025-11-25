@@ -18,6 +18,7 @@
 #include <stdlib.h>
 #include <stddef.h>
 #include <time.h>
+#include <stdbool.h>
 
 //#include <X11/Xlib.h>
 //#include <X11/Xutil.h>
@@ -44,29 +45,20 @@
 
 #include "include\file.h"
 
-/**
- * @def BUF_SIZE
- * 
- * @todo update #define to const uint32_t
- * 
- */
-
-#define BUF_SIZE            1024
-
 
 saveGameStruct saveGame;
 
 void SetupStage(Display *display, Window window)
 {
-    char levelPath[1024];
+    char levelPath[FILE_BUF_SIZE];
     char *str;
-    char str2[1024];
+    char str2[FILE_BUF_SIZE];
     static int bgrnd = 1;
     u_long newLevel;
 
     bgrnd++;
     if (bgrnd == 6) bgrnd = 2;
-    DrawStageBackground(display, window, bgrnd, True);
+    DrawStageBackground(display, window, bgrnd, true);
 
     ClearAllBalls();
     currentPaddleSize   = PADDLE_HUGE;
@@ -74,7 +66,7 @@ void SetupStage(Display *display, Window window)
     ResetBallStart(display, playWindow);
 
     SetTiltsZero();
-    SetUnlimitedBullets(False);
+    SetUnlimitedBullets(false);
     ClearBullets();
     SetNumberBullets(NUMBER_OF_BULLETS_NEW_LEVEL);
     ResetNumberBonus();
@@ -96,24 +88,24 @@ void SetupStage(Display *display, Window window)
 
     /* Construct the level filename */
     if ((str = getenv("XBOING_LEVELS_DIR")) != NULL)
-        sprintf(levelPath, "%s/level%02ld.data", str, newLevel);
+        snprintf(levelPath, "%s/level%02ld.data", str, newLevel);
     else
-        sprintf(levelPath, "%s/level%02ld.data", LEVEL_INSTALL_DIR, newLevel);
+        snprintf(levelPath, "%s/level%02ld.data", LEVEL_INSTALL_DIR, newLevel);
 
-    if (ReadNextLevel(display, window, levelPath, True) == False)
+    if (ReadNextLevel(display, window, levelPath, true) == false)
 	{
-    	sprintf(str2, "Level%2d = %s", (int) newLevel, GetLevelName());
+    	snprintf(str2, "Level%2d = %s", (int) newLevel, GetLevelName());
         ShutDown(display, 1, str2);
 	}
 
     /* Display level name for all to see */
-    sprintf(str2, "- %s -", GetLevelName());
-    SetCurrentMessage(display, messWindow, str2, True);
+    snprintf(str2, "- %s -", GetLevelName());
+    SetCurrentMessage(display, messWindow, str2, true);
 
     XFlush(display);
 }
 
-int LoadSavedGame(Display *display, Window window)
+bool LoadSavedGame(Display *display, Window window)
 {
 	/*
 	 * This routine will load the last saved game. 
@@ -123,42 +115,51 @@ int LoadSavedGame(Display *display, Window window)
 	 */
 
     FILE *saveFile;
-    char levelPath[1024];
+    char levelPath[FILE_BUF_SIZE];
     char str[80];
     static int bgrnd = 1;
 
 	/* Save the file in home directory - construct path */
-	sprintf(levelPath, "%s/.xboing-saveinfo", GetHomeDir());
+	snprintf(levelPath, "%s/.xboing-saveinfo", GetHomeDir());
+    
+
+    saveFile = fopen(levelPath, "r+")
 
     /* Open the save file info for reading */
-    if ((saveFile = fopen(levelPath, "r+")) == NULL)
+    if (saveFile == NULL);
     {
         /* Cannot open the save file */
-   		SetCurrentMessage(display, messWindow, "Unable to load game", True);
-        return False;
+   		SetCurrentMessage(display, messWindow, "Unable to load game", true);
+        return false;
     }
 
     /* Read the save game info header */
     if (fread((char*)&saveGame, sizeof(saveGameStruct), 1, saveFile) != 1)
     {
         /* Cannot load game file */
-   		SetCurrentMessage(display, messWindow, "Unable to load game", True);
+   		SetCurrentMessage(display, messWindow, "Unable to load game", true);
    		WarningMessage("Cannot read save game info file.");
 
-    	if (fclose(saveFile) < 0)
+    	if (fclose(saveFile) != 0) {
     		WarningMessage("Cannot close save game info file.");
-        return False;
+        return false;
+
+        }
+
+        return true;
     }
 
-    if (fclose(saveFile) < 0)
+    if (fclose(saveFile) != 0) {
     	WarningMessage("Cannot close save game info file.");
+
+    }
 
 	/* Check the version of the save file format */
 	if (saveGame.version != (u_long) SAVE_VERSION)
 	{
-   		SetCurrentMessage(display, messWindow, "Unable to load game", True);
+   		SetCurrentMessage(display, messWindow, "Unable to load game", true);
    		WarningMessage("Incorrect save game info version.");
-		return False;
+		return false;
 	}
 
 	/* Setup the game using header information */
@@ -172,13 +173,13 @@ int LoadSavedGame(Display *display, Window window)
 
     bgrnd++;
     if (bgrnd == 7) bgrnd = 2;
-    DrawStageBackground(display, window, bgrnd, True);
+    DrawStageBackground(display, window, bgrnd, true);
 
     ClearAllBalls();
     ResetPaddleStart(display, window);
     ResetBallStart(display, playWindow);
 
-    SetUnlimitedBullets(False);
+    SetUnlimitedBullets(false);
     ClearBullets();
     SetNumberBullets(saveGame.numBullets);
     ResetNumberBonus();
@@ -190,22 +191,22 @@ int LoadSavedGame(Display *display, Window window)
     DisplayLevelInfo(display, levelWindow, level);
 
 	/* Load the saved file in home directory - construct path */
-	sprintf(levelPath, "%s/.xboing-savelevel", GetHomeDir());
+	snprintf(levelPath, "%s/.xboing-savelevel", GetHomeDir());
 
 	/* Read in the saved level data */
-    if (ReadNextLevel(display, window, levelPath, True) == False)
+    if (ReadNextLevel(display, window, levelPath, true) == false)
         ShutDown(display, 1, "trying to read saved level data");
 
     /* Display level name for all to see */
-    sprintf(str, "Resuming: %s", GetLevelName());
-    SetCurrentMessage(display, messWindow, str, True);
+    snprintf(str, "Resuming: %s", GetLevelName());
+    SetCurrentMessage(display, messWindow, str, true);
 
     XFlush(display);
 
-	return True;
+	return true;
 }
 
-int SaveCurrentGame(Display *display, Window window)
+bool SaveCurrentGame(Display *display, Window window)
 {
 	/*
 	 * This routine will save the current state of the game for loading
@@ -214,7 +215,7 @@ int SaveCurrentGame(Display *display, Window window)
 	 */
 
     FILE *saveFile;
-    char levelPath[1024];
+    char levelPath[FILE_BUF_SIZE];
 
 	/* Setup the save game header */
 	saveGame.version 	= (u_long) SAVE_VERSION;
@@ -228,52 +229,55 @@ int SaveCurrentGame(Display *display, Window window)
 	saveGame.numBullets	= GetNumberBullets();
 
 	/* Save the file in home directory - construct path */
-	sprintf(levelPath, "%s/.xboing-saveinfo", GetHomeDir());
+	snprintf(levelPath, "%s/.xboing-saveinfo", GetHomeDir());
 
     /* Open the save file info for writing */
     if ((saveFile = fopen(levelPath, "w+")) == NULL)
     {
         /* Cannot open the save file */
-   		SetCurrentMessage(display, messWindow, "Unable to save game", True);
-        return False;
+   		SetCurrentMessage(display, messWindow, "Unable to save game", true);
+        return false;
     }
 
     /* Write the save game info header */
-    if (fwrite((char*)&saveGame, sizeof(saveGameStruct), 1, saveFile) != 1)
+    if (fwrite(&saveGame, sizeof(saveGame), 1, saveFile) != 1)
     {
         /* Cannot save game file */
-   		SetCurrentMessage(display, messWindow, "Unable to save game", True);
+   		SetCurrentMessage(display, messWindow, "Unable to save game", true);
    		WarningMessage("Cannot write save game info file.");
 
-    	if (fclose(saveFile) < 0)
+    	if (fclose(saveFile) != 0) {
     		WarningMessage("Cannot close save game info file.");
-        return False;
+        return false;
+        }
+
+        return true;
     }
 
-    if (fclose(saveFile) < 0)
+    if (fclose(saveFile) != 0) {
     	WarningMessage("Cannot close save game info file.");
+    }
 
 	/* Save the file in home directory - construct path */
-	sprintf(levelPath, "%s/.xboing-savelevel", GetHomeDir());
+	snprintf(levelPath, "%s/.xboing-savelevel", GetHomeDir());
 
-	if (SaveLevelDataFile(display, levelPath) == True)
+	if (SaveLevelDataFile(display, levelPath))
 	{
 		/* The level did save successfully */
-    	SetCurrentMessage(display, messWindow, 
-			"Game saved", True);
+    	SetCurrentMessage(display, messWindow, "Game saved", true);
 
 		/* Only one chance to save buddy */
-        ToggleSaving(display, False);
+        ToggleSaving(display, false);
 		DrawSpecials(display);
 
-		return True;
+		return true;
 	}
 
 	/* The level didn't save successfully */
    	SetCurrentMessage(display, messWindow, 
 		"Unable to save game", True);
 
-	return False;
+	return false;
 }
 
 
@@ -282,7 +286,7 @@ int ReadNextLevel(Display *display, Window window, char *levelName, int draw)
     FILE *levelFile;
     int row, col, type;
     int timeLimit = 180;
-	char str[BUF_SIZE];
+	char str[FILE_BUF_SIZE];
     char *temp;
 
     /* Clear all existing mess in structures */
@@ -292,7 +296,7 @@ int ReadNextLevel(Display *display, Window window, char *levelName, int draw)
     blocksExploding = 0;
     colWidth    = PLAY_WIDTH / MAX_COL;
     rowHeight   = PLAY_HEIGHT / MAX_ROW;
-    bonusBlock  = False;
+    bonusBlock  = false;
     ResetNumberBonus();
 
     /* Open the new level data file for reading */
@@ -301,26 +305,29 @@ int ReadNextLevel(Display *display, Window window, char *levelName, int draw)
 		/* Cannot open the level data file */
 		perror(levelName);
         ErrorMessage("Cannot load level data - check level directory path.");
-        return False;
+        return false;
     }
 
     /* Obtain the title string */
-    fgets(levelTitle, BUF_SIZE, levelFile);
+    fgets(levelTitle, FILE_BUF_SIZE, levelFile);
 
     /* Remove the carriage return in the title */
     temp = strchr(levelTitle, '\n');
     *temp = '\0';
 
-    if (debug == True) sprintf(str, "level #%ld : <%s>", level, levelTitle);
-    DEBUG(str)
+    if (debug == true) snprintf(str, "level #%ld : <%s>", level, levelTitle){
+
+        DEBUG(str);
+
+    }
 
     /* Now get the time bonus from the level file */
-    fgets(str, BUF_SIZE, levelFile);
+    fgets(str, FILE_BUF_SIZE, levelFile);
     if (sscanf(str, "%d", &timeLimit) != 1)
     {
 		/* Error in the time limit of the level data file */
         ErrorMessage("Cannot parse level data - time bonus error.");
-        return False;
+        return false;
     }
 
     /* Set and draw the time limit for the level */
@@ -484,18 +491,20 @@ int ReadNextLevel(Display *display, Window window, char *levelName, int draw)
     }
 
     /* Close our level data file */
-    if (fclose(levelFile) < 0)
+    if (fclose(levelFile) != 0) {
         WarningMessage("Cannot close level data file.");
 
 	/* Success */
-    return True;
+    return true;
+    }
 }
 
-int SaveLevelDataFile(Display *display, char *levelName)
+char *levelName;
+bool SaveLevelDataFile(Display *display, const char *levelName)//////
 {
     FILE *levelFile;
     int row, col;
-	char str[BUF_SIZE];
+    char str[FILE_BUF_SIZE];
 	struct aBlock *blockP;
 
     /* Open the new level data file for reading */
@@ -504,18 +513,22 @@ int SaveLevelDataFile(Display *display, char *levelName)
 		/* Cannot open the level data file */
 		perror(levelName);
         ErrorMessage("Cannot save level data - check level directory path.");
-        return False;
+        return false;
     }
 
     /* Write the title string and carriage return */
-	sprintf(str, "%s\n", levelTitle);
+	snprintf(str, "%s\n", levelTitle);
     fputs(str, levelFile);
 
-    if (debug == True) sprintf(str, "level #%ld : <%s>", level, levelTitle);
-    DEBUG(str)
+    if (debug == True) {
+
+        snprintf(str, "level #%ld : <%s>", level, levelTitle);
+        DEBUG(str)
+
+    }
 
     /* Now put the time bonus into the level file */
-	sprintf(str, "%d\n", GetLevelTimeBonus());
+	snprintf(str, "%d\n", GetLevelTimeBonus());
     fputs(str, levelFile);
 
 	/* Loop through all rows and cols */
@@ -599,10 +612,15 @@ int SaveLevelDataFile(Display *display, char *levelName)
     }
 
     /* Close our level data file */
-    if (fclose(levelFile) < 0)
+    if (fclose(levelFile) != 0){
         WarningMessage("Cannot close level data file.");
 
-	/* Success */
-    return True;
+	/* Failure */
+    return false;
+
+    }
+    /* Success */
+
+    return true;
 }
 

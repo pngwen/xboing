@@ -8,6 +8,7 @@
 #include "audio.h"
 
 AudioSystem audio;
+static bool audioDeviceOK = false;
 
 static const char *soundFiles[SOUND_COUNT] = {
     "resource/sounds/ammo.mp3", // when ammo block is destroyed
@@ -60,7 +61,13 @@ static const char *soundFiles[SOUND_COUNT] = {
 
 
 bool initAudioFiles(void) {
+    InitAudioDevice();
+    audioDeviceOK = IsAudioDeviceReady();
     bool success = true;
+    if (!audioDeviceOK) {
+        fprintf(stderr, "Audio device failed to initialize. Sounds disabled.\n");
+        return true;  // Audio unavailable, skip loading sounds, game still opens
+    }
     for (int i = 0; i < SOUND_COUNT; i++) {
         if (!FileExists(soundFiles[i])) {
             fprintf(stderr, "Missing sound: %s\n", soundFiles[i]);
@@ -82,6 +89,8 @@ bool initAudioFiles(void) {
 }
 
 void FreeAudioSystem(void) {
+     if (!audioDeviceOK)
+        return;
     for (int i = 0; i < SOUND_COUNT; i++) {
         if (audio.sounds[i].frameCount > 0) {
             UnloadSound(audio.sounds[i]);
@@ -89,10 +98,13 @@ void FreeAudioSystem(void) {
         }
     }
     fprintf(stderr, "All sounds unloaded.\n");
+    CloseAudioDevice();
 }
 
 /* Play a sound file */
 void startSound(SoundID id) {
+    if (!audioDeviceOK)
+        return;
     if (id >= 0 && id < SOUND_COUNT && audio.sounds[id].frameCount > 0) {
         PlaySound(audio.sounds[id]);
     }
