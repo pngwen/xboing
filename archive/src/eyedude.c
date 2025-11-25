@@ -91,31 +91,193 @@
  *  Internal macro definitions:
  */
 
+/*
+ *  Internal macro definitions:
+ *
+ *  X2COL / Y2ROW convert pixel coordinates into grid indexes using the
+ *  global column/row width values. These are convenience macros used by
+ *  other modules that expect a column/row index from an x/y coordinate.
+ */
+
+/* Convert an x coordinate to a column index (colWidth is external/global) */
 #define X2COL(col, x) 		(col = x / colWidth)
+
+/* Convert a y coordinate to a row index (rowHeight is external/global) */
 #define Y2ROW(row, y) 		(row = y / rowHeight)
 
 /*
  *  Internal type declarations:
  */
 
+/* Forward declaration: checks whether the top row is clear so the eye dude
+ * can walk across. Returns True/False. Defined below. */
 static int CheckEyeDudeClearPath(Display *display, Window window);
 
 /*
  *  Internal variable declarations:
  */
 
+/* Pixmaps for animation frames and their masks. There are 6 frames for
+ * left-facing and right-facing animations and a single 'dead' frame. */
 static Pixmap eyesLeft[6], eyesLeftM[6];
 static Pixmap eyesRight[6], eyesRightM[6];
 static Pixmap eyesDead, eyesDeadM;
+
+/* Runtime state for the eye dude entity (kept internal to this module):
+ * x, y      - current center position in pixels
+ * oldx,oldy- last-drawn position (used when erasing/redisplaying)
+ * s        - animation frame index (0..5)
+ * direction- movement state (WALK_LEFT/WALK_RIGHT/WALK_DEAD)
+ * inc      - last movement increment applied (signed)
+ * turn     - boolean (True/False) indicating whether the dude may
+ *            turn around at mid-screen
+ */
 static int	x, y, oldx, oldy, s, direction, inc, turn;
+
+/* Current mode/state of the eye dude (internal state machine). */
 static eyeDudeStates eyeDudeState;
 
+/* FreeEyeDudes
+ * - Release all allocated pixmaps for the eye dude frames and masks.
+ */
+void FreeEyeDudes(Display *display)
+{
+	int i;
+
+	for (i = 0; i < 6; i++)
+	{
+		/* Free all the pixmaps */
+		if (eyesLeft[i])	XFreePixmap(display, eyesLeft[i]);
+ 		if (eyesLeftM[i]) 	XFreePixmap(display, eyesLeftM[i]);
+		if (eyesRight[i])	XFreePixmap(display, eyesRight[i]);
+ 		if (eyesRightM[i]) 	XFreePixmap(display, eyesRightM[i]);
+	}
+
+	if (eyesDead)	XFreePixmap(display, eyesDead);
+	if (eyesDeadM)	XFreePixmap(display, eyesDeadM);
+}
+
+/* DrawTheEyeDude
+ * - Render the correct pixmap for the eye dude based on direction and frame.
+ * - `slide` indexes the animation frame (0..5).
+ * - x,y are the centre coordinates; EYEDUDE_WC/HC and WIDTH/HEIGHT used for placement.
+ */
+static void DrawTheEyeDude(Display *display, Window window, int x, int y, 
+	int slide, int direction)
+{
+	/* Draw the eyedude pixmap into the window */
+	switch (direction)
+	{
+		case WALK_LEFT: 
+			RenderShape(display, window, eyesLeft[slide], eyesLeftM[slide],
+				x - EYEDUDE_WC, y - EYEDUDE_HC, EYEDUDE_WIDTH, EYEDUDE_HEIGHT, 
+				False);
+			break;
+
+		case WALK_RIGHT: 
+			RenderShape(display, window, eyesRight[slide], eyesRightM[slide],
+				x - EYEDUDE_WC, y - EYEDUDE_HC, EYEDUDE_WIDTH, EYEDUDE_HEIGHT, 
+				False);
+			break;
+
+		case WALK_DEAD: 
+			RenderShape(display, window, eyesDead, eyesDeadM,
+				x - EYEDUDE_WC, y - EYEDUDE_HC, EYEDUDE_WIDTH, EYEDUDE_HEIGHT, 
+				False);
+			break;
+	}
+}
+
+/* EraseTheEyeDude
+ * - Clears the rectangular area where the eyedude was drawn to remove it.
+ * - Uses XClearArea to restore background in that region.
+ */
+static void EraseTheEyeDude(Display *display, Window window, int x, int y)
+{
+	/* Erase the eye dude pixmap from the window */
+	XClearArea(display, window, x - EYEDUDE_WC, y - EYEDUDE_HC, 
+		EYEDUDE_WIDTH, EYEDUDE_HEIGHT, False);
+}
+
+int CheckBallEyeDudeCollision(Display *display, Window window, int j)
+{
+    int ballX, ballY;
+
+    GetBallPosition(&ballX, &ballY, j);
+
+	/* Axis-aligned bounding box collision test between the eye dude and
+	 * the specified ball. The center-based widths/heights are used to
+	 * compute the extents of each box. */
+	if (((x + EYEDUDE_WC) >= (ballX - BALL_WC)) &&
+		((x - EYEDUDE_WC) <= (ballX + BALL_WC)) &&
+		((y + EYEDUDE_HC) >= (ballY - BALL_HC)) &&
+		((y - EYEDUDE_HC) <= (ballY + BALL_HC)))
+		return True;
+	else
+		return False;
+}
+
+/* ResetEyeDude
+ * - Prepare the eyedude to start walking if the top row of blocks is clear.
+ * - Randomly chooses starting side (left/right), may set turn behaviour.
+ * - Plays greeting sound if sound enabled.
+ */
+static void ResetEyeDude(Display *display, Window window)
+{
+	s = 0;
+	turn = False;
+
+	/* Check if the dude has a clear path then walk */
+	if (CheckEyeDudeClearPath(display, window) == False)
+	{
+		/* Ok - so I'll go walking some other time */
+		ChangeEyeDudeMode(EYEDUDE_NONE);
+		return;
+	}
+
+	/* 30% chance the dude will turn around at mid-screen */
+	if ((rand() % 100) < 30)
+		turn = True;
+
+	/* Setup initial positions based on randomly chosen start side */
+	switch (rand() % 2)
+	{
+		case 1: /* Walk left: start just beyond right edge */
+			x = oldx = PLAY_WIDTH + EYEDUDE_WC;
+			y = oldy = EYEDUDE_HC;
+			direction = WALK_LEFT;
+			break;
+
+		case 0:    /* Walk right: start just beyond left edge */
+			x = oldx = -EYEDUDE_WC;
+			y = oldy = EYEDUDE_HC;
+			direction = WALK_RIGHT;
+			break;
+
+		default:
+			WarningMessage("Incorrect eyedude direction.");
+			break;
+	}
+
+	/* Enter walking mode */
+	ChangeEyeDudeMode(EYEDUDE_WALK);
+
+	/* Play a short greeting sound if enabled */
+	if (noSound == False) playSoundFile("hithere", 100);
+}
+
+/*
+ * InitialiseEyeDudes
+ * - Load XPM pixmaps for all eye-dude frames (left, right, dead).
+ * - Uses XpmCreatePixmapFromData and stores resulting pixmaps and masks.
+ * - Handles and reports any XPM errors via HandleXPMError.
+ */
 void InitialiseEyeDudes(Display *display, Window window, Colormap colormap)
 {
-    XpmAttributes   attributes;
-	int		    XpmErrorStatus;
+	XpmAttributes   attributes;
+	int             XpmErrorStatus;
 
-    attributes.valuemask = XpmColormap;
+	attributes.valuemask = XpmColormap;
 	attributes.colormap = colormap;
 
 	XpmErrorStatus = XpmCreatePixmapFromData(display, window, eyeguy_l1_xpm,
@@ -299,27 +461,36 @@ static int CheckEyeDudeClearPath(Display *display, Window window)
 
 void GetEyeDudePosition(int *x, int *y)
 {
+	/* Provide the previous drawn position (oldx, oldy) to callers.
+	 * Useful for other code that needs to know where the eyedude currently is.
+	 */
 	*x = oldx;
 	*y = oldy;
 }
 
+/* HandleEyeDudeWalk
+ * - Advance the eye dude animation and movement on scheduled frames.
+ * - Handles turning at mid-screen if 'turn' flag set.
+ * - Changes mode to NONE when the dude walks off-screen.
+ */
 static void HandleEyeDudeWalk(Display *display, Window window)
 {
-	/* Update the eyedude that may be moving */
+	/* Update the eyedude that may be moving on its animation tick */
 	if ((frame % EYEDUDE_FRAME_RATE) == 0)
 	{
-		/* Erase and draw our new dude */
+		/* Erase previous drawing and render new frame at current position */
 		EraseTheEyeDude(display, window, oldx, oldy);
 		DrawTheEyeDude(display, window, x, y, s, direction);
 		oldx = x; oldy = y;
 
-		/* Update the frame of animation for dude */
+		/* Advance animation frame (wrap at 6) */
 		s++;
 		if (s == 6) s = 0;
 
 		switch (direction)
 		{
 			case WALK_LEFT:
+				/* If reached middle and allowed to turn, flip direction */
 				if ((x <= (PLAY_WIDTH / 2)) && turn)
 				{
 					/* Turn the other way now */
@@ -328,12 +499,16 @@ static void HandleEyeDudeWalk(Display *display, Window window)
 					break;
 				}
 
+				/* If completely off left edge, stop the eyedude */
 				if (x < -EYEDUDE_WIDTH)
 					ChangeEyeDudeMode(EYEDUDE_NONE);
+
+				/* Step left */
 				inc = -5;
 				break;
 
 			case WALK_RIGHT:
+				/* If reached middle and allowed to turn, flip direction */
 				if ((x >= (PLAY_WIDTH / 2)) && turn)
 				{
 					/* Turn the other way now */
@@ -342,19 +517,28 @@ static void HandleEyeDudeWalk(Display *display, Window window)
 					break;
 				}
 
+				/* If completely off right edge, stop the eyedude */
 				if (x > (PLAY_WIDTH + EYEDUDE_WC))
 					ChangeEyeDudeMode(EYEDUDE_NONE);
+
+				/* Step right */
 				inc = 5;
 				break;
 		}
 
-		/* Move our little dude along */
+		/* Apply movement for this tick */
 		x += inc;
 	}
 }
 
 void HandleEyeDudeMode(Display *display, Window window)
 {
+	/* Handle the current state of the eye dude state machine:
+	 * RESET -> prepare and possibly start walking
+	 * WALK  -> update animation and movement
+	 * DIE   -> award bonus, show message and remove the entity
+	 * Other transient states require no immediate action here
+	 */
 	switch (getEyeDudeMode())
 	{
 		case EYEDUDE_RESET:
@@ -366,19 +550,21 @@ void HandleEyeDudeMode(Display *display, Window window)
 			break;
 
 		case EYEDUDE_DIE:
+			/* On death: erase, award points, show message, play sound */
 			EraseTheEyeDude(display, window, oldx, oldy);
 			ChangeEyeDudeMode(EYEDUDE_NONE);
 
-            SetCurrentMessage(display, messWindow,
-            	"- Eye Dude Bonus 10000 -", False);
+			SetCurrentMessage(display, messWindow,
+				"- Eye Dude Bonus 10000 -", False);
 
-            /* Add the bonus to the score */
-            AddToScore((u_long) EYEDUDE_HIT_BONUS);
-            DisplayScore(display, scoreWindow, score);
+			/* Add the bonus to the score */
+			AddToScore((u_long) EYEDUDE_HIT_BONUS);
+			DisplayScore(display, scoreWindow, score);
 
-            if (noSound == False) playSoundFile("supbons", 80);
+			if (noSound == False) playSoundFile("supbons", 80);
 			break;
 
+		/* These states don't require action here */
 		case EYEDUDE_TURN:
 		case EYEDUDE_NONE:
 		case EYEDUDE_WAIT:

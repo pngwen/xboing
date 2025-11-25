@@ -18,7 +18,9 @@
 #define _FILE_H_
 
 #include <stdio.h>
+#include <stdbool.h>
 #include <time.h>
+#include <stdbool.h>
 #include "faketypes.h"
 
 
@@ -30,6 +32,15 @@
  */
 
 #define SAVE_VERSION 	2
+
+/**
+ * @brief Global file buffer size (compile-time constant)
+ *
+ * Use for fixed-size buffers when reading/writing level and save files.
+ * Defined as an enum constant so it can be used in array bounds
+ * across C compilers that don't support VLAs.
+ */
+enum { FILE_BUF_SIZE = 1024 };
 
 
 /**
@@ -84,7 +95,7 @@ void SetupStage(Display *display, Window window);
  * @return int returns TRUE if successful, FALSE otherwise
  *  
  */
-int SaveLevelDataFile(Display *display, char *levelName);
+bool SaveLevelDataFile(Display *display, const char *levelName);
 
 
 /**
@@ -98,7 +109,7 @@ int SaveLevelDataFile(Display *display, char *levelName);
  * 
  * 
  */
-Boolean SaveCurrentGame(Display *display, Window window);
+bool SaveCurrentGame(Display *display, Window window);
 
 
 /**
@@ -109,6 +120,6 @@ Boolean SaveCurrentGame(Display *display, Window window);
  * @return int returns TRUE on sucecss, FALSE otherwise
  * 
  */
-int LoadSavedGame(Display *display, Window window);
+bool LoadSavedGame(Display *display, Window window);
 
 #endif

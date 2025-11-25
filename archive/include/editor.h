@@ -114,19 +114,6 @@ void SetUpEditor(Display *display, Window window, Colormap colormap);
  */
 void Editor(Display *display, Window window);
 
-
-/**
- * @brief Redraws editor
- *
- * @param Display display X11 display
- * @param Window window X11 window id
- *
- * @todo Remove reliance on X11
- * @todo Possibly delete this function
- *
- */
-void RedrawEditor(Display *display, Window window);
-
 /**
  * @brief Free editor action
  *

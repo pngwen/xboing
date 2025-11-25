@@ -158,6 +158,7 @@ void ChangePaddleSize(int changeDirection);
 
 Vector2 GetBallSpawnPointOnPaddle();
 
+void SetPaddlePosition(float x);
 
 // not used in program ??
 // #define PADDLE_HC  		4
