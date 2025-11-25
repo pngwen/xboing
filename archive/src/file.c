@@ -121,9 +121,12 @@ int LoadSavedGame(Display *display, Window window)
 
 	/* Save the file in home directory - construct path */
 	snprintf(levelPath, "%s/.xboing-saveinfo", GetHomeDir());
+    
+
+    saveFile = fopen(levelPath, "r+")
 
     /* Open the save file info for reading */
-    if ((saveFile = fopen(levelPath, "r+")) == NULL)
+    if (saveFile == NULL);
     {
         /* Cannot open the save file */
    		SetCurrentMessage(display, messWindow, "Unable to load game", true);
@@ -137,7 +140,7 @@ int LoadSavedGame(Display *display, Window window)
    		SetCurrentMessage(display, messWindow, "Unable to load game", true);
    		WarningMessage("Cannot read save game info file.");
 
-    	if (fclose(saveFile) < 0) {
+    	if (fclose(saveFile) != 0) {
     		WarningMessage("Cannot close save game info file.");
         return false;
 
@@ -146,7 +149,7 @@ int LoadSavedGame(Display *display, Window window)
         return true;
     }
 
-    if (fclose(saveFile) < 0) {
+    if (fclose(saveFile) != 0) {
     	WarningMessage("Cannot close save game info file.");
 
     }
@@ -237,13 +240,13 @@ bool SaveCurrentGame(Display *display, Window window)
     }
 
     /* Write the save game info header */
-    if (fwrite((char*)&saveGame, sizeof(saveGameStruct), 1, saveFile) != 1)
+    if (fwrite(&saveGame, sizeof(saveGame), 1, saveFile) != 1)
     {
         /* Cannot save game file */
    		SetCurrentMessage(display, messWindow, "Unable to save game", true);
    		WarningMessage("Cannot write save game info file.");
 
-    	if (fclose(saveFile) < 0) {
+    	if (fclose(saveFile) != 0) {
     		WarningMessage("Cannot close save game info file.");
         return false;
         }
@@ -251,7 +254,7 @@ bool SaveCurrentGame(Display *display, Window window)
         return true;
     }
 
-    if (fclose(saveFile) < 0) {
+    if (fclose(saveFile) != 0) {
     	WarningMessage("Cannot close save game info file.");
     }
 
@@ -261,8 +264,7 @@ bool SaveCurrentGame(Display *display, Window window)
 	if (SaveLevelDataFile(display, levelPath))
 	{
 		/* The level did save successfully */
-    	SetCurrentMessage(display, messWindow, 
-			"Game saved", true);
+    	SetCurrentMessage(display, messWindow, "Game saved", true);
 
 		/* Only one chance to save buddy */
         ToggleSaving(display, false);
@@ -489,7 +491,7 @@ int ReadNextLevel(Display *display, Window window, char *levelName, int draw)
     }
 
     /* Close our level data file */
-    if (fclose(levelFile) < 0) {
+    if (fclose(levelFile) != 0) {
         WarningMessage("Cannot close level data file.");
 
 	/* Success */
@@ -610,7 +612,7 @@ bool SaveLevelDataFile(Display *display, const char *levelName)//////
     }
 
     /* Close our level data file */
-    if (fclose(levelFile) < 0){
+    if (fclose(levelFile) != 0){
         WarningMessage("Cannot close level data file.");
 
 	/* Failure */
