@@ -121,6 +121,6 @@ bool SaveCurrentGame(Display *display, Window window);
  * @return int returns TRUE on sucecss, FALSE otherwise
  * 
  */
-int LoadSavedGame(Display *display, Window window);
+bool LoadSavedGame(Display *display, Window window);
 
 #endif
