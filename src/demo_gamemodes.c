@@ -57,6 +57,8 @@ void RunInitGameMode(const char *fileName)
 
     ResetPaddleStart();
     ResetBall();
+    // ensure countdown timer does not start until ball released
+    setTimerActive(false);
 
     RenderGameScreen();
 
@@ -85,6 +87,9 @@ void RunPlayMode(void)
 
     // --- Update ball ---
     MoveBall();
+
+    // --- Update timer ---
+    timeDecrement();
 
     // --- Render everything ---
     RenderGameScreen();
@@ -263,10 +268,14 @@ void RenderGameScreen(void)
     }
 
     const char *lives = TextFormat("Balls Remaining: %d", livesRemaining);
-    DrawText(lives, 10, 10, 20, WHITE);
+    DrawText(lives, 10, GetScreenHeight() - 20, 20, WHITE);
 
     const char *blocks = TextFormat("Blocks Remaining: %d", getBlockCount());
     DrawText(blocks, GetScreenWidth() - MeasureText(blocks, 20) - 10, 10, 20, WHITE);
+
+    // Display remaining time
+    const char *time = TextFormat("Time Remaining: %d", getTime());
+    DrawText(time, 10, 10, 20, WHITE);
 
     if (GetPaddleReverse())
     {
