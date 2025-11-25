@@ -27,7 +27,6 @@ int main(int argumentCount, char *arguments[])
     bool windowInitialized = false;
 
     // must InitWindow before loading textures
-
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Rayboing Demo");
     SetTargetFPS(60);
     windowInitialized = true;

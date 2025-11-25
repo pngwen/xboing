@@ -1,4 +1,3 @@
-
 /**
  * @file file.h
  * @author Justin C. Kibell (jck@techrescue.org)
@@ -104,10 +103,10 @@ bool SaveLevelDataFile(Display *display, const char *levelName);
  * 
  * @param display X11 struct _XDisplay
  * @param window XID for the target window
- * @return int returns TRUE on success, FALSE otherwise
+ * @return Boolean returns True on success, False otherwise
  * 
  * 
- 
+ * 
  * 
  */
 bool SaveCurrentGame(Display *display, Window window);
