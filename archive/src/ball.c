@@ -181,125 +181,54 @@ float MACHINE_EPS;
 
 void InitialiseBall(Display *display, Window window, Colormap colormap)
 {
-	/*
-	 * Read and create all the animation frames for the balls and guides.
-	 */
-
-    XpmAttributes   attributes;
-	int		    	XpmErrorStatus;
+    XpmAttributes attributes;
+    int XpmErrorStatus;
 
     attributes.valuemask = XpmColormap;
-	attributes.colormap = colormap;
+    attributes.colormap = colormap;
 
-	/* Create the xpm pixmap ball frames */
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, ball1_xpm,
-		&ballsPixmap[0], &ballsMask[0], &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseBall(ball1)");
+    /* --- BALL FRAMES --- */
+    static char **ballFrames[] = {
+        ball1_xpm, ball2_xpm, ball3_xpm, ball4_xpm, killer_xpm
+    };
 
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, ball2_xpm,
-		&ballsPixmap[1], &ballsMask[1], &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseBall(ball2)");
+    for (int i = 0; i < BALL_SLIDES; i++) {
+        XpmErrorStatus = XpmCreatePixmapFromData(display, window, ballFrames[i],
+            &ballsPixmap[i], &ballsMask[i], &attributes);
+        HandleXPMError(display, XpmErrorStatus, "InitialiseBall(ball)");
+    }
 
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, ball3_xpm,
-		&ballsPixmap[2], &ballsMask[2], &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseBall(ball3)");
+    /* --- BALL BIRTH FRAMES --- */
+    static char **birthFrames[] = {
+        ballbirth1_xpm, ballbirth2_xpm, ballbirth3_xpm, ballbirth4_xpm,
+        ballbirth5_xpm, ballbirth6_xpm, ballbirth7_xpm, ballbirth8_xpm
+    };
 
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, ball4_xpm,
-		&ballsPixmap[3], &ballsMask[3], &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseBall(ball4)");
+    for (int i = 0; i < BIRTH_SLIDES; i++) {
+        XpmErrorStatus = XpmCreatePixmapFromData(display, window, birthFrames[i],
+            &ballBirthPixmap[i], &ballBirthMask[i], &attributes);
+        HandleXPMError(display, XpmErrorStatus, "InitialiseBall(ballbirth)");
+    }
 
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, killer_xpm,
-		&ballsPixmap[4], &ballsMask[4], &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseBall(killer)");
+    /* --- GUIDE FRAMES --- */
+    static char **guideFrames[] = {
+        guide1_xpm, guide2_xpm, guide3_xpm, guide4_xpm, guide5_xpm,
+        guide6_xpm, guide7_xpm, guide8_xpm, guide9_xpm, guide10_xpm, guide11_xpm
+    };
 
-	/* Ball birth sequence */
+    for (int i = 0; i < 11; i++) {
+        XpmErrorStatus = XpmCreatePixmapFromData(display, window, guideFrames[i],
+            &guides[i], &guidesM[i], &attributes);
+        HandleXPMError(display, XpmErrorStatus, "InitialiseBall(guide)");
+    }
 
-	/* Create the xpm pixmap ball birth frames */
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, ballbirth1_xpm,
-		&ballBirthPixmap[0], &ballBirthMask[0], &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseBall(ballbirth1)");
+    /* Free the xpm pixmap attributes */
+    XpmFreeAttributes(&attributes);
 
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, ballbirth2_xpm,
-		&ballBirthPixmap[1], &ballBirthMask[1], &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseBall(ballbirth2)");
+    MACHINE_EPS = sqrt(MINFLOAT);
 
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, ballbirth3_xpm,
-		&ballBirthPixmap[2], &ballBirthMask[2], &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseBall(ballbirth3)");
-
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, ballbirth4_xpm,
-		&ballBirthPixmap[3], &ballBirthMask[3], &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseBall(ballbirth4)");
-
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, ballbirth5_xpm,
-		&ballBirthPixmap[4], &ballBirthMask[4], &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseBall(ballbirth5)");
-
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, ballbirth6_xpm,
-		&ballBirthPixmap[5], &ballBirthMask[5], &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseBall(ballbirth6)");
-
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, ballbirth7_xpm,
-		&ballBirthPixmap[6], &ballBirthMask[6], &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseBall(ballbirth7)");
-
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, ballbirth8_xpm,
-		&ballBirthPixmap[7], &ballBirthMask[7], &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseBall(ballbirth8)");
-
-	/* Now load in the guide pixmaps */
-
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, guide1_xpm,
-		&guides[0], &guidesM[0], &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseBall(guide1)");
-
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, guide2_xpm,
-		&guides[1], &guidesM[1], &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseBall(guide2)");
-
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, guide3_xpm,
-		&guides[2], &guidesM[2], &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseBall(guide3)");
-
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, guide4_xpm,
-		&guides[3], &guidesM[3], &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseBall(guide4)");
-
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, guide5_xpm,
-		&guides[4], &guidesM[4], &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseBall(guide5)");
-
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, guide6_xpm,
-		&guides[5], &guidesM[5], &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseBall(guide6)");
-
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, guide7_xpm,
-		&guides[6], &guidesM[6], &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseBall(guide7)");
-
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, guide8_xpm,
-		&guides[7], &guidesM[7], &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseBall(guide8)");
-
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, guide9_xpm,
-		&guides[8], &guidesM[8], &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseBall(guide9)");
-
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, guide10_xpm,
-		&guides[9], &guidesM[9], &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseBall(guide10)");
-
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, guide11_xpm,
-		&guides[10], &guidesM[10], &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseBall(guide11)");
-
-	/* Free the xpm pixmap attributes */
-	XpmFreeAttributes(&attributes);
-
-	MACHINE_EPS = sqrt(MINFLOAT);
-
-	/* Make sure that all the balls are initialised */
-	ClearAllBalls();
+    /* Make sure that all the balls are initialised */
+    ClearAllBalls();
 }
 
 void FreeBall(Display *display)
