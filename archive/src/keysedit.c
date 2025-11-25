@@ -103,6 +103,7 @@ void SetUpKeysEdit(Display *display, Window window, Colormap colormap)
 	ResetKeysEdit();
 }
 
+/* Lines of text shown in the instruction section */
 char *infoText[] =
 {
     "The level editor will allow you to edit any of the levels and",
@@ -114,6 +115,10 @@ char *infoText[] =
 	"to finish. Remember that random specials will appear.",
 };
 
+/*
+* Draws all of the instruction text.
+* This is called once after the title and before the sparkle animation.
+*/
 static void DoText(Display *display, Window window)
 {
 	char string[80];
@@ -148,9 +153,11 @@ static void DoText(Display *display, Window window)
             y += dataFont->ascent + GAP;
     }
 
+	/* Leave space before the key bindings list */
     y += dataFont->ascent;
-
 	y1 = y;
+
+	/* Left column of key commands */
 	x = 30;
 
 	strcpy(string, "<r> = Redraw level");
@@ -207,6 +214,12 @@ static void DoText(Display *display, Window window)
 		PLAY_HEIGHT - 30, tann, PLAY_WIDTH);
 }
 
+
+/*
+* Handles the little sparkle animation that plays on the help screen.
+* The animation moves a sparkle to random positions and animates it frame-by-frame.
+* This uses global frame to time events.
+*/
 static void DoSparkle(Display *display, Window window)
 {
 	static Pixmap store;
@@ -214,9 +227,11 @@ static void DoSparkle(Display *display, Window window)
 	static int y = 20;
 	static int in = 0;
 
+	/* When the animation reaches its end frame, finish the state */
 	if (frame >= endFrame)
 		KeysEditState = KEYSEDIT_FINISH;
 
+	/* Create a small pixmap (an off-screen image) the first time */
 	if (!store)
 	{
 		store = XCreatePixmap(display, window, 20, 20,
@@ -226,17 +241,23 @@ static void DoSparkle(Display *display, Window window)
 	if (in == 0) 
 		XCopyArea(display, window, store, gc, x, y, 20, 20, 0, 0);
 
+	/* If it's time to advance the sparkle frame */
 	if (frame == startFrame)
 	{
+		/* Restore background first */
 		XCopyArea(display, store, window, gc, 0, 0, 20, 20, x, y);
+
+		/* Draw next sparkle frame */
 		RenderShape(display, window, stars[in], starsM[in],
 			x, y, 20, 20, False);
 
+		/* Advance frame and set time for next frame */
 	 	in++;
 		startFrame = frame + 15;
 
 		if (in == 11) 
 		{
+			/* Restore background */
 			XCopyArea(display, store, window, gc, 0, 0, 20, 20, x, y);
 			in = 0;
 			startFrame = frame + 500;
@@ -246,6 +267,10 @@ static void DoSparkle(Display *display, Window window)
 	}
 }
 
+/*
+* Called once when the sparkle animation ends.
+* Switches modes and plays a sound. :D
+*/
 static void DoFinish(Display *display, Window window)
 {
 	static int toggle = GLOBAL;
@@ -264,6 +289,12 @@ static void DoFinish(Display *display, Window window)
 }
 
 
+
+/*
+* The main update function for the keys editor.
+* This is a state machine. Each part of the screen (title, text, sparkle, finish) happens in order.
+* 
+*/
 void KeysEdit(Display *display, Window window)
 {
 	switch (KeysEditState)
@@ -307,6 +338,7 @@ void KeysEdit(Display *display, Window window)
 	}
 }
 
+/* Called when the screen needs to be redrawn fully */
 void RedrawKeysEdit(Display *display, Window window)
 {
 	DoIntroTitle(display, window);
@@ -317,15 +349,22 @@ void FreeKeyEditControl(Display *display)
 {
 }
 
+/*
+* Resets all timing and goes back to the very first state.
+*/
 void ResetKeysEdit(void)
 {
 	KeysEditState = KEYSEDIT_TITLE;
-	startFrame 	= frame + 100;
-	endFrame 	= frame + 4000;
+	startFrame 	= frame + 100; /* Wait 100 frames before first sparkle */
+	endFrame 	= frame + 4000; /* Sparkle section lasts 4000 frames */
 
 	DEBUG("Reset KeysEdit mode.")
 }
 
+/*
+* Helper function used when the state machine places itself in WAIT mode.
+* It resumes operation when the global frame counter reaches waitingFrame.
+*/
 static void DoKeysEditWait(void)
 {
 	if (frame == waitingFrame)
