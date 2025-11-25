@@ -55,6 +55,8 @@
 #define SIZE_UP         1
 #define SIZE_DOWN       2
 
+#include <stdbool.h>
+
 
 /**
  * @brief Loads paddle images into memory as Raylib Texture2D
