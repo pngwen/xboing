@@ -44,23 +44,14 @@
 
 #include "include\file.h"
 
-/**
- * @def BUF_SIZE
- * 
- * @todo update #define to const uint32_t
- * 
- */
-
-#define BUF_SIZE            1024
-
 
 saveGameStruct saveGame;
 
 void SetupStage(Display *display, Window window)
 {
-    char levelPath[1024];
+    char levelPath[FILE_BUF_SIZE];
     char *str;
-    char str2[1024];
+    char str2[FILE_BUF_SIZE];
     static int bgrnd = 1;
     u_long newLevel;
 
@@ -123,7 +114,7 @@ int LoadSavedGame(Display *display, Window window)
 	 */
 
     FILE *saveFile;
-    char levelPath[1024];
+    char levelPath[FILE_BUF_SIZE];
     char str[80];
     static int bgrnd = 1;
 
@@ -220,7 +211,7 @@ int SaveCurrentGame(Display *display, Window window)
 	 */
 
     FILE *saveFile;
-    char levelPath[1024];
+    char levelPath[FILE_BUF_SIZE];
 
 	/* Setup the save game header */
 	saveGame.version 	= (u_long) SAVE_VERSION;
@@ -292,7 +283,7 @@ int ReadNextLevel(Display *display, Window window, char *levelName, int draw)
     FILE *levelFile;
     int row, col, type;
     int timeLimit = 180;
-	char str[BUF_SIZE];
+	char str[FILE_BUF_SIZE];
     char *temp;
 
     /* Clear all existing mess in structures */
@@ -315,7 +306,7 @@ int ReadNextLevel(Display *display, Window window, char *levelName, int draw)
     }
 
     /* Obtain the title string */
-    fgets(levelTitle, BUF_SIZE, levelFile);
+    fgets(levelTitle, FILE_BUF_SIZE, levelFile);
 
     /* Remove the carriage return in the title */
     temp = strchr(levelTitle, '\n');
@@ -328,7 +319,7 @@ int ReadNextLevel(Display *display, Window window, char *levelName, int draw)
     }
 
     /* Now get the time bonus from the level file */
-    fgets(str, BUF_SIZE, levelFile);
+    fgets(str, FILE_BUF_SIZE, levelFile);
     if (sscanf(str, "%d", &timeLimit) != 1)
     {
 		/* Error in the time limit of the level data file */
@@ -510,7 +501,7 @@ int SaveLevelDataFile(Display *display, levelName)//////
 {
     FILE *levelFile;
     int row, col;
-	char str[BUF_SIZE];
+    char str[FILE_BUF_SIZE];
 	struct aBlock *blockP;
 
     /* Open the new level data file for reading */
