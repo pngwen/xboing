@@ -72,8 +72,12 @@ void RunPlayMode(void)
         MovePaddle(PADDLE_RIGHT);
 
     // --- Mouse controls ---
-    Vector2 mousePosition = GetMousePosition();
-    SetPaddlePosition(mousePosition.x);
+    extern bool mouseControls; // make sure this matches your variable definition
+    if (mouseControls)
+    {
+        Vector2 mousePosition = GetMousePosition();
+        SetPaddlePosition(mousePosition.x);
+    }
 
     // --- Ball release ---
     if (IsInputReleaseBall())
