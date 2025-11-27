@@ -2,9 +2,9 @@
 #include <raylib.h>
 #include <stdbool.h>
 #include "intro.h"
-#define INTRO_TEXTURES "resource/textures/intro/"
+#define INTRO_TEXTURES "resource/textures/presents/"
 #define STAR_TEXTURES "resource/textures/stars/"
-#define BACKGROUNDS "resources/textures/bgrnds"
+#define BACKGROUNDS "resources/textures/bgrnds/"
 
 Texture2D introPlanet;
 
@@ -15,6 +15,8 @@ static const int SCREEN_HEIGHT = 720;
 bool loadIntroTextures(void) {
     introPlanet = LoadTexture(INTRO_TEXTURES "earth.png");
     if (introPlanet.id == 0) return false;
+
+    return true;
 }
 
 void ShowIntroScreen(void) {
