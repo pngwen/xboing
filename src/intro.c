@@ -2,9 +2,20 @@
 #include <raylib.h>
 #include <stdbool.h>
 #include "intro.h"
+#define INTRO_TEXTURES "resource/textures/intro/"
+#define STAR_TEXTURES "resource/textures/stars/"
+#define BACKGROUNDS "resources/textures/bgrnds"
+
+Texture2D introPlanet;
+
 
 static const int SCREEN_WIDTH = 575;
 static const int SCREEN_HEIGHT = 720;
+
+bool loadIntroTextures(void) {
+    introPlanet = LoadTexture(INTRO_TEXTURES "earth.png");
+    if (introPlanet.id == 0) return false;
+}
 
 void ShowIntroScreen(void) {
     // Simple loop that draws text and waits for key press
@@ -19,6 +30,7 @@ void ShowIntroScreen(void) {
             int promptSize = 20;
             int titleWidth = MeasureText(title, titleSize);
             int promptWidth = MeasureText(prompt, promptSize);
+            DrawTexture(introPlanet, 100, 50, WHITE); // Draw the texture at (100, 50) with no tint
             DrawText(title, (SCREEN_WIDTH - titleWidth)/2, SCREEN_HEIGHT/3, titleSize, RAYWHITE);
             DrawText(prompt, (SCREEN_WIDTH - promptWidth)/2, SCREEN_HEIGHT/3 + 80, promptSize, LIGHTGRAY);
         EndDrawing();
