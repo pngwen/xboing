@@ -26,15 +26,15 @@ void ShowIntroScreen(void) {
     while (!WindowShouldClose()) {
         BeginDrawing();
             ClearBackground(BLACK);
-            const char *title = "Rayboing";
-            const char *prompt = "Press ENTER or SPACE to Start";
-            int titleSize = 48;
-            int promptSize = 20;
-            int titleWidth = MeasureText(title, titleSize);
-            int promptWidth = MeasureText(prompt, promptSize);
-            DrawTexture(introPlanet, 100, 50, WHITE); // Draw the texture at (100, 50) with no tint
-            DrawText(title, (SCREEN_WIDTH - titleWidth)/2, SCREEN_HEIGHT/3, titleSize, RAYWHITE);
-            DrawText(prompt, (SCREEN_WIDTH - promptWidth)/2, SCREEN_HEIGHT/3 + 80, promptSize, LIGHTGRAY);
+            //const char *title = "Rayboing";
+            //const char *prompt = "Press ENTER or SPACE to Start";
+            //int titleSize = 48;
+            //int promptSize = 20;
+            //int titleWidth = MeasureText(title, titleSize);
+            //int promptWidth = MeasureText(prompt, promptSize);
+            DrawTexture(introPlanet); // Draw the texture at (100, 50) with no tint
+            //DrawText(title, (SCREEN_WIDTH - titleWidth)/2, SCREEN_HEIGHT/3, titleSize, RAYWHITE);
+            //DrawText(prompt, (SCREEN_WIDTH - promptWidth)/2, SCREEN_HEIGHT/3 + 80, promptSize, LIGHTGRAY);
         EndDrawing();
 
         if (IsKeyPressed(KEY_ENTER) || IsKeyPressed(KEY_KP_ENTER) || IsKeyPressed(KEY_SPACE)) {
