@@ -4,7 +4,7 @@
 #include "intro.h"
 #define INTRO_TEXTURES "resource/textures/presents/"
 #define STAR_TEXTURES "resource/textures/stars/"
-#define BACKGROUNDS "resources/textures/bgrnds/"
+#define BACKGROUNDS "resource/textures/bgrnds/"
 
 Texture2D introPlanet;
 
@@ -32,7 +32,8 @@ void ShowIntroScreen(void) {
             //int promptSize = 20;
             //int titleWidth = MeasureText(title, titleSize);
             //int promptWidth = MeasureText(prompt, promptSize);
-            DrawTexture(introPlanet); // Draw the texture at (100, 50) with no tint
+            Color introTint = WHITE;
+            DrawTexture(introPlanet, 100, 50, introTint);
             //DrawText(title, (SCREEN_WIDTH - titleWidth)/2, SCREEN_HEIGHT/3, titleSize, RAYWHITE);
             //DrawText(prompt, (SCREEN_WIDTH - promptWidth)/2, SCREEN_HEIGHT/3 + 80, promptSize, LIGHTGRAY);
         EndDrawing();
