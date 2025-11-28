@@ -73,7 +73,7 @@ void ShowIntroScreen(void) {
             ClearBackground(BLACK);
             Color introTint = WHITE;
             
-            DrawTexture(introPlanet, 100, 50, introTint);
+            DrawTexture(introPlanet, 100, 100, introTint);
             DrawTexture(introFlag, (SCREEN_WIDTH - introFlag.width)/2, 20, WHITE);
             DrawTexture(introJustin, (SCREEN_WIDTH - introJustin.width)/2,
             SCREEN_HEIGHT - introKibell.height - introJustin.height - 30, WHITE);
