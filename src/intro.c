@@ -81,7 +81,7 @@ void ShowIntroScreen(void) {
             //DrawTexture(introPresents, 100, 50, introTint); //TODO: Animate after Justin Kibell
             //TODO: Animate letters coming in one_by_one
 
-            int xboingY = (SCREEN_HEIGHT / 2) - 80; //Verticle line where "XBOING" sits
+            int xboingY = 60; //Verticle line where "XBOING" sits
             int spacing = 10; //Spacing in between "XBOING" letters
             int totalWidth =
                 intro_X.width + intro_B.width + intro_O.width +
@@ -102,9 +102,7 @@ void ShowIntroScreen(void) {
             int promptSize = 20;
             int promptWidth = MeasureText(prompt, promptSize);
             DrawText(prompt, (SCREEN_WIDTH - promptWidth)/2, SCREEN_HEIGHT/3 + 80, promptSize, LIGHTGRAY);
-        EndDrawing();
-
-        
+        EndDrawing(); 
 
         if (IsKeyPressed(KEY_ENTER) || IsKeyPressed(KEY_KP_ENTER) || IsKeyPressed(KEY_SPACE)) {
             // Start requested
