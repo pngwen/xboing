@@ -81,7 +81,7 @@ void ShowIntroScreen(void) {
             //DrawTexture(introPresents, 100, 50, introTint); //TODO: Animate after Justin Kibell
             //TODO: Animate letters coming in one_by_one
 
-            int xboingY = 60; //Verticle line where "XBOING" sits
+            int xboingY = 40; //Verticle line where "XBOING" sits
             int spacing = 10; //Spacing in between "XBOING" letters
             int totalWidth =
                 intro_X.width + intro_B.width + intro_O.width +
