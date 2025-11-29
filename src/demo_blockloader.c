@@ -91,24 +91,20 @@ bool loadBlocks(const char* filename) {
         return false;
     }
 
-<<<<<<< HEAD
     // Get header info
 	if (!fgets(levelName, sizeof(levelName), fp)) { // read level name
         fclose(fp);
         return false;
     }
-	if (fscanf(fp, "%d", &timeBonus) != 1) { // read time bonus
+	if (fscanf(fp, "%d", &timeRemaining) != 1) { // read time bonus
         fclose(fp);
         return false;
     }
-
     getc(fp); // consume newline after timeBonus
-=======
 	// Get file data
 	fgets(levelName, 256, fp);
 	fscanf(fp, "%d", &timeRemaining);
 	getc(fp);
->>>>>>> upstream
 
 	int row = 0;
 	int column = 0;
@@ -663,16 +659,15 @@ bool isBlockTypeInteractive(char ch) {
 void deactivateBlock(int row, int col) {
     if (!inBounds(row, col)) return;
 
-<<<<<<< HEAD
     if (!game_blocks[row][col].active || !isBlockTypeInteractive(game_blocks[row][col].type)) return;
-
+    
     game_blocks[row][col].active = false;
 
     if (blocksRemaining > 0) { //avoid underflow
         blocksRemaining--;
     }
 }
-=======
+
 // decrement time remaining by 1 second if timer is active
 void timeDecrement(void) {
     if (!timerActive) return;
@@ -681,7 +676,7 @@ void timeDecrement(void) {
 
     elapsedTime += GetFrameTime();
 
-    if ( elapsedTime > 1.0f) {
+    if (elapsedTime > 1.0f) {
         elapsedTime = 0.0f;
         timeRemaining--;
     }
@@ -696,8 +691,6 @@ void setTimerActive(bool active) {
 bool isTimerActive(void) {
     return timerActive;
 }
-
->>>>>>> upstream
 
 int getBlockCount(void) {
     return blocksRemaining;
