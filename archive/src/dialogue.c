@@ -88,6 +88,13 @@
  *  Internal macro definitions:
  */
 
+/* Dialogue input display layout constants */
+#define INPUT_CLEAR_Y_START     50
+#define INPUT_CLEAR_HEIGHT      50
+#define INPUT_TEXT_Y_POSITION   70
+#define QUESTION_ICON_SIZE      32
+#define QUESTION_ICON_HALF_SIZE 16
+
 /*
  *  Internal type declarations:
  */
@@ -319,20 +326,29 @@ void ProcessDialogue(Display *display)
  */
 static void redrawCurrentInput(Display *display)
 {
-	/**
-	*
-	* @todo: Improve readability of this code
-	* @todo: Reference the constant ints, possibly make them const vars
-	*
-	*/
-	XClearArea(display, inputWindow, 0, 50, DIALOGUE_WIDTH, 50, False);
+	/* Clear the input area */
+	XClearArea(display, inputWindow, 
+		0, INPUT_CLEAR_Y_START, 
+		DIALOGUE_WIDTH, INPUT_CLEAR_HEIGHT, 
+		False);
+	
+	/* Display current input text or question icon */
 	if (strlen(currentInput) > 0)
-		DrawShadowCentredText(display, inputWindow, textFont, currentInput, 
-			70, yellow, DIALOGUE_WIDTH);
+	{
+		DrawShadowCentredText(display, inputWindow, textFont, 
+			currentInput, INPUT_TEXT_Y_POSITION, 
+			yellow, DIALOGUE_WIDTH);
+	}
 	else
-		RenderShape(display, inputWindow, question, questionM, 
-			(DIALOGUE_WIDTH / 2) - 16, 70, 
-			32, 32, False);
+	{
+		/*iconX calculates horizontal position for the question icon*/
+		int iconX = (DIALOGUE_WIDTH / 2) - QUESTION_ICON_HALF_SIZE;
+		RenderShape(display, inputWindow, 
+			question, questionM, 
+			iconX, INPUT_TEXT_Y_POSITION, 
+			QUESTION_ICON_SIZE, QUESTION_ICON_SIZE, 
+			False);
+	}
 }
 
 /**

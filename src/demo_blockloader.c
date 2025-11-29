@@ -29,7 +29,8 @@ typedef struct {
 PLAY_AREA playArea = {0};
 
 char levelName[256];
-int timeBonus = 0;
+int timeRemaining = 0;
+static bool timerActive = false;
 int blocksRemaining = 0;
 
 Texture2D HYPERSPACE_BLK,
@@ -90,6 +91,7 @@ bool loadBlocks(const char* filename) {
         return false;
     }
 
+<<<<<<< HEAD
     // Get header info
 	if (!fgets(levelName, sizeof(levelName), fp)) { // read level name
         fclose(fp);
@@ -101,6 +103,12 @@ bool loadBlocks(const char* filename) {
     }
 
     getc(fp); // consume newline after timeBonus
+=======
+	// Get file data
+	fgets(levelName, 256, fp);
+	fscanf(fp, "%d", &timeRemaining);
+	getc(fp);
+>>>>>>> upstream
 
 	int row = 0;
 	int column = 0;
@@ -655,6 +663,7 @@ bool isBlockTypeInteractive(char ch) {
 void deactivateBlock(int row, int col) {
     if (!inBounds(row, col)) return;
 
+<<<<<<< HEAD
     if (!game_blocks[row][col].active || !isBlockTypeInteractive(game_blocks[row][col].type)) return;
 
     game_blocks[row][col].active = false;
@@ -663,7 +672,38 @@ void deactivateBlock(int row, int col) {
         blocksRemaining--;
     }
 }
+=======
+// decrement time remaining by 1 second if timer is active
+void timeDecrement(void) {
+    if (!timerActive) return;
+
+    static float elapsedTime = 0.0f;
+
+    elapsedTime += GetFrameTime();
+
+    if ( elapsedTime > 1.0f) {
+        elapsedTime = 0.0f;
+        timeRemaining--;
+    }
+}
+
+// set whether timer is active
+void setTimerActive(bool active) {
+    timerActive = active;
+}
+
+// return whether timer is active
+bool isTimerActive(void) {
+    return timerActive;
+}
+
+>>>>>>> upstream
 
 int getBlockCount(void) {
     return blocksRemaining;
+}
+
+// return remaining time
+int getTime(void) {
+    return timeRemaining;
 }

@@ -43,6 +43,14 @@
  * =========================================================================
  */
 
+/* 
+ * XBoing - An X11 blockout style computer game
+ *
+ * (c) Copyright 1993, 1994, 1995, Justin C. Kibell, All Rights Reserved
+ *
+ * (license text omitted for brevity in this snippet)
+ */
+
 /*
  *  Include file dependencies:
  */
@@ -97,6 +105,14 @@
 #define BLINK_GAP	1000
 #define BLINK_RATE	25
 
+/* new well-named constants to replace magic numbers */
+#define NUM_STARS       11   /* there are 11 star XPMs included */
+#define STAR_SIZE       20   /* width and height used for star pixmaps and copies */
+#define TITLE_W         474  /* width of title bitmap */
+#define TITLE_H         74   /* height of title bitmap */
+#define SPARKLE_STEP    15   /* short-step used between sparkle frames */
+#define SPARKLE_LONG   500   /* longer wait after a full sparkle cycle */
+
 /*
  *  Internal type declarations:
  */
@@ -113,77 +129,47 @@ static int startFrame = 0;
 int nextBlink = 0;
 enum IntroStates IntroState;
 Pixmap bigtitlePixmap, bigtitlePixmapM;
-Pixmap stars[12], starsM[12];
+Pixmap stars[NUM_STARS], starsM[NUM_STARS];
 static int waitingFrame;
 enum IntroStates waitMode;
 
 void SetUpIntroduction(Display *display, Window window, Colormap colormap)
 {
-	XpmAttributes   attributes;
-	int             XpmErrorStatus;
+    XpmAttributes attributes;
+    int XpmErrorStatus;
 
     attributes.valuemask = XpmColormap;
-	attributes.colormap = colormap;
+    attributes.colormap = colormap;
 
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, titleBig_xpm,
-		&bigtitlePixmap, &bigtitlePixmapM, &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseIntro()");
+    /* Create the title pixmap */
+    XpmErrorStatus = XpmCreatePixmapFromData(display, window, titleBig_xpm,
+        &bigtitlePixmap, &bigtitlePixmapM, &attributes);
+    HandleXPMError(display, XpmErrorStatus, "InitialiseIntro(title)");
 
-    /* Create the stars for the letter shine */
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, star1_xpm,
-		&stars[0], &starsM[0], &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseIntro(star1)");
+    /* Array of all star XPM data */
+    const char **star_xpms[NUM_STARS] = {
+        star1_xpm, star2_xpm, star3_xpm, star4_xpm, star5_xpm,
+        star6_xpm, star7_xpm, star8_xpm, star9_xpm, star10_xpm, star11_xpm
+    };
 
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, star2_xpm,
-		&stars[1], &starsM[1], &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseIntro(star2)");
+    /* Loop through and initialize all star pixmaps */
+    for (int i = 0; i < NUM_STARS; i++)
+    {
+        XpmErrorStatus = XpmCreatePixmapFromData(display, window, star_xpms[i],
+            &stars[i], &starsM[i], &attributes);
+        HandleXPMError(display, XpmErrorStatus, "InitialiseIntro(star)");
+    }
 
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, star3_xpm,
-		&stars[2], &starsM[2], &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseIntro(star3)");
+    /* Free the XPM pixmap attributes */
+    XpmFreeAttributes(&attributes);
 
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, star4_xpm,
-		&stars[3], &starsM[3], &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseIntro(star4)");
-
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, star5_xpm,
-		&stars[4], &starsM[4], &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseIntro(star5)");
-
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, star6_xpm,
-		&stars[5], &starsM[5], &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseIntro(star6)");
-
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, star7_xpm,
-		&stars[6], &starsM[6], &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseIntro(star7)");
-
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, star8_xpm,
-		&stars[7], &starsM[7], &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseIntro(star8)");
-
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, star9_xpm,
-		&stars[8], &starsM[8], &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseIntro(star9)");
-
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, star10_xpm,
-		&stars[9], &starsM[9], &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseIntro(star10)");
-
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, star11_xpm,
-		&stars[10], &starsM[10], &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseIntro(star11)");
-
-    /* Free the xpm pixmap attributes */
-	XpmFreeAttributes(&attributes);
-
-	ResetIntroduction();
+    ResetIntroduction();
 }
 
 void DrawIntroTitle(Display *display, Window window, int x, int y)
 {
 	RenderShape(display, window, bigtitlePixmap, bigtitlePixmapM,
-		x, y, 474, 74, True);
+		x, y, TITLE_W, TITLE_H, True);
 }
 
 void DoIntroTitle(Display *display, Window window)
@@ -340,32 +326,32 @@ static void DoSparkle(Display *display, Window window)
 
 	if (!store)
 	{
-		store = XCreatePixmap(display, window, 20, 20,
+		store = XCreatePixmap(display, window, STAR_SIZE, STAR_SIZE,
 			DefaultDepth(display, XDefaultScreen(display)));
 	}
 
 	if (in == 0) 
-		XCopyArea(display, window, store, gc, x, y, 20, 20, 0, 0);
+		XCopyArea(display, window, store, gc, x, y, STAR_SIZE, STAR_SIZE, 0, 0);
 
 	if (frame == endFrame)
 		IntroState = INTRO_FINISH;
 
 	if (frame == startFrame)
 	{
-		XCopyArea(display, store, window, gc, 0, 0, 20, 20, x, y);
+		XCopyArea(display, store, window, gc, 0, 0, STAR_SIZE, STAR_SIZE, x, y);
 		RenderShape(display, window, stars[in], starsM[in],
-			x, y, 20, 20, False);
+			x, y, STAR_SIZE, STAR_SIZE, False);
 
 	 	in++;
-		startFrame = frame + 15;
+		startFrame = frame + SPARKLE_STEP;
 
-		if (in == 11) 
+		if (in == NUM_STARS) 
 		{
-			XCopyArea(display, store, window, gc, 0, 0, 20, 20, x, y);
+			XCopyArea(display, store, window, gc, 0, 0, STAR_SIZE, STAR_SIZE, x, y);
 			in = 0;
-			startFrame = frame + 500;
-			x = (rand() % 474) + 5;
-			y = (rand() % 74) + 5;
+			startFrame = frame + SPARKLE_LONG;
+			x = (rand() % (TITLE_W)) + 5;
+			y = (rand() % (TITLE_H)) + 5;
 		}	
 	}
 }
@@ -457,7 +443,7 @@ void FreeIntroduction(Display *display)
 {
 	int i;
 
-	for (i = 0; i < 10; i++)
+	for (i = 0; i < NUM_STARS; i++)
 	{
     	if (stars[i])	XFreePixmap(display, stars[i]);         
     	if (starsM[i])	XFreePixmap(display, starsM[i]);         
@@ -474,7 +460,7 @@ void ResetIntroduction(void)
 	endFrame = frame + 3000;
 	nextBlink = frame + 10;
 
-	DEBUG("Reset Introduction mode.")
+	DEBUG("Reset Introduction mode.");
 }
 
 void SetIntroWait(enum IntroStates newMode, int waitFrame)

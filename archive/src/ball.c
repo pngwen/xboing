@@ -103,6 +103,7 @@
 #include "include/special.h"
 #include "include/ball.h"
 #include "include/faketypes.h"
+#include "include/gun.h"
 
 /*
  *  Internal macro definitions:
@@ -181,125 +182,54 @@ float MACHINE_EPS;
 
 void InitialiseBall(Display *display, Window window, Colormap colormap)
 {
-	/*
-	 * Read and create all the animation frames for the balls and guides.
-	 */
-
-    XpmAttributes   attributes;
-	int		    	XpmErrorStatus;
+    XpmAttributes attributes;
+    int XpmErrorStatus;
 
     attributes.valuemask = XpmColormap;
-	attributes.colormap = colormap;
+    attributes.colormap = colormap;
 
-	/* Create the xpm pixmap ball frames */
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, ball1_xpm,
-		&ballsPixmap[0], &ballsMask[0], &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseBall(ball1)");
+    /* --- BALL FRAMES --- */
+    static char **ballFrames[] = {
+        ball1_xpm, ball2_xpm, ball3_xpm, ball4_xpm, killer_xpm
+    };
 
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, ball2_xpm,
-		&ballsPixmap[1], &ballsMask[1], &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseBall(ball2)");
+    for (int i = 0; i < BALL_SLIDES; i++) {
+        XpmErrorStatus = XpmCreatePixmapFromData(display, window, ballFrames[i],
+            &ballsPixmap[i], &ballsMask[i], &attributes);
+        HandleXPMError(display, XpmErrorStatus, "InitialiseBall(ball)");
+    }
 
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, ball3_xpm,
-		&ballsPixmap[2], &ballsMask[2], &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseBall(ball3)");
+    /* --- BALL BIRTH FRAMES --- */
+    static char **birthFrames[] = {
+        ballbirth1_xpm, ballbirth2_xpm, ballbirth3_xpm, ballbirth4_xpm,
+        ballbirth5_xpm, ballbirth6_xpm, ballbirth7_xpm, ballbirth8_xpm
+    };
 
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, ball4_xpm,
-		&ballsPixmap[3], &ballsMask[3], &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseBall(ball4)");
+    for (int i = 0; i < BIRTH_SLIDES; i++) {
+        XpmErrorStatus = XpmCreatePixmapFromData(display, window, birthFrames[i],
+            &ballBirthPixmap[i], &ballBirthMask[i], &attributes);
+        HandleXPMError(display, XpmErrorStatus, "InitialiseBall(ballbirth)");
+    }
 
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, killer_xpm,
-		&ballsPixmap[4], &ballsMask[4], &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseBall(killer)");
+    /* --- GUIDE FRAMES --- */
+    static char **guideFrames[] = {
+        guide1_xpm, guide2_xpm, guide3_xpm, guide4_xpm, guide5_xpm,
+        guide6_xpm, guide7_xpm, guide8_xpm, guide9_xpm, guide10_xpm, guide11_xpm
+    };
 
-	/* Ball birth sequence */
+    for (int i = 0; i < 11; i++) {
+        XpmErrorStatus = XpmCreatePixmapFromData(display, window, guideFrames[i],
+            &guides[i], &guidesM[i], &attributes);
+        HandleXPMError(display, XpmErrorStatus, "InitialiseBall(guide)");
+    }
 
-	/* Create the xpm pixmap ball birth frames */
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, ballbirth1_xpm,
-		&ballBirthPixmap[0], &ballBirthMask[0], &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseBall(ballbirth1)");
+    /* Free the xpm pixmap attributes */
+    XpmFreeAttributes(&attributes);
 
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, ballbirth2_xpm,
-		&ballBirthPixmap[1], &ballBirthMask[1], &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseBall(ballbirth2)");
+    MACHINE_EPS = sqrt(MINFLOAT);
 
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, ballbirth3_xpm,
-		&ballBirthPixmap[2], &ballBirthMask[2], &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseBall(ballbirth3)");
-
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, ballbirth4_xpm,
-		&ballBirthPixmap[3], &ballBirthMask[3], &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseBall(ballbirth4)");
-
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, ballbirth5_xpm,
-		&ballBirthPixmap[4], &ballBirthMask[4], &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseBall(ballbirth5)");
-
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, ballbirth6_xpm,
-		&ballBirthPixmap[5], &ballBirthMask[5], &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseBall(ballbirth6)");
-
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, ballbirth7_xpm,
-		&ballBirthPixmap[6], &ballBirthMask[6], &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseBall(ballbirth7)");
-
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, ballbirth8_xpm,
-		&ballBirthPixmap[7], &ballBirthMask[7], &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseBall(ballbirth8)");
-
-	/* Now load in the guide pixmaps */
-
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, guide1_xpm,
-		&guides[0], &guidesM[0], &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseBall(guide1)");
-
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, guide2_xpm,
-		&guides[1], &guidesM[1], &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseBall(guide2)");
-
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, guide3_xpm,
-		&guides[2], &guidesM[2], &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseBall(guide3)");
-
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, guide4_xpm,
-		&guides[3], &guidesM[3], &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseBall(guide4)");
-
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, guide5_xpm,
-		&guides[4], &guidesM[4], &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseBall(guide5)");
-
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, guide6_xpm,
-		&guides[5], &guidesM[5], &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseBall(guide6)");
-
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, guide7_xpm,
-		&guides[6], &guidesM[6], &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseBall(guide7)");
-
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, guide8_xpm,
-		&guides[7], &guidesM[7], &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseBall(guide8)");
-
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, guide9_xpm,
-		&guides[8], &guidesM[8], &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseBall(guide9)");
-
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, guide10_xpm,
-		&guides[9], &guidesM[9], &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseBall(guide10)");
-
-	XpmErrorStatus = XpmCreatePixmapFromData(display, window, guide11_xpm,
-		&guides[10], &guidesM[10], &attributes);
-	HandleXPMError(display, XpmErrorStatus, "InitialiseBall(guide11)");
-
-	/* Free the xpm pixmap attributes */
-	XpmFreeAttributes(&attributes);
-
-	MACHINE_EPS = sqrt(MINFLOAT);
-
-	/* Make sure that all the balls are initialised */
-	ClearAllBalls();
+    /* Make sure that all the balls are initialised */
+    ClearAllBalls();
 }
 
 void FreeBall(Display *display)
@@ -469,9 +399,14 @@ static void MoveGuides(Display *display, Window window, int i, int remove)
 		if (guidePos == 0) inc = 1;
 	}
 	else
+		/*Resets the guide position to frame 6*/
 		guidePos = 6;
 }
 
+
+/* Set the ball's movement to a new random velocity and direction.
+   It makes sure that both X and Y speeds are non zero and applies a short delay
+   before the paddle can affect the ball again. */
 void RandomiseBallVelocity(int i)
 {
 	balls[i].dx = balls[i].dy = 0;
@@ -1008,6 +943,9 @@ static int HandleTheBlocks(Display *display, Window window, int row, int col,
 	return False;
 }
 
+
+
+
 static void UpdateABall(Display *display, Window window, int i)
 {
 	/*
@@ -1063,11 +1001,20 @@ static void UpdateABall(Display *display, Window window, int i)
 		return;
 	}
 
-	/* Check if ball has hit top wall and bounce off */		
-	if (balls[i].bally < BALL_HC) 
+	/* Check if ball has hit top wall and either bounce or hit spike */
+	if (balls[i].bally < BALL_HC)
 	{
-		balls[i].dy = abs(balls[i].dy);
-		if (noSound == False) playSoundFile("boing", 10);
+		/* If a spike exists at this x position, kill the ball */
+		if (IsSpikeAt(balls[i].ballx) == True)
+		{
+			ChangeBallMode(BALL_DIE, i);
+			if (noSound == False) playSoundFile("ballshot", 80);
+		}
+		else
+		{
+			balls[i].dy = abs(balls[i].dy);
+			if (noSound == False) playSoundFile("boing", 10);
+		}
 	}
 
 	if (balls[i].ballState != BALL_DIE)
@@ -1149,11 +1096,12 @@ static void UpdateABall(Display *display, Window window, int i)
 			if (balls[i].lastPaddleHitFrame <= frame)
 				DoBoardTilt(display, i);
 		}
-
+		/*Converts the velocities to float for it to be calculated*/
        	Vx = (float) balls[i].dx;
        	Vy = (float) balls[i].dy;
        	Vs = sqrt(Vx * Vx + Vy * Vy);
 
+		/*This calculates the ball velocity based on speed level and maximum possible velocity*/
        	alpha = sqrt((float)MAX_X_VEL*(float)MAX_X_VEL + (float)MAX_Y_VEL*
 			(float)MAX_Y_VEL );
        	alpha /= 9.0; /* number of speed level */
@@ -1164,6 +1112,7 @@ static void UpdateABall(Display *display, Window window, int i)
        	Vx *= beta;
        	Vy *= beta;
 
+		/*Rounds the current velocity to the nearest integers*/
        	if (Vx > 0.0)
          	balls[i].dx = (int) (Vx + 0.5);
        	else
@@ -1174,6 +1123,7 @@ static void UpdateABall(Display *display, Window window, int i)
        	else
          	balls[i].dy = (int) (Vy - 0.5);
 
+		/*This makes sure that dx and dy are never zero so ball doesnt get stuck*/
        	if (balls[i].dy == 0) 
 			balls[i].dy = MIN_DY_BALL;
 
@@ -1198,9 +1148,16 @@ static void UpdateABall(Display *display, Window window, int i)
 	x = balls[i].oldx;
 	y = balls[i].oldy;
 
+	/* Determines the movement of the ball on x and y*/
 	cx = balls[i].dx > 0 ? 1 : -1;
 	cy = balls[i].dy > 0 ? 1 : -1;
 
+
+	/* 
+ 	* Calculate the incremental steps to move the ball smoothly along its path.
+ 	* This handles diagonal movement and ensures collisions are checked at
+ 	* each small step along the dominant axis.
+ 	*/
 	if (abs(balls[i].dx) == abs(balls[i].dy))
 	{
 		incx = (float) cx;
@@ -1711,6 +1668,7 @@ int ActivateWaitingBall(Display *display, Window window)
 			ChangeBallMode(BALL_ACTIVE, i);
 			balls[i].lastPaddleHitFrame = frame + PADDLE_BALL_FRAME_TILT;
 
+			/*Changes the ball's direction to the player's guide. MoveGuide*/
 			ChangeBallDirectionToGuide(i);
 			MoveGuides(display, window, i, True);
 
@@ -1807,6 +1765,7 @@ static void AnimateBallCreate(Display *display, Window window, int i)
 	{
 		/* Next slide thanks */
 		slide++;
+
 
 		/* Frame that will trigger the new slide */
 		balls[i].nextFrame += BIRTH_FRAME_RATE;

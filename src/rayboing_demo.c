@@ -12,84 +12,92 @@
 const int SCREEN_WIDTH = 575;
 const int SCREEN_HEIGHT = 720;
 
-bool ValidateParamFilename(int argumentCount, char*arguments[]);
+bool mouseControls = true;
+
+bool ValidateParamFilename(int argumentCount, char *arguments[]);
 void ReleaseResources(void);
+void UpdatePaddleInput(void);
 
-
-int main(int argumentCount, char *arguments[]) {
+int main(int argumentCount, char *arguments[])
+{
 
     SetTraceLogLevel(LOG_NONE);
 
-    int rtnCode = 1; 
+    int rtnCode = 1;
     bool windowInitialized = false;
 
     // must InitWindow before loading textures
-
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Rayboing Demo");
-    InitAudioDevice(); // audio
     SetTargetFPS(60);
     windowInitialized = true;
 
     // If no filename was provided on the command line, show the intro/start menu
     // and wait for the player to press Enter/Space. After the intro returns,
     // continue with normal initialization (textures/audio/etc.).
-    if (argumentCount == 1) {
-        ShowIntroScreen();
+    if (argumentCount == 1)
+    {
+        // ShowIntroScreen();
         // If the window was closed while on the intro screen, exit now.
-        if (WindowShouldClose()) {
-            if (windowInitialized) CloseWindow();
+        if (WindowShouldClose())
+        {
+            if (windowInitialized)
+                CloseWindow();
             ReleaseResources();
             return rtnCode;
         }
     }
 
-    if (!ValidateParamFilename(argumentCount, arguments)) {
+    if (!ValidateParamFilename(argumentCount, arguments))
+    {
         // Validation only fails for incorrect command-line usage or bad file
         // when an argument was supplied. If it fails here, halt.
         fprintf(stderr, "Program halt on map validation");
-    } else if (!loadBlockTextures()) {
+    }
+    else if (!loadBlockTextures())
+    {
         fprintf(stderr, "Program halt on iniitalize block texture");
-    } else if (!InitialisePaddle()) {
+    }
+    else if (!InitialisePaddle())
+    {
         fprintf(stderr, "Program halt on initialize paddle");
-    } else if (!InitializeBall()) {
+    }
+    else if (!InitializeBall())
+    {
         fprintf(stderr, "Program halt on initialize ball");
-    } else if (!initAudioFiles()) {
+    }
+    else if (!initAudioFiles())
+    {
         fprintf(stderr, "Program halt on initialize sounds");
-    } else {
+    }
+    else
+    {
 
         initializePlayArea();
         SetGameMode(MODE_INITGAME);
         rtnCode = 0;
-
     }
-
 
     // If no filename was provided, supply the default level path
     const char *defaultLevel = "resource/levels/level01.data";
 
     // main game loop
     // main game loop
-GAME_MODES currentMode = GetGameMode();
-while (currentMode != MODE_EXIT) {
+    GAME_MODES currentMode = GetGameMode();
+    while (currentMode != MODE_EXIT)
+    {
+        UpdatePaddleInput();
 
-    // Update input before game logic
-    if (GetGameMode() == MODE_PLAY) {
-        // Get mouse position
-        Vector2 mousePos = GetMousePosition();
-        SetPaddlePosition(mousePos.x); // update paddle X
-
-        // Optional: keyboard fallback
-        if (IsKeyDown(KEY_LEFT))  MovePaddle(PADDLE_LEFT);
-        if (IsKeyDown(KEY_RIGHT)) MovePaddle(PADDLE_RIGHT);
-    }
-
-    // Handle game modes
-    switch (currentMode) {
+        // Handle game modes
+        switch (currentMode)
+        {
 
         case MODE_INITGAME:
-            if (argumentCount == 2) {
+            if (argumentCount == 2)
+            {
                 RunInitGameMode(arguments[1]);
-            } else {
+            }
+            else
+            {
                 RunInitGameMode(defaultLevel);
             }
             break;
@@ -107,36 +115,40 @@ while (currentMode != MODE_EXIT) {
         default:
             SetGameMode(MODE_CANCEL);
             break;
+        }
+
+        if (WindowShouldClose())
+            SetGameMode(MODE_EXIT);
+        currentMode = GetGameMode();
     }
 
-    if (WindowShouldClose()) SetGameMode(MODE_EXIT);
-    currentMode = GetGameMode();
-}
-
-
-
-    if (windowInitialized) CloseWindow();
+    if (windowInitialized)
+        CloseWindow();
     ReleaseResources();
-    
 
     // exit program
     return rtnCode;
-
 }
 
-bool ValidateParamFilename(int argumentCount, char *arguments[]) {
+bool ValidateParamFilename(int argumentCount, char *arguments[])
+{
 
     // If no filename provided, that's OK (we'll show the intro and use default level).
-    if (argumentCount == 1) return true;
+    if (argumentCount == 1)
+        return true;
 
     // If a filename is provided, ensure it exists and can be opened.
-    if (argumentCount == 2) {
+    if (argumentCount == 2)
+    {
         const char *fileName = arguments[1];
         FILE *file = fopen(fileName, "r");
-        if (!file) {
+        if (!file)
+        {
             fprintf(stderr, "File '%s' does not exist or cannot be opened.\n", fileName);
             return false;
-        } else {
+        }
+        else
+        {
             fprintf(stdout, "Running Rayboing with map '%s'\n", fileName);
             fclose(file);
             return true;
@@ -148,9 +160,51 @@ bool ValidateParamFilename(int argumentCount, char *arguments[]) {
     return false;
 }
 
-void ReleaseResources(void) {
+void ReleaseResources(void)
+{
     FreePaddle();
     FreeBall();
     freeBlockTextures();
     FreeAudioSystem();
+}
+
+void UpdatePaddleInput(void)
+{
+    if (IsKeyPressed(KEY_M))
+    {
+        mouseControls = !mouseControls;
+        printf("M pressed, mouseControls = %d\n", mouseControls);
+    }
+
+    if (mouseControls)
+    {
+        Vector2 mousePos = GetMousePosition();
+
+        // clamp Y to window, if needed
+        if (mousePos.y < 0)
+            mousePos.y = 0;
+        if (mousePos.y > SCREEN_HEIGHT)
+            mousePos.y = SCREEN_HEIGHT;
+
+        SetPaddlePosition(mousePos.x);
+
+        // updates mouse position 
+        SetMousePosition(GetPaddlePositionX(), mousePos.y);
+    }
+    else
+    {
+        // EnableCursor();
+        if (IsKeyDown(KEY_LEFT))
+            MovePaddle(PADDLE_LEFT);
+        if (IsKeyDown(KEY_RIGHT))
+            MovePaddle(PADDLE_RIGHT);
+    }
+
+    // Optional toggles
+    if (IsKeyPressed(KEY_R))
+        ToggleReverse();
+    if (IsKeyPressed(KEY_Z))
+        ChangePaddleSize(SIZE_DOWN);
+    if (IsKeyPressed(KEY_X))
+        ChangePaddleSize(SIZE_UP);
 }
