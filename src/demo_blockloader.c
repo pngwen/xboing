@@ -447,7 +447,6 @@ void freeBlockTextures(void) {
     }
 }
 
-//
 static inline bool inBounds(int row, int col) { // check if row and column are within valid range
     return (row >= 0 && row < ROW_MAX && col >= 0 && col < COL_MAX);
 }
@@ -484,6 +483,7 @@ int getBlockColMax(void) {
 
 
 bool isBlockActive(int row, int col) {
+    if (!inBounds(row, col)) return false; //bounds check
     return game_blocks[row][col].active;
 }
 
@@ -602,7 +602,7 @@ Vector2 getPlayCorner(CORNERS corner) {
             break;
 
         case LOWER_RIGHT:
-            return (Vector2){PLAY_X_OFFSET + playArea.playWidth, PLAY_Y_OFFSET + playArea.playHeight};
+            return (Vector2){playArea.playWidth + 1, PLAY_Y_OFFSET + playArea.playHeight};
             break;
     }
 
