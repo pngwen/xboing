@@ -84,34 +84,43 @@ bool loadBlocks(const char* filename) {
 
     blocksRemaining = 0;
 
-	FILE* fp = fopen(filename, "r");
-	if(fp == NULL){
-		printf("File '%s' could not be opened.", filename);
-		return false;
-	}
+    FILE* fp = fopen(filename, "r");
+    if (fp == NULL) {
+        printf("File '%s' could not be opened.", filename);
+        return false;
+    }
 
-	// Get file data
-	fgets(levelName, 256, fp);
-	fscanf(fp, "%d", &timeBonus);
-	getc(fp);
+    // Get header info
+	if (!fgets(levelName, sizeof(levelName), fp)) { // read level name
+        fclose(fp);
+        return false;
+    }
+	if (fscanf(fp, "%d", &timeBonus) != 1) { // read time bonus
+        fclose(fp);
+        return false;
+    }
+
+    getc(fp); // consume newline after timeBonus
 
 	int row = 0;
 	int column = 0;
 	char ch;
 
-	ch = getc(fp);
-	while(ch != EOF){
+    while ((ch = getc(fp)) != EOF) { // read character by character
+		if (ch == '\n') continue; // skip newlines
 
-		if(ch != '\n'){
-			addBlock(row, column, ch);
-			column++;
-			row += column / COL_MAX;
-			column %= COL_MAX;
-		}
-		ch = getc(fp);
-	}
+        //bounds check
+        if (row < ROW_MAX && column < COL_MAX) {
+            addBlock(row, column, (char)ch);
+        }
+        column++;
+        if (column >= COL_MAX) { // move to next row
+            column = 0;
+            row++;
+            if (row >= ROW_MAX) break; // stop if we exceed max rows
+        }
+    }
 	fclose(fp);
-
     return true;
 }
 
@@ -125,6 +134,7 @@ void drawBlocks(void){
 
             /* If there is a block, draw it */
     		if(!game_blocks[row][col].active) continue;
+			if (game_blocks[row][col].texture.id == 0) continue; // skip if no texture assigned
 
             DrawTexture(game_blocks[row][col].texture,
                 game_blocks[row][col].position.x,
@@ -147,7 +157,6 @@ void addBlock(int row, int col, char ch){
 
     game_blocks[row][col].blockOffsetX	= (playArea.colWidth - BLOCK_WIDTH) / 2;
 	game_blocks[row][col].blockOffsetY 	= (playArea.rowHeight - BLOCK_HEIGHT) / 2;
-
     game_blocks[row][col].type = ch;
 
     switch(ch){
@@ -438,8 +447,23 @@ void freeBlockTextures(void) {
     }
 }
 
+//
+static inline bool inBounds(int row, int col) { // check if row and column are within valid range
+    return (row >= 0 && row < ROW_MAX && col >= 0 && col < COL_MAX);
+}
 
-Rectangle getBlockCollisionRec(int row, int col) {
+
+Rectangle getBlockCollisionRec(int row, int col) { 
+	if (!inBounds(row, col)) { // out of bounds
+		return (Rectangle) { 0, 0, 0, 0 }; // return empty rectangle
+    }
+    
+    
+    if (game_blocks[row][col].texture.id == 0) { // Texture no Loaded return empty rectangle
+        return (Rectangle) { game_blocks[row][col].position.x, 
+                             game_blocks[row][col].position.y, 0, 0 };
+    }
+
     return (Rectangle) {
         game_blocks[row][col].position.x,
         game_blocks[row][col].position.y,
@@ -578,7 +602,7 @@ Vector2 getPlayCorner(CORNERS corner) {
             break;
 
         case LOWER_RIGHT:
-            return (Vector2){playArea.playWidth + 1, PLAY_Y_OFFSET + playArea.playHeight};
+            return (Vector2){PLAY_X_OFFSET + playArea.playWidth, PLAY_Y_OFFSET + playArea.playHeight};
             break;
     }
 
@@ -629,11 +653,16 @@ bool isBlockTypeInteractive(char ch) {
 }
 
 void deactivateBlock(int row, int col) {
-    if (!game_blocks[row][col].active || !isBlockTypeInteractive(game_blocks[row][col].type)) return;
-    game_blocks[row][col].active = false;
-    blocksRemaining--;
-}
+    if (!inBounds(row, col)) return;
 
+    if (!game_blocks[row][col].active || !isBlockTypeInteractive(game_blocks[row][col].type)) return;
+
+    game_blocks[row][col].active = false;
+
+    if (blocksRemaining > 0) { //avoid underflow
+        blocksRemaining--;
+    }
+}
 
 int getBlockCount(void) {
     return blocksRemaining;
