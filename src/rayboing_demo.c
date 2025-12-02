@@ -36,7 +36,8 @@ int main(int argumentCount, char *arguments[])
     // continue with normal initialization (textures/audio/etc.).
     if (argumentCount == 1)
     {
-        // ShowIntroScreen();
+        ShowIntroScreen();
+
         // If the window was closed while on the intro screen, exit now.
         if (WindowShouldClose())
         {
