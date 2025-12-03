@@ -31,6 +31,7 @@ PLAY_AREA playArea = {0};
 char levelName[256];
 int timeBonus = 0;
 int blocksRemaining = 0;
+int totalBlocks = 0;
 
 Texture2D HYPERSPACE_BLK,
           BULLET_BLK,
@@ -83,6 +84,7 @@ void initializePlayArea(void) {
 bool loadBlocks(const char* filename) {
 
     blocksRemaining = 0;
+    totalBlocks = 0;
 
 	FILE* fp = fopen(filename, "r");
 	if(fp == NULL){
@@ -311,6 +313,7 @@ void addBlock(int row, int col, char ch){
     if (game_blocks[row][col].blockOffsetX != -1) {
         game_blocks[row][col].active = true;
         if (ch != 'w') blocksRemaining++;  //solid wall blocks cannot be destroyed and should not count
+		totalBlocks++; // count all blocks except empty space
     } else {
         game_blocks[row][col].active = false;
     }
@@ -637,4 +640,8 @@ void deactivateBlock(int row, int col) {
 
 int getBlockCount(void) {
     return blocksRemaining;
+}
+
+int GetBlocksDestroyed(void) { //helper for scoreboard
+    return totalBlocks - blocksRemaining;
 }

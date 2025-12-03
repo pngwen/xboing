@@ -34,7 +34,7 @@ void RunInitGameMode(const char *fileName)
         livesRemaining = INITIAL_LIVES;
     }
 
-    livesRemaining--;
+    
 
     ResetPaddleStart();
     ResetBall();
@@ -157,4 +157,14 @@ void DrawStatusText(const char *displayText)
 
     DrawText(displayText, xpos - 1, ypos - 1, FONTSIZE, RED);
     DrawText(displayText, xpos, ypos, FONTSIZE, GREEN);
+}
+
+void LoseLife(void) {
+    if (livesRemaining > 0) {
+        livesRemaining--;
+    }
+}
+
+int GetLivesRemaining(void) {
+    return livesRemaining;
 }
