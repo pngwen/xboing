@@ -60,6 +60,7 @@ bool loadIntroTextures(void) {
 }
 
 void ShowIntroScreen(void) {
+    EnableCursor();
     // Simple loop that draws text and waits for key press
     printf("Intro started\n");
     fflush(stdout);
@@ -77,7 +78,7 @@ void ShowIntroScreen(void) {
             DrawTexture(introFlag, (SCREEN_WIDTH - introFlag.width)/2, 20, WHITE);
             DrawTexture(introJustin, (SCREEN_WIDTH - introJustin.width)/2,
             SCREEN_HEIGHT - introKibell.height - introJustin.height - 30, WHITE);
-            DrawTexture(introKibell, (SCREEN_WIDTH - introKibell.width)/2, SCREEN_HEIGHT - introKibell.height - 20, WHITE);
+            DrawTexture(introKibell, (SCREEN_WIDTH - introKibell.width)/2, SCREEN_HEIGHT - introKibell.height - 20, WHITE);    
             //DrawTexture(introPresents, 100, 50, introTint); //TODO: Animate after Justin Kibell
             //TODO: Animate letters coming in one_by_one
 

@@ -216,7 +216,17 @@ void MoveBall(void) {
     if (CheckCollisionRecs(GetBallCollisionRec(), getPlayWall(WALL_BOTTOM))) {
         ball.position.y = GetScreenHeight(); // cheesy way to hide ball after loss
         startSound(SND_BALLLOST);  
-        SetGameMode(MODE_LOSE);
+		
+        LoseLife();
+
+		if (GetLivesRemaining() > 0) {
+            ResetBall();
+			SetGameMode(MODE_INITGAME);
+        }
+        else {
+            SetGameMode(MODE_LOSE);
+        }
+        
         return;
     } else if (CheckCollisionRecs(GetBallCollisionRec(), getPlayWall(WALL_TOP))) {
         startSound(SND_BOING);       // test to play sound bouncing off wall
