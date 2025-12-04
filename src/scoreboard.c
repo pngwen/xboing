@@ -51,6 +51,7 @@ bool saveHighScores(const char* filename) {
 
 void AddHighScore(const char* name, const char* quote, int score) {
 	// Sort descending first, so you dont erase a higher score
+	//replace by searching through array and finding lowest score
 	for (int i = 0; i < highScoreCount - 1; i++) {
 		for (int j = i + 1; j < highScoreCount; j++) {
 			if (highScores[j].score > highScores[i].score) {

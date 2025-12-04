@@ -225,6 +225,27 @@ static void AddTink(Display *display, Window window, int xpos)
 	WarningMessage("Cannot draw tink - tink array full.");
 }
 
+/*
+ * Check if a spike/tink exists at the given x coordinate.
+ * Returns True if a spike is present within a reasonable hit range.
+ */
+int IsSpikeAt(int x)
+{
+	int i;
+
+	for (i = 0; i < MAX_TINKS; i++)
+	{
+		if (tinks[i].xpos != -1)
+		{
+			/* consider a hit if within half-tink width plus ball width */
+			if (abs(x - tinks[i].xpos) <= (TINK_WC + BULLET_WC + BALL_WC))
+				return True;
+		}
+	}
+
+	return False;
+}
+
 static void ClearTinks(void)
 {
 	int i;

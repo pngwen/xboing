@@ -13,38 +13,43 @@
 const int SCREEN_WIDTH = 575;
 const int SCREEN_HEIGHT = 720;
 
+bool mouseControls = true;
+
 bool ValidateParamFilename(int argumentCount, char* arguments[]);
 void ReleaseResources(void);
-
+void UpdatePaddleInput(void);
 
 int main(int argumentCount, char* arguments[]) {
-
     SetTraceLogLevel(LOG_NONE);
 
     int rtnCode = 1;
     bool windowInitialized = false;
 
     // must InitWindow before loading textures
-
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Rayboing Demo");
-    InitAudioDevice(); // audio
     SetTargetFPS(60);
     windowInitialized = true;
 
     // If no filename was provided on the command line, show the intro/start menu
     // and wait for the player to press Enter/Space. After the intro returns,
     // continue with normal initialization (textures/audio/etc.).
-    if (argumentCount == 1) {
+    if (argumentCount == 1)
+    {
         ShowIntroScreen();
+
         // If the window was closed while on the intro screen, exit now.
-        if (WindowShouldClose()) {
-            if (windowInitialized) CloseWindow();
+        if (WindowShouldClose())
+        {
+            if (windowInitialized)
+                CloseWindow();
             ReleaseResources();
             return rtnCode;
         }
+        SetGameMode(MODE_INITGAME);
     }
 
-    if (!ValidateParamFilename(argumentCount, arguments)) {
+    if (!ValidateParamFilename(argumentCount, arguments))
+    {
         // Validation only fails for incorrect command-line usage or bad file
         // when an argument was supplied. If it fails here, halt.
         fprintf(stderr, "Program halt on map validation");
@@ -66,9 +71,7 @@ int main(int argumentCount, char* arguments[]) {
         initializePlayArea();
         SetGameMode(MODE_INITGAME);
         rtnCode = 0;
-
     }
-
 
     // If no filename was provided, supply the default level path
     const char* defaultLevel = "resource/levels/level01.data";
@@ -76,30 +79,26 @@ int main(int argumentCount, char* arguments[]) {
     // main game loop
     // main game loop
     GAME_MODES currentMode = GetGameMode();
-    while (currentMode != MODE_EXIT) {
-
-        // Update input before game logic
-        if (GetGameMode() == MODE_PLAY) {
-            // Get mouse position
-            Vector2 mousePos = GetMousePosition();
-            SetPaddlePosition(mousePos.x); // update paddle X
-
-            // Optional: keyboard fallback
-            if (IsKeyDown(KEY_LEFT))  MovePaddle(PADDLE_LEFT);
-            if (IsKeyDown(KEY_RIGHT)) MovePaddle(PADDLE_RIGHT);
-        }
+    while (currentMode != MODE_EXIT)
+    {
+        UpdatePaddleInput();
 
         // Handle game modes
-        switch (currentMode) {
-
-        case MODE_INITGAME:
+        switch (currentMode)
+        {
+        case MODE_INITGAME: {
+            const char* levelPath = NULL;
             if (argumentCount == 2) {
-                RunInitGameMode(arguments[1]);
+                levelPath = arguments[1];           // use provided filename
             }
             else {
-                RunInitGameMode(defaultLevel);
+                levelPath = defaultLevel;           // fall back to default level
             }
+
+            RunInitGameMode(levelPath);             // always run init
             break;
+        }
+
 
         case MODE_PLAY:
             RunPlayMode();
@@ -138,7 +137,8 @@ int main(int argumentCount, char* arguments[]) {
         case MODE_CANCEL: {
             RunEndMode();
 
-            //show scoreboard after end
+            //show scoreboard after end + safety save scores
+			
 			ShowScoreBoard();
 
             // Safety check for window close
@@ -165,18 +165,20 @@ int main(int argumentCount, char* arguments[]) {
     if (windowInitialized) CloseWindow();
     ReleaseResources();
 
-
+	//always save scores on exit
+	saveHighScores("scores.txt"); // Load existing high scores
     // exit program
     return rtnCode;
-
 }
 
 bool ValidateParamFilename(int argumentCount, char* arguments[]) {
 
     // If no filename provided, that's OK (we'll show the intro and use default level).
-    if (argumentCount == 1) return true;
+    if (argumentCount == 1)
+        return true;
 
     // If a filename is provided, ensure it exists and can be opened.
+
     if (argumentCount == 2) {
         const char* fileName = arguments[1];
         FILE* file = fopen(fileName, "r");
@@ -196,11 +198,52 @@ bool ValidateParamFilename(int argumentCount, char* arguments[]) {
     return false;
 }
 
-void ReleaseResources(void) {
+void ReleaseResources(void)
+{
     FreePaddle();
     FreeBall();
     freeBlockTextures();
     FreeAudioSystem();
 }
 
+void UpdatePaddleInput(void)
+{
+    if (IsKeyPressed(KEY_M))
+    {
+        mouseControls = !mouseControls;
+        printf("M pressed, mouseControls = %d\n", mouseControls);
+    }
+
+    if (mouseControls)
+    {
+        Vector2 mousePos = GetMousePosition();
+
+        // clamp Y to window, if needed
+        if (mousePos.y < 0)
+            mousePos.y = 0;
+        if (mousePos.y > SCREEN_HEIGHT)
+            mousePos.y = SCREEN_HEIGHT;
+
+        SetPaddlePosition(mousePos.x);
+
+        // updates mouse position 
+        SetMousePosition(GetPaddlePositionX(), mousePos.y);
+    }
+    else
+    {
+        // EnableCursor();
+        if (IsKeyDown(KEY_LEFT))
+            MovePaddle(PADDLE_LEFT);
+        if (IsKeyDown(KEY_RIGHT))
+            MovePaddle(PADDLE_RIGHT);
+    }
+
+    // Optional toggles
+    if (IsKeyPressed(KEY_R))
+        ToggleReverse();
+    if (IsKeyPressed(KEY_Z))
+        ChangePaddleSize(SIZE_DOWN);
+    if (IsKeyPressed(KEY_X))
+        ChangePaddleSize(SIZE_UP);
+}
 
