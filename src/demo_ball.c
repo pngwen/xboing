@@ -209,6 +209,7 @@ void MoveBall(void) {
 
     bool flipx = false;
     bool flipy = false;
+    int sideBounce = 0; // -1 = left, +1 = right, 0 = none
 
     if (CheckCollisionRecs(GetBallCollisionRec(), getPlayWall(WALL_BOTTOM))) {
         ball.position.y = GetScreenHeight(); // cheesy way to hide ball after loss
@@ -225,10 +226,12 @@ void MoveBall(void) {
         startSound(SND_BOING);                                                                                   // test to play sound bouncing off wall
         stepBack = true;
         flipx = true;
+        sideBounce = -1;
     } else if (CheckCollisionRecs(GetBallCollisionRec(), getPlayWall(WALL_RIGHT))) {
         startSound(SND_BOING);                                                                                  // test to play sound bouncing off wall
         stepBack = true;
         flipx = true;
+        sideBounce = 1;
     }
 
     // check for paddle collisions
@@ -276,12 +279,59 @@ void MoveBall(void) {
     if (flipx) ball.velocity.x *= -1;
     if (flipy) ball.velocity.y *= -1;
 
-    // add variance to the angle on bounce
+    // Track repeated side bounces to detect 'limbo' (bouncing purely left-right)
+    // and apply stronger nudges if necessary.
+    static int consecutiveSideBounces = 0;
+    static int lastSide = 0;
+
+    if (flipx && !flipy && sideBounce != 0) {
+        if (sideBounce == lastSide) consecutiveSideBounces++; else consecutiveSideBounces = 1;
+        lastSide = sideBounce;
+    } else {
+        // any vertical component or corner bounce resets the counter
+        consecutiveSideBounces = 0;
+        lastSide = 0;
+    }
+
+    // add variance to the angle on bounce and avoid perfectly horizontal/vertical
     if (flipx || flipy) {
 
-        float angle = atan2(ball.velocity.y, ball.velocity.x) + ((rand() % 11) - bouncVariance) * (PI / 180.0f);
-        ball.velocity.x = cos(angle) * ball.speed;
-        ball.velocity.y = sin(angle) * ball.speed;
+        // symmetric jitter in degrees
+        float jitter = ((float)rand() / (float)RAND_MAX) * 2.0f * bouncVariance - bouncVariance;
+        float angle = atan2f(ball.velocity.y, ball.velocity.x) + jitter * (PI / 180.0f);
+
+        float speed = (float)ball.speed;
+        ball.velocity.x = cosf(angle) * speed;
+        ball.velocity.y = sinf(angle) * speed;
+
+        // ensure a minimum vertical component so the ball cannot get stuck bouncing
+        // purely between left/right walls. Use a small fraction of overall speed.
+        const float MIN_VERT_RATIO = 0.15f; // at least 15% of speed vertically
+        float minVert = speed * MIN_VERT_RATIO;
+        if (fabsf(ball.velocity.y) < minVert && speed > minVert) {
+            float signy = (ball.velocity.y >= 0.0f) ? 1.0f : -1.0f;
+            ball.velocity.y = signy * minVert;
+
+            // recompute horizontal component preserving total speed
+            float vxSign = (ball.velocity.x >= 0.0f) ? 1.0f : -1.0f;
+            float vxMag = sqrtf(fmaxf(0.0f, speed*speed - ball.velocity.y * ball.velocity.y));
+            ball.velocity.x = vxSign * vxMag;
+        }
+
+        // If we've bounced side-to-side many times in a row, apply a stronger nudge
+        // to the vertical component to break out of the limbo.
+        if (consecutiveSideBounces >= 3) {
+            const float NUDGE_RATIO = 0.35f; // stronger vertical push
+            float nudge = speed * NUDGE_RATIO;
+            float signy = (ball.velocity.y >= 0.0f) ? 1.0f : -1.0f;
+            ball.velocity.y = signy * fmaxf(fabsf(ball.velocity.y), nudge);
+
+            // recompute horizontal component preserving total speed
+            float vxSign = (ball.velocity.x >= 0.0f) ? 1.0f : -1.0f;
+            float vxMag = sqrtf(fmaxf(0.0f, speed*speed - ball.velocity.y * ball.velocity.y));
+            ball.velocity.x = vxSign * vxMag;
+            consecutiveSideBounces = 0; // reset after nudging
+        }
 
     }
 
