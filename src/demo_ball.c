@@ -56,6 +56,11 @@ bool InitializeBall(void) {
 
 }
 
+bool BallExists(void) {
+    return ball.spawned || !ball.attached;
+}
+
+
 
 void FreeBall(void) {
     for (int i = 0; i < MAX_BALL_IMG_COUNT; i++) {
