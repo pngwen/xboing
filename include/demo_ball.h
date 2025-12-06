@@ -13,6 +13,8 @@ void DrawBall(void);
 void ReleaseBall(void);
 void SetBallSticky(void);
 void IncreaseBallSpeed(void);
+bool BallExists(void);
+
 
 
 #endif // _DEMO_BALL_H_
