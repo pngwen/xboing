@@ -15,7 +15,7 @@ const int INITIAL_BALL_SPEED = 400;  // pixels per second
 const int MAX_BALL_IMG_COUNT = 4;
 const int GUIDE_LENGTH = 100;
 
-const float bouncVariance = 10.0f;
+const float bounceVariance = 10.0f;
 
 typedef struct {
     Texture2D img[4];
@@ -27,6 +27,8 @@ typedef struct {
     bool sticky;      // it will stick to paddle next collision
     bool attached;    // it is attached to the paddle
     bool spawned;
+    bool boostedThisFrame;
+
     Vector2 anchor;
 } Ball;
 
@@ -48,13 +50,18 @@ bool InitializeBall(void) {
         snprintf(fileName, sizeof(fileName), BALL_TEXTURES "ball%d.png", i + 1);
 
         ball.img[i] = LoadTexture(fileName);
-        if (ball.img->id == 0)  return false;
+        if (ball.img[i].id == 0)  return false;
 
     }
 
     return true;
 
 }
+
+bool BallExists(void) {
+    return ball.spawned || !ball.attached;
+}
+
 
 
 void FreeBall(void) {
@@ -96,6 +103,9 @@ void ReleaseBall(void) {
         ball.attached = false;
         startSound(SND_BALLSHOT);   
     }
+
+    // Start the countdown timer on the first ball release
+    setTimerActive(true);
 }
 
 
@@ -169,6 +179,7 @@ void MoveBall(void) {
 
     ball.oldPosition = ball.position;
     bool stepBack = false;
+    ball.boostedThisFrame = false; //keep track if ball boosted
 
     // keep spawned ball on paddle center
     if (ball.spawned) {
@@ -184,15 +195,15 @@ void MoveBall(void) {
 
         // check is the ball is hanging off the edge of the paddle
         // when the paddle is moved against the wall
-        int boundry = getPlayWall(WALL_LEFT).width;
-        if (ball.position.x < boundry) {
-            ball.position.x = boundry;
+        int boundary = getPlayWall(WALL_LEFT).width;
+        if (ball.position.x < boundary) {
+            ball.position.x = boundary;
             ball.anchor.x = GetPaddlePositionX() - ball.position.x;
         }
 
-        boundry = getPlayWall(WALL_RIGHT).x - ball.img->width;
-        if (ball.position.x > boundry) {
-            ball.position.x = boundry;
+        boundary = getPlayWall(WALL_RIGHT).x - ball.img->width;
+        if (ball.position.x > boundary) {
+            ball.position.x = boundary;
             ball.anchor.x = GetPaddlePositionX() - ball.position.x;
         }
 
@@ -214,7 +225,17 @@ void MoveBall(void) {
     if (CheckCollisionRecs(GetBallCollisionRec(), getPlayWall(WALL_BOTTOM))) {
         ball.position.y = GetScreenHeight(); // cheesy way to hide ball after loss
         startSound(SND_BALLLOST);  
-        SetGameMode(MODE_LOSE);
+		
+        LoseLife();
+
+		if (GetLivesRemaining() > 0) {
+            ResetBall();
+			SetGameMode(MODE_INITGAME);
+        }
+        else {
+            SetGameMode(MODE_LOSE);
+        }
+        
         return;
     } else if (CheckCollisionRecs(GetBallCollisionRec(), getPlayWall(WALL_TOP))) {
         startSound(SND_BOING);       // test to play sound bouncing off wall
@@ -339,7 +360,8 @@ void MoveBall(void) {
 
 
 Rectangle GetBallCollisionRec() {
-    return (Rectangle) {ball.position.x, ball.position.y, ball.img[ball.imgIndex].width, ball.img[ball.imgIndex].height};
+	const int padding = 2; // Adjust padding as needed, make collision box bigger
+    return (Rectangle) {ball.position.x, ball.position.y, ball.img[ball.imgIndex].width + padding, ball.img[ball.imgIndex].height + padding};
 }
 
 
@@ -349,5 +371,17 @@ void SetBallSticky(void) {
 
 
 void IncreaseBallSpeed(void) {
-    ball.speed *= 1.25;
+    // stops multiple boosts in a single frame
+    if (ball.boostedThisFrame)
+    {
+        return;
+    }
+
+    ball.boostedThisFrame = true;
+
+    if (ball.speed < 1000) {
+		ball.speed = (int)(ball.speed * 1.25f); //speed cap, hopefully not as fast anymore?
+    }
+    
 }
+

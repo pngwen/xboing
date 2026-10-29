@@ -2,10 +2,9 @@ local raylib = {}
 
 raylib.submodule = "raylib"
 raylib.platform = {
-    "PLATFORM_DESKTOP",
-    "GRAPHICS_API_OPENGL_33",
+    "GRAPHICS_API_OPENGL_33", -- Graphics API: opengl33
+    "PLATFORM_DESKTOP" -- Backend: GLFW
 }
-
 -- Link with raylib.
 function raylib.links()
     links { "raylib" }
@@ -45,7 +44,7 @@ function raylib.include()
     flags { "ShadowedVariables" }
 end
 
-function raylib.link_homebrew() -- Link with homebrew installation. TODO: make into option
+function raylib.link_homebrew() -- Link with homebrew installation. Not currently supported.
     print("Configuring for homebrew installation...")
 
     links {}
@@ -72,6 +71,9 @@ function raylib.setup_project()
         debugdir "$(SolutionDir)"
     filter {"system:macosx"}
         disablewarnings {"deprecated-declarations"}
+    filter {"system:linux"}
+        defines {"_GLFW_X11"}
+        defines {"_GNU_SOURCE"}
     filter {}
 end
 
@@ -100,8 +102,6 @@ function raylib.static_lib_target()
             buildoptions { "/Zc:__cplusplus" }
         filter { "system:macosx", "files:" .. raylib.submodule .. "/src/rglfw.c" }
             compileas "Objective-C"
-        filter {"system:linux"}
-            defines {"_GLFW_X11"}
         filter {}
 end
 

@@ -53,10 +53,12 @@ void RunInitGameMode(const char *fileName)
         livesRemaining = INITIAL_LIVES;
     }
 
-    livesRemaining--;
+    
 
     ResetPaddleStart();
     ResetBall();
+    // ensure countdown timer does not start until ball released
+    setTimerActive(false);
 
     RenderGameScreen();
 
@@ -72,8 +74,12 @@ void RunPlayMode(void)
         MovePaddle(PADDLE_RIGHT);
 
     // --- Mouse controls ---
-    Vector2 mousePosition = GetMousePosition();
-    SetPaddlePosition(mousePosition.x);
+    extern bool mouseControls; // make sure this matches your variable definition
+    if (mouseControls)
+    {
+        Vector2 mousePosition = GetMousePosition();
+        SetPaddlePosition(mousePosition.x);
+    }
 
     // --- Ball release ---
     if (IsInputReleaseBall())
@@ -81,6 +87,9 @@ void RunPlayMode(void)
 
     // --- Update ball ---
     MoveBall();
+
+    // --- Update timer ---
+    timeDecrement();
 
     // --- Render everything ---
     RenderGameScreen();
@@ -259,10 +268,14 @@ void RenderGameScreen(void)
     }
 
     const char *lives = TextFormat("Balls Remaining: %d", livesRemaining);
-    DrawText(lives, 10, 10, 20, WHITE);
+    DrawText(lives, 10, GetScreenHeight() - 20, 20, WHITE);
 
     const char *blocks = TextFormat("Blocks Remaining: %d", getBlockCount());
     DrawText(blocks, GetScreenWidth() - MeasureText(blocks, 20) - 10, 10, 20, WHITE);
+
+    // Display remaining time
+    const char *time = TextFormat("Time Remaining: %d", getTime());
+    DrawText(time, 10, 10, 20, WHITE);
 
     if (GetPaddleReverse())
     {
@@ -287,4 +300,14 @@ void DrawStatusText(const char *displayText)
 
     DrawText(displayText, xpos - 1, ypos - 1, FONTSIZE, RED);
     DrawText(displayText, xpos, ypos, FONTSIZE, GREEN);
+}
+
+void LoseLife(void) {
+    if (livesRemaining > 0) {
+        livesRemaining--;
+    }
+}
+
+int GetLivesRemaining(void) {
+    return livesRemaining;
 }

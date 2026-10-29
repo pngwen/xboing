@@ -42,5 +42,10 @@ void activateBlock(int row, int col);
 Rectangle getPlayWall(WALLS wall);
 void drawWalls(void);
 int getBlockCount(void);
+int GetBlocksDestroyed(void); //helper for scoreboard
+int getTime(void);
+void timeDecrement(void);
+void setTimerActive(bool active);
+bool isTimerActive(void);
 
 #endif // _DEMO_BLOCKLOADER_H

@@ -17,6 +17,8 @@ void RunInitGameMode(const char *fileName);
 void RunPlayMode(void);
 void RunEndMode(void);
 
+void LoseLife(void);
+int GetLivesRemaining(void);
 
 
 #endif // _DEMO_GAMEMODES_H_
