@@ -27,6 +27,8 @@ typedef struct {
     bool sticky;      // it will stick to paddle next collision
     bool attached;    // it is attached to the paddle
     bool spawned;
+    bool boostedThisFrame;
+
     Vector2 anchor;
 } Ball;
 
@@ -55,6 +57,11 @@ bool InitializeBall(void) {
     return true;
 
 }
+
+bool BallExists(void) {
+    return ball.spawned || !ball.attached;
+}
+
 
 
 void FreeBall(void) {
@@ -172,6 +179,7 @@ void MoveBall(void) {
 
     ball.oldPosition = ball.position;
     bool stepBack = false;
+    ball.boostedThisFrame = false; //keep track if ball boosted
 
     // keep spawned ball on paddle center
     if (ball.spawned) {
@@ -314,8 +322,17 @@ void SetBallSticky(void) {
 
 
 void IncreaseBallSpeed(void) {
+    // stops multiple boosts in a single frame
+    if (ball.boostedThisFrame)
+    {
+        return;
+    }
+
+    ball.boostedThisFrame = true;
+
     if (ball.speed < 1000) {
 		ball.speed = (int)(ball.speed * 1.25f); //speed cap, hopefully not as fast anymore?
     }
     
 }
+
