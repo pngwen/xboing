@@ -28,6 +28,7 @@ typedef struct {
     bool attached;    // it is attached to the paddle
     bool spawned;
     bool boostedThisFrame;
+    int rallyBoosts;  // Planet Blocks hit since the ball was last launched
 
     Vector2 anchor;
 } Ball;
@@ -77,6 +78,7 @@ void ResetBall(void) {
     ball.sticky = false;
     ball.attached = false;
     ball.spawned = true;
+    ball.rallyBoosts = 0;
 
     ball.speed = 0;
     ball.velocity.x = 0;
@@ -93,6 +95,7 @@ void ReleaseBall(void) {
 
         ball.spawned = false;
         ball.speed = INITIAL_BALL_SPEED;
+        ball.rallyBoosts = 0; // new rally: planet block boosts start over
 
         ball.velocity.x = cos(releaseAngle) * ball.speed;
         ball.velocity.y = sin(releaseAngle) * ball.speed;
@@ -379,9 +382,15 @@ void IncreaseBallSpeed(void) {
 
     ball.boostedThisFrame = true;
 
+    // Issue #142: chaining multiple Planet Blocks in one rally compounds the
+    // boost too fast (1.25^3 ~ 2x speed). The first hit keeps the original
+    // +25% boost, further hits in the same rally boost only +5%.
+    const float factor = (ball.rallyBoosts == 0) ? 1.25f : 1.05f;
+    ball.rallyBoosts++;
+
     if (ball.speed < 1000) {
-		ball.speed = (int)(ball.speed * 1.25f); //speed cap, hopefully not as fast anymore?
+		ball.speed = (int)(ball.speed * factor); //speed cap, hopefully not as fast anymore?
     }
-    
+
 }
 
