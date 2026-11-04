@@ -222,7 +222,7 @@ void MoveBall(void) {
     bool flipy = false;
     int sideBounce = 0; // -1 = left, +1 = right, 0 = none
 
-    if (CheckCollisionRecs(GetBallCollisionRec(), getPlayWall(WALL_BOTTOM))) {
+    if (ball.speed > 0 && CheckCollisionRecs(GetBallCollisionRec(), getPlayWall(WALL_BOTTOM))) {
         ball.position.y = GetScreenHeight(); // cheesy way to hide ball after loss
         startSound(SND_BALLLOST);  
 		
@@ -318,7 +318,7 @@ void MoveBall(void) {
     if (flipx || flipy) {
 
         // symmetric jitter in degrees
-        float jitter = ((float)rand() / (float)RAND_MAX) * 2.0f * bouncVariance - bouncVariance;
+        float jitter = ((float)rand() / (float)RAND_MAX) * 2.0f * bounceVariance - bounceVariance;
         float angle = atan2f(ball.velocity.y, ball.velocity.x) + jitter * (PI / 180.0f);
 
         float speed = (float)ball.speed;
