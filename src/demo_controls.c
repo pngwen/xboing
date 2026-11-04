@@ -5,8 +5,6 @@
 #include "paddle.h"
 #include <stdio.h>
 
-static bool mouseInitialized = false;
-
 // ----- Keyboard input -----
 bool IsInputPaddleLeft(void) {
     return IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_A);

@@ -2,6 +2,7 @@
 #include <raylib.h>
 #include <stdbool.h>
 #include "scoreboard.h"
+#include "demo_blockloader.h"
 #include <string.h>
 
 #define MAX_NAME_LENGTH 3
@@ -9,7 +10,6 @@
 #define SCREEN_HEIGHT 720
 #define MAX_HIGH_SCORES 10
 
-static int lives = 3;
 static HighScoreEntry highScores[MAX_HIGH_SCORES];
 static int highScoreCount = 0;
 
@@ -131,7 +131,6 @@ void ScoreInputScreen(int score, bool isHighScore) {
 	while (!WindowShouldClose()) { //same as intro screen loop
 		BeginDrawing();
 		ClearBackground(GRAY);
-		const char* title = "Scoreboard";
 		const char* highscore = "You Got a New High Score!";
 		const char* prompt = "Please Enter Your Nickname";
 		const char* quote = "Please Enter Your Quote";

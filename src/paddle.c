@@ -241,7 +241,7 @@ void ChangePaddleSize(int changeDirection)
 	MovePaddle(PADDLE_NONE);
 }
 
-Vector2 GetBallSpawnPointOnPaddle()
+Vector2 GetBallSpawnPointOnPaddle(void)
 {
 	return (Vector2){
 		paddlePosition + paddles[paddleIndex].size / 2,
