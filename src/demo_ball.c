@@ -40,6 +40,7 @@ Vector2 GetSpawnPoint(void);
 void AnimateBall(void);
 Rectangle GetBallCollisionRec(void);
 void DrawGuide(void);
+bool FindFirstBlockHit(int *row, int *col, bool *flipX, bool *flipY);
 
 
 bool InitializeBall(void) {
@@ -175,6 +176,94 @@ void AnimateBall(void) {
 }
 
 
+// Sweep the ball's collision rectangle from its previous position to its
+// current one and report the first block it reaches. Each block is tested
+// against the ball rectangle expanded by the ball's size (a Minkowski sum), so
+// the chosen block and the bounce axis do not depend on row/column scan order.
+bool FindFirstBlockHit(int *row, int *col, bool *flipX, bool *flipY) {
+
+    Rectangle ballRec = GetBallCollisionRec();
+    Vector2 prevPos = {ball.oldPosition.x, ball.oldPosition.y};
+    Vector2 delta = {ballRec.x - prevPos.x, ballRec.y - prevPos.y};
+
+    int bestRow = -1;
+    int bestCol = -1;
+    float bestTime = 2.0f; // later than any hit within this frame
+    bool bestFlipX = false;
+    bool bestFlipY = false;
+
+    for (int blockRow = 0; blockRow < getBlockRowMax(); blockRow++) {
+        for (int blockCol = 0; blockCol < getBlockColMax(); blockCol++) {
+            if (!isBlockActive(blockRow, blockCol)) continue;
+
+            Rectangle block = getBlockCollisionRec(blockRow, blockCol);
+            if (!CheckCollisionRecs(ballRec, block)) continue;
+
+            float minX = block.x - ballRec.width;
+            float maxX = block.x + block.width;
+            float minY = block.y - ballRec.height;
+            float maxY = block.y + block.height;
+
+            float enterX = -1e30f, exitX = 1e30f;
+            float enterY = -1e30f, exitY = 1e30f;
+
+            if (delta.x != 0.0f) {
+                float t1 = (minX - prevPos.x) / delta.x;
+                float t2 = (maxX - prevPos.x) / delta.x;
+                enterX = fminf(t1, t2);
+                exitX = fmaxf(t1, t2);
+            }
+
+            if (delta.y != 0.0f) {
+                float t1 = (minY - prevPos.y) / delta.y;
+                float t2 = (maxY - prevPos.y) / delta.y;
+                enterY = fminf(t1, t2);
+                exitY = fmaxf(t1, t2);
+            }
+
+            float enter = fmaxf(enterX, enterY);
+            float exit = fminf(exitX, exitY);
+            if (enter > exit) continue;
+
+            bool hitFlipX;
+            bool hitFlipY;
+
+            if (enter < 0.0f) {
+                // The ball was already overlapping before this move; fall back
+                // to the shallowest axis.
+                enter = 0.0f;
+                float dX = (ballRec.x + ballRec.width / 2) - (block.x + block.width / 2);
+                float dY = (ballRec.y + ballRec.height / 2) - (block.y + block.height / 2);
+                float overlapX = (ballRec.width + block.width) / 2 - fabsf(dX);
+                float overlapY = (ballRec.height + block.height) / 2 - fabsf(dY);
+                hitFlipX = (overlapX < overlapY);
+                hitFlipY = !hitFlipX;
+            } else {
+                // The slab crossed last is the face the ball hit.
+                hitFlipY = (enterY >= enterX);
+                hitFlipX = !hitFlipY;
+            }
+
+            if (enter < bestTime) {
+                bestTime = enter;
+                bestRow = blockRow;
+                bestCol = blockCol;
+                bestFlipX = hitFlipX;
+                bestFlipY = hitFlipY;
+            }
+        }
+    }
+
+    if (bestRow < 0) return false;
+
+    *row = bestRow;
+    *col = bestCol;
+    *flipX = bestFlipX;
+    *flipY = bestFlipY;
+    return true;
+}
+
+
 void MoveBall(void) {
 
     ball.oldPosition = ball.position;
@@ -269,30 +358,19 @@ void MoveBall(void) {
     }
 
     // check for block collisions
-    for (int row = 0; row < getBlockRowMax(); row++) {
-        for (int col = 0; col < getBlockColMax(); col++) {
-            if (!isBlockActive(row,col)) continue;
-
-            Rectangle block = getBlockCollisionRec(row, col);
-            if (CheckCollisionRecs(GetBallCollisionRec(), block)) {
-
-                stepBack = true;
-                activateBlock(row, col);
-
-                float dX = (ball.position.x + ball.img->width / 2) - (block.x + block.width / 2);
-                float dY = (ball.position.y + ball.img->height / 2) - (block.y + block.height / 2);
-
-                float overlapX = (ball.img->width + block.width) / 2 - fabs(dX);
-                float overlapY = (ball.img->height + block.height) / 2 - fabs(dY);
-
-                if (overlapX < overlapY) {
-                    flipx = true;
-                } else {
-                    flipy = true;
-                }
-
-            }
-        }
+    // Resolve at most one block per frame, and pick the block the ball reaches
+    // first along its path. Destroying every overlapping block in a single
+    // frame while only flipping the velocity once let the ball "surf" the seam
+    // between two rows and clear them almost instantly (issue #138).
+    int blockRow;
+    int blockCol;
+    bool blockFlipX;
+    bool blockFlipY;
+    if (FindFirstBlockHit(&blockRow, &blockCol, &blockFlipX, &blockFlipY)) {
+        stepBack = true;
+        activateBlock(blockRow, blockCol);
+        if (blockFlipX) flipx = true;
+        if (blockFlipY) flipy = true;
     }
 
     // change directions if needed
@@ -318,7 +396,7 @@ void MoveBall(void) {
     if (flipx || flipy) {
 
         // symmetric jitter in degrees
-        float jitter = ((float)rand() / (float)RAND_MAX) * 2.0f * bouncVariance - bouncVariance;
+        float jitter = ((float)rand() / (float)RAND_MAX) * 2.0f * bounceVariance - bounceVariance;
         float angle = atan2f(ball.velocity.y, ball.velocity.x) + jitter * (PI / 180.0f);
 
         float speed = (float)ball.speed;
