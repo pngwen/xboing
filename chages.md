@@ -2,9 +2,6 @@
 
 Checked against the open issues in https://github.com/pngwen/xboing/issues. The following are narrower build, setup, and tooling issues rather than duplicates of the existing feature/port issues.
 
-[Repair ad hoc compile test paths]
-`tests/compile-test.sh` assumes include and raylib paths that do not match this repository layout. Make the script runnable or document the correct manual command.
-
 [Remove the broken top-level audio.c symlink]
 The root `audio.c` symlink points to the missing `audio/SUNaudio.c`. Remove it or replace it with documentation so contributors do not confuse it with `src/audio.c`.
 
