@@ -158,7 +158,7 @@ void SetReverseOff(void);
  */
 void ChangePaddleSize(int changeDirection);
 
-Vector2 GetBallSpawnPointOnPaddle();
+Vector2 GetBallSpawnPointOnPaddle(void);
 
 void SetPaddlePosition(float x);
 

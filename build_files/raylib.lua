@@ -96,6 +96,8 @@ function raylib.static_lib_target()
 
         removefiles {raylib.submodule .. "/src/rcore_*.c"}
 
+        filter {"system:linux"}
+            defines {"_GLFW_X11"}
         filter "action:vs*"
             defines{"_WINSOCK_DEPRECATED_NO_WARNINGS", "_CRT_SECURE_NO_WARNINGS"}
             characterset ("Unicode")
