@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdbool.h>
+#include <string.h>
 
 #include "demo_blockloader.h"
 #include "demo_gamemodes.h"
@@ -69,6 +70,8 @@ Block game_blocks[15][9];
 Vector2 getPlayCorner(CORNERS corner);
 bool isBlockTypeInteractive(char ch);
 void deactivateBlock(int row, int col);
+static inline bool inBounds(int row, int col);
+static void clearBlocks(void);
 
 
 void initializePlayArea(void) {
@@ -82,51 +85,89 @@ void initializePlayArea(void) {
 }
 
 
+static void trimLineEnd(char *line)
+{
+    if (line == NULL) return;
+    line[strcspn(line, "\r\n")] = '\0';
+}
+
+static void clearBlocks(void)
+{
+    for (int row = 0; row < ROW_MAX; row++) {
+        for (int col = 0; col < COL_MAX; col++) {
+            game_blocks[row][col] = (Block){0};
+            game_blocks[row][col].blockOffsetX = -1;
+            game_blocks[row][col].blockOffsetY = -1;
+        }
+    }
+}
+
 bool loadBlocks(const char* filename) {
 
     blocksRemaining = 0;
     totalBlocks = 0;
+    timeRemaining = 0;
+    levelName[0] = '\0';
+    clearBlocks();
+
+    if (filename == NULL) {
+        fprintf(stderr, "loadBlocks: no level filename provided.\n");
+        return false;
+    }
 
     FILE* fp = fopen(filename, "r");
     if (fp == NULL) {
-        printf("File '%s' could not be opened.", filename);
+        fprintf(stderr, "loadBlocks: could not open '%s'.\n", filename);
         return false;
     }
 
-    // Get header info
-	if (!fgets(levelName, sizeof(levelName), fp)) { // read level name
+    char line[256];
+
+    // First line: level name.
+    if (!fgets(line, sizeof(line), fp)) {
+        fprintf(stderr, "loadBlocks: '%s' is missing a level name.\n", filename);
         fclose(fp);
         return false;
     }
-	if (fscanf(fp, "%d", &timeRemaining) != 1) { // read time bonus
+    trimLineEnd(line);
+    strncpy(levelName, line, sizeof(levelName) - 1);
+    levelName[sizeof(levelName) - 1] = '\0';
+
+    // Second line: time bonus.
+    if (!fgets(line, sizeof(line), fp) || sscanf(line, "%d", &timeRemaining) != 1) {
+        fprintf(stderr, "loadBlocks: '%s' has an invalid time bonus.\n", filename);
         fclose(fp);
         return false;
     }
-    getc(fp); // consume newline after timeBonus
-	// Get file data
-	fgets(levelName, 256, fp);
-	fscanf(fp, "%d", &timeRemaining);
-	getc(fp);
-
-	int row = 0;
-	int column = 0;
-	char ch;
-
-    while ((ch = getc(fp)) != EOF) { // read character by character
-		if (ch == '\n') continue; // skip newlines
-
-        //bounds check
-        if (row < ROW_MAX && column < COL_MAX) {
-            addBlock(row, column, (char)ch);
-        }
-        column++;
-        if (column >= COL_MAX) { // move to next row
-            column = 0;
-            row++;
-            if (row >= ROW_MAX) break; // stop if we exceed max rows
-        }
+    if (timeRemaining < 0) {
+        timeRemaining = 0;
     }
-	fclose(fp);
+
+    // Remaining lines: up to ROW_MAX rows of COL_MAX block characters.
+    // A blank line, or a metadata line longer than a grid row, ends the grid.
+    int row = 0;
+    while (row < ROW_MAX && fgets(line, sizeof(line), fp)) {
+        trimLineEnd(line);
+        int length = (int)strlen(line);
+
+        if (length == 0 || length > COL_MAX) {
+            break;
+        }
+
+        for (int col = 0; col < COL_MAX; col++) {
+            char ch = (col < length) ? line[col] : '.';
+            addBlock(row, col, ch);
+        }
+        row++;
+    }
+
+    fclose(fp);
+
+    if (row == 0) {
+        fprintf(stderr, "loadBlocks: '%s' contains no block rows.\n", filename);
+        return false;
+    }
+
     return true;
 }
 
@@ -155,11 +196,18 @@ void drawBorder(void) {
     /* The the red gamne outline */
     Vector2 upperLeft = getPlayCorner(UPPER_LEFT);
     Vector2 lowerRight = getPlayCorner(LOWER_RIGHT);
-    DrawRectangleLinesEx((Rectangle){upperLeft.x, upperLeft.y, lowerRight.x, lowerRight.y},PLAY_BORDER_WIDTH, RED);
+    DrawRectangleLinesEx((Rectangle){
+        upperLeft.x,
+        upperLeft.y,
+        lowerRight.x - upperLeft.x,
+        lowerRight.y - upperLeft.y
+    }, PLAY_BORDER_WIDTH, RED);
 }
 
 
 void addBlock(int row, int col, char ch){
+
+    if (!inBounds(row, col)) return;
 
     game_blocks[row][col].blockOffsetX	= (playArea.colWidth - BLOCK_WIDTH) / 2;
 	game_blocks[row][col].blockOffsetY 	= (playArea.rowHeight - BLOCK_HEIGHT) / 2;
@@ -497,6 +545,8 @@ bool isBlockActive(int row, int col) {
 
 void activateBlock(int row, int col) {
 
+    if (!inBounds(row, col) || !game_blocks[row][col].active) return;
+
     switch(game_blocks[row][col].type) {
 
         case 'w': // wall, do nothing
@@ -609,7 +659,7 @@ Vector2 getPlayCorner(CORNERS corner) {
             break;
 
         case LOWER_RIGHT:
-            return (Vector2){playArea.playWidth + 1, PLAY_Y_OFFSET + playArea.playHeight};
+            return (Vector2){PLAY_X_OFFSET + playArea.playWidth, PLAY_Y_OFFSET + playArea.playHeight};
             break;
     }
 

@@ -41,7 +41,12 @@ void RunInitGameMode(const char *fileName)
         // strcmp(fileName, currentLevelFile) != 0 checks whether the requested
         // level filename differs from the one currently loaded. If different,
         // we must reload block data for the new level.
-        loadBlocks(fileName);
+        if (!loadBlocks(fileName)) {
+            fprintf(stderr, "RunInitGameMode: failed to load level '%s'.\n",
+                    fileName ? fileName : "(null)");
+            SetGameMode(MODE_EXIT);
+            return;
+        }
         // remember which level file was loaded
         if (fileName) {
             // Use strncpy to avoid buffer overflow when copying the filename into
