@@ -103,14 +103,9 @@ bool loadBlocks(const char* filename) {
         return false;
     }
     getc(fp); // consume newline after timeBonus
-	// Get file data
-	fgets(levelName, 256, fp);
-	fscanf(fp, "%d", &timeRemaining);
-	getc(fp);
-
 	int row = 0;
 	int column = 0;
-	char ch;
+	int ch;
 
     while ((ch = getc(fp)) != EOF) { // read character by character
 		if (ch == '\n') continue; // skip newlines
@@ -325,8 +320,10 @@ void addBlock(int row, int col, char ch){
 
     if (game_blocks[row][col].blockOffsetX != -1) {
         game_blocks[row][col].active = true;
-        if (ch != 'w') blocksRemaining++;  //solid wall blocks cannot be destroyed and should not count
-		totalBlocks++; // count all blocks except empty space
+        if (ch != 'w') {
+            blocksRemaining++;  // solid wall blocks cannot be destroyed and should not count
+            totalBlocks++;     // count only destroyable blocks
+        }
     } else {
         game_blocks[row][col].active = false;
     }
