@@ -41,7 +41,7 @@ function raylib.include()
         raylib.submodule .. "/src/external",
         raylib.submodule .. "/src/external/glfw/include"
     }
-    flags { "ShadowedVariables" }
+    buildoptions { "-Wshadow" }
 end
 
 function raylib.link_homebrew() -- Link with homebrew installation. Not currently supported.
