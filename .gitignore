@@ -75,8 +75,3 @@ premake5
 /bin
 /obj
 build_files
-
-# Generated notes
-changes.md
-chages.md
-AGENTS.md
