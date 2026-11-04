@@ -2,6 +2,7 @@
 #include <raylib.h>
 #include <stdbool.h>
 #include "scoreboard.h"
+#include "demo_blockloader.h"
 #include <string.h>
 
 #define MAX_NAME_LENGTH 3

@@ -21,6 +21,8 @@ typedef struct {
 // Show the scoreboard screen after a level ends
 void ScoreInputScreen(int score, bool isHighScore);
 void ShowScoreBoard(void);
+// Save accumulated high scores to disk
+bool saveHighScores(const char* filename);
 // High score management
 bool LoadHighScores(const char* filename);
 void AddHighScore(const char* name, const char* quote, int score);
