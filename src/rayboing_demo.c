@@ -9,9 +9,7 @@
 #include "audio.h"
 #include "intro.h"
 #include "scoreboard.h"
-
-const int SCREEN_WIDTH = 575;
-const int SCREEN_HEIGHT = 720;
+#include "window.h"
 
 bool mouseControls = true;
 
@@ -25,9 +23,8 @@ int main(int argumentCount, char* arguments[]) {
     int rtnCode = 1;
     bool windowInitialized = false;
 
-    // must InitWindow before loading textures
-    InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Rayboing Demo");
-    SetTargetFPS(60);
+    // must InitGameWindow before loading textures (creates window + render target)
+    InitGameWindow();
     windowInitialized = true;
 
     // If no filename was provided on the command line, show the intro/start menu
@@ -162,7 +159,7 @@ int main(int argumentCount, char* arguments[]) {
 
 
 
-    if (windowInitialized) CloseWindow();
+    if (windowInitialized) FreeGameWindow();
     ReleaseResources();
 
 	//always save scores on exit
@@ -216,18 +213,11 @@ void UpdatePaddleInput(void)
 
     if (mouseControls)
     {
-        Vector2 mousePos = GetMousePosition();
-
-        // clamp Y to window, if needed
-        if (mousePos.y < 0)
-            mousePos.y = 0;
-        if (mousePos.y > SCREEN_HEIGHT)
-            mousePos.y = SCREEN_HEIGHT;
-
+        // paddle follows the actual cursor in game space; no cursor warping
+        // (SetMousePosition resets raylib's mouse delta state and truncation
+        // feedback through the transform caused drift/jitter after resizes)
+        Vector2 mousePos = GetGameMousePosition();
         SetPaddlePosition(mousePos.x);
-
-        // updates mouse position 
-        SetMousePosition(GetPaddlePositionX(), mousePos.y);
     }
     else
     {

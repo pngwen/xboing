@@ -2,19 +2,19 @@
 #include <raylib.h>
 #include <stdbool.h>
 #include "scoreboard.h"
+#include "window.h"
+#include "demo_blockloader.h"
 #include <string.h>
 
 #define MAX_NAME_LENGTH 3
-#define SCREEN_WIDTH 575
-#define SCREEN_HEIGHT 720
 #define MAX_HIGH_SCORES 10
 
 static int lives = 3;
 static HighScoreEntry highScores[MAX_HIGH_SCORES];
 static int highScoreCount = 0;
 
-Rectangle InputBox = { (SCREEN_WIDTH - 200) / 2, SCREEN_HEIGHT / 3 + 30, 200, 40 };
-Rectangle QuoteBox = { (SCREEN_WIDTH - 300) / 2, SCREEN_HEIGHT / 2, 300, 40 }; 
+Rectangle InputBox = { (GAME_WIDTH - 200) / 2, GAME_HEIGHT / 3 + 30, 200, 40 };
+Rectangle QuoteBox = { (GAME_WIDTH - 300) / 2, GAME_HEIGHT / 2, 300, 40 }; 
 
 bool LoadHighScores(const char* filename) {
 	highScoreCount = 0; // Reset count before loading
@@ -129,7 +129,7 @@ void ScoreInputScreen(int score, bool isHighScore) {
 
 	// Simple loop that draws scoreboard and waits for key press
 	while (!WindowShouldClose()) { //same as intro screen loop
-		BeginDrawing();
+		BeginWindowSize();
 		ClearBackground(GRAY);
 		const char* title = "Scoreboard";
 		const char* highscore = "You Got a New High Score!";
@@ -150,10 +150,10 @@ void ScoreInputScreen(int score, bool isHighScore) {
 		int instructionWidth = MeasureText(prompt, promptSize);
 
 		if (isHighScore) {
-			DrawText(highscore, (SCREEN_WIDTH - highscoresWidth) / 2, SCREEN_HEIGHT / 4, highscoresize, YELLOW);
-			DrawText(prompt, (SCREEN_WIDTH - promptWidth) / 2, SCREEN_HEIGHT / 3 + 10 , promptSize, LIGHTGRAY);
-			DrawText(quote, (SCREEN_WIDTH - quoteWidth) / 2, SCREEN_HEIGHT /3 + 100 , quoteSize, YELLOW);
-			DrawText(instruction, (SCREEN_WIDTH - instructionWidth) / 2, SCREEN_HEIGHT / 2 + 100, instructionSize, YELLOW);
+			DrawText(highscore, (GAME_WIDTH - highscoresWidth) / 2, GAME_HEIGHT / 4, highscoresize, YELLOW);
+			DrawText(prompt, (GAME_WIDTH - promptWidth) / 2, GAME_HEIGHT / 3 + 10 , promptSize, LIGHTGRAY);
+			DrawText(quote, (GAME_WIDTH - quoteWidth) / 2, GAME_HEIGHT /3 + 100 , quoteSize, YELLOW);
+			DrawText(instruction, (GAME_WIDTH - instructionWidth) / 2, GAME_HEIGHT / 2 + 100, instructionSize, YELLOW);
 			
 			//highlight box based on entry state
 			Color nameBoxColor = EnteringQuote ? RAYWHITE : YELLOW;
@@ -167,7 +167,7 @@ void ScoreInputScreen(int score, bool isHighScore) {
 			
 		
 		}
-			EndDrawing();
+			EndWindowSize();
 			
 			// Input handling
 			int letter = GetCharPressed();
@@ -215,10 +215,10 @@ void ShowScoreBoard(void) {
 	LoadHighScores("scores.txt"); // ensure we have latest
 
 	while (!WindowShouldClose()) {
-		BeginDrawing();
+		BeginWindowSize();
 		ClearBackground(BLACK);
 
-		DrawText("SCOREBOARD", SCREEN_WIDTH / 2 - 100, 50, 30, YELLOW);
+		DrawText("SCOREBOARD", GAME_WIDTH / 2 - 100, 50, 30, YELLOW);
 
 		for (int i = 0; i < highScoreCount; i++) {
 			char buffer[128];
@@ -229,7 +229,7 @@ void ShowScoreBoard(void) {
 			DrawText(buffer, 100, 120 + i * 30, 20, RAYWHITE);
 		}
 
-		EndDrawing();
+		EndWindowSize();
 
 		if (IsKeyPressed(KEY_ENTER) || IsKeyPressed(KEY_ESCAPE)) {
 			return; // exit scoreboard

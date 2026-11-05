@@ -52,6 +52,7 @@
 #include <raylib.h>
 #include "paddle.h"
 #include "demo_blockloader.h"
+#include "window.h"
 #include <stdio.h>
 
 #define PADDLE_COUNT 3
@@ -84,7 +85,7 @@ void DrawPaddle(void)
 
 int GetPaddlePositionY(void)
 {
-	// return GetScreenHeight() - DIST_BASE;
+	// return GAME_HEIGHT - DIST_BASE;
 	return getPlayWall(WALL_BOTTOM).y - DIST_BASE;
 }
 
@@ -210,7 +211,7 @@ void ResetPaddleStart(void)
 
 	// set size and center paddle
 	paddleIndex = PADDLE_INITIAL_INDEX;
-	paddlePosition = (GetScreenWidth() - paddles[paddleIndex].size) / 2;
+	paddlePosition = (GAME_WIDTH - paddles[paddleIndex].size) / 2;
 	reverseOn = false;
 }
 
