@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdbool.h>
+#include <string.h>
 
 #include "demo_blockloader.h"
 #include "demo_gamemodes.h"
@@ -70,6 +71,32 @@ Vector2 getPlayCorner(CORNERS corner);
 bool isBlockTypeInteractive(char ch);
 void deactivateBlock(int row, int col);
 
+static void clearBlocks(void);
+static void trimLineEnding(char *line);
+
+
+static void clearBlocks(void) {
+    for (int row = 0; row < ROW_MAX; row++) {
+        for (int col = 0; col < COL_MAX; col++) {
+            game_blocks[row][col].blockOffsetX = -1;
+            game_blocks[row][col].blockOffsetY = -1;
+            game_blocks[row][col].position = (Vector2){0};
+            game_blocks[row][col].texture = (Texture2D){0};
+            game_blocks[row][col].type = ' ';
+            game_blocks[row][col].active = false;
+        }
+    }
+}
+
+
+static void trimLineEnding(char *line) {
+    size_t length = strlen(line);
+
+    while (length > 0 && (line[length - 1] == '\n' || line[length - 1] == '\r')) {
+        line[--length] = '\0';
+    }
+}
+
 
 void initializePlayArea(void) {
 
@@ -86,47 +113,65 @@ bool loadBlocks(const char* filename) {
 
     blocksRemaining = 0;
     totalBlocks = 0;
+    timeRemaining = 0;
+    levelName[0] = '\0';
+
+    // Start from a clean board so a shorter/invalid level cannot leave blocks
+    // from the previous level behind.
+    clearBlocks();
 
     FILE* fp = fopen(filename, "r");
     if (fp == NULL) {
-        printf("File '%s' could not be opened.", filename);
+        fprintf(stderr, "File '%s' could not be opened.\n", filename);
         return false;
     }
 
-    // Get header info
-	if (!fgets(levelName, sizeof(levelName), fp)) { // read level name
+    // The first line is the display name of the level.
+    if (!fgets(levelName, sizeof(levelName), fp)) {
+        fprintf(stderr, "Level '%s' is missing its name.\n", filename);
         fclose(fp);
         return false;
     }
-	if (fscanf(fp, "%d", &timeRemaining) != 1) { // read time bonus
+    trimLineEnding(levelName);
+
+    // The second line is the time bonus in seconds.
+    if (fscanf(fp, "%d", &timeRemaining) != 1 || timeRemaining < 0) {
+        fprintf(stderr, "Level '%s' has an invalid time bonus.\n", filename);
         fclose(fp);
         return false;
     }
-    getc(fp); // consume newline after timeBonus
-	// Get file data
-	fgets(levelName, 256, fp);
-	fscanf(fp, "%d", &timeRemaining);
-	getc(fp);
 
-	int row = 0;
-	int column = 0;
-	char ch;
-
-    while ((ch = getc(fp)) != EOF) { // read character by character
-		if (ch == '\n') continue; // skip newlines
-
-        //bounds check
-        if (row < ROW_MAX && column < COL_MAX) {
-            addBlock(row, column, (char)ch);
-        }
-        column++;
-        if (column >= COL_MAX) { // move to next row
-            column = 0;
-            row++;
-            if (row >= ROW_MAX) break; // stop if we exceed max rows
-        }
+    // Skip the rest of the time-bonus line (including CRLF).
+    int headerCh;
+    while ((headerCh = fgetc(fp)) != '\n' && headerCh != EOF) {
     }
-	fclose(fp);
+
+    char rowBuffer[128];
+    int row = 0;
+
+    // Read exactly one line per block row. This keeps rows aligned even when
+    // the file uses CRLF or contains blank lines.
+    while (row < ROW_MAX && fgets(rowBuffer, sizeof(rowBuffer), fp) != NULL) {
+        trimLineEnding(rowBuffer);
+
+        if (rowBuffer[0] == '\0') {
+            continue; // tolerate blank separator lines
+        }
+
+        int rowLength = (int)strlen(rowBuffer);
+        for (int col = 0; col < COL_MAX && col < rowLength; col++) {
+            addBlock(row, col, rowBuffer[col]);
+        }
+        row++;
+    }
+
+    fclose(fp);
+
+    if (row == 0) {
+        fprintf(stderr, "Level '%s' does not contain any block rows.\n", filename);
+        return false;
+    }
+
     return true;
 }
 
@@ -161,6 +206,14 @@ void drawBorder(void) {
 
 void addBlock(int row, int col, char ch){
 
+    if (row < 0 || row >= ROW_MAX || col < 0 || col >= COL_MAX) {
+        return;
+    }
+
+    // Reset this cell before applying the new block type so addBlock() is safe
+    // to call on a board that already contains data.
+    game_blocks[row][col].active = false;
+    game_blocks[row][col].texture = (Texture2D){0};
     game_blocks[row][col].blockOffsetX	= (playArea.colWidth - BLOCK_WIDTH) / 2;
 	game_blocks[row][col].blockOffsetY 	= (playArea.rowHeight - BLOCK_HEIGHT) / 2;
     game_blocks[row][col].type = ch;
@@ -496,6 +549,10 @@ bool isBlockActive(int row, int col) {
 
 
 void activateBlock(int row, int col) {
+
+    if (!inBounds(row, col) || !game_blocks[row][col].active) {
+        return;
+    }
 
     switch(game_blocks[row][col].type) {
 
