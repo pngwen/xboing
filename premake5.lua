@@ -5,6 +5,7 @@ workspace "xboing"
 
     filter "configurations:Debug"
         symbols "On"
+        defines { "DEBUG_COMMANDS" }
     filter "configurations:Release"
         optimize "On"
     filter {}

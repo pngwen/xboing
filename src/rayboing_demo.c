@@ -9,6 +9,9 @@
 #include "audio.h"
 #include "intro.h"
 #include "scoreboard.h"
+#ifdef DEBUG_COMMANDS
+#include "debug_commands.h"
+#endif
 
 const int SCREEN_WIDTH = 575;
 const int SCREEN_HEIGHT = 720;
@@ -81,6 +84,9 @@ int main(int argumentCount, char* arguments[]) {
     GAME_MODES currentMode = GetGameMode();
     while (currentMode != MODE_EXIT)
     {
+#ifdef DEBUG_COMMANDS
+        PollDebugCommands(currentMode == MODE_PLAY);
+#endif
         UpdatePaddleInput();
 
         // Handle game modes

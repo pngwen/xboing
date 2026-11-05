@@ -33,6 +33,7 @@ void drawBorder(void);
 bool loadBlockTextures(void);
 void freeBlockTextures(void);
 void addBlock(int row, int col, char ch);
+bool spawnDebugBlock(int row, int col, char type);
 void initializePlayArea(void);
 Rectangle getBlockCollisionRec(int row, int col);
 int getBlockRowMax(void);
