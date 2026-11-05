@@ -10,6 +10,7 @@
 #define MAX_HIGH_SCORES 10
 
 static int lives = 3;
+static int currentScore = 0;
 static HighScoreEntry highScores[MAX_HIGH_SCORES];
 static int highScoreCount = 0;
 
@@ -102,7 +103,20 @@ HighScoreEntry* GetHighScores(void) {
 }
 
 int GetCurrentScore(void) {
-	return GetBlocksDestroyed();
+	return currentScore;
+}
+
+int GetScore(void) {
+	return currentScore;
+}
+
+void AddToScore(int points) {
+	if (points < 0) return;
+	currentScore += points;
+}
+
+void ResetScore(void) {
+	currentScore = 0;
 }
 
 
