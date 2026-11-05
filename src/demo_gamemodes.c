@@ -11,6 +11,7 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <math.h>
+#include "window.h"
 const int INITIAL_LIVES = 3;
 int livesRemaining = 0;
 
@@ -77,7 +78,7 @@ void RunPlayMode(void)
     extern bool mouseControls; // make sure this matches your variable definition
     if (mouseControls)
     {
-        Vector2 mousePosition = GetMousePosition();
+        Vector2 mousePosition = GetGameMousePosition();
         SetPaddlePosition(mousePosition.x);
     }
 
@@ -210,7 +211,7 @@ void RunEndMode(void)
 void RenderGameScreen(void)
 {
 
-    BeginDrawing();
+    BeginWindowSize();
 
     ClearBackground(BLACK);
 
@@ -229,8 +230,8 @@ void RenderGameScreen(void)
                 {
                     const char *prompt = "Press SPACE or ENTER to Move On";
                     const int PROMPT_SIZE = 20;
-                    int px = (GetScreenWidth() - MeasureText(prompt, PROMPT_SIZE)) / 2;
-                    int py = (GetScreenHeight() / 3) + 80; // below the main status text
+                    int px = (GAME_WIDTH - MeasureText(prompt, PROMPT_SIZE)) / 2;
+                    int py = (GAME_HEIGHT / 3) + 80; // below the main status text
                           double t = GetTime();
                           /* Smooth pulsing: use a sine wave to compute alpha in [0,1].
                               Use the numeric constant 2*PI directly to avoid introducing
@@ -268,10 +269,10 @@ void RenderGameScreen(void)
     }
 
     const char *lives = TextFormat("Balls Remaining: %d", livesRemaining);
-    DrawText(lives, 10, GetScreenHeight() - 20, 20, WHITE);
+    DrawText(lives, 10, GAME_HEIGHT - 20, 20, WHITE);
 
     const char *blocks = TextFormat("Blocks Remaining: %d", getBlockCount());
-    DrawText(blocks, GetScreenWidth() - MeasureText(blocks, 20) - 10, 10, 20, WHITE);
+    DrawText(blocks, GAME_WIDTH - MeasureText(blocks, 20) - 10, 10, 20, WHITE);
 
     // Display remaining time
     const char *time = TextFormat("Time Remaining: %d", getTime());
@@ -280,10 +281,10 @@ void RenderGameScreen(void)
     if (GetPaddleReverse())
     {
         const char *reversed = "REVERSED!";
-        DrawText(reversed, (GetScreenWidth() - MeasureText(reversed, 25)) / 2, 35, 25, YELLOW);
+        DrawText(reversed, (GAME_WIDTH - MeasureText(reversed, 25)) / 2, 35, 25, YELLOW);
     }
 
-    EndDrawing();
+    EndWindowSize();
 }
 
 void DrawStatusText(const char *displayText)
@@ -293,8 +294,8 @@ void DrawStatusText(const char *displayText)
     const int PADDING = 20;
 
     const int width = MeasureText(displayText, FONTSIZE);
-    const int xpos = (GetScreenWidth() - width) / 2;
-    const int ypos = GetScreenHeight() / 3;
+    const int xpos = (GAME_WIDTH - width) / 2;
+    const int ypos = GAME_HEIGHT / 3;
 
     DrawRectangle(xpos - PADDING, ypos - PADDING, width + 2 * PADDING, FONTSIZE + 2 * PADDING, BLACK);
 

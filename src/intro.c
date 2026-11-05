@@ -2,6 +2,7 @@
 #include <raylib.h>
 #include <stdbool.h>
 #include "intro.h"
+#include "window.h"
 #define INTRO_TEXTURES "resource/textures/presents/"
 //TODO: Add star animation frames
 #define STAR_TEXTURES "resource/textures/stars/"
@@ -20,9 +21,6 @@ Texture2D introPlanet,
           intro_N,
           intro_G;
           //TODO: add "background_Space" and the star animation frames
-
-static const int SCREEN_WIDTH = 575;
-static const int SCREEN_HEIGHT = 720;
 
 bool loadIntroTextures(void) {
     introPlanet = LoadTexture(INTRO_TEXTURES "earth.png");
@@ -70,26 +68,26 @@ void ShowIntroScreen(void) {
         return;
     }
     while (!WindowShouldClose()) {
-        BeginDrawing();
+        BeginWindowSize();
             ClearBackground(BLACK);
             Color introTint = WHITE;
             
             DrawTexture(introPlanet, 100, 100, introTint);
-            DrawTexture(introFlag, (SCREEN_WIDTH - introFlag.width)/2, 20, WHITE);
-            DrawTexture(introJustin, (SCREEN_WIDTH - introJustin.width)/2,
-            SCREEN_HEIGHT - introKibell.height - introJustin.height - 30, WHITE);
-            DrawTexture(introKibell, (SCREEN_WIDTH - introKibell.width)/2, SCREEN_HEIGHT - introKibell.height - 20, WHITE);    
+            DrawTexture(introFlag, (GAME_WIDTH - introFlag.width)/2, 20, WHITE);
+            DrawTexture(introJustin, (GAME_WIDTH - introJustin.width)/2,
+            GAME_HEIGHT - introKibell.height - introJustin.height - 30, WHITE);
+            DrawTexture(introKibell, (GAME_WIDTH - introKibell.width)/2, GAME_HEIGHT - introKibell.height - 20, WHITE);    
             //DrawTexture(introPresents, 100, 50, introTint); //TODO: Animate after Justin Kibell
             //TODO: Animate letters coming in one_by_one
 
-            int xboingY = (SCREEN_HEIGHT / 2) - 100; //Verticle line where "XBOING" sits
+            int xboingY = (GAME_HEIGHT / 2) - 100; //Verticle line where "XBOING" sits
             int spacing = 10; //Spacing in between "XBOING" letters
             int totalWidth =
                 intro_X.width + intro_B.width + intro_O.width +
                 intro_I.width + intro_N.width + intro_G.width +
                 spacing * 5;
 
-            int startX = (SCREEN_WIDTH - totalWidth) / 2;
+            int startX = (GAME_WIDTH - totalWidth) / 2;
             int x = startX;
 
             DrawTexture(intro_X, x, xboingY, WHITE); x += intro_X.width + spacing;
@@ -102,8 +100,8 @@ void ShowIntroScreen(void) {
             const char *prompt = "Press ENTER or SPACE to Start";
             int promptSize = 20;
             int promptWidth = MeasureText(prompt, promptSize);
-            DrawText(prompt, (SCREEN_WIDTH - promptWidth)/2, SCREEN_HEIGHT/3 + 80, promptSize, LIGHTGRAY);
-        EndDrawing(); 
+            DrawText(prompt, (GAME_WIDTH - promptWidth)/2, GAME_HEIGHT/3 + 80, promptSize, LIGHTGRAY);
+        EndWindowSize(); 
 
         if (IsKeyPressed(KEY_ENTER) || IsKeyPressed(KEY_KP_ENTER) || IsKeyPressed(KEY_SPACE)) {
             // Start requested
