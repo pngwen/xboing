@@ -104,35 +104,40 @@ int main(int argumentCount, char* arguments[]) {
             RunPlayMode();
             break;
 
-        case MODE_WIN:
+        case MODE_WIN: {
+            // FIXED: WIN was previously grouped with LOSE and fell through to
+            // MODE_CANCEL/MODE_INITGAME, restarting the cleared level with zero
+            // blocks left. RunEndMode() now handles advancing to the next level.
+            RunEndMode();
+            break;
+        }
+
         case MODE_LOSE: {
-            
             if (GetLivesRemaining() > 0) {
                 SetGameMode(MODE_INITGAME);
-            }
-            else {
-                //out of lives, show scoreboard and end
-                RunEndMode();
-
-				LoadHighScores("scores.txt"); // Load existing high scores
-
-                int lastScore = GetCurrentScore();
-                bool isHighScore = CheckIfHighScore(lastScore); // Function to check if lastScore is a high score
-                if (isHighScore) { 
-                    ScoreInputScreen(lastScore, isHighScore); // Show scoreboard screen
-				}
-				ShowScoreBoard(); // Always Show scoreboard after end
-
-                // Safety check for window close
-                if (WindowShouldClose()) { //if window closed during scoreboard
-                    SetGameMode(MODE_EXIT); // set mode to exit
-                }
-                else { //otherwise restart game
-                    SetGameMode(MODE_INITGAME);
-                }
                 break;
-
             }
+
+            //out of lives, show scoreboard and end
+            RunEndMode();
+
+			LoadHighScores("scores.txt"); // Load existing high scores
+
+            int lastScore = GetCurrentScore();
+            bool isHighScore = CheckIfHighScore(lastScore); // Function to check if lastScore is a high score
+            if (isHighScore) { 
+                ScoreInputScreen(lastScore, isHighScore); // Show scoreboard screen
+			}
+			ShowScoreBoard(); // Always Show scoreboard after end
+
+            // Safety check for window close
+            if (WindowShouldClose()) { //if window closed during scoreboard
+                SetGameMode(MODE_EXIT); // set mode to exit
+            }
+            else { //otherwise restart game
+                SetGameMode(MODE_INITGAME);
+            }
+            break;
         }
         case MODE_CANCEL: {
             RunEndMode();
