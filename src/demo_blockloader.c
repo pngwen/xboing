@@ -470,11 +470,16 @@ Rectangle getBlockCollisionRec(int row, int col) {
                              game_blocks[row][col].position.y, 0, 0 };
     }
 
+    // Use the full grid cell as the hitbox instead of the texture size.
+    // The textures are smaller than their cells (40x20 in a 55x32 cell at
+    // 575x720), which leaves gaps the ball can squeeze into and hit two rows
+    // at once (issue #138). Cells tile without gaps, so the ball always hits
+    // the row it is actually in.
     return (Rectangle) {
-        game_blocks[row][col].position.x,
-        game_blocks[row][col].position.y,
-        game_blocks[row][col].texture.width,
-        game_blocks[row][col].texture.height
+        col * playArea.colWidth + PLAY_X_OFFSET,
+        row * playArea.rowHeight + PLAY_Y_OFFSET,
+        playArea.colWidth,
+        playArea.rowHeight
     };
 }
 

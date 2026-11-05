@@ -34,6 +34,10 @@ typedef struct {
 
 Ball ball = {0};
 
+// True while the ball is still touching blocks it has already hit. Used to
+// avoid destroying several blocks from a single contact (issue #138).
+static bool blockContact = false;
+
 float releaseAngle = 0;
 
 Vector2 GetSpawnPoint(void);
@@ -77,6 +81,7 @@ void ResetBall(void) {
     ball.sticky = false;
     ball.attached = false;
     ball.spawned = true;
+    blockContact = false;
 
     ball.speed = 0;
     ball.velocity.x = 0;
@@ -269,30 +274,73 @@ void MoveBall(void) {
     }
 
     // check for block collisions
+    // Only resolve a single block per frame. The ball can overlap more than
+    // one cell at once (for example near a cell corner), and handling every
+    // overlap in the same frame could remove several blocks, including two
+    // rows at once (issue #138).
+    Rectangle ballRec = GetBallCollisionRec();
+    int hitRow = -1;
+    int hitCol = -1;
+    Rectangle hitBlock = {0};
+    float bestOverlap = 0.0f;
+    float bestApproach = 0.0f;
+
     for (int row = 0; row < getBlockRowMax(); row++) {
         for (int col = 0; col < getBlockColMax(); col++) {
             if (!isBlockActive(row,col)) continue;
 
             Rectangle block = getBlockCollisionRec(row, col);
-            if (CheckCollisionRecs(GetBallCollisionRec(), block)) {
+            if (!CheckCollisionRecs(ballRec, block)) continue;
 
-                stepBack = true;
-                activateBlock(row, col);
+            float dX = (ballRec.x + ballRec.width / 2) - (block.x + block.width / 2);
+            float dY = (ballRec.y + ballRec.height / 2) - (block.y + block.height / 2);
 
-                float dX = (ball.position.x + ball.img->width / 2) - (block.x + block.width / 2);
-                float dY = (ball.position.y + ball.img->height / 2) - (block.y + block.height / 2);
+            float overlapX = (ballRec.width + block.width) / 2 - fabsf(dX);
+            float overlapY = (ballRec.height + block.height) / 2 - fabsf(dY);
+            float overlap = overlapX * overlapY;
 
-                float overlapX = (ball.img->width + block.width) / 2 - fabs(dX);
-                float overlapY = (ball.img->height + block.height) / 2 - fabs(dY);
+            // When two cells overlap equally, prefer the one the ball is
+            // moving into. velocity.y is inverted: positive moves the ball up.
+            float approach = -dX * ball.velocity.x + dY * ball.velocity.y;
 
-                if (overlapX < overlapY) {
-                    flipx = true;
-                } else {
-                    flipy = true;
-                }
-
+            if (overlap > bestOverlap ||
+                (overlap == bestOverlap && approach > bestApproach)) {
+                bestOverlap = overlap;
+                bestApproach = approach;
+                hitRow = row;
+                hitCol = col;
+                hitBlock = block;
             }
         }
+    }
+
+    if (hitRow >= 0) {
+        // Only destroy a block on the first frame of contact. The ball is
+        // still allowed to bounce off other overlapping blocks, but it cannot
+        // clear a second row while it is still touching the first one.
+        // Stepping back is also only needed on that first frame; repeating it
+        // while the ball is still in contact would hold it in place.
+        if (!blockContact) {
+            stepBack = true;
+            activateBlock(hitRow, hitCol);
+            blockContact = true;
+        }
+
+        float dX = (ballRec.x + ballRec.width / 2) - (hitBlock.x + hitBlock.width / 2);
+        float dY = (ballRec.y + ballRec.height / 2) - (hitBlock.y + hitBlock.height / 2);
+
+        float overlapX = (ballRec.width + hitBlock.width) / 2 - fabsf(dX);
+        float overlapY = (ballRec.height + hitBlock.height) / 2 - fabsf(dY);
+
+        if (overlapX < overlapY) {
+            flipx = true;
+        } else {
+            flipy = true;
+        }
+    } else {
+        // The ball is clear of every block, so the next contact may destroy
+        // another one.
+        blockContact = false;
     }
 
     // change directions if needed
@@ -318,7 +366,7 @@ void MoveBall(void) {
     if (flipx || flipy) {
 
         // symmetric jitter in degrees
-        float jitter = ((float)rand() / (float)RAND_MAX) * 2.0f * bouncVariance - bouncVariance;
+        float jitter = ((float)rand() / (float)RAND_MAX) * 2.0f * bounceVariance - bounceVariance;
         float angle = atan2f(ball.velocity.y, ball.velocity.x) + jitter * (PI / 180.0f);
 
         float speed = (float)ball.speed;
