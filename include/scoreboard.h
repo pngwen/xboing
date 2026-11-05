@@ -29,6 +29,9 @@ HighScoreEntry* GetHighScores(void);
 // Lives and score helpers
 int GetLivesRemaining(void);
 int GetCurrentScore(void);
+int GetScore(void);
+void AddToScore(int points);
+void ResetScore(void);
 bool CheckIfHighScore(int score);
 
 

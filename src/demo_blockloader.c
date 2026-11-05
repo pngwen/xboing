@@ -5,6 +5,7 @@
 #include "demo_gamemodes.h"
 #include "demo_ball.h"
 #include "audio.h"
+#include "scoreboard.h"
 #define BLOCK_TEXTURES "resource/textures/blocks/"
 
 const int PLAY_X_OFFSET = 35;
@@ -69,6 +70,7 @@ Block game_blocks[15][9];
 Vector2 getPlayCorner(CORNERS corner);
 bool isBlockTypeInteractive(char ch);
 void deactivateBlock(int row, int col);
+int getBlockPoints(int row, int col);
 
 
 void initializePlayArea(void) {
@@ -659,11 +661,64 @@ bool isBlockTypeInteractive(char ch) {
 
 }
 
+int getBlockPoints(int row, int col) {
+    if (!inBounds(row, col)) return 0;
+    if (!game_blocks[row][col].active) return 0;
+
+    switch (game_blocks[row][col].type) {
+        case 'B':
+        case 'c':
+            return 50;
+        case 'r':
+            return 100;
+        case 'g':
+            return 120;
+        case 'b':
+            return 110;
+        case 't':
+            return 130;
+        case 'y':
+            return 140;
+        case 'p':
+            return 150;
+        case 'X':
+            return 50;
+        case '+':
+            return 400;
+        case 'd':
+            return (ROW_MAX - row) * 100;
+        case '0':
+        case '1':
+        case '2':
+        case '3':
+        case '4':
+        case '5':
+            return 200;
+        case 'L':
+            return 100;
+        case 'H':
+        case 'M':
+        case 'W':
+        case '?':
+        case 'T':
+        case 'm':
+        case 's':
+        case 'R':
+        case '>':
+        case '<':
+            return 100;
+        default:
+            return 0;
+    }
+}
+
 void deactivateBlock(int row, int col) {
     if (!inBounds(row, col)) return;
 
     if (!game_blocks[row][col].active || !isBlockTypeInteractive(game_blocks[row][col].type)) return;
-    
+
+    AddToScore(getBlockPoints(row, col));
+
     game_blocks[row][col].active = false;
 
     if (blocksRemaining > 0) { //avoid underflow

@@ -129,6 +129,7 @@ int main(int argumentCount, char* arguments[]) {
                 }
                 else { //otherwise restart game
                     SetGameMode(MODE_INITGAME);
+                    ResetScore();
                 }
                 break;
 
@@ -147,6 +148,7 @@ int main(int argumentCount, char* arguments[]) {
             }
             else { //otherwise restart game
                 SetGameMode(MODE_INITGAME);
+                ResetScore();
             }
             break;
 

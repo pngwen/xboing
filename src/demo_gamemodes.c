@@ -6,6 +6,7 @@
 #include "demo_controls.h"
 #include "demo_blockloader.h"
 #include "demo_ball.h"
+#include "scoreboard.h"
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -272,6 +273,9 @@ void RenderGameScreen(void)
 
     const char *blocks = TextFormat("Blocks Remaining: %d", getBlockCount());
     DrawText(blocks, GetScreenWidth() - MeasureText(blocks, 20) - 10, 10, 20, WHITE);
+
+    const char *score = TextFormat("Score: %d", GetCurrentScore());
+    DrawText(score, GetScreenWidth() - MeasureText(score, 20) - 10, GetScreenHeight() - 20, 20, WHITE);
 
     // Display remaining time
     const char *time = TextFormat("Time Remaining: %d", getTime());
