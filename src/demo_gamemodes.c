@@ -16,8 +16,22 @@ int livesRemaining = 0;
 
 GAME_MODES gameState = MODE_EXIT;
 
+// Developer mode: when true, debug conveniences such as level skipping are
+// available. Defaults to false and is enabled only when appropriate.
+bool devMode = false;
+
+void SetDevMode(bool enabled)
+{
+    devMode = enabled;
+}
+
 // track the current level file so we can advance to the next level after a win
 static char currentLevelFile[512] = {0};
+
+const char* GetCurrentLevelFile(void)
+{
+    return currentLevelFile;
+}
 
 void RenderGameScreen(void);
 void DrawStatusText(const char *displayText);
@@ -67,6 +81,15 @@ void RunInitGameMode(const char *fileName)
 
 void RunPlayMode(void)
 {
+    /* Developer-only: skip the current level. Only available when devMode is
+       enabled (terminal-launched/developer builds). */
+    if (devMode && (IsKeyPressed(KEY_EQUAL) || IsKeyPressed(KEY_F2) ||
+                      IsKeyPressed(KEY_N) || IsKeyPressed(KEY_PAGE_DOWN)))
+    {
+        SkipToNextLevel();
+        return;
+    }
+
     // --- Keyboard controls ---
     if (IsInputPaddleLeft())
         MovePaddle(PADDLE_LEFT);
@@ -207,9 +230,62 @@ void RunEndMode(void)
     }
 }
 
+void SkipToNextLevel(void)
+{
+    if (currentLevelFile[0] == '\0')
+    {
+        printf("Developer skip: no current level file loaded.\n");
+        return;
+    }
+
+    const char *p = currentLevelFile + strlen(currentLevelFile) - 1;
+    while (p >= currentLevelFile && !isdigit((unsigned char)*p)) p--;
+
+    if (p >= currentLevelFile)
+    {
+        const char *end = p;
+        const char *start = end;
+        while (start > currentLevelFile && isdigit((unsigned char)*(start - 1))) start--;
+
+        int len = (int)(end - start) + 1;
+        char numberBuf[32] = {0};
+        strncpy(numberBuf, start, len);
+        numberBuf[len] = '\0';
+
+        int num = atoi(numberBuf);
+        int width = len;
+        int next = num + 1;
+
+        char nextFile[512] = {0};
+        int prefixLen = (int)(start - currentLevelFile);
+        if (prefixLen > 0) strncpy(nextFile, currentLevelFile, prefixLen);
+
+        char fmt[16];
+        snprintf(fmt, sizeof(fmt), "%%0%dd", width);
+        char numStr[32];
+        snprintf(numStr, sizeof(numStr), fmt, next);
+        strncat(nextFile, numStr, sizeof(nextFile) - strlen(nextFile) - 1);
+
+        const char *rest = end + 1;
+        if (*rest) strncat(nextFile, rest, sizeof(nextFile) - strlen(nextFile) - 1);
+
+        FILE *f = fopen(nextFile, "r");
+        if (f)
+        {
+            fclose(f);
+            livesRemaining = 0;
+            RunInitGameMode(nextFile);
+            printf("Developer skip: advanced to '%s'\n", nextFile);
+            return;
+        }
+    }
+
+    printf("Developer skip: could not determine a next level from '%s'.\n",
+           currentLevelFile);
+}
+
 void RenderGameScreen(void)
 {
-
     BeginDrawing();
 
     ClearBackground(BLACK);
@@ -272,6 +348,13 @@ void RenderGameScreen(void)
 
     const char *blocks = TextFormat("Blocks Remaining: %d", getBlockCount());
     DrawText(blocks, GetScreenWidth() - MeasureText(blocks, 20) - 10, 10, 20, WHITE);
+
+    if (devMode)
+    {
+        const char *devText = "DEV MODE: press '=' to skip level";
+        DrawText(devText, GetScreenWidth() - MeasureText(devText, 16) - 10,
+                 GetScreenHeight() - 18, 16, YELLOW);
+    }
 
     // Display remaining time
     const char *time = TextFormat("Time Remaining: %d", getTime());

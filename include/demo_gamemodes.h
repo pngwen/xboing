@@ -17,6 +17,16 @@ void RunInitGameMode(const char *fileName);
 void RunPlayMode(void);
 void RunEndMode(void);
 
+// Developer mode helpers (enabled only for developer/terminal-launched
+// instances). When enabled, additional debug controls such as skipping the
+// current level are available.
+extern bool devMode;
+void SetDevMode(bool enabled);
+void SkipToNextLevel(void);
+
+// Returns the file name of the currently loaded level (empty if none).
+const char* GetCurrentLevelFile(void);
+
 void LoseLife(void);
 int GetLivesRemaining(void);
 
