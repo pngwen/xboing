@@ -103,10 +103,6 @@ bool loadBlocks(const char* filename) {
         return false;
     }
     getc(fp); // consume newline after timeBonus
-	// Get file data
-	fgets(levelName, 256, fp);
-	fscanf(fp, "%d", &timeRemaining);
-	getc(fp);
 
 	int row = 0;
 	int column = 0;
