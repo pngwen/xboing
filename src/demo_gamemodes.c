@@ -28,6 +28,11 @@ void SetDevMode(bool enabled)
 // track the current level file so we can advance to the next level after a win
 static char currentLevelFile[512] = {0};
 
+const char* GetCurrentLevelFile(void)
+{
+    return currentLevelFile;
+}
+
 void RenderGameScreen(void);
 void DrawStatusText(const char *displayText);
 

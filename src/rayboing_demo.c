@@ -117,7 +117,11 @@ int main(int argumentCount, char* arguments[]) {
         {
         case MODE_INITGAME: {
             const char* levelPath = NULL;
-            if (providedLevel[0] != '\0') {
+            const char* currentLevel = GetCurrentLevelFile();
+            if (currentLevel != NULL && currentLevel[0] != '\0') {
+                levelPath = currentLevel;           // stay on current level
+            }
+            else if (providedLevel[0] != '\0') {
                 levelPath = providedLevel;           // use provided filename
             }
             else if (argumentCount == 2 && !IsDevFlag(arguments[1])) {
