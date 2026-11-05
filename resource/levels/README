@@ -1,73 +1,84 @@
+# Level files
 
-These level files are used in the X11 game called XBoing. 
+These are simple ASCII level data files that are read in at run time by the
+current rayboing (raylib) build of XBoing.
 
-They are a simple ascii level data file that is read in at run time as needed.
+Use the new.data file as a template for new levels. Consult demo.data to see
+the different block characters that can be placed.
 
-Please see the documentation that comes with the game for more information
-on the file format for these levels.
+## File structure
 
-Use the new.data file as a template for new levels. Also remember to 
-change the define value in blocks.h MAX_LEVEL_NUM to include your new levels.
+Each level file has three parts:
 
-You can also use the built in level editor that is found in XBoing V2.0 and
-above.
+    Genesis          <- line 1: level name
+    120              <- line 2: time bonus, in seconds
+    .........        <- lines 3 to 17: block grid (15 rows of 9 characters)
+    .........
+    .........        (15 rows in total)
 
-Currently the generation of levels is as followed:
-A blank level with empty areas that fill up the game array all the way up to where 
-the paddle is moving. 
+- Line 1: the level name (informational only).
+- Line 2: the starting time for the level countdown timer, in seconds.
+- Lines 3 to 17: the block grid, read row by row from the top left. Each row
+  is exactly 9 characters and there are 15 rows. A dot (.) is an empty cell;
+  any other character places a block (see the block index below). Characters
+  past column 9 and rows past 15 are ignored.
 
+The shipped levels are named level00.data through level80.data. The game
+starts on resource/levels/level01.data.
 
-New level //Level name
-60 //Level number, used to determine when level is loaded 
+A blank level looks like this (see new.data):
 
-// The rest are all possible locations for blocks 
-.........
-.........
-.........
-.........
-.........
-.........
-.........
-.........
-.........
-.........
-.........
-.........
-.........
-.........
-.........
+    New level
+    60
+    .........
+    .........
+    ... (15 rows of 9 dots in total)
 
-Consult new.data to see expected format.
-consult demo.data for seeing all the different blocks that can be generated 
+## Block index
 
-Every dot can have a dot (empty) or any of the following ascii characters as defined below.
+Every cell can hold a dot (empty) or one of the following characters.
+Character case matters: r and R are different blocks.
 
-BLOCK INDEX
 | Character   | Block Name       | Description                                                 |
 | ----------- | ---------------- | ----------------------------------------------------------- |
-| **H**       | `HYPERSPACE_BLK` | Hyperspace block — temporarily removes walls.               |
-| **B**       | `BULLET_BLK`     | Bullet block — provides ammo.                               |
-| **c**       | `MAXAMMO_BLK`    | Maximum ammo block — gives full ammunition.                 |
+| **H**       | `HYPERSPACE_BLK` | Hyperspace block — no effect yet (not implemented).         |
+| **B**       | `BULLET_BLK`     | Bullet block — hitting it increases the ball speed.         |
+| **c**       | `MAXAMMO_BLK`    | Maximum ammo block — no effect (not implemented).           |
 | **r**       | `RED_BLK`        | Red-colored block.                                          |
 | **g**       | `GREEN_BLK`      | Green-colored block.                                        |
 | **b**       | `BLUE_BLK`       | Blue-colored block.                                         |
 | **t**       | `TAN_BLK`        | Tan-colored block.                                          |
 | **p**       | `PURPLE_BLK`     | Purple-colored block.                                       |
 | **y**       | `YELLOW_BLK`     | Yellow-colored block.                                       |
-| **w**       | `BLACK_BLK`      | Solid wall block — acts as an immovable barrier.            |
-| **0–5**     | `COUNTER_BLK[n]` | Counter blocks showing levels 0–5 (higher = stronger).      |
-| **+**       | `ROAMER_BLK`     | Roamer block — moves around the playfield.                  |
-| **X**       | `BOMB_BLK`       | Bomb block — explodes when hit.                             |
-| **D**       | `DEATH_BLK`      | Death block — destroys the ball instantly.                  |
-| **L**       | `EXTRABALL_BLK`  | Extra ball block — grants an additional life.               |
-| **M**       | `MGUN_BLK`       | Machine gun block — enables rapid fire.                     |
-| **W**       | `WALLOFF_BLK`    | Wall-off block — toggles wall collisions.                   |
-| **?**       | `RANDOM_BLK`     | Random block — changes to a random block type periodically. |
-| **d**       | `DROP_BLK`       | Dropping block — falls downward when hit.                   |
-| **T**       | `TIMER_BLK`      | Extra time block — adds time to the level timer.            |
-| **m**       | `MULTIBALL_BLK`  | Multi-ball block — spawns additional balls.                 |
-| **s**       | `STICKY_BLK`     | Sticky block — makes the paddle sticky temporarily.         |
-| **R**       | `REVERSE_BLK`    | Reverse control block — inverts paddle movement.            |
-| **<**       | `PAD_SHRINK_BLK` | Shrinks the paddle size.                                    |
-| **>**       | `PAD_EXPAND_BLK` | Expands the paddle size.                                    |
-| *(default)* | *(none)*         | Empty or invalid space — no block rendered.                 |
+| **w**       | `BLACK_BLK`      | Solid wall block — cannot be destroyed and is not counted in the blocks remaining. |
+| **0–5**     | `COUNTER_BLK[n]` | Counter block showing a number — each hit lowers the number; it breaks like a normal block when it reaches 0. |
+| **+**       | `ROAMER_BLK`     | Roamer block — no effect yet (does not move; not implemented). |
+| **X**       | `BOMB_BLK`       | Bomb block — destroys itself and the 8 blocks around it.    |
+| **D**       | `DEATH_BLK`      | Death block — no effect yet (does not destroy the ball; not implemented). |
+| **L**       | `EXTRABALL_BLK`  | Extra ball block — no effect yet (does not grant a life; not implemented). |
+| **M**       | `MGUN_BLK`       | Machine gun block — no effect yet (not implemented).        |
+| **W**       | `WALLOFF_BLK`    | Wall-off block — no effect yet (does not toggle walls; not implemented). |
+| **?**       | `RANDOM_BLK`     | Random block — no effect yet (behaves like a plain block; not implemented). |
+| **d**       | `DROP_BLK`       | Dropping block — no effect yet (does not fall; not implemented). |
+| **T**       | `TIMER_BLK`      | Extra time block — no effect yet (does not add time; not implemented). |
+| **m**       | `MULTIBALL_BLK`  | Multi-ball block — no effect yet (does not spawn balls; not implemented). |
+| **s**       | `STICKY_BLK`     | Sticky block — makes the ball stick to the paddle on the next paddle hit. |
+| **R**       | `REVERSE_BLK`    | Reverse control block — toggles reversed paddle movement.   |
+| **<**       | `PAD_SHRINK_BLK` | Shrink paddle block — makes the paddle smaller.             |
+| **>**       | `PAD_EXPAND_BLK` | Expand paddle block — makes the paddle bigger.              |
+| *(default)* | *(none)*         | Any other character — no block is placed, the cell stays empty. |
+
+## Block behavior
+
+When the ball hits a block, `activateBlock()` in `src/demo_blockloader.c`
+applies its effect:
+
+- A wall (`w`) is never destroyed and is not counted in the blocks remaining
+  counter.
+- A bomb (`X`) clears the 3x3 square around itself (walls are left alone).
+- Counter blocks (`1`-`5`) drop one number per hit (`5` -> `4` -> ... -> `0`);
+  a `0` counter breaks like a normal block.
+- `B`, `s`, `R`, `<` and `>` do the effects listed in the table above.
+- All other blocks are simply destroyed in one hit.
+- The level is won when every block except walls has been destroyed.
+- Unknown characters are ignored and create no block.
