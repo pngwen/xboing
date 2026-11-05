@@ -109,6 +109,7 @@ int main(int argumentCount, char* arguments[]) {
             
             if (GetLivesRemaining() > 0) {
                 SetGameMode(MODE_INITGAME);
+                break;
             }
             else {
                 //out of lives, show scoreboard and end
