@@ -347,7 +347,7 @@ void RenderGameScreen(void)
     if (devMode)
     {
         const char *devText = "DEV MODE: press '=' to skip level";
-        DrawText(devText, (GetScreenWidth() - MeasureText(devText, 16)) / 2,
+        DrawText(devText, GetScreenWidth() - MeasureText(devText, 16) - 10,
                  GetScreenHeight() - 18, 16, YELLOW);
     }
 
