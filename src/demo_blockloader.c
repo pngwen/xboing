@@ -103,11 +103,8 @@ bool loadBlocks(const char* filename) {
         return false;
     }
     getc(fp); // consume newline after timeBonus
-	// Get file data
-	fgets(levelName, 256, fp);
-	fscanf(fp, "%d", &timeRemaining);
-	getc(fp);
-
+	// FIXED: removed a duplicate level-name/time read here. It consumed the
+	// first block row and shifted every row/column in the level grid.
 	int row = 0;
 	int column = 0;
 	char ch;
