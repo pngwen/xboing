@@ -707,3 +707,10 @@ int GetBlocksDestroyed(void) { //helper for scoreboard
 int getTime(void) {
     return timeRemaining;
 }
+
+bool spawnDebugBlock(int row, int col, char type) {
+    if (!inBounds(row, col) || game_blocks[row][col].active) return false;
+    if (type != 's' && type != 'R' && type != 'B' && type != '<' && type != '>') return false;
+    addBlock(row, col, type);
+    return true;
+}
