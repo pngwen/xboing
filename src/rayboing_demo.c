@@ -104,10 +104,18 @@ int main(int argumentCount, char* arguments[]) {
             RunPlayMode();
             break;
 
-        case MODE_WIN:
+        case MODE_WIN: {
+            // Let the win screen handle the Space/Enter prompt that advances
+            // to the next level. Previously this branch fell through to the
+            // "retry" path whenever the player still had lives, so winning
+            // simply reloaded the same level.
+            RunEndMode();
+            break;
+        }
+
         case MODE_LOSE: {
-            
             if (GetLivesRemaining() > 0) {
+                // The player still has attempts left: retry the current level.
                 SetGameMode(MODE_INITGAME);
             }
             else {
@@ -130,9 +138,8 @@ int main(int argumentCount, char* arguments[]) {
                 else { //otherwise restart game
                     SetGameMode(MODE_INITGAME);
                 }
-                break;
-
             }
+            break;
         }
         case MODE_CANCEL: {
             RunEndMode();
