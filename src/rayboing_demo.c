@@ -1,6 +1,12 @@
 #include <stdio.h>
+#include <string.h>
 #include <raylib.h>
 #include <stdbool.h>
+#if defined(_WIN32)
+#include <io.h>
+#else
+#include <unistd.h>
+#endif
 
 #include "demo_gamemodes.h"
 #include "demo_blockloader.h"
@@ -16,6 +22,8 @@ const int SCREEN_HEIGHT = 720;
 bool mouseControls = true;
 
 bool ValidateParamFilename(int argumentCount, char* arguments[]);
+bool IsDevFlag(const char* argument);
+bool IsTerminalLaunch(void);
 void ReleaseResources(void);
 void UpdatePaddleInput(void);
 
@@ -24,6 +32,27 @@ int main(int argumentCount, char* arguments[]) {
 
     int rtnCode = 1;
     bool windowInitialized = false;
+
+    /* Parse developer flags (e.g. -dev/-debug) and an optional level file. */
+    bool devRequested = false;
+    char providedLevel[512] = {0};
+    for (int i = 1; i < argumentCount; i++) {
+        if (IsDevFlag(arguments[i])) {
+            devRequested = true;
+        } else if (providedLevel[0] == '\0') {
+            strncpy(providedLevel, arguments[i], sizeof(providedLevel) - 1);
+            providedLevel[sizeof(providedLevel) - 1] = '\0';
+        }
+    }
+
+    bool developerMode = devRequested || IsTerminalLaunch();
+#if defined(_DEBUG)
+    developerMode = true;
+#endif
+    SetDevMode(developerMode);
+    if (developerMode) {
+        fprintf(stdout, "Developer mode enabled (level skip available).\n");
+    }
 
     // must InitWindow before loading textures
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Rayboing Demo");
@@ -88,7 +117,10 @@ int main(int argumentCount, char* arguments[]) {
         {
         case MODE_INITGAME: {
             const char* levelPath = NULL;
-            if (argumentCount == 2) {
+            if (providedLevel[0] != '\0') {
+                levelPath = providedLevel;           // use provided filename
+            }
+            else if (argumentCount == 2 && !IsDevFlag(arguments[1])) {
                 levelPath = arguments[1];           // use provided filename
             }
             else {
@@ -173,14 +205,24 @@ int main(int argumentCount, char* arguments[]) {
 
 bool ValidateParamFilename(int argumentCount, char* arguments[]) {
 
-    // If no filename provided, that's OK (we'll show the intro and use default level).
-    if (argumentCount == 1)
+    // Count actual level-file arguments (ignore developer flags).
+    int fileCount = 0;
+    for (int i = 1; i < argumentCount; i++)
+        if (!IsDevFlag(arguments[i])) fileCount++;
+
+    if (fileCount == 0)
         return true;
 
-    // If a filename is provided, ensure it exists and can be opened.
+    const char* fileName = NULL;
+    for (int i = 1; i < argumentCount; i++)
+        if (!IsDevFlag(arguments[i])) { fileName = arguments[i]; break; }
 
-    if (argumentCount == 2) {
-        const char* fileName = arguments[1];
+    if (fileCount > 1) {
+        fprintf(stderr, "Usage: %s [-dev|-debug] [filename]\n", arguments[0]);
+        return false;
+    }
+
+    if (fileName) {
         FILE* file = fopen(fileName, "r");
         if (!file) {
             fprintf(stderr, "File '%s' does not exist or cannot be opened.\n", fileName);
@@ -196,6 +238,25 @@ bool ValidateParamFilename(int argumentCount, char* arguments[]) {
     // Any other argument usage is invalid.
     fprintf(stderr, "Usage: %s <filename>\n", arguments[0]);
     return false;
+}
+
+bool IsDevFlag(const char* argument) {
+    if (argument == NULL) return false;
+    return (strcmp(argument, "-dev") == 0 ||
+            strcmp(argument, "--dev") == 0 ||
+            strcmp(argument, "-debug") == 0 ||
+            strcmp(argument, "--debug") == 0 ||
+            strcmp(argument, "-devmode") == 0);
+}
+
+bool IsTerminalLaunch(void) {
+#if defined(_WIN32)
+    return (_isatty(_fileno(stdout)) != 0 ||
+            _isatty(_fileno(stdin)) != 0);
+#else
+    return (isatty(fileno(stdout)) != 0 ||
+            isatty(fileno(stdin)) != 0);
+#endif
 }
 
 void ReleaseResources(void)
