@@ -73,6 +73,7 @@
 void InitialiseLevelInfo(Display *display, Window window, Colormap colormap);
 void FreeLevelInfo(Display *display);
 void DisplayLevelInfo(Display *display, Window window, u_long level);
+void DisplayLevelNumber(Display *display, Window window, u_long level);
 void CheckGameRules(Display *display, Window window);
 void DeadBall(Display *display, Window window);
 void DeleteABullet(Display *display);

@@ -187,7 +187,7 @@ static void DoText(Display *display, Window window)
 	for (i = 0; i < (sizeof(instructionText) / sizeof(char *)); i++)
 	{
 		/* If the text is not null then print it */
-		if (instructionText[i] != '\0')
+		if (instructionText[i] != NULL)
 		{
 			strcpy(string, instructionText[i]);// [DOXYGEN] Unnecessary string copy, could be removed.
 			DrawShadowCentredText(display, window, dataFont, 

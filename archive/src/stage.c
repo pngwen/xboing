@@ -139,7 +139,13 @@ int 	blinkslides[] = { 0, 1, 2, 3, 4, 5, 5, 4, 3, 2, 1, 0, 0, 0,
  * Creates the main background texture along with several other background textures,
  * including the devil blink animation frames.
  */
-void InitialiseMainBackPixmap(){
+void InitialiseMainBackPixmap(Display *display, Window window,
+	Colormap colormap)
+{
+	(void) display;
+	(void) window;
+	(void) colormap;
+
 
 	/* Create the playfield background textures */
 
@@ -508,7 +514,7 @@ static Window SetWMIcon(Display *display){
 	{
 		/* Well, what a bummer. Just use default icon then. */
 		ErrorMessage("Cannot create icon pixmap.");
-		return ((Window) NULL);
+		return 0;
 	}
 
 	/* Load icon texture */

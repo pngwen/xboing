@@ -48,7 +48,7 @@
  */
 
 #include <stdlib.h>
-#include <X11/Xos.h>
+#include <string.h>
 
 #include "init.h"
 #include "misc.h"
