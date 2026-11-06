@@ -27,3 +27,8 @@ bool IsInputReleaseBall(void) {
 bool IsInputRestartAfterEnd(void) {
     return IsKeyPressed(KEY_SPACE);
 }
+
+// Debug: advance to the next level during play
+bool IsInputSkipLevel(void) {
+    return IsKeyPressed(KEY_N);
+}

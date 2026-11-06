@@ -32,6 +32,77 @@ void SetGameMode(GAME_MODES mode)
     gameState = mode;
 }
 
+// Advance to the next numbered level file (e.g. level02.data -> level03.data).
+// Returns true when a next level was found and loaded.
+static bool AdvanceToNextLevel(void)
+{
+    // Try to construct next level filename by finding a numeric sequence in the current file
+    if (currentLevelFile[0] == '\0')
+        return false;
+
+    // find the last sequence of digits in the filename
+    const char *p = currentLevelFile + strlen(currentLevelFile) - 1;
+    while (p >= currentLevelFile && !isdigit((unsigned char)*p)) p--;
+    if (p < currentLevelFile)
+        return false;
+
+    // find start of digit sequence
+    const char *end = p;
+    const char *start = end;
+    while (start > currentLevelFile && isdigit((unsigned char)*(start-1))) start--;
+
+    int len = (int)(end - start) + 1;
+    char numberBuf[32] = {0};
+    // Copy the digit substring (len characters) into numberBuf and
+    // then NUL-terminate. strncpy could be used here but we copy
+    // the exact known length and add the terminator explicitly.
+    strncpy(numberBuf, start, len);
+    numberBuf[len] = '\0';
+
+    int num = atoi(numberBuf);
+    int width = len; // preserve zero padding width
+    int next = num + 1;
+
+    // build next filename
+    char nextFile[512] = {0};
+    // copy prefix up to start
+    int prefixLen = (int)(start - currentLevelFile);
+    // Copy the filename prefix (everything before the numeric
+    // sequence) into nextFile. We copy only prefixLen bytes so the
+    // buffer cannot overflow; the rest will be appended afterwards.
+    if (prefixLen > 0) strncpy(nextFile, currentLevelFile, prefixLen);
+    // append incremented number with preserved width
+    // Build a format string (e.g. "%02d") into `fmt` while
+    // preventing buffer overflow. snprintf bounds the write.
+    char fmt[16];
+    snprintf(fmt, sizeof(fmt), "%%0%dd", width);
+    // Format the incremented numeric part into numStr using the
+    // generated format. We use snprintf to ensure the output is
+    // NUL-terminated and cannot overflow numStr.
+    char numStr[32];
+    snprintf(numStr, sizeof(numStr), fmt, next);
+    // Append the numeric string into nextFile safely. Use
+    // strncat with the remaining buffer space to avoid overflow.
+    strncat(nextFile, numStr, sizeof(nextFile) - strlen(nextFile) - 1);
+    // append the rest of filename after the number
+    const char *rest = end + 1;
+    // Append any suffix (like ".data") using strncat with the
+    // remaining buffer space to avoid overflowing nextFile.
+    if (*rest) strncat(nextFile, rest, sizeof(nextFile) - strlen(nextFile) - 1);
+
+    // check that file exists
+    FILE *f = fopen(nextFile, "r");
+    if (!f)
+        return false;
+
+    fclose(f);
+    // force reload of blocks by resetting livesRemaining so RunInitGameMode will load
+    livesRemaining = 0;
+    // load next level
+    RunInitGameMode(nextFile);
+    return true;
+}
+
 void RunInitGameMode(const char *fileName)
 {
 
@@ -67,6 +138,13 @@ void RunInitGameMode(const char *fileName)
 
 void RunPlayMode(void)
 {
+    // --- Debug: skip to the next level ---
+    if (IsInputSkipLevel())
+    {
+        if (AdvanceToNextLevel())
+            return;
+    }
+
     // --- Keyboard controls ---
     if (IsInputPaddleLeft())
         MovePaddle(PADDLE_LEFT);
@@ -120,74 +198,9 @@ void RunEndMode(void)
         // Check for Enter/Space input
         if (IsKeyPressed(KEY_ENTER) || IsKeyPressed(KEY_KP_ENTER) || IsKeyPressed(KEY_SPACE))
         {
-            // Try to construct next level filename by finding a numeric sequence in the current file
-            if (currentLevelFile[0] != '\0')
-            {
-                // find the last sequence of digits in the filename
-                const char *p = currentLevelFile + strlen(currentLevelFile) - 1;
-                while (p >= currentLevelFile && !isdigit((unsigned char)*p)) p--;
-                if (p >= currentLevelFile)
-                {
-                    // find start of digit sequence
-                    const char *end = p;
-                    const char *start = end;
-                    while (start > currentLevelFile && isdigit((unsigned char)*(start-1))) start--;
-
-                    int len = (int)(end - start) + 1;
-                    char numberBuf[32] = {0};
-                    // Copy the digit substring (len characters) into numberBuf and
-                    // then NUL-terminate. strncpy could be used here but we copy
-                    // the exact known length and add the terminator explicitly.
-                    strncpy(numberBuf, start, len);
-                    numberBuf[len] = '\0';
-
-                    int num = atoi(numberBuf);
-                    int width = len; // preserve zero padding width
-                    int next = num + 1;
-
-                    // build next filename
-                    char nextFile[512] = {0};
-                    // copy prefix up to start
-                    int prefixLen = (int)(start - currentLevelFile);
-                    // Copy the filename prefix (everything before the numeric
-                    // sequence) into nextFile. We copy only prefixLen bytes so the
-                    // buffer cannot overflow; the rest will be appended afterwards.
-                    if (prefixLen > 0) strncpy(nextFile, currentLevelFile, prefixLen);
-                    // append incremented number with preserved width
-                    // Build a format string (e.g. "%02d") into `fmt` while
-                    // preventing buffer overflow. snprintf bounds the write.
-                    char fmt[16];
-                    snprintf(fmt, sizeof(fmt), "%%0%dd", width);
-                    // Format the incremented numeric part into numStr using the
-                    // generated format. We use snprintf to ensure the output is
-                    // NUL-terminated and cannot overflow numStr.
-                    char numStr[32];
-                    snprintf(numStr, sizeof(numStr), fmt, next);
-                    // Append the numeric string into nextFile safely. Use
-                    // strncat with the remaining buffer space to avoid overflow.
-                    strncat(nextFile, numStr, sizeof(nextFile) - strlen(nextFile) - 1);
-                    // append the rest of filename after the number
-                    const char *rest = end + 1;
-                    // Append any suffix (like ".data") using strncat and the
-                    // remaining buffer space to avoid overflowing nextFile.
-                    if (*rest) strncat(nextFile, rest, sizeof(nextFile) - strlen(nextFile) - 1);
-
-                    // check that file exists
-                    FILE *f = fopen(nextFile, "r");
-                    if (f)
-                    {
-                        fclose(f);
-                        // force reload of blocks by resetting livesRemaining so RunInitGameMode will load
-                        livesRemaining = 0;
-                        // load next level
-                        RunInitGameMode(nextFile);
-                        return;
-                    }
-                }
-            }
-
-            // If we couldn't determine/locate a next level, fall back to restart current or exit
-            SetGameMode(MODE_EXIT);
+            // If we couldn't determine/locate a next level, exit
+            if (!AdvanceToNextLevel())
+                SetGameMode(MODE_EXIT);
             return;
         }
     }

@@ -27,5 +27,6 @@ bool IsInputPaddleRight(void);
 bool IsInputQuitGame(void);
 bool IsInputReleaseBall(void);
 bool IsInputRestartAfterEnd(void);
+bool IsInputSkipLevel(void);
 
 #endif // _DEMO_CONTROLS_H_
