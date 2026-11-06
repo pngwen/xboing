@@ -27,3 +27,11 @@ bool IsInputReleaseBall(void) {
 bool IsInputRestartAfterEnd(void) {
     return IsKeyPressed(KEY_SPACE);
 }
+
+bool IsInputSkipLevel(void) {
+    return IsKeyPressed(KEY_N);
+}
+
+bool IsInputPreviousLevel(void) {
+    return IsKeyPressed(KEY_P);
+}

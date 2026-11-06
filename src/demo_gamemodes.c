@@ -65,8 +65,70 @@ void RunInitGameMode(const char *fileName)
     SetGameMode(MODE_PLAY);
 }
 
+// Build the filename for the level delta steps ahead/behind the current level.
+// Returns false if the current level has no numeric suffix or the target file
+// does not exist.
+static bool BuildAdjacentLevelPath(int delta, char *out, size_t outSize)
+{
+    if (currentLevelFile[0] == '\0') return false;
+
+    const char *p = currentLevelFile + strlen(currentLevelFile) - 1;
+    while (p >= currentLevelFile && !isdigit((unsigned char)*p)) p--;
+    if (p < currentLevelFile) return false;
+
+    const char *end = p;
+    const char *start = end;
+    while (start > currentLevelFile && isdigit((unsigned char)*(start - 1))) start--;
+
+    int len = (int)(end - start) + 1;
+    char numberBuf[32] = {0};
+    strncpy(numberBuf, start, len);
+    numberBuf[len] = '\0';
+
+    int num = atoi(numberBuf) + delta;
+    if (num < 0) return false;
+
+    int prefixLen = (int)(start - currentLevelFile);
+    if (prefixLen >= (int)outSize) return false;
+
+    if (prefixLen > 0) strncpy(out, currentLevelFile, prefixLen);
+    out[prefixLen] = '\0';
+
+    char fmt[16];
+    snprintf(fmt, sizeof(fmt), "%%0%dd", len);
+
+    char numStr[32];
+    snprintf(numStr, sizeof(numStr), fmt, num);
+
+    strncat(out, numStr, outSize - strlen(out) - 1);
+
+    const char *rest = end + 1;
+    if (*rest) strncat(out, rest, outSize - strlen(out) - 1);
+
+    FILE *f = fopen(out, "r");
+    if (!f) return false;
+    fclose(f);
+
+    return true;
+}
+
+bool AdvanceToLevel(int delta)
+{
+    char nextFile[512] = {0};
+    if (!BuildAdjacentLevelPath(delta, nextFile, sizeof(nextFile))) return false;
+
+    // Force RunInitGameMode to reload blocks and reset lives.
+    livesRemaining = 0;
+    RunInitGameMode(nextFile);
+    return true;
+}
+
 void RunPlayMode(void)
 {
+    // Developer skip controls: jump to adjacent levels during play.
+    if (IsInputSkipLevel() && AdvanceToLevel(1)) return;
+    if (IsInputPreviousLevel() && AdvanceToLevel(-1)) return;
+
     // --- Keyboard controls ---
     if (IsInputPaddleLeft())
         MovePaddle(PADDLE_LEFT);
@@ -117,77 +179,13 @@ void RunEndMode(void)
     // If at WIN screen, allow advancing to the next numeric level using Enter/Space
     if (GetGameMode() == MODE_WIN)
     {
-        // Check for Enter/Space input
         if (IsKeyPressed(KEY_ENTER) || IsKeyPressed(KEY_KP_ENTER) || IsKeyPressed(KEY_SPACE))
         {
-            // Try to construct next level filename by finding a numeric sequence in the current file
-            if (currentLevelFile[0] != '\0')
+            if (!AdvanceToLevel(1))
             {
-                // find the last sequence of digits in the filename
-                const char *p = currentLevelFile + strlen(currentLevelFile) - 1;
-                while (p >= currentLevelFile && !isdigit((unsigned char)*p)) p--;
-                if (p >= currentLevelFile)
-                {
-                    // find start of digit sequence
-                    const char *end = p;
-                    const char *start = end;
-                    while (start > currentLevelFile && isdigit((unsigned char)*(start-1))) start--;
-
-                    int len = (int)(end - start) + 1;
-                    char numberBuf[32] = {0};
-                    // Copy the digit substring (len characters) into numberBuf and
-                    // then NUL-terminate. strncpy could be used here but we copy
-                    // the exact known length and add the terminator explicitly.
-                    strncpy(numberBuf, start, len);
-                    numberBuf[len] = '\0';
-
-                    int num = atoi(numberBuf);
-                    int width = len; // preserve zero padding width
-                    int next = num + 1;
-
-                    // build next filename
-                    char nextFile[512] = {0};
-                    // copy prefix up to start
-                    int prefixLen = (int)(start - currentLevelFile);
-                    // Copy the filename prefix (everything before the numeric
-                    // sequence) into nextFile. We copy only prefixLen bytes so the
-                    // buffer cannot overflow; the rest will be appended afterwards.
-                    if (prefixLen > 0) strncpy(nextFile, currentLevelFile, prefixLen);
-                    // append incremented number with preserved width
-                    // Build a format string (e.g. "%02d") into `fmt` while
-                    // preventing buffer overflow. snprintf bounds the write.
-                    char fmt[16];
-                    snprintf(fmt, sizeof(fmt), "%%0%dd", width);
-                    // Format the incremented numeric part into numStr using the
-                    // generated format. We use snprintf to ensure the output is
-                    // NUL-terminated and cannot overflow numStr.
-                    char numStr[32];
-                    snprintf(numStr, sizeof(numStr), fmt, next);
-                    // Append the numeric string into nextFile safely. Use
-                    // strncat with the remaining buffer space to avoid overflow.
-                    strncat(nextFile, numStr, sizeof(nextFile) - strlen(nextFile) - 1);
-                    // append the rest of filename after the number
-                    const char *rest = end + 1;
-                    // Append any suffix (like ".data") using strncat and the
-                    // remaining buffer space to avoid overflowing nextFile.
-                    if (*rest) strncat(nextFile, rest, sizeof(nextFile) - strlen(nextFile) - 1);
-
-                    // check that file exists
-                    FILE *f = fopen(nextFile, "r");
-                    if (f)
-                    {
-                        fclose(f);
-                        // force reload of blocks by resetting livesRemaining so RunInitGameMode will load
-                        livesRemaining = 0;
-                        // load next level
-                        RunInitGameMode(nextFile);
-                        return;
-                    }
-                }
+                SetGameMode(MODE_EXIT);
+                return;
             }
-
-            // If we couldn't determine/locate a next level, fall back to restart current or exit
-            SetGameMode(MODE_EXIT);
             return;
         }
     }

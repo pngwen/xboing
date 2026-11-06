@@ -1,6 +1,8 @@
 #ifndef _DEMO_GAMEMODES_H_
 #define _DEMO_GAMEMODES_H_
 
+#include <stdbool.h>
+
 typedef enum {
     MODE_INITGAME,
     MODE_PLAY,
@@ -20,5 +22,6 @@ void RunEndMode(void);
 void LoseLife(void);
 int GetLivesRemaining(void);
 
+bool AdvanceToLevel(int delta);
 
 #endif // _DEMO_GAMEMODES_H_
