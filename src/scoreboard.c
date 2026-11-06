@@ -101,11 +101,6 @@ HighScoreEntry* GetHighScores(void) {
 	return highScores;
 }
 
-int GetCurrentScore(void) {
-	return GetBlocksDestroyed();
-}
-
-
 bool CheckIfHighScore(int score) {
 	if (highScoreCount < MAX_HIGH_SCORES) return true;
 

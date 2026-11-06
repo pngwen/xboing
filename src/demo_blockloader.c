@@ -33,6 +33,7 @@ int timeRemaining = 0;
 static bool timerActive = false;
 int blocksRemaining = 0;
 int totalBlocks = 0;
+static int currentScore = 0;
 
 Texture2D HYPERSPACE_BLK,
           BULLET_BLK,
@@ -68,6 +69,7 @@ Block game_blocks[15][9];
 
 Vector2 getPlayCorner(CORNERS corner);
 bool isBlockTypeInteractive(char ch);
+static int getBlockHitPoints(char ch, int row);
 void deactivateBlock(int row, int col);
 
 
@@ -659,12 +661,48 @@ bool isBlockTypeInteractive(char ch) {
 
 }
 
+// Points awarded for destroying a block, based on its type. These values
+// mirror the original XBoing block hit points.
+static int getBlockHitPoints(char ch, int row) {
+    switch (ch) {
+        case 'B': // bullet / speed
+        case 'c': // maximum ammo
+        case 'X': // bomb
+            return 50;
+
+        case 'r': return 100;
+        case 'b': return 110;
+        case 'g': return 120;
+        case 't': return 130;
+        case 'y': return 140;
+        case 'p': return 150;
+
+        case '0': case '1': case '2': case '3': case '4': case '5': // counter
+            return 200;
+
+        case '+': // roamer
+            return 400;
+
+        case 'd': // dropping block: more points the higher it is hit
+            return (ROW_MAX - row) * 100;
+
+        case 'D': // death block
+        case 'w': // solid wall
+            return 0;
+
+        default:
+            return 100;
+    }
+}
+
+
 void deactivateBlock(int row, int col) {
     if (!inBounds(row, col)) return;
 
     if (!game_blocks[row][col].active || !isBlockTypeInteractive(game_blocks[row][col].type)) return;
     
     game_blocks[row][col].active = false;
+    currentScore += getBlockHitPoints(game_blocks[row][col].type, row);
 
     if (blocksRemaining > 0) { //avoid underflow
         blocksRemaining--;
@@ -702,6 +740,14 @@ int getBlockCount(void) {
 
 int GetBlocksDestroyed(void) { //helper for scoreboard
     return totalBlocks - blocksRemaining;
+}
+
+int GetCurrentScore(void) {
+    return currentScore;
+}
+
+void ResetScore(void) {
+    currentScore = 0;
 }
 // return remaining time
 int getTime(void) {

@@ -34,6 +34,9 @@ void SetGameMode(GAME_MODES mode)
 
 void RunInitGameMode(const char *fileName)
 {
+    // A fresh game (no level loaded yet) or a restart of the same level (after
+    // game over) starts a new score. Advancing to a different level keeps it.
+    bool newGame = (currentLevelFile[0] == '\0') || (fileName && strcmp(fileName, currentLevelFile) == 0);
 
     // Always load blocks when starting a new level file, or when out of lives
     if (livesRemaining <= 0 || (fileName && currentLevelFile[0] != '\0' && strcmp(fileName, currentLevelFile) != 0) || (fileName && currentLevelFile[0] == '\0'))
@@ -49,6 +52,9 @@ void RunInitGameMode(const char *fileName)
             // sizeof(currentLevelFile)-1 bytes and then explicitly NUL-terminate.
             strncpy(currentLevelFile, fileName, sizeof(currentLevelFile) - 1);
             currentLevelFile[sizeof(currentLevelFile) - 1] = '\0';
+        }
+        if (newGame) {
+            ResetScore();
         }
         livesRemaining = INITIAL_LIVES;
     }
@@ -276,6 +282,10 @@ void RenderGameScreen(void)
     // Display remaining time
     const char *time = TextFormat("Time Remaining: %d", getTime());
     DrawText(time, 10, 10, 20, WHITE);
+
+    // Display the current score, centered between time and blocks remaining
+    const char *scoreText = TextFormat("Score: %d", GetCurrentScore());
+    DrawText(scoreText, (GetScreenWidth() - MeasureText(scoreText, 20)) / 2, 10, 20, WHITE);
 
     if (GetPaddleReverse())
     {

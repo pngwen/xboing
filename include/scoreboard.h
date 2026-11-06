@@ -23,12 +23,12 @@ void ScoreInputScreen(int score, bool isHighScore);
 void ShowScoreBoard(void);
 // High score management
 bool LoadHighScores(const char* filename);
+bool saveHighScores(const char* filename);
 void AddHighScore(const char* name, const char* quote, int score);
 HighScoreEntry* GetHighScores(void);
 
 // Lives and score helpers
 int GetLivesRemaining(void);
-int GetCurrentScore(void);
 bool CheckIfHighScore(int score);
 
 
