@@ -2,6 +2,7 @@
 #include <raylib.h>
 #include <stdbool.h>
 #include "scoreboard.h"
+#include "score.h"
 #include <string.h>
 
 #define MAX_NAME_LENGTH 3
@@ -102,7 +103,7 @@ HighScoreEntry* GetHighScores(void) {
 }
 
 int GetCurrentScore(void) {
-	return GetBlocksDestroyed();
+	return GetScore();
 }
 
 

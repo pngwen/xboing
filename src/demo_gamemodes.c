@@ -6,6 +6,7 @@
 #include "demo_controls.h"
 #include "demo_blockloader.h"
 #include "demo_ball.h"
+#include "score.h"
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -276,6 +277,10 @@ void RenderGameScreen(void)
     // Display remaining time
     const char *time = TextFormat("Time Remaining: %d", getTime());
     DrawText(time, 10, 10, 20, WHITE);
+
+    char scoreText[32];
+    snprintf(scoreText, sizeof(scoreText), "Score: %d", GetScore());
+    DrawText(scoreText, (GetScreenWidth() - MeasureText(scoreText, 20)) / 2, 10, 20, WHITE);
 
     if (GetPaddleReverse())
     {
