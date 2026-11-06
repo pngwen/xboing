@@ -9,6 +9,7 @@
 #include "audio.h"
 #include "intro.h"
 #include "scoreboard.h"
+#include "score.h"
 
 const int SCREEN_WIDTH = 575;
 const int SCREEN_HEIGHT = 720;
@@ -122,6 +123,7 @@ int main(int argumentCount, char* arguments[]) {
                     ScoreInputScreen(lastScore, isHighScore); // Show scoreboard screen
 				}
 				ShowScoreBoard(); // Always Show scoreboard after end
+				ResetScore();
 
                 // Safety check for window close
                 if (WindowShouldClose()) { //if window closed during scoreboard
@@ -140,6 +142,7 @@ int main(int argumentCount, char* arguments[]) {
             //show scoreboard after end + safety save scores
 			
 			ShowScoreBoard();
+			ResetScore();
 
             // Safety check for window close
             if (WindowShouldClose()) { //if window closed during scoreboard

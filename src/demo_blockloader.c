@@ -5,6 +5,7 @@
 #include "demo_gamemodes.h"
 #include "demo_ball.h"
 #include "audio.h"
+#include "score.h"
 #define BLOCK_TEXTURES "resource/textures/blocks/"
 
 const int PLAY_X_OFFSET = 35;
@@ -659,11 +660,74 @@ bool isBlockTypeInteractive(char ch) {
 
 }
 
+static int getBlockScore(char type, int row) {
+    switch (type) {
+        case 'B':
+        case 'c':
+            return 50;
+
+        case 'r':
+            return 100;
+
+        case 'b':
+            return 110;
+
+        case 'g':
+            return 120;
+
+        case 't':
+            return 130;
+
+        case 'y':
+            return 140;
+
+        case 'p':
+            return 150;
+
+        case 'X':
+            return 50;
+
+        case '+':
+            return 400;
+
+        case 'd':
+            return (ROW_MAX - row) * 100;
+
+        case '0':
+        case '1':
+        case '2':
+        case '3':
+        case '4':
+        case '5':
+            return 200;
+
+        case 'L':
+        case 'T':
+        case 'H':
+        case 'M':
+        case 'W':
+        case 'R':
+        case 'm':
+        case 's':
+        case '<':
+        case '>':
+        case '?':
+            return 100;
+
+        case 'D':
+        case 'w':
+        default:
+            return 0;
+    }
+}
+
 void deactivateBlock(int row, int col) {
     if (!inBounds(row, col)) return;
 
     if (!game_blocks[row][col].active || !isBlockTypeInteractive(game_blocks[row][col].type)) return;
-    
+
+    AddToScore(getBlockScore(game_blocks[row][col].type, row));
+
     game_blocks[row][col].active = false;
 
     if (blocksRemaining > 0) { //avoid underflow
