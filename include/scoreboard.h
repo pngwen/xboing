@@ -30,6 +30,7 @@ HighScoreEntry* GetHighScores(void);
 int GetLivesRemaining(void);
 int GetCurrentScore(void);
 bool CheckIfHighScore(int score);
+bool saveHighScores(const char* filename);   // <-- prototype for the function defined in scoreboard.c
 
 
 

@@ -318,7 +318,7 @@ void MoveBall(void) {
     if (flipx || flipy) {
 
         // symmetric jitter in degrees
-        float jitter = ((float)rand() / (float)RAND_MAX) * 2.0f * bouncVariance - bouncVariance;
+        float jitter = ((float)rand() / (float)RAND_MAX) * 2.0f * bounceVariance - bounceVariance;
         float angle = atan2f(ball.velocity.y, ball.velocity.x) + jitter * (PI / 180.0f);
 
         float speed = (float)ball.speed;
