@@ -59,6 +59,10 @@ COMPILER.OUT
 # Macos system files
 .DS_Store
 
+# Game output
+scores.txt
+
+
 # IDE Configuration Files
 c_cpp_properties.json
 settings.json
