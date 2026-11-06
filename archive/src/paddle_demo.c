@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <raylib.h>
 #include "paddle.h"
-#include "faketypes.h"
 
 // macros
 
@@ -79,7 +78,7 @@ void DrawStatusText() {
     DrawTextLine(ypos, text);
     ypos += yoffset;
 
-    snprintf(text, size, "Reverse:  %s", GetPaddleReverse() == True ? "True" : "False");
+    snprintf(text, size, "Reverse:  %s", GetPaddleReverse() ? "True" : "False");
     DrawTextLine(ypos, text);
 
 }
