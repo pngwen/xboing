@@ -102,11 +102,9 @@ bool loadBlocks(const char* filename) {
         fclose(fp);
         return false;
     }
+    // Read the header exactly once. Re-reading it here used to consume the
+    // first block row and shift the whole level grid (issue #171).
     getc(fp); // consume newline after timeBonus
-	// Get file data
-	fgets(levelName, 256, fp);
-	fscanf(fp, "%d", &timeRemaining);
-	getc(fp);
 
 	int row = 0;
 	int column = 0;
