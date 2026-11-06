@@ -17,7 +17,7 @@ bool IsInputPaddleRight(void) {
 }
 
 bool IsInputQuitGame(void) {
-    return IsKeyPressed(KEY_X);
+    return IsKeyPressed(KEY_Q);
 }
 
 bool IsInputReleaseBall(void) {
