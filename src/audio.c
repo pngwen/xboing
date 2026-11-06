@@ -14,26 +14,26 @@ static const char *soundFiles[SOUND_COUNT] = {
     "resource/sounds/ammo.mp3", // when ammo block is destroyed
     "resource/sounds/applause.mp3",
     "resource/sounds/ball2ball.mp3", // when ball hits the paddle
-    "resource/sounds/ballLost.mp3", // when ball goes off screen
-    "resource/sounds/ballShot.mp3", // when ball is shot
+    "resource/sounds/balllost.mp3", // when ball goes off screen
+    "resource/sounds/ballshot.mp3", // when ball is shot
     "resource/sounds/boing.mp3", // when block is destroyed
     "resource/sounds/bomb.mp3",
     "resource/sounds/bonus.mp3",
     "resource/sounds/buzzer.mp3",
     "resource/sounds/click.mp3",
     "resource/sounds/ddloo.mp3",
-    "resource/sounds/doh1.mp3",
-    "resource/sounds/doh2.mp3",
-    "resource/sounds/doh3.mp3",
-    "resource/sounds/doh4.mp3",
-    "resource/sounds/evilLaugh.mp3",
+    "resource/sounds/Doh1.mp3",
+    "resource/sounds/Doh2.mp3",
+    "resource/sounds/Doh3.mp3",
+    "resource/sounds/Doh4.mp3",
+    "resource/sounds/evillaugh.mp3",
     "resource/sounds/game_over.mp3", // after you run out of lives
     "resource/sounds/gate.mp3",
-    "resource/sounds/hitHere.mp3",
+    "resource/sounds/hithere.mp3",
     "resource/sounds/hypspc.mp3",
     "resource/sounds/intro.mp3",
     "resource/sounds/key.mp3",
-    "resource/sounds/looksBad.mp3",
+    "resource/sounds/looksbad.mp3",
     "resource/sounds/metal.mp3",
     "resource/sounds/mgun.mp3",
     "resource/sounds/ouch.mp3",
@@ -49,7 +49,7 @@ static const char *soundFiles[SOUND_COUNT] = {
     "resource/sounds/toggle.mp3",
     "resource/sounds/tone.mp3",
     "resource/sounds/touch.mp3",
-    "resource/sounds/wallsOff.mp3",
+    "resource/sounds/wallsoff.mp3",
     "resource/sounds/warp.mp3",
     "resource/sounds/weeek.mp3",
     "resource/sounds/whizzo.mp3",
