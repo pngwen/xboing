@@ -100,8 +100,8 @@ function raylib.static_lib_target()
             defines{"_WINSOCK_DEPRECATED_NO_WARNINGS", "_CRT_SECURE_NO_WARNINGS"}
             characterset ("Unicode")
             buildoptions { "/Zc:__cplusplus" }
-        filter { "system:macosx", "files:" .. raylib.submodule .. "/src/rglfw.c" }
-            compileas "Objective-C"
+        filter { "system:macosx" }
+            buildoptions { "-x objective-c" }
         filter {}
 end
 
