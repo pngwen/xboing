@@ -52,7 +52,6 @@
 #include <raylib.h>
 #include "paddle.h"
 #include "demo_blockloader.h"
-#include <stdio.h>
 
 #define PADDLE_COUNT 3
 
@@ -134,11 +133,7 @@ void SetReverseOff(void)
 
 void ToggleReverse(void)
 {
-
 	reverseOn = (reverseOn == true) ? false : true;
-
-	// TODO: add display text when implemented
-	// DrawSpecials(display);
 }
 
 void FreePaddle(void)

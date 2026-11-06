@@ -1,11 +1,6 @@
 #include <stdbool.h>
 #include <raylib.h>
-#include <GLFW/glfw3.h>
 #include "demo_controls.h"
-#include "paddle.h"
-#include <stdio.h>
-
-static bool mouseInitialized = false;
 
 // ----- Keyboard input -----
 bool IsInputPaddleLeft(void) {
