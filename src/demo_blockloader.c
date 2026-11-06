@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdbool.h>
-
+#include "window.h"
 #include "demo_blockloader.h"
 #include "demo_gamemodes.h"
 #include "demo_ball.h"
