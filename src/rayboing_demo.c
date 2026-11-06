@@ -9,9 +9,7 @@
 #include "audio.h"
 #include "intro.h"
 #include "scoreboard.h"
-
-const int SCREEN_WIDTH = 575;
-const int SCREEN_HEIGHT = 720;
+#include "game_config.h"
 
 bool mouseControls = true;
 
@@ -27,7 +25,7 @@ int main(int argumentCount, char* arguments[]) {
 
     // must InitWindow before loading textures
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Rayboing Demo");
-    SetTargetFPS(60);
+    SetTargetFPS(TARGET_FPS);
     windowInitialized = true;
 
     // If no filename was provided on the command line, show the intro/start menu
@@ -74,7 +72,7 @@ int main(int argumentCount, char* arguments[]) {
     }
 
     // If no filename was provided, supply the default level path
-    const char* defaultLevel = "resource/levels/level01.data";
+    const char* defaultLevel = DEFAULT_LEVEL_FILE;
 
     // main game loop
     // main game loop
@@ -114,7 +112,7 @@ int main(int argumentCount, char* arguments[]) {
                 //out of lives, show scoreboard and end
                 RunEndMode();
 
-				LoadHighScores("scores.txt"); // Load existing high scores
+				LoadHighScores(HIGH_SCORE_FILE); // Load existing high scores
 
                 int lastScore = GetCurrentScore();
                 bool isHighScore = CheckIfHighScore(lastScore); // Function to check if lastScore is a high score
@@ -166,7 +164,7 @@ int main(int argumentCount, char* arguments[]) {
     ReleaseResources();
 
 	//always save scores on exit
-	saveHighScores("scores.txt"); // Load existing high scores
+	saveHighScores(HIGH_SCORE_FILE);
     // exit program
     return rtnCode;
 }
