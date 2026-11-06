@@ -7,6 +7,7 @@
 #include "demo_ball.h"
 #include "demo_gamemodes.h"
 #include "demo_blockloader.h"
+#include "coord.h"
 #include "audio.h"
 
 #define BALL_TEXTURES "resource/textures/balls/"
@@ -36,7 +37,7 @@ Ball ball = {0};
 
 float releaseAngle = 0;
 
-Vector2 GetSpawnPoint(void);
+Coord GetSpawnPoint(void);
 void AnimateBall(void);
 Rectangle GetBallCollisionRec(void);
 void DrawGuide(void);
@@ -73,7 +74,7 @@ void FreeBall(void) {
 
 void ResetBall(void) {
 
-    ball.position = GetSpawnPoint();
+    ball.position = CoordToVector2(GetSpawnPoint());
     ball.sticky = false;
     ball.attached = false;
     ball.spawned = true;
@@ -109,12 +110,12 @@ void ReleaseBall(void) {
 }
 
 
-Vector2 GetSpawnPoint(void) {
-    Vector2 spawn = GetBallSpawnPointOnPaddle();
-    return (Vector2){
+Coord GetSpawnPoint(void) {
+    Coord spawn = GetBallSpawnPointOnPaddle();
+    return MakeCoord(
         spawn.x - ball.img[ball.imgIndex].width / 2,
         spawn.y - ball.img[ball.imgIndex].height
-    };
+    );
 }
 
 
@@ -183,7 +184,7 @@ void MoveBall(void) {
 
     // keep spawned ball on paddle center
     if (ball.spawned) {
-        ball.position = GetSpawnPoint();
+        ball.position = CoordToVector2(GetSpawnPoint());
         return;
     }
 
@@ -318,7 +319,7 @@ void MoveBall(void) {
     if (flipx || flipy) {
 
         // symmetric jitter in degrees
-        float jitter = ((float)rand() / (float)RAND_MAX) * 2.0f * bouncVariance - bouncVariance;
+        float jitter = ((float)rand() / (float)RAND_MAX) * 2.0f * bounceVariance - bounceVariance;
         float angle = atan2f(ball.velocity.y, ball.velocity.x) + jitter * (PI / 180.0f);
 
         float speed = (float)ball.speed;

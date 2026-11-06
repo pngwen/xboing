@@ -66,7 +66,6 @@ const int ROW_MAX = 15;
 
 Block game_blocks[15][9];
 
-Vector2 getPlayCorner(CORNERS corner);
 bool isBlockTypeInteractive(char ch);
 void deactivateBlock(int row, int col);
 
@@ -153,8 +152,8 @@ void drawBlocks(void){
 
 void drawBorder(void) {
     /* The the red gamne outline */
-    Vector2 upperLeft = getPlayCorner(UPPER_LEFT);
-    Vector2 lowerRight = getPlayCorner(LOWER_RIGHT);
+    Coord upperLeft = getPlayCorner(UPPER_LEFT);
+    Coord lowerRight = getPlayCorner(LOWER_RIGHT);
     DrawRectangleLinesEx((Rectangle){upperLeft.x, upperLeft.y, lowerRight.x, lowerRight.y},PLAY_BORDER_WIDTH, RED);
 }
 
@@ -318,10 +317,10 @@ void addBlock(int row, int col, char ch){
         break;
     }
 
-    game_blocks[row][col].position = (Vector2){
+    game_blocks[row][col].position = MakeCoord(
         (col * playArea.colWidth) + game_blocks[row][col].blockOffsetX + PLAY_X_OFFSET,
         (row * playArea.rowHeight) + game_blocks[row][col].blockOffsetY + PLAY_Y_OFFSET
-    };
+    );
 
     if (game_blocks[row][col].blockOffsetX != -1) {
         game_blocks[row][col].active = true;
@@ -592,29 +591,29 @@ void activateBlock(int row, int col) {
 }
 
 
-Vector2 getPlayCorner(CORNERS corner) {
+Coord getPlayCorner(CORNERS corner) {
 
     switch (corner) {
 
         case UPPER_LEFT:
-            return (Vector2){PLAY_X_OFFSET - 1, PLAY_Y_OFFSET - 1};
+            return MakeCoord(PLAY_X_OFFSET - 1, PLAY_Y_OFFSET - 1);
             break;
 
         case UPPER_RIGHT:
-            return (Vector2){PLAY_X_OFFSET + playArea.playWidth, PLAY_Y_OFFSET - 1};
+            return MakeCoord(PLAY_X_OFFSET + playArea.playWidth, PLAY_Y_OFFSET - 1);
             break;
 
         case LOWER_LEFT:
-            return (Vector2){PLAY_X_OFFSET - 1, PLAY_Y_OFFSET + playArea.playHeight};
+            return MakeCoord(PLAY_X_OFFSET - 1, PLAY_Y_OFFSET + playArea.playHeight);
             break;
 
         case LOWER_RIGHT:
-            return (Vector2){playArea.playWidth + 1, PLAY_Y_OFFSET + playArea.playHeight};
+            return MakeCoord(playArea.playWidth + 1, PLAY_Y_OFFSET + playArea.playHeight);
             break;
     }
 
     // never should return this
-    return (Vector2){0};
+    return MakeCoord(0, 0);
 
 }
 

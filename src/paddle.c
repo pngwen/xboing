@@ -241,11 +241,11 @@ void ChangePaddleSize(int changeDirection)
 	MovePaddle(PADDLE_NONE);
 }
 
-Vector2 GetBallSpawnPointOnPaddle()
+Coord GetBallSpawnPointOnPaddle()
 {
-	return (Vector2){
+	return MakeCoord(
 		paddlePosition + paddles[paddleIndex].size / 2,
-		GetPaddlePositionY()};
+		GetPaddlePositionY());
 }
 
 Rectangle paddleRect = {200, 550, 100, 20}; // example starting position

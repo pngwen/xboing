@@ -4,10 +4,12 @@
 #include <raylib.h>
 #include <stdbool.h>
 
+#include "coord.h"
+
 typedef struct Block {
 	int blockOffsetX;
 	int blockOffsetY;
-	Vector2 position;
+	Coord position;
     Texture2D texture;
 	char type;
 	bool active;
@@ -41,6 +43,7 @@ bool isBlockActive(int row, int col);
 void activateBlock(int row, int col);
 Rectangle getPlayWall(WALLS wall);
 void drawWalls(void);
+Coord getPlayCorner(CORNERS corner);
 int getBlockCount(void);
 int GetBlocksDestroyed(void); //helper for scoreboard
 int getTime(void);
