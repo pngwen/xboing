@@ -3,6 +3,7 @@
 #include <stdbool.h>
 #include "scoreboard.h"
 #include "window.h"
+#include "demo_blockloader.h"   // <-- needed for GetBlocksDestroyed() prototype
 #include <string.h>
 #define SCREEN_WIDTH 575
 #define SCREEN_HEIGHT 720
