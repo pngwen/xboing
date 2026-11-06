@@ -46,18 +46,21 @@
 #include "file.h"
 
 
+#define BGRND_MIN 2
+#define BGRND_MAX 6
+
 saveGameStruct saveGame;
 
 void SetupStage(Display *display, Window window)
 {
     char levelPath[FILE_BUF_SIZE];
-    char *str;
-    char str2[FILE_BUF_SIZE];
+    const char *levelsDir;
+    char message[FILE_BUF_SIZE];
     static int bgrnd = 1;
-    u_long newLevel;
+    unsigned long newLevel;
 
     bgrnd++;
-    if (bgrnd == 6) bgrnd = 2;
+    if (bgrnd == BGRND_MAX) bgrnd = BGRND_MIN;
     DrawStageBackground(display, window, bgrnd, true);
 
     ClearAllBalls();
@@ -87,20 +90,21 @@ void SetupStage(Display *display, Window window)
 	if (newLevel == 0) newLevel = MAX_NUM_LEVELS;
 
     /* Construct the level filename */
-    if ((str = getenv("XBOING_LEVELS_DIR")) != NULL)
-        snprintf(levelPath, "%s/level%02ld.data", str, newLevel);
+    levelsDir = getenv("XBOING_LEVELS_DIR");
+    if (levelsDir != NULL)
+        snprintf(levelPath, FILE_BUF_SIZE, "%s/level%02lu.data", levelsDir, newLevel);
     else
-        snprintf(levelPath, "%s/level%02ld.data", LEVEL_INSTALL_DIR, newLevel);
+        snprintf(levelPath, FILE_BUF_SIZE, "%s/level%02lu.data", LEVEL_INSTALL_DIR, newLevel);
 
-    if (ReadNextLevel(display, window, levelPath, true) == false)
+    if (!ReadNextLevel(display, window, levelPath, true))
 	{
-    	snprintf(str2, "Level%2d = %s", (int) newLevel, GetLevelName());
-        ShutDown(display, 1, str2);
+    	snprintf(message, FILE_BUF_SIZE, "Level%2d = %s", (int) newLevel, GetLevelName());
+        ShutDown(display, 1, message);
 	}
 
     /* Display level name for all to see */
-    snprintf(str2, "- %s -", GetLevelName());
-    SetCurrentMessage(display, messWindow, str2, true);
+    snprintf(message, FILE_BUF_SIZE, "- %s -", GetLevelName());
+    SetCurrentMessage(display, messWindow, message, true);
 
     XFlush(display);
 }
