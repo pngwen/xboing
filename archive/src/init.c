@@ -54,11 +54,11 @@
 #include <stdlib.h>
 #include <stddef.h>
 #include <signal.h>
-#include <X11/Xlib.h>
-#include <X11/Xutil.h>
-#include <X11/Xos.h>
-#include <X11/cursorfont.h>
+#include <string.h>
 #include <time.h>
+
+// The archived sources use the compile-only X11 stand-ins in faketypes.h
+// instead of the real X11 headers.
 
 #include "score.h"
 #include "presents.h"
@@ -84,13 +84,37 @@
 #include "misc.h"
 #include "dialogue.h"
 #include "eyedude.h"
-#include "../patchlevel.h"
+#include "patchlevel.h"
 
 #include "init.h"
 
 /*
  *  Internal macro definitions:
  */
+
+/*
+ * Build configuration normally supplied by the Makefile. Provide compile-only
+ * defaults so this file can be checked on its own.
+ */
+#ifndef AUDIO_AVAILABLE
+#define AUDIO_AVAILABLE False
+#endif
+
+#ifndef AUDIO_FILE
+#define AUDIO_FILE "audio/NOaudio.c"
+#endif
+
+#ifndef HIGH_SCORE_FILE
+#define HIGH_SCORE_FILE ".xboing.scr"
+#endif
+
+#ifndef LEVEL_INSTALL_DIR
+#define LEVEL_INSTALL_DIR "levels"
+#endif
+
+#ifndef SOUNDS_DIR
+#define SOUNDS_DIR "sounds"
+#endif
 
 #define TITLE_FONT 	"-adobe-helvetica-bold-r-*-*-24-*-*-*-*-*-*-*"
 #define COPY_FONT   "-adobe-helvetica-medium-r-*-*-12-*-*-*-*-*-*-*"

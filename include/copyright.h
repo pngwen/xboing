@@ -1,4 +1,4 @@
-#ifdef __COPYRIGHT_H__
+#ifndef __COPYRIGHT_H__
 #define __COPYRIGHT_H__
 
 /**

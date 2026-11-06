@@ -52,6 +52,8 @@
 #include <stddef.h>
 #include <ctype.h>
 #include <unistd.h>
+#include <sys/types.h>
+#include <sys/time.h>
 #include <sys/param.h>
 #include <pwd.h>
 
@@ -608,7 +610,7 @@ void Draw4PointCurve(Display *display, Window window, XPoint *p, int num_steps)
 {
     double t, t_sq, t_cb, incr;
     double r1, r2, r3, r4;
-    ushort curve_x, curve_y;
+    unsigned short curve_x, curve_y;
 	int ptIndex;
 	long maxLines;
 	XPoint 	*pts;
@@ -645,13 +647,13 @@ void Draw4PointCurve(Display *display, Window window, XPoint *p, int num_steps)
         r2 = (    3*t - 6*t_sq + 3*t_cb) * (double) p[1].x;
         r3 = (          3*t_sq - 3*t_cb) * (double) p[2].x;
         r4 = (                     t_cb) * (double) p[3].x;
-        curve_x = (ushort) (r1 + r2 + r3 + r4);
+        curve_x = (unsigned short) (r1 + r2 + r3 + r4);
 
         r1 = (1 - 3*t + 3*t_sq -   t_cb) * (double) p[0].y;
         r2 = (    3*t - 6*t_sq + 3*t_cb) * (double) p[1].y;
         r3 = (          3*t_sq - 3*t_cb) * (double) p[2].y;
         r4 = (                     t_cb) * (double) p[3].y;
-        curve_y = (ushort) (r1 + r2 + r3 + r4);
+        curve_y = (unsigned short) (r1 + r2 + r3 + r4);
 
 		ptIndex++;
 		pts[ptIndex].x = curve_x;
