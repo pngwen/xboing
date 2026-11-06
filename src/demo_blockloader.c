@@ -672,15 +672,15 @@ void deactivateBlock(int row, int col) {
 }
 
 // decrement time remaining by 1 second if timer is active
+static float timerElapsed = 0.0f;
+
 void timeDecrement(void) {
     if (!timerActive) return;
 
-    static float elapsedTime = 0.0f;
+    timerElapsed += GetFrameTime();
 
-    elapsedTime += GetFrameTime();
-
-    if (elapsedTime > 1.0f) {
-        elapsedTime = 0.0f;
+    if (timerElapsed > 1.0f) {
+        timerElapsed = 0.0f;
         timeRemaining--;
     }
 }
@@ -688,6 +688,7 @@ void timeDecrement(void) {
 // set whether timer is active
 void setTimerActive(bool active) {
     timerActive = active;
+    if (!active) timerElapsed = 0.0f;
 }
 
 // return whether timer is active
