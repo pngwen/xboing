@@ -208,6 +208,8 @@ void ReleaseResources(void)
 
 void UpdatePaddleInput(void)
 {
+    if (IsGamePaused())
+        return;
     if (IsKeyPressed(KEY_M))
     {
         mouseControls = !mouseControls;
