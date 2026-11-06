@@ -2,6 +2,7 @@
 #include <raylib.h>
 #include <stdbool.h>
 #include "intro.h"
+#include "window.h"
 #define INTRO_TEXTURES "resource/textures/presents/"
 //TODO: Add star animation frames
 #define STAR_TEXTURES "resource/textures/stars/"
@@ -70,7 +71,7 @@ void ShowIntroScreen(void) {
         return;
     }
     while (!WindowShouldClose()) {
-        BeginDrawing();
+        WindowBegin();
             ClearBackground(BLACK);
             Color introTint = WHITE;
             
@@ -103,9 +104,9 @@ void ShowIntroScreen(void) {
             int promptSize = 20;
             int promptWidth = MeasureText(prompt, promptSize);
             DrawText(prompt, (SCREEN_WIDTH - promptWidth)/2, SCREEN_HEIGHT/3 + 80, promptSize, LIGHTGRAY);
-        EndDrawing(); 
+        WindowEnd(); 
 
-        if (IsKeyPressed(KEY_ENTER) || IsKeyPressed(KEY_KP_ENTER) || IsKeyPressed(KEY_SPACE)) {
+        if ((IsKeyPressed(KEY_ENTER) || IsKeyPressed(KEY_KP_ENTER) || IsKeyPressed(KEY_SPACE)) && !IsKeyDown(KEY_LEFT_ALT) && !IsKeyDown(KEY_RIGHT_ALT)) {
             // Start requested
             printf("Intro ended - start requested\n"); fflush(stdout);
             UnloadTexture(introPlanet);

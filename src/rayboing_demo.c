@@ -7,7 +7,9 @@
 #include "demo_ball.h"
 #include "paddle.h"
 #include "audio.h"
+#include "window.h"
 #include "intro.h"
+#include "scoreboard.h"
 #include "scoreboard.h"
 
 const int SCREEN_WIDTH = 575;
@@ -26,8 +28,7 @@ int main(int argumentCount, char* arguments[]) {
     bool windowInitialized = false;
 
     // must InitWindow before loading textures
-    InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Rayboing Demo");
-    SetTargetFPS(60);
+    WindowInit(SCREEN_WIDTH, SCREEN_HEIGHT, "Rayboing Demo");
     windowInitialized = true;
 
     // If no filename was provided on the command line, show the intro/start menu
@@ -216,18 +217,16 @@ void UpdatePaddleInput(void)
 
     if (mouseControls)
     {
-        Vector2 mousePos = GetMousePosition();
+        Vector2 mousePos = WindowScreenToLogical(GetMousePosition());
 
         // clamp Y to window, if needed
-        if (mousePos.y < 0)
-            mousePos.y = 0;
-        if (mousePos.y > SCREEN_HEIGHT)
-            mousePos.y = SCREEN_HEIGHT;
+        if (mousePos.y < 0) mousePos.y = 0;
+        if (mousePos.y > WindowLogicalHeight()) mousePos.y = WindowLogicalHeight();
 
         SetPaddlePosition(mousePos.x);
 
         // updates mouse position 
-        SetMousePosition(GetPaddlePositionX(), mousePos.y);
+        // Keep cursor aligned with paddle (optional, omitted for scaling)
     }
     else
     {

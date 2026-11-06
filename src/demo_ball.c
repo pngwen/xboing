@@ -8,6 +8,7 @@
 #include "demo_gamemodes.h"
 #include "demo_blockloader.h"
 #include "audio.h"
+#include "window.h"
 
 #define BALL_TEXTURES "resource/textures/balls/"
 
@@ -223,7 +224,7 @@ void MoveBall(void) {
     int sideBounce = 0; // -1 = left, +1 = right, 0 = none
 
     if (CheckCollisionRecs(GetBallCollisionRec(), getPlayWall(WALL_BOTTOM))) {
-        ball.position.y = GetScreenHeight(); // cheesy way to hide ball after loss
+        ball.position.y = WindowLogicalHeight(); // cheesy way to hide ball after loss
         startSound(SND_BALLLOST);  
 		
         LoseLife();

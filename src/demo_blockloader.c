@@ -73,8 +73,8 @@ void deactivateBlock(int row, int col);
 
 void initializePlayArea(void) {
 
-    playArea.playWidth = GetScreenWidth() - (PLAY_X_PADDING * 2);
-    playArea.playHeight = GetScreenHeight() - (PLAY_Y_PADDING * 2);
+    playArea.playWidth = WindowLogicalWidth() - (PLAY_X_PADDING * 2);
+    playArea.playHeight = WindowLogicalHeight() - (PLAY_Y_PADDING * 2);
 
     playArea.colWidth = playArea.playWidth / COL_MAX;
     playArea.rowHeight = playArea.playHeight / (ROW_MAX + PADDLE_ROWS);
@@ -623,19 +623,19 @@ Rectangle getPlayWall(WALLS wall) {
 
     switch(wall) {
         case WALL_LEFT:
-            return (Rectangle){0, 0, getPlayCorner(LOWER_LEFT).x, GetScreenHeight()};
+            return (Rectangle){0, 0, getPlayCorner(LOWER_LEFT).x, WindowLogicalHeight()};
             break;
 
         case WALL_RIGHT:
-            return (Rectangle){getPlayCorner(UPPER_RIGHT).x, 0, GetScreenWidth() - getPlayCorner(UPPER_RIGHT).x, GetScreenHeight()};
+            return (Rectangle){getPlayCorner(UPPER_RIGHT).x, 0, WindowLogicalWidth() - getPlayCorner(UPPER_RIGHT).x, WindowLogicalHeight()};
             break;
 
         case WALL_TOP:
-            return (Rectangle){0, 0, GetScreenWidth(), getPlayCorner(UPPER_RIGHT).y};
+            return (Rectangle){0, 0, WindowLogicalWidth(), getPlayCorner(UPPER_RIGHT).y};
             break;
 
         case WALL_BOTTOM:
-            return (Rectangle){0, getPlayCorner(LOWER_LEFT).y + getPlayCorner(UPPER_LEFT).y, GetScreenWidth(), GetScreenHeight() - getPlayCorner(LOWER_RIGHT).y};
+            return (Rectangle){0, getPlayCorner(LOWER_LEFT).y + getPlayCorner(UPPER_LEFT).y, WindowLogicalWidth(), WindowLogicalHeight() - getPlayCorner(LOWER_RIGHT).y};
             break;
     }
 
