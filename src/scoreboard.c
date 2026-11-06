@@ -102,7 +102,7 @@ HighScoreEntry* GetHighScores(void) {
 }
 
 int GetCurrentScore(void) {
-	return GetBlocksDestroyed();
+	return GetBlocksDestroyed() + getPointItemScore();
 }
 
 

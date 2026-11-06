@@ -34,6 +34,8 @@ static bool timerActive = false;
 int blocksRemaining = 0;
 int totalBlocks = 0;
 
+static int pointItemScore = 0;
+
 Texture2D HYPERSPACE_BLK,
           BULLET_BLK,
           MAXAMMO_BLK,
@@ -58,6 +60,9 @@ Texture2D HYPERSPACE_BLK,
           REVERSE_BLK,
           PAD_SHRINK_BLK,
 		  PAD_EXPAND_BLK;
+
+Texture2D POINT_ITEM_SMALL_BLK;
+Texture2D POINT_ITEM_LARGE_BLK;
 
 Texture2D COUNTER_BLK[6];
 
@@ -86,6 +91,7 @@ bool loadBlocks(const char* filename) {
 
     blocksRemaining = 0;
     totalBlocks = 0;
+    pointItemScore = 0;
 
     FILE* fp = fopen(filename, "r");
     if (fp == NULL) {
@@ -313,6 +319,14 @@ void addBlock(int row, int col, char ch){
             game_blocks[row][col].texture = PAD_EXPAND_BLK;
         break;
 
+        case 'I' :  /* small point item (200 points) */
+            game_blocks[row][col].texture = POINT_ITEM_SMALL_BLK;
+        break;
+
+        case 'O' :  /* large point item (3000 points) */
+            game_blocks[row][col].texture = POINT_ITEM_LARGE_BLK;
+        break;
+
         default:
             game_blocks[row][col].blockOffsetX = -1;
         break;
@@ -325,8 +339,10 @@ void addBlock(int row, int col, char ch){
 
     if (game_blocks[row][col].blockOffsetX != -1) {
         game_blocks[row][col].active = true;
-        if (ch != 'w') blocksRemaining++;  //solid wall blocks cannot be destroyed and should not count
-		totalBlocks++; // count all blocks except empty space
+        if (ch != 'w' && ch != 'I' && ch != 'O') {
+            blocksRemaining++;  // point items are optional bonus objects
+            totalBlocks++; // count ordinary blocks, not point items
+        }
     } else {
         game_blocks[row][col].active = false;
     }
@@ -407,6 +423,12 @@ bool loadBlockTextures(void){
 	PAD_EXPAND_BLK = LoadTexture(BLOCK_TEXTURES "padexpn.png");
     if (PAD_EXPAND_BLK.id == 0) return false;
 
+    POINT_ITEM_SMALL_BLK = LoadTexture(BLOCK_TEXTURES "bonus1.png");
+    if (POINT_ITEM_SMALL_BLK.id == 0) return false;
+
+    POINT_ITEM_LARGE_BLK = LoadTexture(BLOCK_TEXTURES "bonus2.png");
+    if (POINT_ITEM_LARGE_BLK.id == 0) return false;
+
 
     COUNTER_BLK[0] = LoadTexture(BLOCK_TEXTURES "cntblk.png");
     COUNTER_BLK[1] = LoadTexture(BLOCK_TEXTURES "cntblk1.png");
@@ -448,6 +470,8 @@ void freeBlockTextures(void) {
     UnloadTexture(REVERSE_BLK);
     UnloadTexture(PAD_SHRINK_BLK);
     UnloadTexture(PAD_EXPAND_BLK);
+    UnloadTexture(POINT_ITEM_SMALL_BLK);
+    UnloadTexture(POINT_ITEM_LARGE_BLK);
 
     for (int i = 0; i < 6; i++) {
         UnloadTexture(COUNTER_BLK[i]);
@@ -576,6 +600,18 @@ void activateBlock(int row, int col) {
             game_blocks[row][col].type = '4';
             break;
 
+        case 'I': // 200-point item
+            pointItemScore += 200;
+            startSound(SND_BONUS);
+            deactivateBlock(row, col);
+            break;
+
+        case 'O': // 3000-point item
+            pointItemScore += 3000;
+            startSound(SND_BONUS);
+            deactivateBlock(row, col);
+            break;
+
         default:
             startSound(SND_TOUCH);
             deactivateBlock(row, col);
@@ -663,7 +699,12 @@ void deactivateBlock(int row, int col) {
     if (!inBounds(row, col)) return;
 
     if (!game_blocks[row][col].active || !isBlockTypeInteractive(game_blocks[row][col].type)) return;
-    
+
+    if (game_blocks[row][col].type == 'I' || game_blocks[row][col].type == 'O') {
+        game_blocks[row][col].active = false;
+        return; // optional point items are not part of the ordinary block count
+    }
+
     game_blocks[row][col].active = false;
 
     if (blocksRemaining > 0) { //avoid underflow
@@ -702,6 +743,10 @@ int getBlockCount(void) {
 
 int GetBlocksDestroyed(void) { //helper for scoreboard
     return totalBlocks - blocksRemaining;
+}
+
+int getPointItemScore(void) {
+    return pointItemScore;
 }
 // return remaining time
 int getTime(void) {
