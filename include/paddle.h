@@ -57,6 +57,8 @@
 
 #include <stdbool.h>
 
+#include "coord.h"
+
 
 /**
  * @brief Loads paddle images into memory as Raylib Texture2D
@@ -158,7 +160,7 @@ void SetReverseOff(void);
  */
 void ChangePaddleSize(int changeDirection);
 
-Vector2 GetBallSpawnPointOnPaddle();
+Coord GetBallSpawnPointOnPaddle();
 
 void SetPaddlePosition(float x);
 
