@@ -2,6 +2,7 @@
 #include <raylib.h>
 #include <stdbool.h>
 #include "intro.h"
+#include "game_config.h"
 #define INTRO_TEXTURES "resource/textures/presents/"
 //TODO: Add star animation frames
 #define STAR_TEXTURES "resource/textures/stars/"
@@ -21,8 +22,17 @@ Texture2D introPlanet,
           intro_G;
           //TODO: add "background_Space" and the star animation frames
 
-static const int SCREEN_WIDTH = 575;
-static const int SCREEN_HEIGHT = 720;
+/* Intro screen layout. */
+#define INTRO_PLANET_X 100
+#define INTRO_PLANET_Y 100
+#define INTRO_FLAG_Y 20
+#define INTRO_JUSTIN_BOTTOM_MARGIN 30
+#define INTRO_KIBELL_BOTTOM_MARGIN 20
+#define XBOING_LOGO_UP_OFFSET 100
+#define XBOING_LETTER_SPACING 10
+#define XBOING_LETTER_COUNT 6
+#define INTRO_PROMPT_FONT_SIZE 20
+#define INTRO_PROMPT_Y_OFFSET 80
 
 bool loadIntroTextures(void) {
     introPlanet = LoadTexture(INTRO_TEXTURES "earth.png");
@@ -74,35 +84,33 @@ void ShowIntroScreen(void) {
             ClearBackground(BLACK);
             Color introTint = WHITE;
             
-            DrawTexture(introPlanet, 100, 100, introTint);
-            DrawTexture(introFlag, (SCREEN_WIDTH - introFlag.width)/2, 20, WHITE);
+            DrawTexture(introPlanet, INTRO_PLANET_X, INTRO_PLANET_Y, introTint);
+            DrawTexture(introFlag, (SCREEN_WIDTH - introFlag.width)/2, INTRO_FLAG_Y, WHITE);
             DrawTexture(introJustin, (SCREEN_WIDTH - introJustin.width)/2,
-            SCREEN_HEIGHT - introKibell.height - introJustin.height - 30, WHITE);
-            DrawTexture(introKibell, (SCREEN_WIDTH - introKibell.width)/2, SCREEN_HEIGHT - introKibell.height - 20, WHITE);    
+            SCREEN_HEIGHT - introKibell.height - introJustin.height - INTRO_JUSTIN_BOTTOM_MARGIN, WHITE);
+            DrawTexture(introKibell, (SCREEN_WIDTH - introKibell.width)/2, SCREEN_HEIGHT - introKibell.height - INTRO_KIBELL_BOTTOM_MARGIN, WHITE);    
             //DrawTexture(introPresents, 100, 50, introTint); //TODO: Animate after Justin Kibell
             //TODO: Animate letters coming in one_by_one
 
-            int xboingY = (SCREEN_HEIGHT / 2) - 100; //Verticle line where "XBOING" sits
-            int spacing = 10; //Spacing in between "XBOING" letters
+            int xboingY = (SCREEN_HEIGHT / 2) - XBOING_LOGO_UP_OFFSET; //Vertical line where "XBOING" sits
             int totalWidth =
                 intro_X.width + intro_B.width + intro_O.width +
                 intro_I.width + intro_N.width + intro_G.width +
-                spacing * 5;
+                XBOING_LETTER_SPACING * (XBOING_LETTER_COUNT - 1);
 
             int startX = (SCREEN_WIDTH - totalWidth) / 2;
             int x = startX;
 
-            DrawTexture(intro_X, x, xboingY, WHITE); x += intro_X.width + spacing;
-            DrawTexture(intro_B, x, xboingY, WHITE); x += intro_B.width + spacing;
-            DrawTexture(intro_O, x, xboingY, WHITE); x += intro_O.width + spacing;
-            DrawTexture(intro_I, x, xboingY, WHITE); x += intro_I.width + spacing;
-            DrawTexture(intro_N, x, xboingY, WHITE); x += intro_N.width + spacing;
+            DrawTexture(intro_X, x, xboingY, WHITE); x += intro_X.width + XBOING_LETTER_SPACING;
+            DrawTexture(intro_B, x, xboingY, WHITE); x += intro_B.width + XBOING_LETTER_SPACING;
+            DrawTexture(intro_O, x, xboingY, WHITE); x += intro_O.width + XBOING_LETTER_SPACING;
+            DrawTexture(intro_I, x, xboingY, WHITE); x += intro_I.width + XBOING_LETTER_SPACING;
+            DrawTexture(intro_N, x, xboingY, WHITE); x += intro_N.width + XBOING_LETTER_SPACING;
             DrawTexture(intro_G, x, xboingY, WHITE);
 
             const char *prompt = "Press ENTER or SPACE to Start";
-            int promptSize = 20;
-            int promptWidth = MeasureText(prompt, promptSize);
-            DrawText(prompt, (SCREEN_WIDTH - promptWidth)/2, SCREEN_HEIGHT/3 + 80, promptSize, LIGHTGRAY);
+            int promptWidth = MeasureText(prompt, INTRO_PROMPT_FONT_SIZE);
+            DrawText(prompt, (SCREEN_WIDTH - promptWidth)/2, SCREEN_HEIGHT/3 + INTRO_PROMPT_Y_OFFSET, INTRO_PROMPT_FONT_SIZE, LIGHTGRAY);
         EndDrawing(); 
 
         if (IsKeyPressed(KEY_ENTER) || IsKeyPressed(KEY_KP_ENTER) || IsKeyPressed(KEY_SPACE)) {

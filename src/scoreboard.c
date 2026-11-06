@@ -2,19 +2,45 @@
 #include <raylib.h>
 #include <stdbool.h>
 #include "scoreboard.h"
+#include "game_config.h"
 #include <string.h>
 
-#define MAX_NAME_LENGTH 3
-#define SCREEN_WIDTH 575
-#define SCREEN_HEIGHT 720
-#define MAX_HIGH_SCORES 10
+/* Score entry screen layout. */
+#define INPUT_BOX_WIDTH 200
+#define INPUT_BOX_HEIGHT 40
+#define INPUT_BOX_TOP_OFFSET 30
+#define QUOTE_BOX_WIDTH 300
+#define QUOTE_BOX_HEIGHT 40
+#define TEXT_ENTRY_INSET 10
+#define BOX_BORDER_THICKNESS 2
+
+#define HIGH_SCORE_FONT_SIZE 35
+#define PROMPT_FONT_SIZE 20
+#define QUOTE_FONT_SIZE 20
+#define INSTRUCTION_FONT_SIZE 10
+#define ENTRY_FONT_SIZE 20
+
+#define HIGH_SCORE_Y (SCREEN_HEIGHT / 4)
+#define PROMPT_Y (SCREEN_HEIGHT / 3 + 10)
+#define QUOTE_Y (SCREEN_HEIGHT / 3 + 100)
+#define INSTRUCTION_Y (SCREEN_HEIGHT / 2 + 100)
+
+/* Scoreboard screen layout. */
+#define SCOREBOARD_TITLE_FONT_SIZE 30
+#define SCOREBOARD_TITLE_X_OFFSET 100
+#define SCOREBOARD_TITLE_Y 50
+#define SCOREBOARD_ROW_X 100
+#define SCOREBOARD_FIRST_ROW_Y 120
+#define SCOREBOARD_ROW_SPACING 30
+#define SCOREBOARD_LINE_FONT_SIZE 20
+#define SCOREBOARD_LINE_BUFFER_SIZE 128
 
 static int lives = 3;
 static HighScoreEntry highScores[MAX_HIGH_SCORES];
 static int highScoreCount = 0;
 
-Rectangle InputBox = { (SCREEN_WIDTH - 200) / 2, SCREEN_HEIGHT / 3 + 30, 200, 40 };
-Rectangle QuoteBox = { (SCREEN_WIDTH - 300) / 2, SCREEN_HEIGHT / 2, 300, 40 }; 
+Rectangle InputBox = { (SCREEN_WIDTH - INPUT_BOX_WIDTH) / 2, SCREEN_HEIGHT / 3 + INPUT_BOX_TOP_OFFSET, INPUT_BOX_WIDTH, INPUT_BOX_HEIGHT };
+Rectangle QuoteBox = { (SCREEN_WIDTH - QUOTE_BOX_WIDTH) / 2, SCREEN_HEIGHT / 2, QUOTE_BOX_WIDTH, QUOTE_BOX_HEIGHT }; 
 
 bool LoadHighScores(const char* filename) {
 	highScoreCount = 0; // Reset count before loading
@@ -138,32 +164,26 @@ void ScoreInputScreen(int score, bool isHighScore) {
 		const char* instruction = "Please Press TAB To switch fields and ENTER to Submit";
 
 		
-		int quoteSize = 20;
-		int promptSize = 20;
-		int highscoresize = 35; // Slightly larger for high score message
-		int instructionSize = 10;
-
-		
-		int quoteWidth = MeasureText(quote, quoteSize);
-		int highscoresWidth = MeasureText(highscore, highscoresize);
-		int promptWidth = MeasureText(prompt, promptSize);
-		int instructionWidth = MeasureText(prompt, promptSize);
+		int quoteWidth = MeasureText(quote, QUOTE_FONT_SIZE);
+		int highscoresWidth = MeasureText(highscore, HIGH_SCORE_FONT_SIZE);
+		int promptWidth = MeasureText(prompt, PROMPT_FONT_SIZE);
+		int instructionWidth = MeasureText(prompt, PROMPT_FONT_SIZE);
 
 		if (isHighScore) {
-			DrawText(highscore, (SCREEN_WIDTH - highscoresWidth) / 2, SCREEN_HEIGHT / 4, highscoresize, YELLOW);
-			DrawText(prompt, (SCREEN_WIDTH - promptWidth) / 2, SCREEN_HEIGHT / 3 + 10 , promptSize, LIGHTGRAY);
-			DrawText(quote, (SCREEN_WIDTH - quoteWidth) / 2, SCREEN_HEIGHT /3 + 100 , quoteSize, YELLOW);
-			DrawText(instruction, (SCREEN_WIDTH - instructionWidth) / 2, SCREEN_HEIGHT / 2 + 100, instructionSize, YELLOW);
+			DrawText(highscore, (SCREEN_WIDTH - highscoresWidth) / 2, HIGH_SCORE_Y, HIGH_SCORE_FONT_SIZE, YELLOW);
+			DrawText(prompt, (SCREEN_WIDTH - promptWidth) / 2, PROMPT_Y, PROMPT_FONT_SIZE, LIGHTGRAY);
+			DrawText(quote, (SCREEN_WIDTH - quoteWidth) / 2, QUOTE_Y, QUOTE_FONT_SIZE, YELLOW);
+			DrawText(instruction, (SCREEN_WIDTH - instructionWidth) / 2, INSTRUCTION_Y, INSTRUCTION_FONT_SIZE, YELLOW);
 			
 			//highlight box based on entry state
 			Color nameBoxColor = EnteringQuote ? RAYWHITE : YELLOW;
 			Color quoteBoxColor = EnteringQuote ? YELLOW : RAYWHITE;
 
-			DrawText(nickname, InputBox.x + 10, InputBox.y + 10, 20, RAYWHITE);
-			DrawText(quotein, QuoteBox.x + 10, QuoteBox.y + 10, 20, RAYWHITE);
+			DrawText(nickname, InputBox.x + TEXT_ENTRY_INSET, InputBox.y + TEXT_ENTRY_INSET, ENTRY_FONT_SIZE, RAYWHITE);
+			DrawText(quotein, QuoteBox.x + TEXT_ENTRY_INSET, QuoteBox.y + TEXT_ENTRY_INSET, ENTRY_FONT_SIZE, RAYWHITE);
 
-			DrawRectangleLinesEx(InputBox, 2, nameBoxColor); // Draw input box
-			DrawRectangleLinesEx(QuoteBox, 2, quoteBoxColor); // Draw input box
+			DrawRectangleLinesEx(InputBox, BOX_BORDER_THICKNESS, nameBoxColor); // Draw input box
+			DrawRectangleLinesEx(QuoteBox, BOX_BORDER_THICKNESS, quoteBoxColor); // Draw input box
 			
 		
 		}
@@ -200,9 +220,9 @@ void ScoreInputScreen(int score, bool isHighScore) {
 			// Finalize on Enter
 			if (IsKeyPressed(KEY_ENTER)) {
 				if (isHighScore && LettersEntered > 0) {
-					LoadHighScores("scores.txt");
+					LoadHighScores(HIGH_SCORE_FILE);
 					AddHighScore(nickname, quotein, score);
-					saveHighScores("scores.txt");
+					saveHighScores(HIGH_SCORE_FILE);
 				}
 				return;
 			}
@@ -212,21 +232,21 @@ void ScoreInputScreen(int score, bool isHighScore) {
 }
 
 void ShowScoreBoard(void) {
-	LoadHighScores("scores.txt"); // ensure we have latest
+	LoadHighScores(HIGH_SCORE_FILE); // ensure we have latest
 
 	while (!WindowShouldClose()) {
 		BeginDrawing();
 		ClearBackground(BLACK);
 
-		DrawText("SCOREBOARD", SCREEN_WIDTH / 2 - 100, 50, 30, YELLOW);
+		DrawText("SCOREBOARD", SCREEN_WIDTH / 2 - SCOREBOARD_TITLE_X_OFFSET, SCOREBOARD_TITLE_Y, SCOREBOARD_TITLE_FONT_SIZE, YELLOW);
 
 		for (int i = 0; i < highScoreCount; i++) {
-			char buffer[128];
+			char buffer[SCOREBOARD_LINE_BUFFER_SIZE];
 			snprintf(buffer, sizeof(buffer), "%s - %s - %d",
 				highScores[i].name,
 				highScores[i].quote,
 				highScores[i].score);
-			DrawText(buffer, 100, 120 + i * 30, 20, RAYWHITE);
+			DrawText(buffer, SCOREBOARD_ROW_X, SCOREBOARD_FIRST_ROW_Y + i * SCOREBOARD_ROW_SPACING, SCOREBOARD_LINE_FONT_SIZE, RAYWHITE);
 		}
 
 		EndDrawing();

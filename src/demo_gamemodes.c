@@ -14,10 +14,40 @@
 const int INITIAL_LIVES = 3;
 int livesRemaining = 0;
 
+/* HUD layout. */
+#define HUD_FONT_SIZE 20
+#define HUD_MARGIN 10
+#define HUD_BOTTOM_OFFSET 20
+#define REVERSE_FONT_SIZE 25
+#define REVERSE_Y 35
+
+/* Status overlay layout. */
+#define STATUS_FONT_SIZE 40
+#define STATUS_PADDING 20
+#define STATUS_SHADOW_OFFSET 1
+
+/* Win prompt layout and pulsing animation. */
+#define WIN_PROMPT_FONT_SIZE 20
+#define WIN_PROMPT_Y_OFFSET 80
+#define PULSE_MIDPOINT 0.5
+#define PULSE_AMPLITUDE 0.5
+#define PULSE_ANGULAR_SPEED 6.283185307179586 /* 2 * PI */
+#define ALPHA_MIN 0.0
+#define ALPHA_MAX 1.0
+#define COLOR_CHANNEL_MAX 255.0
+#define WIN_PROMPT_RED 144
+#define WIN_PROMPT_GREEN 238
+#define WIN_PROMPT_BLUE 144
+
+/* Level-file name handling. */
+#define LEVEL_PATH_BUFFER_SIZE 512
+#define NUMBER_BUFFER_SIZE 32
+#define NUMBER_FORMAT_BUFFER_SIZE 16
+
 GAME_MODES gameState = MODE_EXIT;
 
 // track the current level file so we can advance to the next level after a win
-static char currentLevelFile[512] = {0};
+static char currentLevelFile[LEVEL_PATH_BUFFER_SIZE] = {0};
 
 void RenderGameScreen(void);
 void DrawStatusText(const char *displayText);
@@ -134,7 +164,7 @@ void RunEndMode(void)
                     while (start > currentLevelFile && isdigit((unsigned char)*(start-1))) start--;
 
                     int len = (int)(end - start) + 1;
-                    char numberBuf[32] = {0};
+                    char numberBuf[NUMBER_BUFFER_SIZE] = {0};
                     // Copy the digit substring (len characters) into numberBuf and
                     // then NUL-terminate. strncpy could be used here but we copy
                     // the exact known length and add the terminator explicitly.
@@ -146,7 +176,7 @@ void RunEndMode(void)
                     int next = num + 1;
 
                     // build next filename
-                    char nextFile[512] = {0};
+                    char nextFile[LEVEL_PATH_BUFFER_SIZE] = {0};
                     // copy prefix up to start
                     int prefixLen = (int)(start - currentLevelFile);
                     // Copy the filename prefix (everything before the numeric
@@ -156,12 +186,12 @@ void RunEndMode(void)
                     // append incremented number with preserved width
                     // Build a format string (e.g. "%02d") into `fmt` while
                     // preventing buffer overflow. snprintf bounds the write.
-                    char fmt[16];
+                    char fmt[NUMBER_FORMAT_BUFFER_SIZE];
                     snprintf(fmt, sizeof(fmt), "%%0%dd", width);
                     // Format the incremented numeric part into numStr using the
                     // generated format. We use snprintf to ensure the output is
                     // NUL-terminated and cannot overflow numStr.
-                    char numStr[32];
+                    char numStr[NUMBER_BUFFER_SIZE];
                     snprintf(numStr, sizeof(numStr), fmt, next);
                     // Append the numeric string into nextFile safely. Use
                     // strncat with the remaining buffer space to avoid overflow.
@@ -228,23 +258,20 @@ void RenderGameScreen(void)
                 // Show flashing prompt to advance when on the win screen
                 {
                     const char *prompt = "Press SPACE or ENTER to Move On";
-                    const int PROMPT_SIZE = 20;
-                    int px = (GetScreenWidth() - MeasureText(prompt, PROMPT_SIZE)) / 2;
-                    int py = (GetScreenHeight() / 3) + 80; // below the main status text
+                    int px = (GetScreenWidth() - MeasureText(prompt, WIN_PROMPT_FONT_SIZE)) / 2;
+                    int py = (GetScreenHeight() / 3) + WIN_PROMPT_Y_OFFSET; // below the main status text
                           double t = GetTime();
-                          /* Smooth pulsing: use a sine wave to compute alpha in [0,1].
-                              Use the numeric constant 2*PI directly to avoid introducing
-                              an extra identifier (keeps code C89-friendly). */
-                          double alpha = 0.5 * (1.0 + sin(6.283185307179586 * t)); /* 2*PI */
-                          if (alpha < 0.0) alpha = 0.0;
-                          if (alpha > 1.0) alpha = 1.0;
-                          unsigned char a = (unsigned char)(alpha * 255.0);
+                          /* Smooth pulsing: use a sine wave to compute alpha in [0,1]. */
+                          double alpha = PULSE_MIDPOINT + PULSE_AMPLITUDE * sin(PULSE_ANGULAR_SPEED * t);
+                          if (alpha < ALPHA_MIN) alpha = ALPHA_MIN;
+                          if (alpha > ALPHA_MAX) alpha = ALPHA_MAX;
+                          unsigned char a = (unsigned char)(alpha * COLOR_CHANNEL_MAX);
                           /* Fill Color explicitly to avoid compound-literal syntax that
                               may be unsupported in some C dialects. */
                           Color textColor;
-                        // light green color for the prompt (RGB: 144,238,144)
-                        textColor.r = 144; textColor.g = 238; textColor.b = 144; textColor.a = a;
-                          DrawText(prompt, px, py, PROMPT_SIZE, textColor);
+                        // light green color for the prompt
+                        textColor.r = WIN_PROMPT_RED; textColor.g = WIN_PROMPT_GREEN; textColor.b = WIN_PROMPT_BLUE; textColor.a = a;
+                          DrawText(prompt, px, py, WIN_PROMPT_FONT_SIZE, textColor);
                 }
         break;
 
@@ -268,19 +295,19 @@ void RenderGameScreen(void)
     }
 
     const char *lives = TextFormat("Balls Remaining: %d", livesRemaining);
-    DrawText(lives, 10, GetScreenHeight() - 20, 20, WHITE);
+    DrawText(lives, HUD_MARGIN, GetScreenHeight() - HUD_BOTTOM_OFFSET, HUD_FONT_SIZE, WHITE);
 
     const char *blocks = TextFormat("Blocks Remaining: %d", getBlockCount());
-    DrawText(blocks, GetScreenWidth() - MeasureText(blocks, 20) - 10, 10, 20, WHITE);
+    DrawText(blocks, GetScreenWidth() - MeasureText(blocks, HUD_FONT_SIZE) - HUD_MARGIN, HUD_MARGIN, HUD_FONT_SIZE, WHITE);
 
     // Display remaining time
     const char *time = TextFormat("Time Remaining: %d", getTime());
-    DrawText(time, 10, 10, 20, WHITE);
+    DrawText(time, HUD_MARGIN, HUD_MARGIN, HUD_FONT_SIZE, WHITE);
 
     if (GetPaddleReverse())
     {
         const char *reversed = "REVERSED!";
-        DrawText(reversed, (GetScreenWidth() - MeasureText(reversed, 25)) / 2, 35, 25, YELLOW);
+        DrawText(reversed, (GetScreenWidth() - MeasureText(reversed, REVERSE_FONT_SIZE)) / 2, REVERSE_Y, REVERSE_FONT_SIZE, YELLOW);
     }
 
     EndDrawing();
@@ -289,17 +316,14 @@ void RenderGameScreen(void)
 void DrawStatusText(const char *displayText)
 {
 
-    const int FONTSIZE = 40;
-    const int PADDING = 20;
-
-    const int width = MeasureText(displayText, FONTSIZE);
+    const int width = MeasureText(displayText, STATUS_FONT_SIZE);
     const int xpos = (GetScreenWidth() - width) / 2;
     const int ypos = GetScreenHeight() / 3;
 
-    DrawRectangle(xpos - PADDING, ypos - PADDING, width + 2 * PADDING, FONTSIZE + 2 * PADDING, BLACK);
+    DrawRectangle(xpos - STATUS_PADDING, ypos - STATUS_PADDING, width + 2 * STATUS_PADDING, STATUS_FONT_SIZE + 2 * STATUS_PADDING, BLACK);
 
-    DrawText(displayText, xpos - 1, ypos - 1, FONTSIZE, RED);
-    DrawText(displayText, xpos, ypos, FONTSIZE, GREEN);
+    DrawText(displayText, xpos - STATUS_SHADOW_OFFSET, ypos - STATUS_SHADOW_OFFSET, STATUS_FONT_SIZE, RED);
+    DrawText(displayText, xpos, ypos, STATUS_FONT_SIZE, GREEN);
 }
 
 void LoseLife(void) {

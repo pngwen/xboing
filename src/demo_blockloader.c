@@ -7,6 +7,47 @@
 #include "audio.h"
 #define BLOCK_TEXTURES "resource/textures/blocks/"
 
+/* Level file limits. */
+#define LEVEL_NAME_MAX 256
+
+/* Grid dimensions. */
+#define COL_MAX 9
+#define ROW_MAX 15
+
+/* Number of animation frames for counter blocks. */
+#define COUNTER_BLOCK_COUNT 6
+
+/* Icon sizes used to centre each block type inside its grid cell. */
+#define HYPERSPACE_BLOCK_SIZE 31
+#define WALL_BLOCK_WIDTH 50
+#define WALL_BLOCK_HEIGHT 30
+#define ROAMER_BLOCK_WIDTH 25
+#define ROAMER_BLOCK_HEIGHT 27
+#define BOMB_BLOCK_SIZE 30
+#define DEATH_BLOCK_SIZE 30
+#define EXTRABALL_BLOCK_WIDTH 30
+#define EXTRABALL_BLOCK_HEIGHT 19
+#define MGUN_BLOCK_WIDTH 35
+#define MGUN_BLOCK_HEIGHT 15
+#define WALLOFF_BLOCK_WIDTH 27
+#define WALLOFF_BLOCK_HEIGHT 23
+#define TIMER_BLOCK_SIZE 21
+#define STICKY_BLOCK_WIDTH 32
+#define STICKY_BLOCK_HEIGHT 27
+#define REVERSE_BLOCK_WIDTH 33
+#define REVERSE_BLOCK_HEIGHT 16
+#define PADDLE_CHANGE_BLOCK_WIDTH 40
+#define PADDLE_CHANGE_BLOCK_HEIGHT 15
+
+/* Sentinel stored in blockOffsetX for cells that hold no block. */
+#define BLOCK_INACTIVE_OFFSET (-1)
+
+/* A bomb clears a (2 * radius + 1) square of blocks. */
+#define BOMB_BLAST_RADIUS 1
+
+/* Countdown timer tick, in seconds. */
+#define TIMER_TICK_SECONDS 1.0f
+
 const int PLAY_X_OFFSET = 35;
 const int PLAY_Y_OFFSET = 60;
 
@@ -19,6 +60,9 @@ const int BLOCK_HEIGHT = 20;
 const int PADDLE_ROWS = 3;
 const int PLAY_BORDER_WIDTH = 2;
 
+/* Distance the play border extends past its corner. */
+#define PLAY_BORDER_OFFSET 1
+
 typedef struct {
     int playWidth;
     int playHeight;
@@ -28,7 +72,7 @@ typedef struct {
 
 PLAY_AREA playArea = {0};
 
-char levelName[256];
+char levelName[LEVEL_NAME_MAX];
 int timeRemaining = 0;
 static bool timerActive = false;
 int blocksRemaining = 0;
@@ -59,12 +103,9 @@ Texture2D HYPERSPACE_BLK,
           PAD_SHRINK_BLK,
 		  PAD_EXPAND_BLK;
 
-Texture2D COUNTER_BLK[6];
+Texture2D COUNTER_BLK[COUNTER_BLOCK_COUNT];
 
-const int COL_MAX = 9;
-const int ROW_MAX = 15;
-
-Block game_blocks[15][9];
+Block game_blocks[ROW_MAX][COL_MAX];
 
 Vector2 getPlayCorner(CORNERS corner);
 bool isBlockTypeInteractive(char ch);
@@ -104,7 +145,7 @@ bool loadBlocks(const char* filename) {
     }
     getc(fp); // consume newline after timeBonus
 	// Get file data
-	fgets(levelName, 256, fp);
+	fgets(levelName, sizeof(levelName), fp);
 	fscanf(fp, "%d", &timeRemaining);
 	getc(fp);
 
@@ -134,9 +175,9 @@ bool loadBlocks(const char* filename) {
 void drawBlocks(void){
 
 	/* Loop through all blocks */
-    for (int row = 0; row < 15; row++){
+    for (int row = 0; row < ROW_MAX; row++){
 
-        for (int col = 0; col < 9; col++){
+        for (int col = 0; col < COL_MAX; col++){
 
             /* If there is a block, draw it */
     		if(!game_blocks[row][col].active) continue;
@@ -168,8 +209,8 @@ void addBlock(int row, int col, char ch){
     switch(ch){
 
         case 'H' :  /* hyperspace block - walls are now gone */
-            game_blocks[row][col].blockOffsetX	= (playArea.colWidth - 31) / 2;
-			game_blocks[row][col].blockOffsetY = (playArea.rowHeight - 31) / 2;
+            game_blocks[row][col].blockOffsetX	= (playArea.colWidth - HYPERSPACE_BLOCK_SIZE) / 2;
+			game_blocks[row][col].blockOffsetY = (playArea.rowHeight - HYPERSPACE_BLOCK_SIZE) / 2;
 			game_blocks[row][col].texture = HYPERSPACE_BLK;
 		break;
 
@@ -206,8 +247,8 @@ void addBlock(int row, int col, char ch){
         break;
 
         case 'w' :  /* A solid wall block */
-            game_blocks[row][col].blockOffsetX	= (playArea.colWidth - 50) / 2;
-			game_blocks[row][col].blockOffsetY 	= (playArea.rowHeight - 30) / 2;
+            game_blocks[row][col].blockOffsetX	= (playArea.colWidth - WALL_BLOCK_WIDTH) / 2;
+			game_blocks[row][col].blockOffsetY 	= (playArea.rowHeight - WALL_BLOCK_HEIGHT) / 2;
 			game_blocks[row][col].texture = BLACK_BLK;
         break;
 
@@ -236,38 +277,38 @@ void addBlock(int row, int col, char ch){
         break;
 
         case '+' : /* A roamer block */
-            game_blocks[row][col].blockOffsetX	= (playArea.colWidth - 25) / 2;
-			game_blocks[row][col].blockOffsetY 	= (playArea.rowHeight - 27) / 2;
+            game_blocks[row][col].blockOffsetX	= (playArea.colWidth - ROAMER_BLOCK_WIDTH) / 2;
+			game_blocks[row][col].blockOffsetY 	= (playArea.rowHeight - ROAMER_BLOCK_HEIGHT) / 2;
 			game_blocks[row][col].texture = ROAMER_BLK;
         break;
 
         case 'X' : /* A bomb */
-            game_blocks[row][col].blockOffsetX	= (playArea.colWidth - 30) / 2;
-			game_blocks[row][col].blockOffsetY 	= (playArea.rowHeight - 30) / 2;
+            game_blocks[row][col].blockOffsetX	= (playArea.colWidth - BOMB_BLOCK_SIZE) / 2;
+			game_blocks[row][col].blockOffsetY 	= (playArea.rowHeight - BOMB_BLOCK_SIZE) / 2;
 			game_blocks[row][col].texture = BOMB_BLK;
         break;
 
         case 'D' : /* A death block */
-            game_blocks[row][col].blockOffsetX	= (playArea.colWidth - 30) / 2;
-			game_blocks[row][col].blockOffsetY 	= (playArea.rowHeight - 30) / 2;
+            game_blocks[row][col].blockOffsetX	= (playArea.colWidth - DEATH_BLOCK_SIZE) / 2;
+			game_blocks[row][col].blockOffsetY 	= (playArea.rowHeight - DEATH_BLOCK_SIZE) / 2;
 			game_blocks[row][col].texture = DEATH_BLK;
         break;
 
         case 'L' : /* An extra ball block */
-			game_blocks[row][col].blockOffsetX	= (playArea.colWidth - 30) / 2;
-			game_blocks[row][col].blockOffsetY 	= (playArea.rowHeight - 19) / 2;
+			game_blocks[row][col].blockOffsetX	= (playArea.colWidth - EXTRABALL_BLOCK_WIDTH) / 2;
+			game_blocks[row][col].blockOffsetY 	= (playArea.rowHeight - EXTRABALL_BLOCK_HEIGHT) / 2;
             game_blocks[row][col].texture = EXTRABALL_BLK;
         break;
 
         case 'M' : /* A machine gun block */
-			game_blocks[row][col].blockOffsetX	= (playArea.colWidth - 35) / 2;
-			game_blocks[row][col].blockOffsetY 	= (playArea.rowHeight - 15) / 2;
+			game_blocks[row][col].blockOffsetX	= (playArea.colWidth - MGUN_BLOCK_WIDTH) / 2;
+			game_blocks[row][col].blockOffsetY 	= (playArea.rowHeight - MGUN_BLOCK_HEIGHT) / 2;
             game_blocks[row][col].texture = MGUN_BLK;
         break;
 
         case 'W' : /* A wall off block */
-			game_blocks[row][col].blockOffsetX	= (playArea.colWidth - 27) / 2;
-			game_blocks[row][col].blockOffsetY 	= (playArea.rowHeight - 23) / 2;
+			game_blocks[row][col].blockOffsetX	= (playArea.colWidth - WALLOFF_BLOCK_WIDTH) / 2;
+			game_blocks[row][col].blockOffsetY 	= (playArea.rowHeight - WALLOFF_BLOCK_HEIGHT) / 2;
             game_blocks[row][col].texture = WALLOFF_BLK;
         break;
 
@@ -280,8 +321,8 @@ void addBlock(int row, int col, char ch){
         break;
 
         case 'T' : /* A extra time block */
-			game_blocks[row][col].blockOffsetX	= (playArea.colWidth - 21) / 2;
-			game_blocks[row][col].blockOffsetY 	= (playArea.rowHeight - 21) / 2;
+			game_blocks[row][col].blockOffsetX	= (playArea.colWidth - TIMER_BLOCK_SIZE) / 2;
+			game_blocks[row][col].blockOffsetY 	= (playArea.rowHeight - TIMER_BLOCK_SIZE) / 2;
             game_blocks[row][col].texture = TIMER_BLK;
         break;
 
@@ -290,31 +331,31 @@ void addBlock(int row, int col, char ch){
         break;
 
         case 's' : /* A sticky block */
-			game_blocks[row][col].blockOffsetX	= (playArea.colWidth - 32) / 2;
-			game_blocks[row][col].blockOffsetY 	= (playArea.rowHeight - 27) / 2;
+			game_blocks[row][col].blockOffsetX	= (playArea.colWidth - STICKY_BLOCK_WIDTH) / 2;
+			game_blocks[row][col].blockOffsetY 	= (playArea.rowHeight - STICKY_BLOCK_HEIGHT) / 2;
             game_blocks[row][col].texture = STICKY_BLK;
         break;
 
         case 'R' :  /* reverse block - switch paddle control */
-			game_blocks[row][col].blockOffsetX	= (playArea.colWidth - 33) / 2;
-			game_blocks[row][col].blockOffsetY 	= (playArea.rowHeight - 16) / 2;
+			game_blocks[row][col].blockOffsetX	= (playArea.colWidth - REVERSE_BLOCK_WIDTH) / 2;
+			game_blocks[row][col].blockOffsetY 	= (playArea.rowHeight - REVERSE_BLOCK_HEIGHT) / 2;
             game_blocks[row][col].texture = REVERSE_BLK;
         break;
 
         case '<' :  /* shrink paddle block - make paddle smaller */
-			game_blocks[row][col].blockOffsetX	= (playArea.colWidth - 40) / 2;
-			game_blocks[row][col].blockOffsetY 	= (playArea.rowHeight - 15) / 2;
+			game_blocks[row][col].blockOffsetX	= (playArea.colWidth - PADDLE_CHANGE_BLOCK_WIDTH) / 2;
+			game_blocks[row][col].blockOffsetY 	= (playArea.rowHeight - PADDLE_CHANGE_BLOCK_HEIGHT) / 2;
             game_blocks[row][col].texture = PAD_SHRINK_BLK;
         break;
 
         case '>' :  /* expand paddle block - make paddle bigger */
-            game_blocks[row][col].blockOffsetX	= (playArea.colWidth - 40) / 2;
-			game_blocks[row][col].blockOffsetY 	= (playArea.rowHeight - 15) / 2;
+            game_blocks[row][col].blockOffsetX	= (playArea.colWidth - PADDLE_CHANGE_BLOCK_WIDTH) / 2;
+			game_blocks[row][col].blockOffsetY 	= (playArea.rowHeight - PADDLE_CHANGE_BLOCK_HEIGHT) / 2;
             game_blocks[row][col].texture = PAD_EXPAND_BLK;
         break;
 
         default:
-            game_blocks[row][col].blockOffsetX = -1;
+            game_blocks[row][col].blockOffsetX = BLOCK_INACTIVE_OFFSET;
         break;
     }
 
@@ -323,7 +364,7 @@ void addBlock(int row, int col, char ch){
         (row * playArea.rowHeight) + game_blocks[row][col].blockOffsetY + PLAY_Y_OFFSET
     };
 
-    if (game_blocks[row][col].blockOffsetX != -1) {
+    if (game_blocks[row][col].blockOffsetX != BLOCK_INACTIVE_OFFSET) {
         game_blocks[row][col].active = true;
         if (ch != 'w') blocksRemaining++;  //solid wall blocks cannot be destroyed and should not count
 		totalBlocks++; // count all blocks except empty space
@@ -415,7 +456,7 @@ bool loadBlockTextures(void){
     COUNTER_BLK[4] = LoadTexture(BLOCK_TEXTURES "cntblk4.png");
     COUNTER_BLK[5] = LoadTexture(BLOCK_TEXTURES "cntblk5.png");
 
-    for (int i = 0; i < 6; i++) {
+    for (int i = 0; i < COUNTER_BLOCK_COUNT; i++) {
         if (COUNTER_BLK[i].id == 0) return false;
     }
 
@@ -449,7 +490,7 @@ void freeBlockTextures(void) {
     UnloadTexture(PAD_SHRINK_BLK);
     UnloadTexture(PAD_EXPAND_BLK);
 
-    for (int i = 0; i < 6; i++) {
+    for (int i = 0; i < COUNTER_BLOCK_COUNT; i++) {
         UnloadTexture(COUNTER_BLK[i]);
     }
 }
@@ -535,11 +576,11 @@ void activateBlock(int row, int col) {
         case 'X': // bomb
             // destroy the surrounding 8 blocks without triggering them
             startSound(SND_BOMB);
-            for (int i = 0; i < 3; i++ ) {
-                int rowOffset = row - 1 + i;
+            for (int i = -BOMB_BLAST_RADIUS; i <= BOMB_BLAST_RADIUS; i++ ) {
+                int rowOffset = row + i;
                 if (rowOffset < 0 || rowOffset >= ROW_MAX) continue;
-                for (int j = 0; j < 3; j++) {
-                    int colOffset = col - 1 + j;
+                for (int j = -BOMB_BLAST_RADIUS; j <= BOMB_BLAST_RADIUS; j++) {
+                    int colOffset = col + j;
                     if (colOffset < 0 || colOffset >= COL_MAX) continue;
                     deactivateBlock(rowOffset, colOffset);
                 }
@@ -597,19 +638,19 @@ Vector2 getPlayCorner(CORNERS corner) {
     switch (corner) {
 
         case UPPER_LEFT:
-            return (Vector2){PLAY_X_OFFSET - 1, PLAY_Y_OFFSET - 1};
+            return (Vector2){PLAY_X_OFFSET - PLAY_BORDER_OFFSET, PLAY_Y_OFFSET - PLAY_BORDER_OFFSET};
             break;
 
         case UPPER_RIGHT:
-            return (Vector2){PLAY_X_OFFSET + playArea.playWidth, PLAY_Y_OFFSET - 1};
+            return (Vector2){PLAY_X_OFFSET + playArea.playWidth, PLAY_Y_OFFSET - PLAY_BORDER_OFFSET};
             break;
 
         case LOWER_LEFT:
-            return (Vector2){PLAY_X_OFFSET - 1, PLAY_Y_OFFSET + playArea.playHeight};
+            return (Vector2){PLAY_X_OFFSET - PLAY_BORDER_OFFSET, PLAY_Y_OFFSET + playArea.playHeight};
             break;
 
         case LOWER_RIGHT:
-            return (Vector2){playArea.playWidth + 1, PLAY_Y_OFFSET + playArea.playHeight};
+            return (Vector2){playArea.playWidth + PLAY_BORDER_OFFSET, PLAY_Y_OFFSET + playArea.playHeight};
             break;
     }
 
@@ -679,7 +720,7 @@ void timeDecrement(void) {
 
     elapsedTime += GetFrameTime();
 
-    if (elapsedTime > 1.0f) {
+    if (elapsedTime > TIMER_TICK_SECONDS) {
         elapsedTime = 0.0f;
         timeRemaining--;
     }
