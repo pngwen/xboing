@@ -18,6 +18,7 @@ GAME_MODES gameState = MODE_EXIT;
 
 // track the current level file so we can advance to the next level after a win
 static char currentLevelFile[512] = {0};
+static bool isPaused = false;
 
 void RenderGameScreen(void);
 void DrawStatusText(const char *displayText);
@@ -59,6 +60,7 @@ void RunInitGameMode(const char *fileName)
     ResetBall();
     // ensure countdown timer does not start until ball released
     setTimerActive(false);
+    isPaused = false;
 
     RenderGameScreen();
 
@@ -68,6 +70,9 @@ void RunInitGameMode(const char *fileName)
 void RunPlayMode(void)
 {
     // --- Keyboard controls ---
+    if (IsKeyPressed(KEY_P))
+    isPaused = !isPaused;
+    if (!isPaused) {
     if (IsInputPaddleLeft())
         MovePaddle(PADDLE_LEFT);
     if (IsInputPaddleRight())
@@ -90,6 +95,7 @@ void RunPlayMode(void)
 
     // --- Update timer ---
     timeDecrement();
+    }
 
     // --- Render everything ---
     RenderGameScreen();
@@ -283,6 +289,8 @@ void RenderGameScreen(void)
         DrawText(reversed, (GetScreenWidth() - MeasureText(reversed, 25)) / 2, 35, 25, YELLOW);
     }
 
+    if (isPaused)
+        DrawStatusText("PAUSED");
     EndDrawing();
 }
 
@@ -310,4 +318,8 @@ void LoseLife(void) {
 
 int GetLivesRemaining(void) {
     return livesRemaining;
+}
+
+bool IsGamePaused(void) {
+    return isPaused;
 }
