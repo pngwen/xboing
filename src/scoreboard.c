@@ -2,12 +2,12 @@
 #include <raylib.h>
 #include <stdbool.h>
 #include "scoreboard.h"
+#include "window.h"
+#include "demo_blockloader.h"   // <-- needed for GetBlocksDestroyed() prototype
 #include <string.h>
-
-#define MAX_NAME_LENGTH 3
 #define SCREEN_WIDTH 575
 #define SCREEN_HEIGHT 720
-#define MAX_HIGH_SCORES 10
+
 
 static int lives = 3;
 static HighScoreEntry highScores[MAX_HIGH_SCORES];
@@ -129,7 +129,7 @@ void ScoreInputScreen(int score, bool isHighScore) {
 
 	// Simple loop that draws scoreboard and waits for key press
 	while (!WindowShouldClose()) { //same as intro screen loop
-		BeginDrawing();
+		WindowBegin();
 		ClearBackground(GRAY);
 		const char* title = "Scoreboard";
 		const char* highscore = "You Got a New High Score!";
@@ -167,7 +167,7 @@ void ScoreInputScreen(int score, bool isHighScore) {
 			
 		
 		}
-			EndDrawing();
+			WindowEnd();
 			
 			// Input handling
 			int letter = GetCharPressed();
@@ -198,7 +198,7 @@ void ScoreInputScreen(int score, bool isHighScore) {
 			}
 
 			// Finalize on Enter
-			if (IsKeyPressed(KEY_ENTER)) {
+            if (IsKeyPressed(KEY_ENTER) && !IsKeyDown(KEY_LEFT_ALT) && !IsKeyDown(KEY_RIGHT_ALT)) {
 				if (isHighScore && LettersEntered > 0) {
 					LoadHighScores("scores.txt");
 					AddHighScore(nickname, quotein, score);
@@ -215,7 +215,7 @@ void ShowScoreBoard(void) {
 	LoadHighScores("scores.txt"); // ensure we have latest
 
 	while (!WindowShouldClose()) {
-		BeginDrawing();
+		WindowBegin();
 		ClearBackground(BLACK);
 
 		DrawText("SCOREBOARD", SCREEN_WIDTH / 2 - 100, 50, 30, YELLOW);
@@ -229,9 +229,9 @@ void ShowScoreBoard(void) {
 			DrawText(buffer, 100, 120 + i * 30, 20, RAYWHITE);
 		}
 
-		EndDrawing();
+		WindowEnd();
 
-		if (IsKeyPressed(KEY_ENTER) || IsKeyPressed(KEY_ESCAPE)) {
+        if ((IsKeyPressed(KEY_ENTER) && !IsKeyDown(KEY_LEFT_ALT) && !IsKeyDown(KEY_RIGHT_ALT)) || IsKeyPressed(KEY_ESCAPE)) {
 			return; // exit scoreboard
 		}
 	}
